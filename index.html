@@ -177,9 +177,13 @@
     position:absolute;inset:0;
     background-image:url('https://i.postimg.cc/L5CrLHK9/SAVE-20260731-124634.jpg');
     background-size:cover;
-    background-position:60% 40%;
-    opacity:.14;
-    mix-blend-mode:screen;
+    background-position:60% 30%;
+    z-index:0;
+    pointer-events:none;
+  }
+  .hero-overlay{
+    position:absolute;inset:0;
+    background:linear-gradient(155deg, rgba(17,24,245,.86) 0%, rgba(23,31,224,.78) 22%, rgba(19,26,174,.82) 46%, rgba(10,14,90,.88) 78%, rgba(8,11,69,.92) 100%);
     z-index:0;
     pointer-events:none;
   }
@@ -484,6 +488,7 @@
   <!-- Hero -->
   <section class="hero" id="home">
     <div class="hero-texture" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
     <div class="hero-rays" aria-hidden="true"></div>
     <div class="hero-radial" aria-hidden="true"></div>
 
@@ -568,7 +573,7 @@
       </div>
 
       <div class="hero-right">
-        <img class="team-photo" src="assets/team.webp" alt="The Rare Grade Tech team standing together, arms crossed, in branded blue polo shirts" />
+        <img class="team-photo" src="https://i.postimg.cc/W1YrqCHw/craiyon-134252-image.png" alt="Rare Grade Tech" />
       </div>
     </div>
   </section>
