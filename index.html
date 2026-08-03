@@ -34,6 +34,7 @@
     --radius-l:28px;
     --container:1360px;
     --gap:8px;
+    --nav-h:107px;
   }
 
   *{box-sizing:border-box;}
@@ -171,8 +172,8 @@
     min-height:92vh;
     display:flex;
     align-items:stretch;
-    margin-top:-84px;
-    padding-top:84px;
+    margin-top:calc(-1 * var(--nav-h));
+    padding-top:var(--nav-h);
   }
   .hero-texture{
     position:absolute;inset:0;
@@ -261,7 +262,7 @@
   .service-item svg{width:21px;height:21px;color:var(--white);}
   .service-item span{font-size:12.5px;font-weight:600;line-height:1.3;color:rgba(255,255,255,.92);}
 
-  .trust-row{grid-column:1 / -1;order:3;display:flex;flex-wrap:nowrap;align-items:flex-start;gap:calc(var(--gap)*5);margin-top:calc(var(--gap)*4.5);padding-top:calc(var(--gap)*4);border-top:1.3px solid var(--line-soft);}
+  .trust-row{grid-column:1 / -1;order:3;display:flex;flex-wrap:nowrap;align-items:flex-start;gap:calc(var(--gap)*5);margin-top:calc(var(--gap)*4.5);padding-top:calc(var(--gap)*4);border-top:2px solid var(--line-soft);}
   .trust-item{display:flex;align-items:flex-start;gap:calc(var(--gap)*1.75);flex:1 1 0;min-width:0;}
   .trust-item .icon-wrap{width:42px;height:42px;flex:none;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;}
   .trust-item svg{width:20px;height:20px;color:var(--white);}
@@ -1031,6 +1032,20 @@
     document.getElementById('askAiFab').addEventListener('click', () => {
       document.getElementById('contact').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
+
+    // Keep the hero's offset in sync with the navbar's real height (prevents a gap/strip
+    // between the navbar and the hero background if the logo or nav content changes size)
+    (function () {
+      const navbarEl = document.getElementById('navbar');
+      if (!navbarEl) return;
+      function syncNavHeight() {
+        document.documentElement.style.setProperty('--nav-h', navbarEl.getBoundingClientRect().height + 'px');
+      }
+      syncNavHeight();
+      window.addEventListener('load', syncNavHeight);
+      window.addEventListener('resize', syncNavHeight);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
+    })();
 
     // Snap the team photo's bottom edge exactly onto the trust-row divider line
     (function () {
