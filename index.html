@@ -549,8 +549,54 @@
 </style>
 
 
-<style id="rgt-blue-3d-cards">
-/* ===== SERVICES - BLUE 3D STACK / DISPERSE - 20% tighter + 2s delay ===== */
+<style id="rgt-final-v2">
+/* ===== 1. CENTER ALL SECTION HEADINGS ===== */
+.section-head{
+  margin-left:auto !important;
+  margin-right:auto !important;
+  text-align:center !important;
+  max-width:760px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+}
+.section-head .eyebrow{
+  justify-content:center !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  text-align:center !important;
+}
+.section-head .eyebrow::before{ display:none !important; }
+.section-title, .section-sub{
+  text-align:center !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+.section-sub{ max-width:640px; }
+.store-inner, .portal-inner{
+  justify-content:center !important;
+  align-items:center !important;
+  text-align:center !important;
+  flex-direction:column !important;
+}
+.store-inner p, .portal-copy, .portal-copy p{
+  text-align:center !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+.portal-copy{ max-width:720px !important; }
+.trusted-band p{ text-align:center !important; margin-left:auto !important; margin-right:auto !important; }
+
+/* ===== 2. MODERN PILL BUTTONS ===== */
+.btn{
+  border-radius: 999px !important;
+  padding: 15px 30px !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+.btn-sm{ border-radius: 999px !important; padding: 11px 22px !important; }
+
+/* ===== 3. SERVICES - BLUE 3D STACK / DISPERSE (2s delay, 20% tighter) ===== */
 #services { overflow: visible; perspective: 2000px; }
 #services .wrap { overflow: visible; }
 #services .grid-4 {
@@ -605,53 +651,14 @@
 #services .service-card:nth-child(2){ --stagger:1; }
 #services .service-card:nth-child(3){ --stagger:2; }
 #services .service-card:nth-child(4){ --stagger:3; }
-
-/* STACKED - default */
-#services .grid-4:not(.is-dispersed) .service-card:nth-child(1){
-  z-index:4;
-  transform: translate3d(-50%, -50%, 0) rotate(-2.5deg) scale(1);
-  filter: brightness(1);
-  box-shadow: 0 28px 60px rgba(4,8,80,0.42), 0 10px 24px rgba(4,8,80,0.28), inset 0 1px 0 rgba(255,255,255,0.20) !important;
-}
-#services .grid-4:not(.is-dispersed) .service-card:nth-child(2){
-  z-index:3;
-  transform: translate3d(calc(-50% + 10px), calc(-50% + 10px), -22px) rotate(2.2deg) scale(0.985);
-  filter: brightness(0.96);
-}
-#services .grid-4:not(.is-dispersed) .service-card:nth-child(3){
-  z-index:2;
-  transform: translate3d(calc(-50% + 20px), calc(-50% + 20px), -44px) rotate(-1.2deg) scale(0.97);
-  filter: brightness(0.92);
-}
-#services .grid-4:not(.is-dispersed) .service-card:nth-child(4){
-  z-index:1;
-  transform: translate3d(calc(-50% + 30px), calc(-50% + 30px), -66px) rotate(1.6deg) scale(0.955);
-  filter: brightness(0.88);
-}
-
-/* DISPERSED - 20% tighter (was 492/164, now 394/131) */
-#services .grid-4.is-dispersed .service-card:nth-child(1){
-  z-index:1;
-  transform: translate3d(calc(-50% - 394px), -50%, -70px) rotateY(-7deg) scale(0.90);
-  filter: brightness(0.88) saturate(0.95);
-}
-#services .grid-4.is-dispersed .service-card:nth-child(2){
-  z-index:2;
-  transform: translate3d(calc(-50% - 131px), -50%, -28px) rotateY(-3deg) scale(0.96);
-  filter: brightness(0.94);
-}
-#services .grid-4.is-dispersed .service-card:nth-child(3){
-  z-index:3;
-  transform: translate3d(calc(-50% + 131px), -50%, 28px) rotateY(2deg) scale(1.03);
-  filter: brightness(1.02);
-}
-#services .grid-4.is-dispersed .service-card:nth-child(4){
-  z-index:2;
-  transform: translate3d(calc(-50% + 394px), -50%, -28px) rotateY(6deg) scale(0.96);
-  filter: brightness(0.94);
-}
-
-/* Hover lift */
+#services .grid-4:not(.is-dispersed) .service-card:nth-child(1){ z-index:4; transform: translate3d(-50%, -50%, 0) rotate(-2.5deg) scale(1); }
+#services .grid-4:not(.is-dispersed) .service-card:nth-child(2){ z-index:3; transform: translate3d(calc(-50% + 10px), calc(-50% + 10px), -22px) rotate(2.2deg) scale(0.985); filter: brightness(0.96); }
+#services .grid-4:not(.is-dispersed) .service-card:nth-child(3){ z-index:2; transform: translate3d(calc(-50% + 20px), calc(-50% + 20px), -44px) rotate(-1.2deg) scale(0.97); filter: brightness(0.92); }
+#services .grid-4:not(.is-dispersed) .service-card:nth-child(4){ z-index:1; transform: translate3d(calc(-50% + 30px), calc(-50% + 30px), -66px) rotate(1.6deg) scale(0.955); filter: brightness(0.88); }
+#services .grid-4.is-dispersed .service-card:nth-child(1){ z-index:1; transform: translate3d(calc(-50% - 394px), -50%, -70px) rotateY(-7deg) scale(0.90); filter: brightness(0.88) saturate(0.95); }
+#services .grid-4.is-dispersed .service-card:nth-child(2){ z-index:2; transform: translate3d(calc(-50% - 131px), -50%, -28px) rotateY(-3deg) scale(0.96); filter: brightness(0.94); }
+#services .grid-4.is-dispersed .service-card:nth-child(3){ z-index:3; transform: translate3d(calc(-50% + 131px), -50%, 28px) rotateY(2deg) scale(1.03); filter: brightness(1.02); }
+#services .grid-4.is-dispersed .service-card:nth-child(4){ z-index:2; transform: translate3d(calc(-50% + 394px), -50%, -28px) rotateY(6deg) scale(0.96); filter: brightness(0.94); }
 #services .grid-4.is-dispersed .service-card:hover,
 #services .grid-4.is-dispersed .service-card.is-lifted,
 #services .grid-4.is-dispersed .service-card:focus-visible{
@@ -670,7 +677,6 @@
 #services .grid-4.is-dispersed .service-card:nth-child(4):hover,
 #services .grid-4.is-dispersed .service-card:nth-child(4).is-lifted{ --tx: calc(-50% + 394px); }
 
-/* Tablet - 20% tighter: 272 / 90 */
 @media (max-width: 1180px){
   #services .grid-4{ height: 540px !important; }
   #services .grid-4.is-dispersed .service-card:nth-child(1){ transform: translate3d(calc(-50% - 272px), -50%, -60px) rotateY(-6deg) scale(0.90); }
@@ -686,8 +692,6 @@
   #services .grid-4.is-dispersed .service-card:nth-child(4):hover,
   #services .grid-4.is-dispersed .service-card:nth-child(4).is-lifted{ --tx: calc(-50% + 272px); }
 }
-
-/* Mobile - vertical, 20% tighter: 197 / 66 */
 @media (max-width: 640px){
   #services .grid-4{ height: 760px !important; }
   #services .service-card{ width: 82vw !important; max-width: 340px !important; min-height: 400px !important; }
@@ -704,8 +708,153 @@
   #services .grid-4.is-dispersed .service-card:nth-child(3).is-lifted{ --ty: calc(-50% + 66px - 18px); }
   #services .grid-4.is-dispersed .service-card:nth-child(4).is-lifted{ --ty: calc(-50% + 197px - 18px); }
 }
+
+/* ===== 4. SOLUTIONS - HoverFeatureCard Animation (from your React code) ===== */
+#solutions .grid-4{
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 28px !important;
+  perspective: none !important;
+  height: auto !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+@media (max-width: 640px){
+  #solutions .grid-4{ grid-template-columns: 1fr !important; }
+}
+#solutions .solution-card{
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+  cursor: pointer;
+  transition: transform 0.45s cubic-bezier(.16,.84,.44,1);
+  will-change: transform;
+}
+#solutions .solution-card:active{
+  transform: scale(0.97);
+}
+
+/* Main top card - rounded-3xl border h-64 z-5 */
+#solutions .hf-main{
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 256px;
+  border-radius: 24px;
+  border: 1px solid var(--card-line);
+  background: #fff;
+  overflow: hidden;
+  transition: border-color 0.3s ease, transform 0.5s cubic-bezier(.16,.84,.44,1), box-shadow 0.5s ease;
+}
+#solutions .solution-card:hover .hf-main{
+  border-color: rgba(17,24,245,0.18);
+  box-shadow: 0 18px 36px rgba(15,20,90,0.08);
+  transform: translateY(-2px);
+}
+#solutions .hf-top{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(180deg, #F8F9FF 0%, #FFFFFF 100%);
+  padding: 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+#solutions .hf-num{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:12px;
+  letter-spacing:0.08em;
+  color: var(--blue-700);
+  text-transform: uppercase;
+}
+#solutions .hf-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:21px;
+  line-height:1.15;
+  letter-spacing:-0.01em;
+  color: var(--ink-900);
+}
+#solutions .hf-visual{
+  margin-top: auto;
+  width: 100%;
+  height: 88px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(17,24,245,0.08) 0%, rgba(17,24,245,0.02) 100%);
+  border: 1px dashed rgba(17,24,245,0.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color: var(--blue-700);
+  font-size: 32px;
+}
+#solutions .hf-fade{
+  pointer-events:none;
+  position:absolute;
+  inset-x:0;
+  bottom:0;
+  height:88px;
+  background: linear-gradient(to top, #fff, transparent);
+}
+
+/* Drawer - the sliding description */
+#solutions .hf-drawer{
+  overflow: hidden;
+  width: 91.6667%;
+  align-self: center;
+  margin: 0 auto;
+  z-index: 1;
+  transform: translateY(-30px);
+  opacity: 0.2;
+  transition: transform 0.62s cubic-bezier(.16,.84,.44,1), opacity 0.52s ease;
+  will-change: transform, opacity;
+}
+#solutions .solution-card:hover .hf-drawer,
+#solutions .solution-card.is-open .hf-drawer,
+#solutions .solution-card:focus-visible .hf-drawer{
+  transform: translateY(0);
+  opacity: 1;
+}
+#solutions .hf-drawer-inner{
+  position: relative;
+  padding: 16px 20px 18px;
+  border: 1px solid var(--card-line);
+  border-top: 0;
+  border-radius: 0 0 24px 24px;
+  background: #F6F7FF;
+}
+#solutions .hf-drawer-inner::before{
+  content:"";
+  pointer-events:none;
+  position:absolute;
+  top:-1px;
+  left:-1px;
+  width:103%;
+  height:48px;
+  background: linear-gradient(to bottom, #fff, transparent);
+}
+#solutions .hf-drawer-inner p{
+  position: relative;
+  z-index:1;
+  font-size:14px;
+  line-height:1.6;
+  color: var(--ink-600);
+  margin:0;
+}
+
 @media (prefers-reduced-motion: reduce){
-  #services .service-card{ transition: none !important; }
+  #services .service-card, #solutions .hf-main, #solutions .hf-drawer{ transition: none !important; }
 }
 </style>
 </head>
@@ -785,7 +934,7 @@
       <div class="hero-left">
         <span class="badge"><span class="dot"></span>Software. Innovation. Solutions.</span>
 
-        <h1 class="headline">DIGITALLY<br><span class="headline-l2">TRANSFORMING BUSINESSES</span></h1>
+        <h1 class="headline">DIGITALY<br><span class="headline-l2">TRANSFORMING BRANDS</span></h1>
 
         <p class="subcopy">We design, develop and deliver modern software, web and mobile applications, AI solutions and IT services that help businesses grow and communities thrive.</p>
 
@@ -1267,111 +1416,105 @@
 
 <script id="rgt-stack-disperse">
 (function(){
-  const section = document.getElementById('services');
-  const grid = section ? section.querySelector('.grid-4') : null;
-  const cards = section ? section.querySelectorAll('.service-card') : [];
-  if(!section || !grid || !cards.length) return;
-
-  let disperseTimer = null;
-  let active = null;
-
-  function clearLift(){
-    cards.forEach(c=> c.classList.remove('is-lifted'));
-    active = null;
-  }
-
-  function scheduleDisperse(){
-    if(disperseTimer) clearTimeout(disperseTimer);
-    // 2 second delay as requested
-    disperseTimer = setTimeout(()=>{
-      grid.classList.add('is-dispersed');
-      disperseTimer = null;
-    }, 2000);
-  }
-
-  function cancelDisperseAndStack(){
-    if(disperseTimer){
-      clearTimeout(disperseTimer);
-      disperseTimer = null;
-    }
-    grid.classList.remove('is-dispersed');
-    clearLift();
-  }
-
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        scheduleDisperse();
-      } else {
-        cancelDisperseAndStack();
-      }
+  // SERVICES STACK / DISPERSE
+  const secServices = document.getElementById('services');
+  const gridServices = secServices ? secServices.querySelector('.grid-4') : null;
+  const serviceCards = secServices ? secServices.querySelectorAll('.service-card') : [];
+  if(secServices && gridServices && serviceCards.length){
+    let disperseTimer=null;
+    let active=null;
+    const clearLift=()=>{ serviceCards.forEach(c=>c.classList.remove('is-lifted')); active=null; };
+    const schedule=()=>{ if(disperseTimer) clearTimeout(disperseTimer); disperseTimer=setTimeout(()=>{ gridServices.classList.add('is-dispersed'); disperseTimer=null; },2000); };
+    const cancel=()=>{ if(disperseTimer){ clearTimeout(disperseTimer); disperseTimer=null; } gridServices.classList.remove('is-dispersed'); clearLift(); };
+    const io=new IntersectionObserver((entries)=>{ entries.forEach(en=>{ if(en.isIntersecting) schedule(); else cancel(); }); }, {threshold:0.28, rootMargin:'-8% 0px -12% 0px'});
+    io.observe(secServices);
+    requestAnimationFrame(()=>{ const r=secServices.getBoundingClientRect(); if(r.top < innerHeight*0.72 && r.bottom > innerHeight*0.28) schedule(); });
+    serviceCards.forEach(card=>{
+      card.setAttribute('tabindex','0');
+      card.addEventListener('mouseenter', ()=>{
+        if(!gridServices.classList.contains('is-dispersed')) return;
+        if(!matchMedia('(hover: hover)').matches) return;
+        serviceCards.forEach(c=>{ if(c!==card) c.classList.remove('is-lifted'); });
+        card.classList.add('is-lifted'); active=card;
+      });
+      card.addEventListener('mouseleave', ()=>{
+        if(!matchMedia('(hover: hover)').matches) return;
+        if(!gridServices.classList.contains('is-dispersed')) return;
+        card.classList.remove('is-lifted'); active=null;
+      });
+      card.addEventListener('click', ()=>{
+        if(!gridServices.classList.contains('is-dispersed')){
+          if(disperseTimer){ clearTimeout(disperseTimer); disperseTimer=null; }
+          gridServices.classList.add('is-dispersed');
+          setTimeout(()=>{ clearLift(); card.classList.add('is-lifted'); active=card; },180);
+          return;
+        }
+        if(active===card){ card.classList.remove('is-lifted'); active=null; }
+        else{ clearLift(); card.classList.add('is-lifted'); active=card; }
+      });
     });
-  }, {
-    threshold: 0.28,
-    rootMargin: '-8% 0px -12% 0px'
-  });
-  io.observe(section);
+    document.addEventListener('click', e=>{ if(!e.target.closest('#services .service-card')) clearLift(); });
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') clearLift(); });
+  }
 
-  // Initial check with same 2s delay
-  requestAnimationFrame(()=>{
-    const rect = section.getBoundingClientRect();
-    const inView = rect.top < window.innerHeight * 0.72 && rect.bottom > window.innerHeight * 0.28;
-    if(inView) scheduleDisperse();
-  });
+  // SOLUTIONS - HoverFeatureCards animation
+  const solCards = document.querySelectorAll('#solutions .solution-card');
+  solCards.forEach(card=>{
+    if(card.querySelector('.hf-main')) return;
+    const numEl = card.querySelector('.num');
+    const h3El = card.querySelector('h3');
+    const pEl = card.querySelector('p');
+    const num = numEl ? numEl.textContent.trim() : '';
+    const title = h3El ? h3El.textContent.trim() : 'Solution';
+    const desc = pEl ? pEl.textContent.trim() : '';
 
-  // Lift logic
-  cards.forEach(card=>{
+    // Create new structure
+    card.innerHTML = '';
+    const main = document.createElement('div');
+    main.className = 'hf-main';
+    main.innerHTML = `
+      <div class="hf-top">
+        <div class="hf-num">${num}</div>
+        <div class="hf-title">${title}</div>
+        <div class="hf-visual">${num}</div>
+        <div class="hf-fade"></div>
+      </div>
+    `;
+    const drawer = document.createElement('div');
+    drawer.className = 'hf-drawer';
+    drawer.innerHTML = `<div class="hf-drawer-inner"><p>${desc}</p></div>`;
+
+    card.appendChild(main);
+    card.appendChild(drawer);
     card.setAttribute('tabindex','0');
-    card.addEventListener('mouseenter', ()=>{
-      if(!grid.classList.contains('is-dispersed')) return;
-      if(!window.matchMedia('(hover: hover)').matches) return;
-      cards.forEach(c=> { if(c!==card) c.classList.remove('is-lifted'); });
-      card.classList.add('is-lifted');
-      active = card;
-    });
-    card.addEventListener('mouseleave', ()=>{
-      if(!window.matchMedia('(hover: hover)').matches) return;
-      if(!grid.classList.contains('is-dispersed')) return;
-      card.classList.remove('is-lifted');
-      active = null;
-    });
+
+    // Mobile tap to open
     card.addEventListener('click', (e)=>{
-      if(!grid.classList.contains('is-dispersed')){
-        // if user clicks while stacked, disperse immediately (ignore delay for click)
-        if(disperseTimer){ clearTimeout(disperseTimer); disperseTimer=null; }
-        grid.classList.add('is-dispersed');
-        setTimeout(()=>{
-          clearLift();
-          card.classList.add('is-lifted');
-          active = card;
-        }, 180);
-        return;
-      }
-      if(active === card){
-        card.classList.remove('is-lifted');
-        active = null;
-      } else {
-        clearLift();
-        card.classList.add('is-lifted');
-        active = card;
+      // toggle on mobile / touch
+      if(window.innerWidth <= 900 || !window.matchMedia('(hover: hover)').matches){
+        const isOpen = card.classList.contains('is-open');
+        document.querySelectorAll('#solutions .solution-card.is-open').forEach(c=>{ if(c!==card) c.classList.remove('is-open'); });
+        if(isOpen) card.classList.remove('is-open');
+        else card.classList.add('is-open');
       }
     });
-    card.addEventListener('keydown', (ev)=>{
-      if(ev.key === 'Enter' || ev.key === ' '){
-        ev.preventDefault();
-        card.click();
+    card.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter' || e.key===' '){
+        e.preventDefault();
+        card.classList.toggle('is-open');
+      }
+      if(e.key==='Escape'){
+        card.classList.remove('is-open');
       }
     });
   });
 
   document.addEventListener('click', (e)=>{
-    if(!e.target.closest('#services .service-card')){
-      clearLift();
+    if(!e.target.closest('#solutions .solution-card')){
+      document.querySelectorAll('#solutions .solution-card.is-open').forEach(c=> c.classList.remove('is-open'));
     }
   });
-  document.addEventListener('keydown', (e)=>{
-    if(e.key === 'Escape') clearLift();
-  });
+
 })();
 </script>
 </body>
