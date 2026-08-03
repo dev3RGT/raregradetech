@@ -7,7 +7,7 @@
 <meta name="description" content="Rare Grade Tech — software solutions, web & mobile apps, graphic design and PC repair in Mokopane, South Africa." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
   :root{
     --blue-900:#0A0E5A;
@@ -175,7 +175,7 @@
   }
   .hero-texture{
     position:absolute;inset:0;
-    background-image:url('https://i.postimg.cc/L5CrLHK9/SAVE-20260731-124634.jpg');
+    background-image:url('https://i.postimg.cc/QdQW2r95/hero.png');
     background-size:cover;
     background-position:60% 30%;
     z-index:0;
@@ -232,10 +232,11 @@
   .badge .dot{width:7px;height:7px;border-radius:50%;background:#7CF7C4;box-shadow:0 0 10px #7CF7C4;}
 
   .headline{
-    font-family:'Space Grotesk',sans-serif;font-weight:700;
-    font-size:clamp(2.6rem, 4.6vw, 5.2rem);line-height:.98;letter-spacing:-.015em;
-    margin:0 0 calc(var(--gap)*3.5);color:var(--white);text-wrap:balance;
+    font-family:'Anton',sans-serif;font-weight:400;
+    font-size:clamp(2.6rem, 4.6vw, 5.2rem);line-height:.92;letter-spacing:0;
+    margin:0 0 calc(var(--gap)*3.5);color:var(--white);text-wrap:balance;text-transform:uppercase;
   }
+  .headline-l2{display:inline-block;margin-top:14px;}
   .subcopy{
     font-size:clamp(15px,1.15vw,17.5px);line-height:1.65;color:var(--text-dim);
     max-width:520px;margin:0 0 calc(var(--gap)*4.5);font-weight:400;
@@ -249,21 +250,21 @@
   .rating-stars svg{width:13px;height:13px;color:var(--ink);}
 
   .services-card{
-    background:var(--glass);border:1px solid var(--line);
-    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-    border-radius:var(--radius-l);padding:calc(var(--gap)*4) calc(var(--gap)*3.5);
+    background:var(--blue-800);border:1px solid rgba(255,255,255,.16);
+    border-radius:var(--radius-l);padding:calc(var(--gap)*4) calc(var(--gap)*3);
     display:grid;grid-template-columns:repeat(5,1fr);gap:calc(var(--gap)*2);
   }
-  .service-item{display:flex;flex-direction:column;align-items:flex-start;gap:calc(var(--gap)*1.5);padding-left:calc(var(--gap)*3);border-left:1px solid var(--line-soft);}
+  .service-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:calc(var(--gap)*1.75);padding-left:calc(var(--gap)*2.5);border-left:1px dashed rgba(255,255,255,.28);}
   .service-item:first-child{border-left:none;padding-left:0;}
-  .service-item svg{width:26px;height:26px;color:var(--white);}
-  .service-item span{font-size:13.5px;font-weight:600;line-height:1.3;color:rgba(255,255,255,.92);}
+  .service-icon{width:46px;height:46px;flex:none;border-radius:50%;border:1.5px dashed rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;}
+  .service-item svg{width:21px;height:21px;color:var(--white);}
+  .service-item span{font-size:12.5px;font-weight:600;line-height:1.3;color:rgba(255,255,255,.92);}
 
-  .trust-row{display:flex;flex-wrap:wrap;gap:calc(var(--gap)*5);margin-top:calc(var(--gap)*4.5);padding-top:calc(var(--gap)*4);border-top:1px solid var(--line-soft);}
-  .trust-item{display:flex;align-items:flex-start;gap:calc(var(--gap)*1.75);}
+  .trust-row{grid-column:1 / -1;order:3;display:flex;flex-wrap:nowrap;align-items:flex-start;gap:calc(var(--gap)*5);margin-top:calc(var(--gap)*4.5);padding-top:calc(var(--gap)*4);border-top:1px solid var(--line-soft);}
+  .trust-item{display:flex;align-items:flex-start;gap:calc(var(--gap)*1.75);flex:1 1 0;min-width:0;}
   .trust-item .icon-wrap{width:42px;height:42px;flex:none;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;}
   .trust-item svg{width:20px;height:20px;color:var(--white);}
-  .trust-item .t-title{font-size:14px;font-weight:700;line-height:1.3;color:var(--white);}
+  .trust-item .t-title{font-size:14px;font-weight:700;line-height:1.3;color:var(--white);white-space:nowrap;}
   .trust-item .t-sub{font-size:12.5px;color:var(--text-faint);margin-top:2px;line-height:1.4;}
 
   .hero-right{position:relative;height:100%;min-height:560px;display:flex;align-items:flex-end;justify-content:center;overflow:visible;}
@@ -404,7 +405,7 @@
   .hero-left .subcopy{animation:fadeUpIn .8s cubic-bezier(.16,.84,.44,1) .28s both;}
   .hero-left .cta-row{animation:fadeUpIn .8s cubic-bezier(.16,.84,.44,1) .4s both;}
   .hero-left .services-card{animation:fadeUpIn .8s cubic-bezier(.16,.84,.44,1) .52s both;}
-  .hero-left .trust-row{animation:fadeUpIn .8s cubic-bezier(.16,.84,.44,1) .64s both;}
+  .trust-row{animation:fadeUpIn .8s cubic-bezier(.16,.84,.44,1) .64s both;}
 
   @keyframes pulseDot{ 0%,100%{box-shadow:0 0 0 0 rgba(124,247,196,.55);} 50%{box-shadow:0 0 0 6px rgba(124,247,196,0);} }
   .badge .dot{animation:pulseDot 2.2s ease-in-out infinite;}
@@ -446,7 +447,7 @@
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
     .reveal,.reveal-left,.reveal-right,.reveal-scale{opacity:1 !important;transform:none !important;transition:none !important;}
-    .hero-left .badge,.hero-left .headline,.hero-left .subcopy,.hero-left .cta-row,.hero-left .services-card,.hero-left .trust-row,.team-photo,.badge .dot,.hero-rays{animation:none !important;}
+    .hero-left .badge,.hero-left .headline,.hero-left .subcopy,.hero-left .cta-row,.hero-left .services-card,.trust-row,.team-photo,.badge .dot,.hero-rays{animation:none !important;}
     .hero-radial{transition:none !important;}
   }
 
@@ -477,13 +478,71 @@
     .cta-row{flex-direction:column;align-items:stretch;}
     .cta-row .btn{width:100%;}
     .rating-card{justify-content:center;}
-    .trust-row{gap:calc(var(--gap)*3);}
+    .trust-row{flex-wrap:wrap;gap:calc(var(--gap)*3);}
+    .trust-item{flex:1 1 100%;}
     .grid-4{grid-template-columns:1fr;}
     .section{padding-block:calc(var(--gap)*9);}
     .milestones-row{grid-template-columns:1fr;}
     .form-row{grid-template-columns:1fr;}
     .footer-grid{grid-template-columns:1fr;}
     .store-inner{flex-direction:column;align-items:flex-start;}
+  }
+
+  /* ---------- Floating Ask AI button ---------- */
+  .ask-ai-fab{
+    position:fixed;
+    right:calc(var(--gap)*3.5);
+    bottom:calc(var(--gap)*3.5);
+    z-index:70;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--white);
+    border:none;
+    border-radius:999px;
+    padding:6px 20px 6px 6px;
+    box-shadow:0 14px 34px rgba(5,7,31,.28), 0 2px 8px rgba(5,7,31,.1);
+    cursor:pointer;
+    font-family:'Inter',system-ui,sans-serif;
+    transition:transform .25s cubic-bezier(.16,.84,.44,1), box-shadow .25s ease;
+    animation:fabIn .7s cubic-bezier(.16,.84,.44,1) .3s both;
+  }
+  .ask-ai-fab:hover{transform:translateY(-3px);box-shadow:0 20px 42px rgba(5,7,31,.34), 0 2px 8px rgba(5,7,31,.12);}
+  .ask-ai-fab:active{transform:translateY(-1px) scale(.98);}
+  .ask-ai-fab .ai-avatar{
+    width:38px;height:38px;flex:none;border-radius:50%;
+    background:linear-gradient(145deg,var(--blue-700),var(--blue-900));
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);
+  }
+  .ask-ai-fab .ai-avatar svg{width:19px;height:19px;color:var(--white);}
+  .ask-ai-fab .ai-label{font-size:14.5px;font-weight:700;color:var(--ink-900);white-space:nowrap;}
+  .ask-ai-fab .ai-wave{display:flex;align-items:center;gap:2.5px;height:18px;}
+  .ask-ai-fab .ai-wave span{
+    width:3px;border-radius:2px;
+    background:var(--blue-700);
+    animation:aiWave 1.1s ease-in-out infinite;
+  }
+  .ask-ai-fab .ai-wave span:nth-child(1){height:6px;animation-delay:0s;}
+  .ask-ai-fab .ai-wave span:nth-child(2){height:16px;animation-delay:.15s;}
+  .ask-ai-fab .ai-wave span:nth-child(3){height:10px;animation-delay:.3s;}
+  .ask-ai-fab .ai-wave span:nth-child(4){height:14px;animation-delay:.45s;}
+  @keyframes aiWave{
+    0%,100%{transform:scaleY(.45);}
+    50%{transform:scaleY(1);}
+  }
+  @keyframes fabIn{
+    from{opacity:0;transform:translateY(16px) scale(.92);}
+    to{opacity:1;transform:translateY(0) scale(1);}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .ask-ai-fab{animation:none;}
+    .ask-ai-fab .ai-wave span{animation:none;transform:scaleY(.8);}
+  }
+  @media (max-width:640px){
+    .ask-ai-fab{right:calc(var(--gap)*2.5);bottom:calc(var(--gap)*2.5);padding:5px 16px 5px 5px;}
+    .ask-ai-fab .ai-label{font-size:13.5px;}
+    .ask-ai-fab .ai-avatar{width:34px;height:34px;}
   }
 </style>
 </head>
@@ -567,16 +626,12 @@
   <!-- Hero -->
   <section class="hero" id="home">
     <div class="hero-texture" aria-hidden="true"></div>
-    <div class="hero-color-overlay" aria-hidden="true"></div>
-    <div class="hero-overlay" aria-hidden="true"></div>
-    <div class="hero-rays" aria-hidden="true"></div>
-    <div class="hero-radial" aria-hidden="true"></div>
 
     <div class="hero-inner">
       <div class="hero-left">
         <span class="badge"><span class="dot"></span>Software. Innovation. Solutions.</span>
 
-        <h1 class="headline">DIGITALLY<br>TRANSFORMING BRANDS</h1>
+        <h1 class="headline">DIGITALY<br><span class="headline-l2">TRANSFORMING BRANDS</span></h1>
 
         <p class="subcopy">We design, develop and deliver modern software, web and mobile applications, AI solutions and IT services that help businesses grow and communities thrive.</p>
 
@@ -600,60 +655,60 @@
 
         <div class="services-card">
           <div class="service-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18-6-6 6-6M15 6l6 6-6 6"/></svg>
+            <span class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 9l-3 3 3 3M15 9l3 3-3 3"/></svg></span>
             <span>Software<br>Development</span>
           </div>
           <div class="service-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.2"/><path d="M11 18h2"/><path d="M17 7 15 5"/></svg>
+            <span class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.2"/><path d="M11 18h2"/><path d="M18 4l.55 1.3L20 5.85l-1.3.55L18 7.7l-.55-1.3L16 5.85l1.3-.55z" fill="currentColor" stroke="none"/></svg></span>
             <span>Mobile<br>Applications</span>
           </div>
           <div class="service-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 8V4M9.5 4h5"/><circle cx="9.2" cy="13.5" r="1"/><circle cx="14.8" cy="13.5" r="1"/><path d="M3 12v3M21 12v3"/></svg>
+            <span class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 8V4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><circle cx="9.2" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="14.8" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M3 12v3M21 12v3"/></svg></span>
             <span>AI Automation<br>&amp; Integrations</span>
           </div>
           <div class="service-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13a9 9 0 0 1 18 0"/><path d="M21 13v4a2 2 0 0 1-2 2h-1v-6h3z"/><path d="M3 13v4a2 2 0 0 0 2 2h1v-6H3z"/><path d="M12 19v1a2 2 0 0 1-2 2"/></svg>
+            <span class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13a9 9 0 0 1 18 0"/><path d="M21 13v4a2 2 0 0 1-2 2h-1v-6h3z"/><path d="M3 13v4a2 2 0 0 0 2 2h1v-6H3z"/></svg></span>
             <span>IT Support &amp;<br>Maintenance</span>
           </div>
           <div class="service-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/><path d="m16.5 9.5-1.8 1.8-1-1M18.8 6.2l1.4 1.4-3.6 3.6-1.4-1.4z"/></svg>
+            <span class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/><path d="m16.5 9.5-1.8 1.8-1-1M18.8 6.2l1.4 1.4-3.6 3.6-1.4-1.4z"/></svg></span>
             <span>Computer Repair<br>&amp; Sales</span>
-          </div>
-        </div>
-
-        <div class="trust-row">
-          <div class="trust-item">
-            <span class="icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-            </span>
-            <span>
-              <div class="t-title">Reliable Support</div>
-              <div class="t-sub">On-site &amp; Remote</div>
-            </span>
-          </div>
-          <div class="trust-item">
-            <span class="icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7.5" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M15.5 3.6a4 4 0 0 1 0 7.8"/></svg>
-            </span>
-            <span>
-              <div class="t-title">Experienced Team</div>
-              <div class="t-sub">Professional. Skilled. Dedicated.</div>
-            </span>
-          </div>
-          <div class="trust-item">
-            <span class="icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V7l8-4 8 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 11h.01M15 11h.01M9 15h.01M15 15h.01"/></svg>
-            </span>
-            <span>
-              <div class="t-title">Based in Mokopane</div>
-              <div class="t-sub">Serving Businesses Across South Africa</div>
-            </span>
           </div>
         </div>
       </div>
 
       <div class="hero-right">
         <img class="team-photo" src="https://i.postimg.cc/W1YrqCHw/craiyon-134252-image.png" alt="Rare Grade Tech" />
+      </div>
+
+      <div class="trust-row">
+        <div class="trust-item">
+          <span class="icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          </span>
+          <span>
+            <div class="t-title">Reliable Support</div>
+            <div class="t-sub">On-site &amp; Remote</div>
+          </span>
+        </div>
+        <div class="trust-item">
+          <span class="icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7.5" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M15.5 3.6a4 4 0 0 1 0 7.8"/></svg>
+          </span>
+          <span>
+            <div class="t-title">Experienced Team</div>
+            <div class="t-sub">Professional. Skilled. Dedicated.</div>
+          </span>
+        </div>
+        <div class="trust-item">
+          <span class="icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V7l8-4 8 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 11h.01M15 11h.01M9 15h.01M15 15h.01"/></svg>
+          </span>
+          <span>
+            <div class="t-title">Based in Mokopane</div>
+            <div class="t-sub">Serving Businesses Across South Africa</div>
+          </span>
+        </div>
       </div>
     </div>
   </section>
@@ -957,6 +1012,15 @@
     </div>
   </footer>
 
+  <!-- Floating Ask AI button -->
+  <button type="button" class="ask-ai-fab" id="askAiFab" aria-label="Ask AI assistant">
+    <span class="ai-avatar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 8V4"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/><circle cx="9.2" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="14.8" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><path d="M3 12v3M21 12v3"/></svg>
+    </span>
+    <span class="ai-label">Ask AI</span>
+    <span class="ai-wave" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+  </button>
+
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -980,6 +1044,11 @@
       mobilePanel.classList.remove('open');
       navToggle.setAttribute('aria-expanded', 'false');
     }));
+
+    // Floating Ask AI button — scrolls to contact until a live chat is wired up
+    document.getElementById('askAiFab').addEventListener('click', () => {
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   </script>
 </body>
 </html>
