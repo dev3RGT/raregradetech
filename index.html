@@ -189,6 +189,14 @@
     z-index:0;
     pointer-events:none;
   }
+  .hero-color-overlay{
+    position:absolute;inset:0;
+    background:linear-gradient(90deg, #020084 0%, #0404d8 100%);
+    mix-blend-mode:multiply;
+    opacity:.82;
+    z-index:0;
+    pointer-events:none;
+  }
   .hero-rays{
     position:absolute;inset:-10%;
     z-index:0;
@@ -559,6 +567,7 @@
   <!-- Hero -->
   <section class="hero" id="home">
     <div class="hero-texture" aria-hidden="true"></div>
+    <div class="hero-color-overlay" aria-hidden="true"></div>
     <div class="hero-overlay" aria-hidden="true"></div>
     <div class="hero-rays" aria-hidden="true"></div>
     <div class="hero-radial" aria-hidden="true"></div>
