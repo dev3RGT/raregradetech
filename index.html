@@ -561,7 +561,8 @@
 /* ===== 3. SERVICES - static grid, no stack/disperse animation ===== */
 #services .grid-4 {
   display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
+  grid-template-columns: repeat(3, minmax(0, 340px)) !important;
+  justify-content: center !important;
   gap: calc(var(--gap)*3) !important;
   height: auto !important;
   padding: 0 !important;
@@ -569,7 +570,7 @@
 #services .service-card {
   position: relative !important;
   width: 100% !important;
-  min-height: 430px !important;
+  min-height: 400px !important;
   margin: 0 !important;
   display: flex !important;
   flex-direction: column !important;
@@ -577,7 +578,7 @@
   border: 1px solid rgba(255,255,255,0.18) !important;
   border-radius: 22px !important;
   color: #fff !important;
-  padding: 30px 26px !important;
+  padding: 28px 24px !important;
   box-shadow: 0 32px 64px rgba(4,8,80,0.36), 0 12px 28px rgba(4,8,80,0.28), inset 0 1px 0 rgba(255,255,255,0.18) !important;
 }
 #services .service-card::after{
@@ -585,29 +586,18 @@
   background: linear-gradient(105deg, rgba(255,255,255,0.18) 0%, transparent 38%);
   pointer-events:none; opacity:0.65;
 }
-#services .service-card h3{ color:#fff !important; font-size:20px !important; }
-#services .service-card li{ color: rgba(255,255,255,0.88) !important; font-size:14px !important; }
+#services .service-card h3{ color:#fff !important; font-size:19px !important; }
+#services .service-card li{ color: rgba(255,255,255,0.88) !important; font-size:13.5px !important; }
 #services .service-card li svg{ color:#7CF7C4 !important; }
 #services .service-card .icon-badge{
   background: rgba(255,255,255,0.14) !important;
   border: 1px solid rgba(255,255,255,0.22) !important;
   backdrop-filter: blur(10px);
-  width:56px !important; height:56px !important; border-radius:16px !important;
+  width:52px !important; height:52px !important; border-radius:16px !important;
 }
-#services .service-card .icon-badge svg{ color:#fff !important; width:28px !important; height:28px !important; }
+#services .service-card .icon-badge svg{ color:#fff !important; width:26px !important; height:26px !important; }
 
-/* See More expand/collapse */
-#services .service-card .card-more{
-  position: relative; z-index: 1;
-  max-height: 0; opacity: 0; overflow: hidden;
-  transition: max-height .45s cubic-bezier(.16,.84,.44,1), opacity .3s ease, margin-top .3s ease;
-}
-#services .service-card .card-more p{
-  font-size: 13.5px; line-height: 1.6; color: rgba(255,255,255,.82); margin: 0;
-}
-#services .service-card.is-expanded .card-more{
-  max-height: 220px; opacity: 1; margin-top: 14px;
-}
+/* See More - stub link, will route to a dedicated service page later */
 #services .service-more-btn{
   position: relative; z-index: 1;
   margin-top: auto; padding-top: 22px;
@@ -617,174 +607,101 @@
   width: 100%;
 }
 #services .service-more-btn svg{
-  width: 14px; height: 14px; transition: transform .3s ease;
+  width: 14px; height: 14px; transition: transform .25s ease;
 }
-#services .service-card.is-expanded .service-more-btn svg{
-  transform: rotate(180deg);
+#services .service-more-btn .btn:hover svg{
+  transform: translateX(3px);
 }
 
 @media (max-width: 1180px){
-  #services .grid-4{ grid-template-columns: repeat(2, 1fr) !important; }
+  #services .grid-4{ grid-template-columns: repeat(2, minmax(0, 340px)) !important; }
 }
 @media (max-width: 640px){
-  #services .grid-4{ grid-template-columns: 1fr !important; }
+  #services .grid-4{ grid-template-columns: minmax(0, 340px) !important; }
 }
 
-/* ===== 4. SOLUTIONS - HoverFeatureCard Animation (from your React code) ===== */
+/* ===== 4. SOLUTIONS - photo cards, no hover animation ===== */
 #solutions .grid-4{
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
-  gap: 18px !important;
-  perspective: none !important;
+  gap: 22px !important;
   height: auto !important;
   padding: 0 !important;
   overflow: visible !important;
 }
 @media (max-width: 780px){
-  #solutions .grid-4{ grid-template-columns: 1fr !important; }
+  #solutions .grid-4{ grid-template-columns: 1fr !important; max-width:420px; margin-inline:auto; }
 }
 #solutions .solution-card{
   position: relative !important;
   display: flex !important;
   flex-direction: column !important;
   width: 100% !important;
-  background: transparent !important;
-  border: none !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-  overflow: visible !important;
-  cursor: pointer;
-  transition: transform 0.45s cubic-bezier(.16,.84,.44,1);
-  will-change: transform;
-}
-#solutions .solution-card:active{
-  transform: scale(0.97);
+  background: #111319 !important;
+  border: 1px solid rgba(255,255,255,.07) !important;
+  padding: 10px !important;
+  border-radius: 26px !important;
+  overflow: hidden !important;
 }
 
-/* Main top card - rounded-3xl border h-64 z-5 */
-#solutions .hf-main{
-  position: relative;
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
+/* Image */
+#solutions .sc-image{
   width: 100%;
-  height: 188px;
-  border-radius: 18px;
-  border: 1px solid var(--card-line);
-  background: #fff;
+  aspect-ratio: 4 / 3;
+  border-radius: 19px;
   overflow: hidden;
-  transition: border-color 0.3s ease, transform 0.5s cubic-bezier(.16,.84,.44,1), box-shadow 0.5s ease;
-}
-#solutions .solution-card:hover .hf-main{
-  border-color: rgba(17,24,245,0.18);
-  box-shadow: 0 18px 36px rgba(15,20,90,0.08);
-  transform: translateY(-2px);
-}
-#solutions .hf-top{
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: linear-gradient(180deg, #F8F9FF 0%, #FFFFFF 100%);
-  padding: 17px 17px 17px;
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
-#solutions .hf-num{
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:700;
-  font-size:10.5px;
-  letter-spacing:0.08em;
-  color: var(--blue-700);
-  text-transform: uppercase;
-}
-#solutions .hf-title{
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:700;
-  font-size:16px;
-  line-height:1.18;
-  letter-spacing:-0.01em;
-  color: var(--ink-900);
-}
-#solutions .hf-visual{
-  margin-top: auto;
-  width: 100%;
-  height: 60px;
-  border-radius: 11px;
-  background: linear-gradient(135deg, rgba(17,24,245,0.08) 0%, rgba(17,24,245,0.02) 100%);
-  border: 1px dashed rgba(17,24,245,0.15);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color: var(--blue-700);
-  font-size: 22px;
-}
-#solutions .hf-visual.has-img{
-  padding: 7px;
   background: #fff;
-  border: 1px solid var(--card-line);
 }
-#solutions .hf-visual.has-img img{
+#solutions .sc-image img{
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 6px;
+  padding: 24px;
   display: block;
 }
-#solutions .hf-fade{
-  pointer-events:none;
-  position:absolute;
-  inset-x:0;
-  bottom:0;
-  height:60px;
-  background: linear-gradient(to top, #fff, transparent);
-}
 
-/* Drawer - the sliding description */
-#solutions .hf-drawer{
-  overflow: hidden;
-  width: 91.6667%;
-  align-self: center;
-  margin: 0 auto;
-  z-index: 1;
-  transform: translateY(-30px);
-  opacity: 0.2;
-  transition: transform 0.62s cubic-bezier(.16,.84,.44,1), opacity 0.52s ease;
-  will-change: transform, opacity;
+/* Info panel */
+#solutions .sc-panel{
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  background: #1B1D28;
+  border-radius: 18px;
+  padding: 16px 16px 16px 18px;
 }
-#solutions .solution-card:hover .hf-drawer,
-#solutions .solution-card.is-open .hf-drawer,
-#solutions .solution-card:focus-visible .hf-drawer{
-  transform: translateY(0);
-  opacity: 1;
+#solutions .sc-info h3{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:16.5px;
+  line-height:1.2;
+  letter-spacing:-0.01em;
+  color: #fff;
+  margin:0 0 5px;
 }
-#solutions .hf-drawer-inner{
-  position: relative;
-  padding: 12px 15px 14px;
-  border: 1px solid var(--card-line);
-  border-top: 0;
-  border-radius: 0 0 18px 18px;
-  background: #F6F7FF;
-}
-#solutions .hf-drawer-inner::before{
-  content:"";
-  pointer-events:none;
-  position:absolute;
-  top:-1px;
-  left:-1px;
-  width:103%;
-  height:48px;
-  background: linear-gradient(to bottom, #fff, transparent);
-}
-#solutions .hf-drawer-inner p{
-  position: relative;
-  z-index:1;
-  font-size:12.5px;
-  line-height:1.55;
-  color: var(--ink-600);
+#solutions .sc-meta{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:11px;
+  letter-spacing:.06em;
+  text-transform: uppercase;
+  color: var(--blue-accent);
   margin:0;
 }
+#solutions .sc-action{
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--blue-700), var(--blue-900));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(17,24,245,.35);
+}
+#solutions .sc-action svg{ width:17px; height:17px; }
 
 /* ===== 5. TRUSTED BY - infinite logo marquee ===== */
 .trusted-logos{
@@ -840,7 +757,7 @@
 }
 
 @media (prefers-reduced-motion: reduce){
-  #services .service-card, #solutions .hf-main, #solutions .hf-drawer{ transition: none !important; }
+  #services .service-card{ transition: none !important; }
   .logo-track{ animation: none !important; }
 }
 </style>
@@ -1242,14 +1159,11 @@
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Integration capabilities</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>User-friendly interfaces</li>
           </ul>
-          <div class="card-more">
-            <p>We design and build custom software around the way your business actually works — from internal tools to full platforms — built to scale as you grow.</p>
-          </div>
           <div class="service-more-btn">
-            <button type="button" class="btn btn-outline btn-sm">
+            <a href="#" class="btn btn-outline btn-sm">
               <span class="label">See More</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-            </button>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
           </div>
         </div>
 
@@ -1265,14 +1179,11 @@
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>User-centric design</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Agile development</li>
           </ul>
-          <div class="card-more">
-            <p>We build fast, responsive websites and native-feeling mobile apps with clean UX, from first wireframe through to launch and post-launch support.</p>
-          </div>
           <div class="service-more-btn">
-            <button type="button" class="btn btn-outline btn-sm">
+            <a href="#" class="btn btn-outline btn-sm">
               <span class="label">See More</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-            </button>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
           </div>
         </div>
 
@@ -1288,14 +1199,11 @@
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Signage &amp; typography</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Print materials</li>
           </ul>
-          <div class="card-more">
-            <p>From logos to full brand systems, we create visual identities and marketing assets that make your business instantly recognisable.</p>
-          </div>
           <div class="service-more-btn">
-            <button type="button" class="btn btn-outline btn-sm">
+            <a href="#" class="btn btn-outline btn-sm">
               <span class="label">See More</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-            </button>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
           </div>
         </div>
 
@@ -1311,14 +1219,11 @@
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Screen replacement</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Refurbished device sales</li>
           </ul>
-          <div class="card-more">
-            <p>Same-day diagnostics and repairs for laptops and desktops, plus refurbished machines and upgrade options for buyers on a budget.</p>
-          </div>
           <div class="service-more-btn">
-            <button type="button" class="btn btn-outline btn-sm">
+            <a href="#" class="btn btn-outline btn-sm">
               <span class="label">See More</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-            </button>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
           </div>
         </div>
 
@@ -1334,14 +1239,11 @@
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Data syncing &amp; pipelines</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Custom AI-powered tools</li>
           </ul>
-          <div class="card-more">
-            <p>We connect your existing tools and automate the repetitive work — from AI assistants to custom scripts that keep data in sync across every platform you use.</p>
-          </div>
           <div class="service-more-btn">
-            <button type="button" class="btn btn-outline btn-sm">
+            <a href="#" class="btn btn-outline btn-sm">
               <span class="label">See More</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-            </button>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
           </div>
         </div>
 
@@ -1357,14 +1259,11 @@
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Remote &amp; on-site support</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Preventative maintenance plans</li>
           </ul>
-          <div class="card-more">
-            <p>Keep your systems running smoothly with proactive monitoring, fast troubleshooting and dependable on-site or remote support whenever something goes wrong.</p>
-          </div>
           <div class="service-more-btn">
-            <button type="button" class="btn btn-outline btn-sm">
+            <a href="#" class="btn btn-outline btn-sm">
               <span class="label">See More</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-            </button>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
           </div>
         </div>
       </div>
@@ -1381,20 +1280,47 @@
       </div>
 
       <div class="grid-4">
-        <div class="solution-card" data-img="https://i.postimg.cc/G2gmDzf7/mokopane.png">
-          <div class="num">MFM</div>
-          <h3>Mokopane FM</h3>
-          <p>Live radio station platform with Firebase-powered show schedules, news, photo carousel and sponsored ad rotation.</p>
+        <div class="solution-card">
+          <div class="sc-image">
+            <img src="https://i.postimg.cc/G2gmDzf7/mokopane.png" alt="Mokopane FM" loading="lazy" />
+          </div>
+          <div class="sc-panel">
+            <div class="sc-info">
+              <h3>Mokopane FM</h3>
+              <p class="sc-meta">Live Radio Platform</p>
+            </div>
+            <a href="#" class="sc-action" aria-label="View Mokopane FM project">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
         </div>
-        <div class="solution-card" data-img="https://i.postimg.cc/PJBf3JT8/rgt.png">
-          <div class="num">RGT</div>
-          <h3>Rare Grade Tech</h3>
-          <p>Our own company platform — a client portal, service showcase and real-time project tracking, built to show what we can build for you.</p>
+        <div class="solution-card">
+          <div class="sc-image">
+            <img src="https://i.postimg.cc/PJBf3JT8/rgt.png" alt="Rare Grade Tech" loading="lazy" />
+          </div>
+          <div class="sc-panel">
+            <div class="sc-info">
+              <h3>Rare Grade Tech</h3>
+              <p class="sc-meta">Company Platform</p>
+            </div>
+            <a href="#" class="sc-action" aria-label="View Rare Grade Tech project">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
         </div>
-        <div class="solution-card" data-img="https://i.postimg.cc/9F7Q4dYR/afr.png">
-          <div class="num">AFR</div>
-          <h3>Afribaraka</h3>
-          <p>Custom-built platform for Afribaraka, designed with a clean, modern look and a focus on usability and brand presence.</p>
+        <div class="solution-card">
+          <div class="sc-image">
+            <img src="https://i.postimg.cc/9F7Q4dYR/afr.png" alt="Afribaraka" loading="lazy" />
+          </div>
+          <div class="sc-panel">
+            <div class="sc-info">
+              <h3>Afribaraka</h3>
+              <p class="sc-meta">Web Platform</p>
+            </div>
+            <a href="#" class="sc-action" aria-label="View Afribaraka project">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -1793,75 +1719,14 @@
 
 <script id="rgt-stack-disperse">
 (function(){
-  // SOLUTIONS - HoverFeatureCards animation
-  const solCards = document.querySelectorAll('#solutions .solution-card');
-  solCards.forEach(card=>{
-    if(card.querySelector('.hf-main')) return;
-    const numEl = card.querySelector('.num');
-    const h3El = card.querySelector('h3');
-    const pEl = card.querySelector('p');
-    const num = numEl ? numEl.textContent.trim() : '';
-    const title = h3El ? h3El.textContent.trim() : 'Solution';
-    const desc = pEl ? pEl.textContent.trim() : '';
-    const img = card.getAttribute('data-img');
-
-    // Create new structure
-    card.innerHTML = '';
-    const main = document.createElement('div');
-    main.className = 'hf-main';
-    main.innerHTML = `
-      <div class="hf-top">
-        <div class="hf-num">${num}</div>
-        <div class="hf-title">${title}</div>
-        <div class="hf-visual${img ? ' has-img' : ''}">${img ? `<img src="${img}" alt="${title} preview" loading="lazy" />` : num}</div>
-        <div class="hf-fade"></div>
-      </div>
-    `;
-    const drawer = document.createElement('div');
-    drawer.className = 'hf-drawer';
-    drawer.innerHTML = `<div class="hf-drawer-inner"><p>${desc}</p></div>`;
-
-    card.appendChild(main);
-    card.appendChild(drawer);
-    card.setAttribute('tabindex','0');
-
-    // Mobile tap to open
-    card.addEventListener('click', (e)=>{
-      // toggle on mobile / touch
-      if(window.innerWidth <= 900 || !window.matchMedia('(hover: hover)').matches){
-        const isOpen = card.classList.contains('is-open');
-        document.querySelectorAll('#solutions .solution-card.is-open').forEach(c=>{ if(c!==card) c.classList.remove('is-open'); });
-        if(isOpen) card.classList.remove('is-open');
-        else card.classList.add('is-open');
-      }
-    });
-    card.addEventListener('keydown', (e)=>{
-      if(e.key==='Enter' || e.key===' '){
-        e.preventDefault();
-        card.classList.toggle('is-open');
-      }
-      if(e.key==='Escape'){
-        card.classList.remove('is-open');
-      }
+  // Placeholder links (Services "See More", Featured Project action buttons) —
+  // these will eventually route to dedicated pages. Until those pages exist,
+  // clicks are simply swallowed so nothing breaks.
+  document.querySelectorAll('#services .service-more-btn a, #solutions .sc-action').forEach(link=>{
+    link.addEventListener('click', (e)=>{
+      e.preventDefault();
     });
   });
-
-  document.addEventListener('click', (e)=>{
-    if(!e.target.closest('#solutions .solution-card')){
-      document.querySelectorAll('#solutions .solution-card.is-open').forEach(c=> c.classList.remove('is-open'));
-    }
-  });
-
-  // SERVICES - See More toggle
-  document.querySelectorAll('#services .service-more-btn').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const card = btn.closest('.service-card');
-      const label = btn.querySelector('.label');
-      const isExpanded = card.classList.toggle('is-expanded');
-      if(label) label.textContent = isExpanded ? 'See Less' : 'See More';
-    });
-  });
-
 })();
 </script>
 </body>
