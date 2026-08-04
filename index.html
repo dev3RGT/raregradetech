@@ -620,11 +620,11 @@
   #services .grid-4{ grid-template-columns: minmax(0, 340px) !important; }
 }
 
-/* ===== 4. SOLUTIONS - photo cards, no hover animation ===== */
+/* ===== 4. SOLUTIONS - modern spotlight cards ===== */
 #solutions .grid-4{
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
-  gap: 22px !important;
+  gap: 24px !important;
   height: auto !important;
   padding: 0 !important;
   overflow: visible !important;
@@ -637,71 +637,112 @@
   display: flex !important;
   flex-direction: column !important;
   width: 100% !important;
-  background: #111319 !important;
-  border: 1px solid rgba(255,255,255,.07) !important;
-  padding: 10px !important;
-  border-radius: 26px !important;
-  overflow: hidden !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+  transition: transform .4s cubic-bezier(.16,.84,.44,1);
+}
+#solutions .solution-card:hover{
+  transform: translateY(-10px);
 }
 
-/* Image */
+/* Floating image — no card frame */
 #solutions .sc-image{
+  position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: 19px;
-  overflow: hidden;
-  background: #fff;
-}
-#solutions .sc-image img{
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 24px;
-  display: block;
-}
-
-/* Info panel */
-#solutions .sc-panel{
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  background: #1B1D28;
-  border-radius: 18px;
-  padding: 16px 16px 16px 18px;
-}
-#solutions .sc-info h3{
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:700;
-  font-size:16.5px;
-  line-height:1.2;
-  letter-spacing:-0.01em;
-  color: #fff;
-  margin:0 0 5px;
-}
-#solutions .sc-meta{
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:700;
-  font-size:11px;
-  letter-spacing:.06em;
-  text-transform: uppercase;
-  color: var(--blue-accent);
-  margin:0;
-}
-#solutions .sc-action{
-  flex: none;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: linear-gradient(145deg, var(--blue-700), var(--blue-900));
+  aspect-ratio: 1 / 1;
+  border-radius: 0;
+  overflow: visible;
+  background: none;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  box-shadow: 0 8px 18px rgba(17,24,245,.35);
 }
-#solutions .sc-action svg{ width:17px; height:17px; }
+#solutions .sc-glow{
+  position: absolute;
+  width: 62%;
+  height: 14%;
+  bottom: 4%;
+  border-radius: 50%;
+  filter: blur(22px);
+  pointer-events: none;
+  opacity: .5;
+  transition: transform .5s cubic-bezier(.16,.84,.44,1), opacity .5s ease;
+}
+#solutions .solution-card:hover .sc-glow{
+  transform: scale(1.15);
+  opacity: .65;
+}
+#solutions .solution-card:nth-child(1) .sc-glow{ background: radial-gradient(ellipse, rgba(124,247,196,.5), transparent 72%); }
+#solutions .solution-card:nth-child(2) .sc-glow{ background: radial-gradient(ellipse, rgba(88,102,255,.5), transparent 72%); }
+#solutions .solution-card:nth-child(3) .sc-glow{ background: radial-gradient(ellipse, rgba(255,196,84,.5), transparent 72%); }
+#solutions .sc-image img{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 24px 34px rgba(15,20,90,.22));
+  transition: transform .45s cubic-bezier(.16,.84,.44,1), filter .45s ease;
+}
+#solutions .solution-card:hover .sc-image img{
+  transform: scale(1.04) translateY(-2px);
+  filter: drop-shadow(0 32px 42px rgba(15,20,90,.28));
+}
+
+/* Info row */
+#solutions .sc-panel{
+  margin-top: 22px;
+  padding: 2px 4px 4px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+}
+#solutions .sc-tag{
+  display: block;
+  font-family:'Space Grotesk',sans-serif;
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--blue-700);
+  margin: 0 0 7px;
+}
+#solutions .sc-info h3{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink-900);
+  margin: 0;
+}
+#solutions .sc-action{
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface-alt);
+  border: 1px solid var(--card-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-900);
+  transition: background .25s ease, transform .25s ease, border-color .25s ease, color .25s ease;
+}
+#solutions .solution-card:hover .sc-action{
+  background: linear-gradient(145deg, var(--blue-accent), var(--blue-700));
+  border-color: transparent;
+  color: #fff;
+  transform: translateX(3px);
+}
+#solutions .sc-action svg{ width: 17px; height: 17px; }
 
 /* ===== 5. TRUSTED BY - infinite logo marquee ===== */
 .trusted-logos{
@@ -757,7 +798,7 @@
 }
 
 @media (prefers-reduced-motion: reduce){
-  #services .service-card{ transition: none !important; }
+  #services .service-card, #solutions .solution-card, #solutions .sc-glow, #solutions .sc-image img{ transition: none !important; }
   .logo-track{ animation: none !important; }
 }
 </style>
@@ -1280,42 +1321,45 @@
       </div>
 
       <div class="grid-4">
-        <div class="solution-card">
+        <div class="solution-card reveal" style="--d:0s">
           <div class="sc-image">
+            <div class="sc-glow" aria-hidden="true"></div>
             <img src="https://i.postimg.cc/G2gmDzf7/mokopane.png" alt="Mokopane FM" loading="lazy" />
           </div>
           <div class="sc-panel">
             <div class="sc-info">
+              <span class="sc-tag">Live Radio Platform</span>
               <h3>Mokopane FM</h3>
-              <p class="sc-meta">Live Radio Platform</p>
             </div>
             <a href="#" class="sc-action" aria-label="View Mokopane FM project">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
           </div>
         </div>
-        <div class="solution-card">
+        <div class="solution-card reveal" style="--d:.1s">
           <div class="sc-image">
+            <div class="sc-glow" aria-hidden="true"></div>
             <img src="https://i.postimg.cc/PJBf3JT8/rgt.png" alt="Rare Grade Tech" loading="lazy" />
           </div>
           <div class="sc-panel">
             <div class="sc-info">
+              <span class="sc-tag">Company Platform</span>
               <h3>Rare Grade Tech</h3>
-              <p class="sc-meta">Company Platform</p>
             </div>
             <a href="#" class="sc-action" aria-label="View Rare Grade Tech project">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
           </div>
         </div>
-        <div class="solution-card">
+        <div class="solution-card reveal" style="--d:.2s">
           <div class="sc-image">
+            <div class="sc-glow" aria-hidden="true"></div>
             <img src="https://i.postimg.cc/9F7Q4dYR/afr.png" alt="Afribaraka" loading="lazy" />
           </div>
           <div class="sc-panel">
             <div class="sc-info">
+              <span class="sc-tag">Web Platform</span>
               <h3>Afribaraka</h3>
-              <p class="sc-meta">Web Platform</p>
             </div>
             <a href="#" class="sc-action" aria-label="View Afribaraka project">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
