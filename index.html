@@ -887,28 +887,99 @@
   .why-card p{ font-size:13.8px;line-height:1.6;color:var(--ink-600);margin:0; }
 
   /* =====================================================
-     Process — how we work
+     Process — how we work (floating-number workflow)
      ===================================================== */
-  .process-row{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:calc(var(--gap)*3);
+  .process-flow{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:0;
   }
-  .process-step{
+  .process-node{
     position:relative;
-    background:var(--surface-alt);
-    border:1px solid var(--card-line);
-    border-radius:var(--radius-m);
-    padding:calc(var(--gap)*4);
-    transition:transform .2s ease, box-shadow .2s ease;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    flex:1 1 0;
+    min-width:0;
+    padding:0 calc(var(--gap)*1.5);
+    cursor:default;
   }
-  .process-step:hover{ transform:translateY(-4px); box-shadow:0 20px 40px rgba(15,20,90,.08); }
-  .process-step .step-num{
-    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;
-    color:var(--blue-700);letter-spacing:.06em;margin-bottom:calc(var(--gap)*2);
+  .process-node .process-num{
+    height:76px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Anton',sans-serif;font-weight:400;
+    font-size:clamp(2.2rem,4.2vw,3.4rem);
+    line-height:1;
+    color:var(--blue-700);
+    transition:color .25s ease, transform .25s ease;
   }
-  .process-step h3{ font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;margin:0 0 8px;color:var(--ink-900); }
-  .process-step p{ font-size:13.8px;line-height:1.6;color:var(--ink-600);margin:0; }
+  .process-node h3{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;
+    font-size:15.5px;margin:calc(var(--gap)*1) 0 0;
+    color:var(--ink-900);
+    transition:color .2s ease;
+  }
+  .process-node:hover .process-num,
+  .process-node:focus-visible .process-num{
+    color:var(--blue-900);
+    transform:translateY(-3px);
+  }
+  .process-node .process-tip{
+    position:absolute;
+    top:calc(100% + 14px);
+    left:50%;
+    transform:translateX(-50%) translateY(4px);
+    width:232px;
+    max-width:70vw;
+    background:var(--ink-900);
+    color:rgba(255,255,255,.92);
+    font-size:12.6px;
+    font-weight:500;
+    line-height:1.6;
+    padding:13px 16px;
+    border-radius:12px;
+    box-shadow:0 24px 48px rgba(9,11,37,.28);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:opacity .18s ease, transform .18s ease, visibility .18s;
+    z-index:6;
+  }
+  .process-node .process-tip::before{
+    content:"";
+    position:absolute;
+    bottom:100%;
+    left:50%;
+    transform:translateX(-50%);
+    border:6px solid transparent;
+    border-bottom-color:var(--ink-900);
+  }
+  .process-node:hover .process-tip,
+  .process-node:focus-visible .process-tip,
+  .process-node:focus-within .process-tip{
+    opacity:1;
+    visibility:visible;
+    transform:translateX(-50%) translateY(0);
+  }
+  .process-arrow{
+    flex:0 0 auto;
+    height:76px;
+    display:flex;align-items:center;justify-content:center;
+    width:clamp(30px,4.5vw,64px);
+    color:var(--blue-accent);
+    opacity:.55;
+  }
+  .process-arrow svg{ width:100%;height:auto;display:block; }
+
+  @media (max-width:640px){
+    .process-flow{ flex-direction:column;align-items:stretch; }
+    .process-node{ padding:calc(var(--gap)*2) 0; }
+    .process-node .process-tip{ width:min(280px,80vw); }
+    .process-arrow{ width:100%;height:34px; }
+    .process-arrow svg{ transform:rotate(90deg); }
+  }
 
   /* =====================================================
      Testimonials
@@ -975,7 +1046,6 @@
 
   @media (max-width:1100px){
     .why-grid{ grid-template-columns:repeat(2,1fr); }
-    .process-row{ grid-template-columns:repeat(2,1fr); }
     .testimonial-row{ grid-template-columns:repeat(2,1fr); }
   }
   @media (max-width:980px){
@@ -985,7 +1055,6 @@
   }
   @media (max-width:640px){
     .why-grid{ grid-template-columns:1fr; }
-    .process-row{ grid-template-columns:1fr; }
     .testimonial-row{ grid-template-columns:1fr; }
   }
 </style>
@@ -1440,26 +1509,35 @@
         <h2 class="section-title">Our Process</h2>
         <p class="section-sub">A clear, collaborative process from first conversation to launch — and beyond.</p>
       </div>
-      <div class="process-row">
-        <div class="process-step reveal">
-          <div class="step-num">01</div>
+      <div class="process-flow reveal">
+        <div class="process-node" tabindex="0">
+          <div class="process-num">01</div>
           <h3>Discovery</h3>
-          <p>We start by understanding your business, your goals and what success looks like for your project.</p>
+          <div class="process-tip">We start by understanding your business, your goals and what success looks like for your project.</div>
         </div>
-        <div class="process-step reveal">
-          <div class="step-num">02</div>
+        <div class="process-arrow" aria-hidden="true">
+          <svg viewBox="0 0 60 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 8H54M54 8L46 2M54 8L46 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="process-node" tabindex="0">
+          <div class="process-num">02</div>
           <h3>Design</h3>
-          <p>Wireframes and UI concepts are shaped around your brand, then refined with your feedback.</p>
+          <div class="process-tip">Wireframes and UI concepts are shaped around your brand, then refined with your feedback.</div>
         </div>
-        <div class="process-step reveal">
-          <div class="step-num">03</div>
+        <div class="process-arrow" aria-hidden="true">
+          <svg viewBox="0 0 60 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 8H54M54 8L46 2M54 8L46 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="process-node" tabindex="0">
+          <div class="process-num">03</div>
           <h3>Development</h3>
-          <p>Your website or app is built, tested and connected to the systems it needs to run on.</p>
+          <div class="process-tip">Your website or app is built, tested and connected to the systems it needs to run on.</div>
         </div>
-        <div class="process-step reveal">
-          <div class="step-num">04</div>
+        <div class="process-arrow" aria-hidden="true">
+          <svg viewBox="0 0 60 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 8H54M54 8L46 2M54 8L46 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="process-node" tabindex="0">
+          <div class="process-num">04</div>
           <h3>Launch &amp; Support</h3>
-          <p>We deploy, hand over training where needed, and stay on for ongoing support and updates.</p>
+          <div class="process-tip">We deploy, hand over training where needed, and stay on for ongoing support and updates.</div>
         </div>
       </div>
     </div>
