@@ -620,129 +620,108 @@
   #services .grid-4{ grid-template-columns: minmax(0, 340px) !important; }
 }
 
-/* ===== 4. SOLUTIONS - modern spotlight cards ===== */
-#solutions .grid-4{
-  display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
-  gap: 24px !important;
-  height: auto !important;
-  padding: 0 !important;
-  overflow: visible !important;
-}
-@media (max-width: 780px){
-  #solutions .grid-4{ grid-template-columns: 1fr !important; max-width:420px; margin-inline:auto; }
-}
-#solutions .solution-card{
-  position: relative !important;
-  display: flex !important;
-  flex-direction: column !important;
-  width: 100% !important;
-  background: transparent !important;
-  border: none !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-  overflow: visible !important;
-  box-shadow: none !important;
-  transition: transform .4s cubic-bezier(.16,.84,.44,1);
-}
-#solutions .solution-card:hover{
-  transform: translateY(-10px);
-}
-
-/* Floating image — no card frame */
-#solutions .sc-image{
+/* ===== 4. SOLUTIONS - coverflow carousel ===== */
+#solutions .cf-carousel{
   position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 0;
-  overflow: visible;
-  background: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 460px;
+  margin-top: calc(var(--gap)*7);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%);
 }
-#solutions .sc-glow{
+#solutions .cf-track{ position:absolute; inset:0; }
+#solutions .cf-slide{
   position: absolute;
-  width: 62%;
-  height: 14%;
-  bottom: 4%;
-  border-radius: 50%;
-  filter: blur(22px);
-  pointer-events: none;
-  opacity: .5;
-  transition: transform .5s cubic-bezier(.16,.84,.44,1), opacity .5s ease;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 380px;
+  border-radius: 26px;
+  overflow: hidden;
+  background: var(--surface-alt);
+  box-shadow: 0 30px 60px rgba(9,11,37,.22), 0 8px 20px rgba(9,11,37,.12);
+  cursor: pointer;
+  transition: transform .55s cubic-bezier(.16,.84,.44,1), opacity .55s ease, box-shadow .55s ease;
+  will-change: transform;
 }
-#solutions .solution-card:hover .sc-glow{
-  transform: scale(1.15);
-  opacity: .65;
-}
-#solutions .solution-card:nth-child(1) .sc-glow{ background: radial-gradient(ellipse, rgba(124,247,196,.5), transparent 72%); }
-#solutions .solution-card:nth-child(2) .sc-glow{ background: radial-gradient(ellipse, rgba(88,102,255,.5), transparent 72%); }
-#solutions .solution-card:nth-child(3) .sc-glow{ background: radial-gradient(ellipse, rgba(255,196,84,.5), transparent 72%); }
-#solutions .sc-image img{
-  position: relative;
-  z-index: 1;
+#solutions .cf-slide img{
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
-  filter: drop-shadow(0 24px 34px rgba(15,20,90,.22));
-  transition: transform .45s cubic-bezier(.16,.84,.44,1), filter .45s ease;
+  pointer-events: none;
 }
-#solutions .solution-card:hover .sc-image img{
-  transform: scale(1.04) translateY(-2px);
-  filter: drop-shadow(0 32px 42px rgba(15,20,90,.28));
+#solutions .cf-caption{
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 20px 22px 22px;
+  background: linear-gradient(to top, rgba(5,6,15,.82), rgba(5,6,15,.15) 65%, transparent 100%);
+  color: #fff;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .4s ease, transform .4s ease;
+  pointer-events: none;
 }
-
-/* Info row */
-#solutions .sc-panel{
-  margin-top: 22px;
-  padding: 2px 4px 4px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 14px;
-}
-#solutions .sc-tag{
+#solutions .cf-slide.is-active .cf-caption{ opacity: 1; transform: translateY(0); }
+#solutions .cf-tag{
   display: block;
   font-family:'Space Grotesk',sans-serif;
   font-weight: 700;
   font-size: 10.5px;
   letter-spacing: .09em;
   text-transform: uppercase;
-  color: var(--blue-700);
-  margin: 0 0 7px;
+  color: rgba(255,255,255,.7);
+  margin: 0 0 6px;
 }
-#solutions .sc-info h3{
+#solutions .cf-caption h3{
   font-family:'Space Grotesk',sans-serif;
   font-weight: 700;
   font-size: 19px;
   line-height: 1.15;
   letter-spacing: -0.01em;
-  color: var(--ink-900);
+  color: #fff;
   margin: 0;
 }
-#solutions .sc-action{
-  flex: none;
-  width: 44px;
-  height: 44px;
+#solutions .cf-arrow{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: var(--surface-alt);
   border: 1px solid var(--card-line);
+  box-shadow: 0 16px 32px rgba(9,11,37,.16);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--ink-900);
-  transition: background .25s ease, transform .25s ease, border-color .25s ease, color .25s ease;
+  cursor: pointer;
+  z-index: 20;
+  transition: background .25s ease, color .25s ease, box-shadow .25s ease, transform .25s ease;
 }
-#solutions .solution-card:hover .sc-action{
+#solutions .cf-arrow:hover{
   background: linear-gradient(145deg, var(--blue-accent), var(--blue-700));
-  border-color: transparent;
   color: #fff;
-  transform: translateX(3px);
+  box-shadow: 0 20px 38px rgba(17,24,245,.3);
 }
-#solutions .sc-action svg{ width: 17px; height: 17px; }
+#solutions .cf-arrow:active{ transform: translateY(-50%) scale(.93); }
+#solutions .cf-arrow svg{ width: 19px; height: 19px; }
+#solutions .cf-arrow-left{ left: 3%; }
+#solutions .cf-arrow-right{ right: 3%; }
+#solutions .solutions-more{
+  display: flex;
+  justify-content: center;
+  margin-top: calc(var(--gap)*6);
+}
+#solutions .solutions-more .btn svg{ width:16px; height:16px; margin-left:8px; }
+@media (max-width: 780px){
+  #solutions .cf-carousel{ height: 380px; }
+  #solutions .cf-slide{ width: 240px; height: 320px; }
+  #solutions .cf-arrow{ width: 44px; height: 44px; }
+  #solutions .cf-arrow-left{ left: 1%; }
+  #solutions .cf-arrow-right{ right: 1%; }
+}
 
 /* ===== 5. TRUSTED BY - infinite logo marquee ===== */
 .trusted-logos{
@@ -798,7 +777,7 @@
 }
 
 @media (prefers-reduced-motion: reduce){
-  #services .service-card, #solutions .solution-card, #solutions .sc-glow, #solutions .sc-image img{ transition: none !important; }
+  #services .service-card, #solutions .cf-slide{ transition: none !important; }
   .logo-track{ animation: none !important; }
 }
 </style>
@@ -1320,52 +1299,43 @@
         <p class="section-sub">From radio stations to e-commerce apps, here's a look at real platforms we've designed, built and continue to support.</p>
       </div>
 
-      <div class="grid-4">
-        <div class="solution-card reveal" style="--d:0s">
-          <div class="sc-image">
-            <div class="sc-glow" aria-hidden="true"></div>
+      <div class="cf-carousel" id="solCarousel">
+        <button type="button" class="cf-arrow cf-arrow-left" id="cfPrev" aria-label="Previous project">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <div class="cf-track" id="cfTrack">
+          <div class="cf-slide" data-index="0">
             <img src="https://i.postimg.cc/G2gmDzf7/mokopane.png" alt="Mokopane FM" loading="lazy" />
-          </div>
-          <div class="sc-panel">
-            <div class="sc-info">
-              <span class="sc-tag">Live Radio Platform</span>
+            <div class="cf-caption">
+              <span class="cf-tag">Live Radio Platform</span>
               <h3>Mokopane FM</h3>
             </div>
-            <a href="#" class="sc-action" aria-label="View Mokopane FM project">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
           </div>
-        </div>
-        <div class="solution-card reveal" style="--d:.1s">
-          <div class="sc-image">
-            <div class="sc-glow" aria-hidden="true"></div>
+          <div class="cf-slide" data-index="1">
             <img src="https://i.postimg.cc/PJBf3JT8/rgt.png" alt="Rare Grade Tech" loading="lazy" />
-          </div>
-          <div class="sc-panel">
-            <div class="sc-info">
-              <span class="sc-tag">Company Platform</span>
+            <div class="cf-caption">
+              <span class="cf-tag">Company Platform</span>
               <h3>Rare Grade Tech</h3>
             </div>
-            <a href="#" class="sc-action" aria-label="View Rare Grade Tech project">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
           </div>
-        </div>
-        <div class="solution-card reveal" style="--d:.2s">
-          <div class="sc-image">
-            <div class="sc-glow" aria-hidden="true"></div>
+          <div class="cf-slide" data-index="2">
             <img src="https://i.postimg.cc/9F7Q4dYR/afr.png" alt="Afribaraka" loading="lazy" />
-          </div>
-          <div class="sc-panel">
-            <div class="sc-info">
-              <span class="sc-tag">Web Platform</span>
+            <div class="cf-caption">
+              <span class="cf-tag">Web Platform</span>
               <h3>Afribaraka</h3>
             </div>
-            <a href="#" class="sc-action" aria-label="View Afribaraka project">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
           </div>
         </div>
+        <button type="button" class="cf-arrow cf-arrow-right" id="cfNext" aria-label="Next project">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+
+      <div class="solutions-more">
+        <a href="#" class="btn btn-block-ink">
+          See More Projects
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
       </div>
     </div>
   </section>
@@ -1763,14 +1733,62 @@
 
 <script id="rgt-stack-disperse">
 (function(){
-  // Placeholder links (Services "See More", Featured Project action buttons) —
+  // Placeholder links (Services "See More", Featured Projects "See More") —
   // these will eventually route to dedicated pages. Until those pages exist,
   // clicks are simply swallowed so nothing breaks.
-  document.querySelectorAll('#services .service-more-btn a, #solutions .sc-action').forEach(link=>{
+  document.querySelectorAll('#services .service-more-btn a, #solutions .solutions-more a').forEach(link=>{
     link.addEventListener('click', (e)=>{
       e.preventDefault();
     });
   });
+})();
+</script>
+
+<script id="rgt-solutions-carousel">
+(function(){
+  const track = document.getElementById('cfTrack');
+  if (!track) return;
+  const slides = Array.from(track.querySelectorAll('.cf-slide'));
+  const prevBtn = document.getElementById('cfPrev');
+  const nextBtn = document.getElementById('cfNext');
+  const n = slides.length;
+  let active = 0;
+
+  function render(){
+    slides.forEach((slide, i) => {
+      let diff = i - active;
+      if (diff > n / 2) diff -= n;
+      if (diff < -n / 2) diff += n;
+      const ad = Math.abs(diff);
+
+      let tx = 0, scale = 1, rot = 0, opacity = 1, z = 10;
+      if (ad === 0) {
+        tx = 0; scale = 1; rot = 0; opacity = 1; z = 10;
+      } else if (ad === 1) {
+        tx = diff * 78; scale = .78; rot = diff * -16; opacity = .75; z = 8;
+      } else {
+        tx = diff * 130; scale = .55; rot = diff * -24; opacity = 0; z = 1;
+      }
+
+      slide.style.transform = `translate(-50%,-50%) translateX(${tx}%) scale(${scale}) rotateY(${rot}deg)`;
+      slide.style.opacity = opacity;
+      slide.style.zIndex = z;
+      slide.classList.toggle('is-active', ad === 0);
+    });
+  }
+
+  function goTo(i){
+    active = ((i % n) + n) % n;
+    render();
+  }
+
+  prevBtn && prevBtn.addEventListener('click', () => goTo(active - 1));
+  nextBtn && nextBtn.addEventListener('click', () => goTo(active + 1));
+  slides.forEach((slide, i) => {
+    slide.addEventListener('click', () => { if (i !== active) goTo(i); });
+  });
+
+  render();
 })();
 </script>
 </body>
