@@ -561,7 +561,7 @@
 /* ===== 3. SERVICES - static grid, no stack/disperse animation ===== */
 #services .grid-4 {
   display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
+  grid-template-columns: repeat(3, 1fr) !important;
   gap: calc(var(--gap)*3) !important;
   height: auto !important;
   padding: 0 !important;
@@ -571,6 +571,8 @@
   width: 100% !important;
   min-height: 430px !important;
   margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
   background: linear-gradient(165deg, #151DFF 0%, #1118F5 38%, #0D12A0 100%) !important;
   border: 1px solid rgba(255,255,255,0.18) !important;
   border-radius: 22px !important;
@@ -594,6 +596,33 @@
 }
 #services .service-card .icon-badge svg{ color:#fff !important; width:28px !important; height:28px !important; }
 
+/* See More expand/collapse */
+#services .service-card .card-more{
+  position: relative; z-index: 1;
+  max-height: 0; opacity: 0; overflow: hidden;
+  transition: max-height .45s cubic-bezier(.16,.84,.44,1), opacity .3s ease, margin-top .3s ease;
+}
+#services .service-card .card-more p{
+  font-size: 13.5px; line-height: 1.6; color: rgba(255,255,255,.82); margin: 0;
+}
+#services .service-card.is-expanded .card-more{
+  max-height: 220px; opacity: 1; margin-top: 14px;
+}
+#services .service-more-btn{
+  position: relative; z-index: 1;
+  margin-top: auto; padding-top: 22px;
+  width: 100%;
+}
+#services .service-more-btn .btn{
+  width: 100%;
+}
+#services .service-more-btn svg{
+  width: 14px; height: 14px; transition: transform .3s ease;
+}
+#services .service-card.is-expanded .service-more-btn svg{
+  transform: rotate(180deg);
+}
+
 @media (max-width: 1180px){
   #services .grid-4{ grid-template-columns: repeat(2, 1fr) !important; }
 }
@@ -604,17 +633,14 @@
 /* ===== 4. SOLUTIONS - HoverFeatureCard Animation (from your React code) ===== */
 #solutions .grid-4{
   display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
+  grid-template-columns: repeat(3, 1fr) !important;
   gap: 18px !important;
   perspective: none !important;
   height: auto !important;
   padding: 0 !important;
   overflow: visible !important;
 }
-@media (max-width: 900px){
-  #solutions .grid-4{ grid-template-columns: repeat(2, 1fr) !important; }
-}
-@media (max-width: 560px){
+@media (max-width: 780px){
   #solutions .grid-4{ grid-template-columns: 1fr !important; }
 }
 #solutions .solution-card{
@@ -693,6 +719,18 @@
   justify-content:center;
   color: var(--blue-700);
   font-size: 22px;
+}
+#solutions .hf-visual.has-img{
+  padding: 7px;
+  background: #fff;
+  border: 1px solid var(--card-line);
+}
+#solutions .hf-visual.has-img img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+  display: block;
 }
 #solutions .hf-fade{
   pointer-events:none;
@@ -1204,6 +1242,15 @@
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Integration capabilities</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>User-friendly interfaces</li>
           </ul>
+          <div class="card-more">
+            <p>We design and build custom software around the way your business actually works — from internal tools to full platforms — built to scale as you grow.</p>
+          </div>
+          <div class="service-more-btn">
+            <button type="button" class="btn btn-outline btn-sm">
+              <span class="label">See More</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
         </div>
 
         <div class="service-card">
@@ -1218,6 +1265,15 @@
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>User-centric design</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Agile development</li>
           </ul>
+          <div class="card-more">
+            <p>We build fast, responsive websites and native-feeling mobile apps with clean UX, from first wireframe through to launch and post-launch support.</p>
+          </div>
+          <div class="service-more-btn">
+            <button type="button" class="btn btn-outline btn-sm">
+              <span class="label">See More</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
         </div>
 
         <div class="service-card">
@@ -1232,6 +1288,15 @@
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Signage &amp; typography</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Print materials</li>
           </ul>
+          <div class="card-more">
+            <p>From logos to full brand systems, we create visual identities and marketing assets that make your business instantly recognisable.</p>
+          </div>
+          <div class="service-more-btn">
+            <button type="button" class="btn btn-outline btn-sm">
+              <span class="label">See More</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
         </div>
 
         <div class="service-card">
@@ -1246,6 +1311,61 @@
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Screen replacement</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Refurbished device sales</li>
           </ul>
+          <div class="card-more">
+            <p>Same-day diagnostics and repairs for laptops and desktops, plus refurbished machines and upgrade options for buyers on a budget.</p>
+          </div>
+          <div class="service-more-btn">
+            <button type="button" class="btn btn-outline btn-sm">
+              <span class="label">See More</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg>
+          </div>
+          <h3>AI Automation &amp; Integrations</h3>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Workflow automation</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>AI-powered chatbots</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Third-party API integrations</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Data syncing &amp; pipelines</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Custom AI-powered tools</li>
+          </ul>
+          <div class="card-more">
+            <p>We connect your existing tools and automate the repetitive work — from AI assistants to custom scripts that keep data in sync across every platform you use.</p>
+          </div>
+          <div class="service-more-btn">
+            <button type="button" class="btn btn-outline btn-sm">
+              <span class="label">See More</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13a8 8 0 0 1 16 0"/><path d="M4 13v4a2 2 0 0 0 2 2h1v-6H5a1 1 0 0 0-1 1z"/><path d="M20 13v4a2 2 0 0 1-2 2h-1v-6h1a1 1 0 0 1 1 1z"/><path d="M14 20a2 2 0 0 1-4 0"/></svg>
+          </div>
+          <h3>IT Support &amp; Maintenance</h3>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Network setup &amp; monitoring</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Data backup &amp; recovery</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Cybersecurity essentials</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Remote &amp; on-site support</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Preventative maintenance plans</li>
+          </ul>
+          <div class="card-more">
+            <p>Keep your systems running smoothly with proactive monitoring, fast troubleshooting and dependable on-site or remote support whenever something goes wrong.</p>
+          </div>
+          <div class="service-more-btn">
+            <button type="button" class="btn btn-outline btn-sm">
+              <span class="label">See More</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1261,25 +1381,20 @@
       </div>
 
       <div class="grid-4">
-        <div class="solution-card">
+        <div class="solution-card" data-img="https://i.postimg.cc/G2gmDzf7/mokopane.png">
           <div class="num">MFM</div>
           <h3>Mokopane FM</h3>
           <p>Live radio station platform with Firebase-powered show schedules, news, photo carousel and sponsored ad rotation.</p>
         </div>
-        <div class="solution-card">
-          <div class="num">PVL</div>
-          <h3>PV Lifestyle</h3>
-          <p>Multi-page restaurant site with a real-time admin dashboard controlling events, menu, conferences and experiences.</p>
+        <div class="solution-card" data-img="https://i.postimg.cc/PJBf3JT8/rgt.png">
+          <div class="num">RGT</div>
+          <h3>Rare Grade Tech</h3>
+          <p>Our own company platform — a client portal, service showcase and real-time project tracking, built to show what we can build for you.</p>
         </div>
-        <div class="solution-card">
-          <div class="num">KS</div>
-          <h3>KasiStay</h3>
-          <p>Firebase-backed PWA connecting students to verified accommodation listings, with NSFAS-accredited badges.</p>
-        </div>
-        <div class="solution-card">
-          <div class="num">HOM</div>
-          <h3>Homie</h3>
-          <p>Glassmorphic clothing e-commerce app with cart, wishlist and a full simulated checkout flow.</p>
+        <div class="solution-card" data-img="https://i.postimg.cc/9F7Q4dYR/afr.png">
+          <div class="num">AFR</div>
+          <h3>Afribaraka</h3>
+          <p>Custom-built platform for Afribaraka, designed with a clean, modern look and a focus on usability and brand presence.</p>
         </div>
       </div>
     </div>
@@ -1688,6 +1803,7 @@
     const num = numEl ? numEl.textContent.trim() : '';
     const title = h3El ? h3El.textContent.trim() : 'Solution';
     const desc = pEl ? pEl.textContent.trim() : '';
+    const img = card.getAttribute('data-img');
 
     // Create new structure
     card.innerHTML = '';
@@ -1697,7 +1813,7 @@
       <div class="hf-top">
         <div class="hf-num">${num}</div>
         <div class="hf-title">${title}</div>
-        <div class="hf-visual">${num}</div>
+        <div class="hf-visual${img ? ' has-img' : ''}">${img ? `<img src="${img}" alt="${title} preview" loading="lazy" />` : num}</div>
         <div class="hf-fade"></div>
       </div>
     `;
@@ -1734,6 +1850,16 @@
     if(!e.target.closest('#solutions .solution-card')){
       document.querySelectorAll('#solutions .solution-card.is-open').forEach(c=> c.classList.remove('is-open'));
     }
+  });
+
+  // SERVICES - See More toggle
+  document.querySelectorAll('#services .service-more-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const card = btn.closest('.service-card');
+      const label = btn.querySelector('.label');
+      const isExpanded = card.classList.toggle('is-expanded');
+      if(label) label.textContent = isExpanded ? 'See Less' : 'See More';
+    });
   });
 
 })();
