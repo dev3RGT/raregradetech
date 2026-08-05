@@ -1422,6 +1422,113 @@ img{ max-width:100%; height:auto; }
 }
 </style>
 
+
+<style id="rgt-user-fixes">
+/* === USER REQUESTED FIXES === */
+
+/* 1. All section headings same font and size - unify */
+.section-title,
+.trusted-logos-title,
+#portal .portal-copy h2,
+.portal-flex .portal-copy h2 {
+  font-family:'Montserrat', sans-serif !important;
+  font-weight:800 !important;
+  font-style:italic !important;
+  font-size: clamp(1.9rem, 2.6vw, 2.75rem) !important;
+  line-height:1.08 !important;
+  letter-spacing:-.01em !important;
+}
+@media (max-width:768px){
+  .section-title,
+  .trusted-logos-title,
+  #portal .portal-copy h2,
+  .portal-flex .portal-copy h2 {
+    font-size:clamp(26px,7vw,32px) !important;
+  }
+}
+
+/* 2. Remove separating line on trusted by section */
+.trusted-logos,
+#trusted-logos {
+  border-top:none !important;
+  border-bottom:none !important;
+  border: none !important;
+}
+
+/* 3. Trusted by heading already sized above, ensure same as others */
+.trusted-logos-title{
+  text-align:center !important;
+  margin:0 auto !important;
+}
+
+/* 4. Increase size of image on Interfaces Built To Perform by 30% */
+#showcase .mockup-frame{
+  max-width:1170px !important; /* 900px * 1.3 */
+  width:100% !important;
+}
+#showcase .mockup-frame img{
+  width:100% !important;
+  transform:scale(1.03); /* tiny extra to ensure 30% visual due to container constraints, main increase via max-width */
+  transform-origin:center center;
+}
+@media (min-width:981px){
+  #showcase .mockup-frame img{
+    transform:none !important;
+    width:100% !important;
+  }
+}
+
+/* 5. Trusted by infinite scroll - make it behave like testimonials (hover slow stop) */
+#trusted-logos .logo-marquee,
+.trusted-logos .logo-marquee{
+  position:relative !important;
+  overflow:hidden !important;
+  width:100% !important;
+  cursor:grab !important;
+  padding: 24px 0 18px !important;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%) !important;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%) !important;
+}
+#trusted-logos .logo-marquee:active,
+.trusted-logos .logo-marquee:active{
+  cursor:grabbing !important;
+}
+#trusted-logos .logo-track,
+.trusted-logos .logo-track{
+  display:flex !important;
+  align-items:center !important;
+  flex-shrink:0 !important;
+  gap:72px !important;
+  padding-inline:36px !important;
+  will-change:transform !important;
+  width:max-content !important;
+  animation:none !important;
+}
+
+/* 6. Star positioned in middle of 40+ Reviews */
+.hero .rating-card > div:last-child,
+.rating-card > div:last-child{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+}
+.rating-star-wrap{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  margin:0 auto !important;
+}
+.rating-label{
+  text-align:center !important;
+  width:100% !important;
+  display:block !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+</style>
+
 </head>
 
 
@@ -2108,7 +2215,7 @@ img{ max-width:100%; height:auto; }
 
     <div class="wrap footer-bottom">
       <span>© <span id="year"></span> Rare Grade Tech. All Rights Reserved.</span>
-      <span>Designed &amp; built for <a href="#home">raregradetech.com</a></span>
+      <span>© Copyright 2025. All Rights Reserved. Rare Grade Tech.</span>
     </div>
   </footer>
 
@@ -2362,7 +2469,149 @@ img{ max-width:100%; height:auto; }
 })();
 </script>
 
-</body>
+<script id="rgt-trusted-marquee">
+(function(){
+  const marquee = document.querySelector('#trusted-logos .logo-marquee, .trusted-logos .logo-marquee');
+  if(!marquee) return;
+  // Consolidate to single track for JS control
+  let tracks = marquee.querySelectorAll('.logo-track');
+  if(!tracks.length) return;
+  const firstTrack = tracks[0];
+  // If there are 2 tracks (CSS infinite loop trick), remove second and keep first's items
+  if(tracks.length > 1){
+    // Keep only first track for JS logic, remove others
+    for(let i=1;i<tracks.length;i++){ tracks[i].remove(); }
+  }
+  let track = marquee.querySelector('.logo-track');
+  if(!track) return;
+  track.id = 'trustedTrack';
+  marquee.id = 'trustedMarquee';
+  
+  const originalItems = Array.from(track.children);
+  if(originalItems.length === 0) return;
+  
+  // Clone items 2 times for seamless loop (same as testimonials)
+  for(let i=0;i<2;i++){
+    originalItems.forEach(item=>{
+      const clone = item.cloneNode(true);
+      clone.setAttribute('aria-hidden','true');
+      track.appendChild(clone);
+    });
+  }
+  
+  let x = 0;
+  let baseSpeed = 0.8;
+  let currentSpeed = baseSpeed;
+  let targetSpeed = baseSpeed;
+  let isHovering = false;
+  let rafId = null;
+  let halfWidth = 0;
+  let isDragging = false;
+  let startX = 0;
+  let startTranslate = 0;
+  
+  function calcHalf(){
+    let w = 0;
+    for(let i=0;i<originalItems.length;i++){
+      const el = track.children[i];
+      if(!el) continue;
+      const rect = el.getBoundingClientRect();
+      w += rect.width + 72; // 72px gap
+    }
+    halfWidth = w;
+  }
+  
+  const easeOut = 0.02;
+  const easeIn = 0.05;
+  
+  function animate(){
+    const lerpFactor = (targetSpeed < currentSpeed) ? easeOut : easeIn;
+    currentSpeed += (targetSpeed - currentSpeed) * lerpFactor;
+    if(Math.abs(targetSpeed - currentSpeed) < 0.01){
+      if(targetSpeed === 0) currentSpeed = Math.max(0, currentSpeed - 0.01);
+    }
+    if(!isDragging){
+      x -= currentSpeed;
+      if(Math.abs(x) >= halfWidth){
+        x = 0;
+      }
+      track.style.transform = 'translate3d(' + x + 'px,0,0)';
+    }
+    rafId = requestAnimationFrame(animate);
+  }
+  
+  marquee.addEventListener('mouseenter', ()=>{
+    isHovering = true;
+    targetSpeed = 0;
+  });
+  marquee.addEventListener('mouseleave', ()=>{
+    isHovering = false;
+    if(!isDragging) targetSpeed = baseSpeed;
+  });
+  marquee.addEventListener('mousedown', (e)=>{
+    isDragging = true;
+    startX = e.clientX;
+    startTranslate = x;
+    marquee.style.cursor = 'grabbing';
+    targetSpeed = 0;
+  });
+  window.addEventListener('mousemove', (e)=>{
+    if(!isDragging) return;
+    const diff = e.clientX - startX;
+    x = startTranslate + diff;
+    track.style.transform = 'translate3d(' + x + 'px,0,0)';
+  });
+  window.addEventListener('mouseup', ()=>{
+    if(!isDragging) return;
+    isDragging = false;
+    marquee.style.cursor = 'grab';
+    if(x > 0) x = 0;
+    if(Math.abs(x) >= halfWidth) x = x % halfWidth;
+    if(!isHovering) targetSpeed = baseSpeed;
+  });
+  marquee.addEventListener('touchstart', (e)=>{
+    isDragging = true;
+    startX = e.touches[0].clientX;
+    startTranslate = x;
+    targetSpeed = 0;
+  }, {passive:true});
+  window.addEventListener('touchmove', (e)=>{
+    if(!isDragging) return;
+    const diff = e.touches[0].clientX - startX;
+    x = startTranslate + diff;
+    track.style.transform = 'translate3d(' + x + 'px,0,0)';
+  }, {passive:true});
+  window.addEventListener('touchend', ()=>{
+    if(!isDragging) return;
+    isDragging = false;
+    if(!isHovering) targetSpeed = baseSpeed;
+    if(x > 0) x = 0;
+    if(Math.abs(x) >= halfWidth) x = x % halfWidth;
+  });
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        if(!rafId) animate();
+      }else{
+        if(rafId){ cancelAnimationFrame(rafId); rafId=null; }
+      }
+    });
+  }, {threshold:0.1});
+  observer.observe(marquee);
+  window.addEventListener('resize', ()=>{ calcHalf(); });
+  window.addEventListener('load', ()=>{ calcHalf(); });
+  calcHalf();
+  animate();
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    baseSpeed = 0.3;
+    targetSpeed = baseSpeed;
+    currentSpeed = baseSpeed;
+  }
+})();
+</script>
+
+
+</body>dy>
 
 
 </html>
