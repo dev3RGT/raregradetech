@@ -255,9 +255,9 @@
   }
   .cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:calc(var(--gap)*2);margin-bottom:calc(var(--gap)*5.5);}
 
-  .rating-card{display:flex;align-items:center;gap:14px;background:var(--white);color:var(--ink);border-radius:var(--radius-s);padding:10px 20px;}
+  .rating-card{display:flex;align-items:center;gap:14px;background:none;color:var(--white);border-radius:0;padding:0;}
   .rating-icons-img{height:42px;width:auto;display:block;flex:none;}
-  .rating-number{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:27px;line-height:1;color:#0B0E2A;}
+  .rating-number{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:27px;line-height:1;color:#FFFFFF;}
   .rating-label{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#FFB73D;margin-top:3px;}
 
   .services-card{
@@ -1006,26 +1006,26 @@
   .testimonial-marquee:active{ cursor:grabbing; }
   .testimonial-track{
     display:flex;
-    gap:17px;
+    gap:22px;
     will-change:transform;
     width:max-content;
   }
   .t-card{
     position:relative;
-    width:204px;
-    min-width:204px;
+    width:265px;
+    min-width:265px;
     background:#FFFFFF;
     border:1px solid #E9EBF5;
-    border-radius:12px;
-    padding:0 14px 17px;
+    border-radius:16px;
+    padding:0 18px 22px;
     text-align:center;
     box-shadow:0 12px 32px rgba(9,11,37,.06), 0 2px 8px rgba(9,11,37,.04);
     transition:transform .25s ease, box-shadow .25s ease;
-    margin-top:34px;
+    margin-top:44px;
     flex-shrink:0;
   }
   .t-card:hover{
-    transform:translateY(-4px);
+    transform:translateY(-5px);
     box-shadow:0 24px 48px rgba(9,11,37,.10), 0 8px 20px rgba(9,11,37,.06);
   }
   .t-card--blue{
@@ -1035,14 +1035,14 @@
   }
   .t-avatar-wrap{
     position:relative;
-    width:62px;
-    height:62px;
-    margin:-34px auto 11px;
+    width:81px;
+    height:81px;
+    margin:-44px auto 14px;
   }
   .t-avatar-wrap::before{
     content:"";
     position:absolute;
-    inset:-4px;
+    inset:-5px;
     border-radius:50%;
     border:1px solid rgba(17,24,245,.14);
     background:transparent;
@@ -1073,10 +1073,10 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:2px;
-    margin-bottom:7px;
+    gap:3px;
+    margin-bottom:9px;
     color:#1118F5;
-    font-size:12px;
+    font-size:16px;
     line-height:1;
     letter-spacing:1px;
   }
@@ -1084,32 +1084,32 @@
   .t-stars span{ display:inline-block; }
   .t-name{
     font-family:'Space Grotesk', sans-serif;
-    font-size:11px;
+    font-size:14px;
     font-weight:800;
     color:#0B0E2A;
-    margin:0 0 2px;
+    margin:0 0 3px;
     line-height:1.2;
     letter-spacing:-.01em;
   }
   .t-card--blue .t-name{ color:#FFFFFF; }
   .t-role{
-    font-size:8px;
+    font-size:10px;
     font-weight:500;
     color:#8A8CA3;
-    margin:0 0 10px;
+    margin:0 0 13px;
   }
   .t-card--blue .t-role{ color:rgba(255,255,255,.78); }
   .t-quote{
     display:flex;
     justify-content:center;
-    margin-bottom:6px;
+    margin-bottom:8px;
     color:#1118F5;
     opacity:.92;
   }
   .t-card--blue .t-quote{ color:#FFFFFF; }
-  .t-quote svg{ width:17px;height:17px; }
+  .t-quote svg{ width:22px;height:22px; }
   .t-text{
-    font-size:8px;
+    font-size:10px;
     line-height:1.7;
     color:#7A7C94;
     margin:0;
@@ -1118,9 +1118,9 @@
   .t-card--blue .t-text{ color:rgba(255,255,255,.88); }
 
   @media (max-width: 768px){
-    .t-card{ width:180px; min-width:180px; padding:0 12px 14px; }
-    .t-avatar-wrap{ width:53px;height:53px;margin:-27px auto 8px; }
-    .t-name{ font-size:10px; }
+    .t-card{ width:234px; min-width:234px; padding:0 16px 18px; }
+    .t-avatar-wrap{ width:69px;height:69px;margin:-35px auto 10px; }
+    .t-name{ font-size:13px; }
     .testimonial-marquee{ -webkit-mask-image:none; mask-image:none; padding:60px 16px 20px; }
   }
 
@@ -1405,7 +1405,7 @@
   .service-item span br{ display:none; }
   .headline{ font-size:30px !important; }
   .btn{ padding:13px 20px !important; font-size:14px !important; }
-  .t-card{ width:280px !important; min-width:280px !important; }
+  .t-card{ width:218px !important; min-width:218px !important; }
 }
 html, body{ overflow-x:hidden; max-width:100vw; }
 img{ max-width:100%; height:auto; }
