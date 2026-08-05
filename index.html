@@ -257,8 +257,10 @@
 
   .rating-card{display:flex;align-items:center;gap:14px;background:none;color:var(--white);border-radius:0;padding:0;}
   .rating-icons-img{height:42px;width:auto;display:block;flex:none;}
-  .rating-number{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:27px;line-height:1;color:#FFFFFF;}
-  .rating-label{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#FFB73D;margin-top:3px;}
+  .rating-star-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;}
+  .rating-star-svg{position:absolute;inset:0;width:100%;height:100%;}
+  .rating-number{position:relative;z-index:1;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:15px;line-height:1;color:#0B0E2A;margin-top:2px;}
+  .rating-label{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#FFB73D;margin-top:5px;}
 
   .services-card{
     background:var(--blue-800);border:1px solid rgba(255,255,255,.16);
@@ -1492,8 +1494,11 @@ img{ max-width:100%; height:auto; }
           <div class="rating-card">
             <img class="rating-icons-img" src="https://i.postimg.cc/pr69vh6W/rating-icons.png" alt="Google and Facebook reviews" loading="lazy" />
             <div>
-              <div class="rating-number">5</div>
-              <div class="rating-label">Rating</div>
+              <span class="rating-star-wrap">
+                <svg class="rating-star-svg" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8 5.8 21.1 7 14.2l-5-4.9 6.9-1z"/></svg>
+                <span class="rating-number">5</span>
+              </span>
+              <div class="rating-label">40+ Reviews</div>
             </div>
           </div>
         </div>
