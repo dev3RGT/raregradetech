@@ -1134,15 +1134,8 @@
     align-items:center;
   }
   .portal-flex .portal-image{ position:relative; }
-  .portal-flex .portal-image::before{
-    content:"";position:absolute;inset:-8%;z-index:0;
-    background:radial-gradient(closest-side, rgba(120,140,255,.38), transparent 70%);
-    filter:blur(22px);
-  }
   .portal-flex .portal-image img{
     position:relative;z-index:1;width:100%;display:block;
-    border-radius:var(--radius-l);
-    box-shadow:0 34px 64px rgba(2,4,30,.5);
   }
   .portal-flex .portal-copy{
     max-width:none !important;
@@ -1385,7 +1378,6 @@
   .service-card, .solution-card, .why-card{ padding:22px !important; }
   .portal-flex{ grid-template-columns:1fr !important; gap:28px !important; }
   .portal-flex .portal-image{ order:-1 !important; }
-  .portal-flex .portal-image img{ border-radius:16px !important; }
   .portal-flex .cta-row .btn{ width:100%; }
   .why-grid{ grid-template-columns:1fr !important; }
   .testimonial-marquee{ padding:50px 0 20px !important; }
