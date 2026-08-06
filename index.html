@@ -1876,18 +1876,21 @@ img{ max-width:100%; height:auto; }
   border-radius:0 !important;
   box-shadow:none !important;
   border:none !important;
+  overflow:visible !important;
 }
 .why-left img{
-  width:100%;
+  width:180%;
   height:auto;
-  max-width:580px;
+  max-width:1044px;
   display:block;
   object-fit:contain;
-  margin:0;
+  margin:0 0 0 -12%;
   border:none;
   box-shadow:none;
   border-radius:0;
   background:transparent;
+  transform: scale(1.08);
+  transform-origin:center center;
 }
 .why-right{
   padding-left:52px;
@@ -2003,7 +2006,10 @@ img{ max-width:100%; height:auto; }
     order:1;
   }
   .why-left img{
-    max-width:420px;
+    max-width:520px !important;
+    width:100% !important;
+    margin:0 auto !important;
+    transform:none !important;
   }
   .why-right{
     order:2;
@@ -3276,7 +3282,7 @@ img{ max-width:100%; height:auto; }
 })();
 </script>
 
-</body>dy>
+</body>
 
 
 </html>
