@@ -799,7 +799,7 @@
 
 /* ===== 5. TRUSTED BY - infinite logo marquee ===== */
 .trusted-logos{
-  padding-block: calc(var(--gap)*7) calc(var(--gap)*6);
+  padding-block: calc(var(--gap)*7) 38px;
   background: var(--white);
   border-top: 1px solid var(--card-line);
   border-bottom: 1px solid var(--card-line);
@@ -876,7 +876,7 @@
 
   /* ===== Footer — deep blue ===== */
   .site-footer{
-    background: url('https://i.postimg.cc/tTSVkmJX/FOOTER-BG.png') !important;
+    background: url('https://i.postimg.cc/W4rjp5x0/footer.png') !important;
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
@@ -1530,13 +1530,15 @@ img{ max-width:100%; height:auto; }
 }
 
 /* 5. Trusted by infinite scroll - make it behave like testimonials (hover slow stop) */
+#services{ padding-top: 58px !important; }
+
 #trusted-logos .logo-marquee,
 .trusted-logos .logo-marquee{
   position:relative !important;
   overflow:hidden !important;
   width:100% !important;
   cursor:grab !important;
-  padding: 24px 0 18px !important;
+  padding: 24px 0 14px !important;
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%) !important;
   mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%) !important;
 }
