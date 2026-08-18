@@ -2139,111 +2139,142 @@ img{ max-width:100%; height:auto; }
 }
 
 
-/* ===== ABOUT PAGE OVERRIDES — HERO EXACTLY AS HOME BUT NO OVERLAY/GRADIENT ===== */
+/* ===== ABOUT PAGE FIXES ===== */
+
+/* Hero - use SAME BG as home page hero (hero.png with overlays) */
 .hero--about{
     position:relative;
     isolation:isolate;
     overflow:hidden;
-    background-image:url('https://i.postimg.cc/QdQW2r95/hero.png') !important;
-    background-size:cover !important;
-    background-position:center !important;
-    background-repeat:no-repeat !important;
-    background-color:transparent !important;
-    background: url('https://i.postimg.cc/QdQW2r95/hero.png') center/cover no-repeat !important;
-    min-height:56vh !important;
+    background:linear-gradient(155deg, var(--blue-700) 0%, #171FE0 22%, #131AAE 46%, var(--blue-900) 78%, #080B45 100%);
+    min-height:62vh !important;
     display:flex !important;
     align-items:center !important;
+    justify-content:center !important;
     margin-top:calc(-1 * var(--nav-h)) !important;
     padding-top:var(--nav-h) !important;
 }
-.hero--about .hero-texture,
-.hero--about .hero-overlay,
-.hero--about .hero-color-overlay,
-.hero--about .hero-rays,
-.hero--about .hero-radial{
-    display:none !important;
-    background:none !important;
+.hero--about .hero-texture{
+    position:absolute;inset:0;
+    background-image:url('https://i.postimg.cc/QdQW2r95/hero.png');
+    background-size:cover;
+    background-position:60% 30%;
+    z-index:0;
+    pointer-events:none;
+    display:block !important;
+}
+.hero--about .hero-overlay{
+    position:absolute;inset:0;
+    background:
+      linear-gradient(90deg, rgba(5,6,20,.88) 0%, rgba(7,9,40,.62) 30%, rgba(9,12,60,.34) 55%, rgba(9,12,60,.16) 76%, rgba(9,12,60,.08) 100%),
+      linear-gradient(155deg, rgba(17,24,245,.34) 0%, rgba(23,31,224,.26) 22%, rgba(19,26,174,.28) 46%, rgba(10,14,90,.36) 78%, rgba(8,11,69,.42) 100%);
+    z-index:0;
+    pointer-events:none;
+    display:block !important;
+}
+.hero--about .hero-color-overlay{
+    position:absolute;inset:0;
+    background:linear-gradient(90deg, #020084 0%, #0404d8 100%);
+    mix-blend-mode:multiply;
+    opacity:.82;
+    z-index:0;
+    pointer-events:none;
+    display:block !important;
 }
 .hero--about .hero-inner{
+    position:relative;
+    z-index:1;
     display:flex !important;
     flex-direction:column !important;
     align-items:center !important;
     justify-content:center !important;
     text-align:center !important;
-    min-height:calc(56vh - var(--nav-h)) !important;
+    min-height:calc(62vh - var(--nav-h)) !important;
     width:100% !important;
     max-width:var(--container);
     margin:0 auto;
-    padding:48px calc(var(--gap)*5);
+    padding:56px calc(var(--gap)*5) 64px;
+    gap:22px !important;
     grid-template-columns:none !important;
-    gap:0 !important;
 }
 .hero--about .headline{
     font-family:'Montserrat',sans-serif !important;
     font-weight:800 !important;
     font-style:italic !important;
-    font-size:clamp(42px,7vw,88px) !important;
-    line-height:0.92 !important;
+    font-size:clamp(42px,7vw,86px) !important;
+    line-height:.92 !important;
     letter-spacing:-0.02em !important;
     color:var(--white) !important;
     margin:0 !important;
     text-transform:uppercase;
     text-align:center !important;
 }
-.hero--about .headline span{
-    color:var(--white) !important;
+.hero--about .subcopy{
+    font-size:16px;
+    line-height:1.6;
+    color:rgba(255,255,255,.88);
+    max-width:560px;
+    margin:0 auto;
+    text-align:center;
+}
+.hero--about .hero-cta{
+    margin-top:8px;
+    display:flex;
+    justify-content:center;
 }
 
-/* Ensure navbar transparent over this hero like home */
-.navbar{
-    background:transparent !important;
-    box-shadow:none !important;
-}
-.navbar.scrolled{
-    background:#0404d8 !important;
-    box-shadow:0 8px 30px rgba(2,4,30,.35) !important;
-}
-
-/* ---------- About + Why Choose Us + Stats ---------- */
-.section{
-    padding-block:calc(var(--gap)*12);
-}
-.section-tint{
-    background:var(--surface);
+/* Headings - center aligned just like home, remove container pills */
+.section-head{
+    max-width:760px !important;
+    margin:0 auto 48px !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    text-align:center !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
 }
 .eyebrow{
-    display:inline-block;
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--blue-700);
-    background:rgba(17,24,245,.08);
-    border:1px solid rgba(17,24,245,.12);
-    padding:6px 12px;
-    border-radius:999px;
-    margin-bottom:14px;
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:8px !important;
+    font-size:12.5px !important;
+    font-weight:700 !important;
+    letter-spacing:.12em !important;
+    text-transform:uppercase !important;
+    color:var(--blue-700) !important;
+    background:none !important;
+    border:none !important;
+    padding:0 !important;
+    margin:0 auto 14px !important;
+    text-align:center !important;
 }
 .section-title{
     font-family:'Montserrat',sans-serif !important;
     font-weight:800 !important;
     font-style:italic !important;
-    font-size:clamp(28px,3.2vw,44px);
-    line-height:.95;
-    letter-spacing:-0.02em;
-    color:var(--ink-900);
-    margin:0 0 18px;
+    font-size:clamp(28px,3.4vw,46px) !important;
+    line-height:.95 !important;
+    letter-spacing:-0.02em !important;
+    color:var(--ink-900) !important;
+    margin:0 0 14px !important;
+    text-align:center !important;
 }
 .section-sub{
-    font-size:15.5px;
-    line-height:1.6;
-    color:var(--ink-600);
-    margin:0;
+    font-size:15.5px !important;
+    line-height:1.6 !important;
+    color:var(--ink-600) !important;
+    margin:0 auto !important;
+    text-align:center !important;
+    max-width:640px;
 }
+
+/* About intro - keep paragraph left but heading centered? User wants headings center aligned like home */
 .about-intro-grid{
     display:grid;
     grid-template-columns:1.05fr .95fr;
-    gap:calc(var(--gap)*10);
+    gap:56px;
     align-items:start;
 }
 .about-copy p{
@@ -2252,22 +2283,25 @@ img{ max-width:100%; height:auto; }
     color:var(--ink-600);
     margin:0 0 18px;
 }
-.about-copy p:last-child{ margin-bottom:0; }
+#about .section-head{
+    margin-bottom:40px !important;
+}
 
+/* Why Choose Us - remove container, keep lucid icons */
 .about-why-title{
     font-family:'Montserrat',sans-serif !important;
     font-weight:800 !important;
     font-style:italic !important;
-    font-size:clamp(20px,2vw,26px);
-    margin:0 0 22px;
-    color:var(--ink-900);
-    line-height:1;
+    font-size:clamp(20px,2.2vw,26px) !important;
+    margin:0 0 22px !important;
+    color:var(--ink-900) !important;
+    text-align:left;
 }
 .wc-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:20px 18px;
-    margin-bottom:32px;
+    gap:18px;
+    margin-bottom:28px;
 }
 .wc-item{
     display:flex;
@@ -2277,192 +2311,123 @@ img{ max-width:100%; height:auto; }
     border:1px solid var(--card-line);
     border-radius:16px;
     padding:16px 14px;
-    transition:transform .2s ease, box-shadow .2s ease;
-}
-.wc-item:hover{
-    transform:translateY(-2px);
-    box-shadow:0 14px 28px rgba(15,20,90,.06);
 }
 .wc-icon{
-    width:44px;
-    height:44px;
-    flex:none;
-    border-radius:12px;
+    width:44px;height:44px;flex:none;border-radius:12px;
     background:linear-gradient(145deg,var(--blue-700),var(--blue-900));
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:var(--white);
+    display:flex;align-items:center;justify-content:center;color:var(--white);
 }
-.wc-icon svg{ width:20px; height:20px; stroke-width:1.9; }
-.wc-item h4{
-    font-family:'Space Grotesk',sans-serif;
-    font-size:14.5px;
-    font-weight:700;
-    margin:0 0 4px;
-    color:var(--ink-900);
-}
-.wc-item p{
-    font-size:13px;
-    line-height:1.55;
-    color:var(--ink-600);
-    margin:0;
-}
+.wc-icon svg{ width:20px;height:20px; }
+.wc-item h4{ font-family:'Space Grotesk',sans-serif;font-size:14.5px;font-weight:700;margin:0 0 4px;color:var(--ink-900); }
+.wc-item p{ font-size:13px;line-height:1.55;color:var(--ink-600);margin:0; }
 .about-stats{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:14px;
-    border-top:1px solid var(--card-line);
-    padding-top:28px;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+    border-top:1px solid var(--card-line);padding-top:24px;
 }
-.stat-card{
-    text-align:center;
-    background:var(--surface-alt);
-    border:1px solid var(--card-line);
-    border-radius:14px;
-    padding:16px 10px;
-}
-.stat-num{
-    display:block;
-    font-family:'Anton',sans-serif;
-    font-weight:400;
-    font-size:clamp(1.6rem,2.4vw,2.2rem);
-    color:var(--blue-700);
-    line-height:1;
-    margin-bottom:6px;
-}
-.stat-label{
-    font-size:11px;
-    font-weight:600;
-    color:var(--ink-600);
-    letter-spacing:.01em;
-    line-height:1.3;
-    display:block;
-    text-transform:uppercase;
-}
+.stat-card{ text-align:center;background:var(--surface-alt);border:1px solid var(--card-line);border-radius:14px;padding:16px 10px; }
+.stat-num{ display:block;font-family:'Anton',sans-serif;font-size:2rem;color:var(--blue-700);line-height:1;margin-bottom:6px; }
+.stat-label{ font-size:11px;font-weight:600;color:var(--ink-600);text-transform:uppercase;display:block; }
 
-/* ---------- Milestones ---------- */
-.milestones-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:18px;
-}
-.milestone-card{
-    background:var(--surface-alt);
-    border:1px solid var(--card-line);
-    border-radius:18px;
-    padding:24px 20px;
-    transition:transform .25s ease, box-shadow .25s ease;
-    position:relative;
+/* Trusted logos - slow stop on hover via JS, keep CSS mask */
+.trusted-logos{
+    padding-block:56px 38px;
+    background:var(--white);
+    border-top:1px solid var(--card-line);
+    border-bottom:1px solid var(--card-line);
     overflow:hidden;
 }
-.milestone-card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 20px 40px rgba(15,20,90,.08);
-}
-.milestone-num{
-    font-family:'Anton',sans-serif;
-    font-weight:400;
-    font-size:2.2rem;
-    color:var(--blue-700);
-    opacity:.14;
-    line-height:1;
-    margin-bottom:16px;
-}
-.milestone-card h3{
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:700;
-    font-size:16px;
-    margin:0 0 8px;
+.trusted-logos-head{ text-align:center;margin-bottom:28px; }
+.trusted-logos-title{
+    font-family:'Montserrat',sans-serif !important;
+    font-weight:800 !important;
+    font-style:italic !important;
+    font-size:22px;
     color:var(--ink-900);
-}
-.milestone-card p{
-    font-size:13.5px;
-    line-height:1.6;
-    color:var(--ink-600);
     margin:0;
 }
-
-/* ---------- Meet The Team ---------- */
-.team-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:18px;
-}
-.team-card{
-    background:var(--surface-alt);
-    border:1px solid var(--card-line);
-    border-radius:18px;
-    overflow:hidden;
-    text-align:center;
-    transition:transform .25s ease, box-shadow .25s ease;
-}
-.team-card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 20px 40px rgba(15,20,90,.08);
-}
-.team-photo-wrap{
-    aspect-ratio:1/1;
+.logo-marquee{
+    position:relative;
+    display:flex;
     width:100%;
-    background:linear-gradient(145deg,var(--blue-700),var(--blue-900));
+    overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+    mask-image:linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+    cursor:grab;
+}
+.logo-marquee:active{ cursor:grabbing; }
+.logo-track{
     display:flex;
     align-items:center;
-    justify-content:center;
+    flex-shrink:0;
+    gap:72px;
+    padding-inline:36px;
+    will-change:transform;
+}
+.logo-item{ display:flex;align-items:center;justify-content:center;flex-shrink:0;height:116px; }
+.logo-item img{ height:100%;width:auto;max-width:332px;object-fit:contain; }
+
+/* Milestones */
+.milestones-grid{ display:grid;grid-template-columns:repeat(4,1fr);gap:18px; }
+.milestone-card{ background:var(--surface-alt);border:1px solid var(--card-line);border-radius:18px;padding:24px 20px; }
+.milestone-num{ font-family:'Anton',sans-serif;font-size:2.2rem;color:var(--blue-700);opacity:.14;line-height:1;margin-bottom:16px; }
+.milestone-card h3{ font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;margin:0 0 8px;color:var(--ink-900); }
+.milestone-card p{ font-size:13.5px;line-height:1.6;color:var(--ink-600);margin:0; }
+
+/* Testimonials - ensure visible */
+#testimonials{
+    overflow:hidden;
+    background:#F7F8FB;
+    padding-block:72px;
+}
+#testimonials .section-head{
+    margin-bottom:12px !important;
+}
+.testimonial-marquee{
     position:relative;
     overflow:hidden;
-}
-.team-photo-wrap img{
     width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
+    padding:70px 0 40px;
+    cursor:grab;
+    -webkit-mask-image:linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+    mask-image:linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
 }
-.team-initial{
-    font-family:'Montserrat',sans-serif;
-    font-weight:800;
-    font-style:italic;
-    font-size:42px;
-    color:var(--white);
-    letter-spacing:-0.02em;
-}
-.team-card-body{
-    padding:18px 16px 20px;
-}
-.team-card-body h4{
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:700;
-    font-size:15.5px;
-    margin:0 0 4px;
-    color:var(--ink-900);
-}
-.team-card-body p{
-    font-size:12px;
-    font-weight:600;
-    letter-spacing:.04em;
-    text-transform:uppercase;
-    color:var(--blue-700);
-    margin:0;
-}
-.team-card-body span{
-    display:block;
-    font-size:12.5px;
-    color:var(--ink-600);
-    margin-top:6px;
-    line-height:1.4;
-}
+.testimonial-track{ display:flex;gap:22px;will-change:transform;width:max-content; }
+.t-card{ position:relative;width:265px;min-width:265px;background:#fff;border:1px solid #E9EBF5;border-radius:16px;padding:0 18px 22px;text-align:center;box-shadow:0 12px 32px rgba(9,11,37,.06);margin-top:44px;flex-shrink:0; }
+.t-card--blue{ background:linear-gradient(180deg, #1118F5 0%, #0D12A0 100%);border-color:transparent; }
+.t-avatar-wrap{ position:relative;width:81px;height:81px;margin:-44px auto 14px; }
+.t-avatar-img{ width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;background:#F0F1F8; }
+.t-stars{ display:flex;align-items:center;justify-content:center;gap:3px;margin-bottom:9px;color:#1118F5;font-size:16px; }
+.t-card--blue .t-stars{ color:#fff; }
+.t-name{ font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:800;color:#0B0E2A;margin:0 0 3px; }
+.t-card--blue .t-name{ color:#fff; }
+.t-role{ font-size:10px;font-weight:500;color:#8A8CA3;margin:0 0 13px; }
+.t-card--blue .t-role{ color:rgba(255,255,255,.78); }
+.t-quote{ display:flex;justify-content:center;margin-bottom:8px;color:#1118F5;opacity:.92; }
+.t-card--blue .t-quote{ color:#fff; }
+.t-quote svg{ width:22px;height:22px; }
+.t-text{ font-size:11px;line-height:1.7;color:#7A7C94;margin:0; }
+.t-card--blue .t-text{ color:rgba(255,255,255,.88); }
 
-/* Responsive */
+/* Team */
+.team-grid{ display:grid;grid-template-columns:repeat(4,1fr);gap:18px; }
+.team-card{ background:var(--surface-alt);border:1px solid var(--card-line);border-radius:18px;overflow:hidden;text-align:center; }
+.team-photo-wrap{ aspect-ratio:1/1;width:100%;background:linear-gradient(145deg,var(--blue-700),var(--blue-900));display:flex;align-items:center;justify-content:center; }
+.team-initial{ font-family:'Montserrat',sans-serif;font-weight:800;font-style:italic;font-size:42px;color:var(--white); }
+.team-card-body{ padding:18px 16px 20px; }
+.team-card-body h4{ font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15.5px;margin:0 0 4px;color:var(--ink-900); }
+.team-card-body p{ font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--blue-700);margin:0; }
+.team-card-body span{ display:block;font-size:12.5px;color:var(--ink-600);margin-top:6px;line-height:1.4; }
+
 @media (max-width:980px){
-    .about-intro-grid{ grid-template-columns:1fr; gap:40px; }
+    .about-intro-grid{ grid-template-columns:1fr;gap:36px; }
     .milestones-grid{ grid-template-columns:repeat(2,1fr); }
     .team-grid{ grid-template-columns:repeat(2,1fr); }
     .about-stats{ grid-template-columns:repeat(2,1fr); }
 }
 @media (max-width:560px){
     .milestones-grid{ grid-template-columns:1fr; }
-    .team-grid{ grid-template-columns:1fr; max-width:360px; margin-inline:auto; }
+    .team-grid{ grid-template-columns:1fr;max-width:360px;margin-inline:auto; }
     .wc-grid{ grid-template-columns:1fr; }
-    .hero--about .headline{ font-size:40px !important; }
 }
 </style>
 </head>
@@ -2535,20 +2500,33 @@ img{ max-width:100%; height:auto; }
     </div>
   </nav>
 
-<!-- HERO - EXACTLY AS HOME BUT WITHOUT BUTTONS AND TEAM PHOTO, TEXT ONLY ABOUT US, SAME BG IMAGE WITH NO OVERLAY -->
+<!-- HERO - SAME BG AS HOME, CENTERED, WITH DOWNLOAD BUTTON -->
 <section class="hero hero--about" id="about-hero">
+    <div class="hero-texture" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-color-overlay" aria-hidden="true"></div>
     <div class="hero-inner">
         <h1 class="headline">ABOUT US</h1>
+        <p class="subcopy">We design, develop and deliver modern software, web & mobile applications, AI solutions and IT services that help businesses grow.</p>
+        <div class="hero-cta">
+            <a class="btn btn-secondary" href="#" download>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download Company Profile
+            </a>
+        </div>
     </div>
 </section>
 
-<!-- ABOUT + WHY CHOOSE US + STATS -->
+<!-- ABOUT + WHY CHOOSE US + STATS - HEADINGS CENTERED LIKE HOME -->
 <section class="section" id="about">
   <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">About Us</span>
+      <h2 class="section-title">Imagination To Reality</h2>
+      <p class="section-sub">A digital studio building reliable, modern solutions for businesses across South Africa.</p>
+    </div>
     <div class="about-intro-grid">
       <div class="about-copy">
-        <span class="eyebrow">About Us</span>
-        <h2 class="section-title">Imagination To Reality</h2>
         <p>Rare Grade Tech is a digital innovation studio based in Mokopane, Limpopo — building modern software, web and mobile applications, AI automations and reliable IT services for start-ups, growing businesses and individuals across South Africa.</p>
         <p>We started with a simple belief: great technology should be accessible, reliable and built with care. From our first client to 50+ businesses nationwide, we've stayed true to that — combining clean design, solid engineering and hands-on support to help our clients grow.</p>
         <p>Whether you need a custom system, a high-converting website, a mobile app, or day-to-day IT support, we bring the same energy: listen deeply, build smart, and stay with you after launch.</p>
@@ -2558,7 +2536,6 @@ img{ max-width:100%; height:auto; }
         <div class="wc-grid">
           <div class="wc-item">
             <span class="wc-icon">
-              <!-- lucide shield-check -->
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
             </span>
             <div>
@@ -2568,7 +2545,6 @@ img{ max-width:100%; height:auto; }
           </div>
           <div class="wc-item">
             <span class="wc-icon">
-              <!-- lucide users -->
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </span>
             <div>
@@ -2578,7 +2554,6 @@ img{ max-width:100%; height:auto; }
           </div>
           <div class="wc-item">
             <span class="wc-icon">
-              <!-- lucide zap/lightbulb -->
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
             </span>
             <div>
@@ -2588,8 +2563,7 @@ img{ max-width:100%; height:auto; }
           </div>
           <div class="wc-item">
             <span class="wc-icon">
-              <!-- lucide heart handshake -->
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2.08C10.5 3.5 9.5 3 7.75 3A5.5 5.5 0 0 0 2.5 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 8.04a.5.5 0 0 0 0 .7l3.46 3.46"/><path d="M15 8a2 2 0 0 1 2 2v1.5"/><path d="M7 10a2 2 0 0 0 2 2v1.5"/><path d="M12 17a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h1Z"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2.08C10.5 3.5 9.5 3 7.75 3A5.5 5.5 0 0 0 2.5 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 8.04"/><path d="M12 17a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h1Z"/></svg>
             </span>
             <div>
               <h4>Client Centric</h4>
@@ -2608,14 +2582,14 @@ img{ max-width:100%; height:auto; }
   </div>
 </section>
 
-<!-- CLIENTS - EXACT COPY OF TRUSTED BY SECTION FROM HOME -->
+<!-- CLIENTS - TRUSTED BY WITH SLOW STOP ON HOVER -->
 <section class="trusted-logos" id="trusted-logos">
     <div class="wrap trusted-logos-head">
       <span class="eyebrow">Trusted By</span>
       <h3 class="trusted-logos-title">Trusted By 50+ Businesses Nation Wide</h3>
     </div>
-    <div class="logo-marquee">
-      <div class="logo-track" aria-hidden="false">
+    <div class="logo-marquee" id="logoMarquee">
+      <div class="logo-track" id="logoTrack">
         <div class="logo-item"><img src="https://i.postimg.cc/ncxrP4Pr/funza.png" alt="Funza" loading="lazy" /></div>
         <div class="logo-item"><img src="https://i.postimg.cc/3NF8TqcQ/innat.png" alt="Innat" loading="lazy" /></div>
         <div class="logo-item"><img src="https://i.postimg.cc/m2VLp09n/mokopane-fm.png" alt="Mokopane FM" loading="lazy" /></div>
@@ -2625,46 +2599,35 @@ img{ max-width:100%; height:auto; }
         <div class="logo-item"><img src="https://i.postimg.cc/ncxrP4Pr/funza.png" alt="Funza" loading="lazy" /></div>
         <div class="logo-item"><img src="https://i.postimg.cc/3NF8TqcQ/innat.png" alt="Innat" loading="lazy" /></div>
         <div class="logo-item"><img src="https://i.postimg.cc/m2VLp09n/mokopane-fm.png" alt="Mokopane FM" loading="lazy" /></div>
-      </div>
-      <div class="logo-track" aria-hidden="true">
-        <div class="logo-item"><img src="https://i.postimg.cc/ncxrP4Pr/funza.png" alt="" loading="lazy" /></div>
-        <div class="logo-item"><img src="https://i.postimg.cc/3NF8TqcQ/innat.png" alt="" loading="lazy" /></div>
-        <div class="logo-item"><img src="https://i.postimg.cc/m2VLp09n/mokopane-fm.png" alt="" loading="lazy" /></div>
-        <div class="logo-item"><img src="https://i.postimg.cc/ncxrP4Pr/funza.png" alt="" loading="lazy" /></div>
-        <div class="logo-item"><img src="https://i.postimg.cc/3NF8TqcQ/innat.png" alt="" loading="lazy" /></div>
-        <div class="logo-item"><img src="https://i.postimg.cc/m2VLp09n/mokopane-fm.png" alt="" loading="lazy" /></div>
-        <div class="logo-item"><img src="https://i.postimg.cc/ncxrP4Pr/funza.png" alt="" loading="lazy" /></div>
-        <div class="logo-item"><img src="https://i.postimg.cc/3NF8TqcQ/innat.png" alt="" loading="lazy" /></div>
-        <div class="logo-item"><img src="https://i.postimg.cc/m2VLp09n/mokopane-fm.png" alt="" loading="lazy" /></div>
       </div>
     </div>
-  </section>
+</section>
 
 <!-- MILESTONES -->
 <section class="section section-tint" id="milestones">
   <div class="wrap">
-    <div class="section-head" style="text-align:center; max-width:640px; margin:0 auto 42px;">
+    <div class="section-head reveal">
       <span class="eyebrow">Our Journey</span>
       <h2 class="section-title">Milestones</h2>
       <p class="section-sub">From a small idea in Mokopane to a team trusted across South Africa.</p>
     </div>
     <div class="milestones-grid">
-      <div class="milestone-card">
+      <div class="milestone-card reveal">
         <div class="milestone-num">01</div>
         <h3>2022 — Founded</h3>
         <p>Rare Grade Tech was founded in Mokopane with a mission to make quality tech accessible to local businesses.</p>
       </div>
-      <div class="milestone-card">
+      <div class="milestone-card reveal">
         <div class="milestone-num">02</div>
         <h3>2023 — First 20 Clients</h3>
         <p>Delivered websites, PC repairs and custom software for early adopters across Limpopo.</p>
       </div>
-      <div class="milestone-card">
+      <div class="milestone-card reveal">
         <div class="milestone-num">03</div>
         <h3>2024 — Expanded Services</h3>
         <p>Launched AI automation, mobile app development and our client portal for transparent project tracking.</p>
       </div>
-      <div class="milestone-card">
+      <div class="milestone-card reveal">
         <div class="milestone-num">04</div>
         <h3>2025 — 50+ Nationwide</h3>
         <p>Now trusted by 50+ businesses nationwide with consistent 5-star reviews and long-term partnerships.</p>
@@ -2673,9 +2636,8 @@ img{ max-width:100%; height:auto; }
   </div>
 </section>
 
-<!-- TESTIMONIALS - EXACT COPY FROM HOME -->
+<!-- TESTIMONIALS - FIXED HEADING TEXT -->
 <section class="section section-tint" id="testimonials">
-
     <div class="wrap">
       <div class="section-head reveal">
         <span class="eyebrow">Testimonials</span>
@@ -2717,19 +2679,18 @@ img{ max-width:100%; height:auto; }
         </div>
       </div>
     </div>
-
-  </section>
+</section>
 
 <!-- MEET THE TEAM -->
 <section class="section" id="team">
   <div class="wrap">
-    <div class="section-head" style="text-align:center; max-width:640px; margin:0 auto 42px;">
+    <div class="section-head reveal">
       <span class="eyebrow">Meet The Team</span>
       <h2 class="section-title">The People Behind The Work</h2>
       <p class="section-sub">A small, skilled team that cares about craft and client success.</p>
     </div>
     <div class="team-grid">
-      <div class="team-card">
+      <div class="team-card reveal">
         <div class="team-photo-wrap">
           <span class="team-initial">TM</span>
         </div>
@@ -2739,7 +2700,7 @@ img{ max-width:100%; height:auto; }
           <span>Full-stack, system architecture and client solutions.</span>
         </div>
       </div>
-      <div class="team-card">
+      <div class="team-card reveal">
         <div class="team-photo-wrap" style="background:linear-gradient(145deg,#0D12A0,#080C4E);">
           <span class="team-initial">KM</span>
         </div>
@@ -2749,7 +2710,7 @@ img{ max-width:100%; height:auto; }
           <span>Crafting clean, converting designs and brand identities.</span>
         </div>
       </div>
-      <div class="team-card">
+      <div class="team-card reveal">
         <div class="team-photo-wrap" style="background:linear-gradient(145deg,#3B4CFF,#1118F5);">
           <span class="team-initial">LP</span>
         </div>
@@ -2759,7 +2720,7 @@ img{ max-width:100%; height:auto; }
           <span>Mobile apps, automations and AI integrations.</span>
         </div>
       </div>
-      <div class="team-card">
+      <div class="team-card reveal">
         <div class="team-photo-wrap" style="background:linear-gradient(145deg,#080B45,#0A0E5A);">
           <span class="team-initial">RM</span>
         </div>
@@ -2826,16 +2787,49 @@ img{ max-width:100%; height:auto; }
   </footer>
 
 <script>
-// Navbar scroll + mobile toggle (copied from home)
+// Reveal animation (same as home)
+(function () {
+  const revealEls = document.querySelectorAll('.reveal');
+  if (!revealEls.length) return;
+  if (!('IntersectionObserver' in window)) {
+    revealEls.forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+})();
+
+// Utility bar disappears after 20s just like home
+(function () {
+  const bar = document.querySelector('.utility-bar');
+  if (!bar) return;
+  setTimeout(() => {
+    bar.classList.add('is-hidden');
+    bar.addEventListener('transitionend', () => {
+      bar.classList.add('is-removed');
+    }, { once: true });
+  }, 20000);
+})();
+
+// Navbar scroll + mobile toggle
 (function(){
   const navbar = document.getElementById('navbar');
   const toggle = document.getElementById('navToggle');
   const panel = document.getElementById('mobilePanel');
   if(navbar){
-    window.addEventListener('scroll', ()=>{
-      if(window.scrollY > 12) navbar.classList.add('scrolled');
+    const onScroll = () => {
+      if(window.scrollY > 40) navbar.classList.add('scrolled');
       else navbar.classList.remove('scrolled');
-    }, {passive:true});
+    };
+    document.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   }
   if(toggle && panel){
     toggle.addEventListener('click', ()=>{
@@ -2850,30 +2844,33 @@ img{ max-width:100%; height:auto; }
       });
     });
   }
-})();
-</script>
-
-<script>
-// Trusted logos & Testimonial marquee drag logic (exact as home)
-(function(){
-  // Trusted logos is CSS animated, no JS needed unless you want pause on hover handled by CSS
-
-  // Testimonials infinite drag
-  const marquee = document.getElementById('testimonialMarquee');
-  const track = document.getElementById('testimonialTrack');
-  if(!marquee || !track) return;
-  // duplicate track for infinite loop if not already duplicated
-  if(track.children.length <= 3){
-    const clone = track.innerHTML;
-    track.innerHTML = clone + clone;
+  // Sync nav height
+  const navbarEl = document.getElementById('navbar');
+  if (navbarEl) {
+    function syncNavHeight() {
+      document.documentElement.style.setProperty('--nav-h', navbarEl.getBoundingClientRect().height + 'px');
+    }
+    syncNavHeight();
+    window.addEventListener('load', syncNavHeight);
+    window.addEventListener('resize', syncNavHeight);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
   }
+})();
+
+// Trusted logos infinite scroll with slow stop on hover (same easing as testimonials)
+(function(){
+  const marquee = document.getElementById('logoMarquee');
+  const track = document.getElementById('logoTrack');
+  if(!marquee || !track) return;
+  // duplicate for seamless loop
+  track.innerHTML = track.innerHTML + track.innerHTML;
   let x = 0;
   let startX = 0;
   let startTranslate = 0;
   let isDragging = false;
   let isHovering = false;
   let rafId = null;
-  let baseSpeed = 0.6;
+  let baseSpeed = 0.8;
   let targetSpeed = baseSpeed;
   let currentSpeed = baseSpeed;
   let halfWidth = track.scrollWidth / 2;
@@ -2883,7 +2880,6 @@ img{ max-width:100%; height:auto; }
       if(Math.abs(currentSpeed - targetSpeed) > 0.01){
         currentSpeed += (targetSpeed - currentSpeed) * 0.08;
       } else { currentSpeed = targetSpeed; }
-      if(targetSpeed === 0) currentSpeed = Math.max(0, currentSpeed - 0.01);
     }
     if(!isDragging){
       x -= currentSpeed;
@@ -2903,6 +2899,44 @@ img{ max-width:100%; height:auto; }
   const observer = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{ if(entry.isIntersecting){ if(!rafId) animate(); } else { if(rafId){ cancelAnimationFrame(rafId); rafId=null; }} });
   }, {threshold:0.1});
+  observer.observe(marquee);
+  window.addEventListener('resize', calcHalf);
+  window.addEventListener('load', calcHalf);
+  calcHalf();
+  animate();
+})();
+
+// Testimonials infinite scroll with slow stop on hover
+(function(){
+  const marquee = document.getElementById('testimonialMarquee');
+  const track = document.getElementById('testimonialTrack');
+  if(!marquee || !track) return;
+  if(track.children.length <= 3){ track.innerHTML = track.innerHTML + track.innerHTML; }
+  let x = 0, startX=0, startTranslate=0, isDragging=false, isHovering=false, rafId=null;
+  let baseSpeed = 0.6, targetSpeed=baseSpeed, currentSpeed=baseSpeed;
+  let halfWidth = track.scrollWidth / 2;
+  function calcHalf(){ halfWidth = track.scrollWidth / 2; }
+  function animate(){
+    if(!isDragging){
+      if(Math.abs(currentSpeed - targetSpeed) > 0.01) currentSpeed += (targetSpeed - currentSpeed) * 0.08;
+      else currentSpeed = targetSpeed;
+    }
+    if(!isDragging){
+      x -= currentSpeed;
+      if(Math.abs(x) >= halfWidth) x = 0;
+      track.style.transform = 'translate3d(' + x + 'px,0,0)';
+    }
+    rafId = requestAnimationFrame(animate);
+  }
+  marquee.addEventListener('mouseenter', ()=>{ isHovering=true; targetSpeed=0; });
+  marquee.addEventListener('mouseleave', ()=>{ isHovering=false; if(!isDragging) targetSpeed=baseSpeed; });
+  marquee.addEventListener('mousedown', (e)=>{ isDragging=true; startX=e.clientX; startTranslate=x; marquee.style.cursor='grabbing'; targetSpeed=0; });
+  window.addEventListener('mousemove', (e)=>{ if(!isDragging) return; const diff=e.clientX-startX; x=startTranslate+diff; track.style.transform='translate3d('+x+'px,0,0)'; });
+  window.addEventListener('mouseup', ()=>{ if(!isDragging) return; isDragging=false; marquee.style.cursor='grab'; if(x>0) x=0; if(Math.abs(x)>=halfWidth) x=x%halfWidth; if(!isHovering) targetSpeed=baseSpeed; });
+  marquee.addEventListener('touchstart', (e)=>{ isDragging=true; startX=e.touches[0].clientX; startTranslate=x; targetSpeed=0; }, {passive:true});
+  window.addEventListener('touchmove', (e)=>{ if(!isDragging) return; const diff=e.touches[0].clientX-startX; x=startTranslate+diff; track.style.transform='translate3d('+x+'px,0,0)'; }, {passive:true});
+  window.addEventListener('touchend', ()=>{ if(!isDragging) return; isDragging=false; if(!isHovering) targetSpeed=baseSpeed; if(x>0) x=0; if(Math.abs(x)>=halfWidth) x=x%halfWidth; });
+  const observer = new IntersectionObserver((entries)=>{ entries.forEach(entry=>{ if(entry.isIntersecting){ if(!rafId) animate(); } else { if(rafId){ cancelAnimationFrame(rafId); rafId=null; }} }); }, {threshold:0.1});
   observer.observe(marquee);
   window.addEventListener('resize', calcHalf);
   window.addEventListener('load', calcHalf);
