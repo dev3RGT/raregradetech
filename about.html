@@ -2604,6 +2604,55 @@ img{ max-width:100%; height:auto; }
   .lis-content p{ font-size:10px !important; }
 }
 
+/* ===== About page - big reviews badge under intro paragraphs ===== */
+.about-reviews-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:24px;
+  margin-top:32px;
+  padding:22px 32px;
+  background:linear-gradient(165deg,#0A0E5A 0%,#0D12A0 55%,#0A0E5A 100%);
+  border-radius:18px;
+  box-shadow:0 14px 34px rgba(10,14,90,.22);
+}
+.about-reviews-badge .rating-icons-img{
+  height:64px;
+  width:auto;
+  display:block;
+  flex:none;
+}
+.about-reviews-badge > div:last-child{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+.about-reviews-badge .rating-star-wrap{
+  width:56px;
+  height:56px;
+  margin:0 auto;
+}
+.about-reviews-badge .rating-number{
+  font-size:24px;
+}
+.about-reviews-badge .rating-label{
+  font-size:15px;
+  margin-top:6px;
+  white-space:nowrap;
+}
+@media (max-width:640px){
+  .about-reviews-badge{
+    gap:16px;
+    padding:16px 20px;
+    margin-top:22px;
+  }
+  .about-reviews-badge .rating-icons-img{ height:46px; }
+  .about-reviews-badge .rating-star-wrap{ width:42px; height:42px; }
+  .about-reviews-badge .rating-number{ font-size:19px; }
+  .about-reviews-badge .rating-label{ font-size:12px; }
+}
+
 </style>
 </head>
 <body>
@@ -2703,6 +2752,17 @@ img{ max-width:100%; height:auto; }
         <p>Rare Grade Tech is a digital innovation studio based in Mokopane, Limpopo — building modern software, web and mobile applications, AI automations and reliable IT services for start-ups, growing businesses and individuals across South Africa.</p>
         <p>We started with a simple belief: great technology should be accessible, reliable and built with care. From our first client to 50+ businesses nationwide, we've stayed true to that — combining clean design, solid engineering and hands-on support to help our clients grow.</p>
         <p>Whether you need a custom system, a high-converting website, a mobile app, or day-to-day IT support, we bring the same energy: listen deeply, build smart, and stay with you after launch.</p>
+
+        <div class="about-reviews-badge">
+          <img class="rating-icons-img" src="https://i.postimg.cc/pr69vh6W/rating-icons.png" alt="Google and Facebook reviews" loading="lazy" />
+          <div>
+            <span class="rating-star-wrap">
+              <svg class="rating-star-svg" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8 5.8 21.1 7 14.2l-5-4.9 6.9-1z"/></svg>
+              <span class="rating-number">5</span>
+            </span>
+            <div class="rating-label">40+ Reviews</div>
+          </div>
+        </div>
       </div>
       <div>
         <h3 class="about-why-title">Why Choose Us</h3>
