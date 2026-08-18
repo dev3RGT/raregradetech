@@ -2147,7 +2147,7 @@ img{ max-width:100%; height:auto; }
     isolation:isolate;
     overflow:hidden;
     background:linear-gradient(155deg, var(--blue-700) 0%, #171FE0 22%, #131AAE 46%, var(--blue-900) 78%, #080B45 100%);
-    min-height:62vh !important;
+    min-height:68.2vh !important;
     display:flex !important;
     align-items:center !important;
     justify-content:center !important;
@@ -2163,24 +2163,6 @@ img{ max-width:100%; height:auto; }
     pointer-events:none;
     display:block !important;
 }
-.hero--about .hero-overlay{
-    position:absolute;inset:0;
-    background:
-      linear-gradient(90deg, rgba(5,6,20,.88) 0%, rgba(7,9,40,.62) 30%, rgba(9,12,60,.34) 55%, rgba(9,12,60,.16) 76%, rgba(9,12,60,.08) 100%),
-      linear-gradient(155deg, rgba(17,24,245,.34) 0%, rgba(23,31,224,.26) 22%, rgba(19,26,174,.28) 46%, rgba(10,14,90,.36) 78%, rgba(8,11,69,.42) 100%);
-    z-index:0;
-    pointer-events:none;
-    display:block !important;
-}
-.hero--about .hero-color-overlay{
-    position:absolute;inset:0;
-    background:linear-gradient(90deg, #020084 0%, #0404d8 100%);
-    mix-blend-mode:multiply;
-    opacity:.82;
-    z-index:0;
-    pointer-events:none;
-    display:block !important;
-}
 .hero--about .hero-inner{
     position:relative;
     z-index:1;
@@ -2189,7 +2171,7 @@ img{ max-width:100%; height:auto; }
     align-items:center !important;
     justify-content:center !important;
     text-align:center !important;
-    min-height:calc(62vh - var(--nav-h)) !important;
+    min-height:calc(68.2vh - var(--nav-h)) !important;
     width:100% !important;
     max-width:var(--container);
     margin:0 auto;
@@ -2503,8 +2485,6 @@ img{ max-width:100%; height:auto; }
 <!-- HERO - SAME BG AS HOME, CENTERED, WITH DOWNLOAD BUTTON -->
 <section class="hero hero--about" id="about-hero">
     <div class="hero-texture" aria-hidden="true"></div>
-    <div class="hero-overlay" aria-hidden="true"></div>
-    <div class="hero-color-overlay" aria-hidden="true"></div>
     <div class="hero-inner">
         <h1 class="headline">ABOUT US</h1>
         <p class="subcopy">We design, develop and deliver modern software, web & mobile applications, AI solutions and IT services that help businesses grow.</p>
