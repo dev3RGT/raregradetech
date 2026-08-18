@@ -2352,13 +2352,14 @@ img{ max-width:100%; height:auto; }
 
 .milestones-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:0;
+  grid-template-columns:repeat(3,1fr);
+  gap:44px 0;
   position:relative;
   padding-top:12px;
 }
 .milestones-grid::before{
   content:"";
+  display:none;
   position:absolute;
   top:32px;
   left:8%;
@@ -2429,8 +2430,7 @@ img{ max-width:100%; height:auto; }
 .milestone-node:hover .milestone-year{ transform:translateY(-1px); transition:transform .25s ease; }
 
 @media (max-width:980px){
-  .milestones-grid{ grid-template-columns:repeat(2,1fr); gap:28px 0; }
-  .milestones-grid::before{ display:none; }
+  .milestones-grid{ grid-template-columns:repeat(2,1fr); gap:32px 0; }
   .milestone-node{ padding:0 16px; }
 }
 @media (max-width:580px){
@@ -2818,18 +2818,66 @@ img{ max-width:100%; height:auto; }
     <div class="section-head reveal">
       <span class="eyebrow">Our Journey</span>
       <h2 class="section-title">Milestones</h2>
-      <p class="section-sub">From a small idea in Mokopane to a team trusted across South Africa.</p>
+      <p class="section-sub">From our humble beginnings to where we are today, every milestone reflects our growth, innovation and commitment to delivering better technology solutions.</p>
     </div>
     <div class="milestones-grid">
       <div class="milestone-node reveal" style="--accent:#3B4CFF;">
+        <div class="milestone-node-inner">
+          <div class="milestone-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div class="milestone-content">
+            <div class="milestone-year">2019</div>
+            <h3>Company Launch</h3>
+            <p>Rare Grade Tech was founded with a vision to deliver innovative technology solutions.</p>
+          </div>
+        </div>
+      </div>
+      <div class="milestone-node reveal" style="--accent:#1118F5;">
+        <div class="milestone-node-inner">
+          <div class="milestone-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div class="milestone-content">
+            <div class="milestone-year">2020</div>
+            <h3>First Project</h3>
+            <p>Completed our first successful software development project for a business client.</p>
+          </div>
+        </div>
+      </div>
+      <div class="milestone-node reveal" style="--accent:#0D12A0;">
         <div class="milestone-node-inner">
           <div class="milestone-circle">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V5a2 2 0 0 1 2-2h9l5 5v13a0 0 0 0 1 0 0H6a2 2 0 0 1-2-2Z"/><path d="M14 3v5h5"/></svg>
           </div>
           <div class="milestone-content">
             <div class="milestone-year">2022</div>
-            <h3>Introduction</h3>
-            <p>Rare Grade Tech was founded in Mokopane with a mission to make quality tech accessible to local businesses.</p>
+            <h3>Official Registration</h3>
+            <p>Rare Grade Tech was officially registered with CIPC, marking our growth as a recognized business.</p>
+          </div>
+        </div>
+      </div>
+      <div class="milestone-node reveal" style="--accent:#0A0E5A;">
+        <div class="milestone-node-inner">
+          <div class="milestone-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></svg>
+          </div>
+          <div class="milestone-content">
+            <div class="milestone-year">2023</div>
+            <h3>Office Expansion</h3>
+            <p>Opened our first office and expanded our team to support growing client demand.</p>
+          </div>
+        </div>
+      </div>
+      <div class="milestone-node reveal" style="--accent:#3B4CFF;">
+        <div class="milestone-node-inner">
+          <div class="milestone-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          </div>
+          <div class="milestone-content">
+            <div class="milestone-year">2023</div>
+            <h3>Service Expansion</h3>
+            <p>Expanded our services to include software development, graphic design and project management.</p>
           </div>
         </div>
       </div>
@@ -2839,21 +2887,21 @@ img{ max-width:100%; height:auto; }
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M17 11a4 4 0 1 0 0-8"/><path d="M1 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/><path d="M17 14a6 6 0 0 1 6 6v1"/></svg>
           </div>
           <div class="milestone-content">
-            <div class="milestone-year">2023</div>
-            <h3>Growth</h3>
-            <p>Delivered websites, PC repairs and custom software for early adopters across Limpopo — first 20 clients.</p>
+            <div class="milestone-year">2024</div>
+            <h3>Strategic Partnerships</h3>
+            <p>Established key partnerships and collaborated on larger-scale projects.</p>
           </div>
         </div>
       </div>
       <div class="milestone-node reveal" style="--accent:#0D12A0;">
         <div class="milestone-node-inner">
           <div class="milestone-circle">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
           </div>
           <div class="milestone-content">
             <div class="milestone-year">2024</div>
-            <h3>Maturity</h3>
-            <p>Launched AI automation, mobile app development and our client portal for transparent project tracking.</p>
+            <h3>Team Growth</h3>
+            <p>Introduced part-time specialists to expand our capabilities and project capacity.</p>
           </div>
         </div>
       </div>
@@ -2864,8 +2912,20 @@ img{ max-width:100%; height:auto; }
           </div>
           <div class="milestone-content">
             <div class="milestone-year">2025</div>
-            <h3>Expansion</h3>
-            <p>Now trusted by 50+ businesses nationwide with consistent 5-star reviews and long-term partnerships.</p>
+            <h3>Continued Innovation</h3>
+            <p>Invested in new technologies, skills and solutions to deliver greater value to our clients.</p>
+          </div>
+        </div>
+      </div>
+      <div class="milestone-node reveal" style="--accent:#3B4CFF;">
+        <div class="milestone-node-inner">
+          <div class="milestone-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <div class="milestone-content">
+            <div class="milestone-year">2026</div>
+            <h3>Bigger &amp; Better</h3>
+            <p>Moved into a larger office and expanded our team to support continued growth and an increasing demand for our services.</p>
           </div>
         </div>
       </div>
