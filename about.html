@@ -488,11 +488,6 @@
     .reveal,.reveal-left,.reveal-right,.reveal-scale{opacity:1 !important;transform:none !important;transition:none !important;}
     .hero-left .badge,.hero-left .headline,.hero-left .subcopy,.hero-left .cta-row,.hero-left .services-card,.trust-row,.team-photo,.badge .dot,.hero-rays{animation:none !important;}
     .hero-radial{transition:none !important;}
-    .milestone-card{transition:none !important;}
-    .ms-visual::after{display:none !important;}
-    .ms-icon,.ms-badge{transition:none !important;}
-    .ms-timeline-line{transition:none !important;transform:translateY(-50%) scaleX(1) !important;}
-    .ms-timeline-dot{animation:none !important;}
   }
 
   /* ---------- Responsive ---------- */
@@ -2353,48 +2348,110 @@ img{ max-width:100%; height:auto; }
 .logo-item{ display:flex;align-items:center;justify-content:center;flex-shrink:0;height:116px; }
 .logo-item img{ height:100%;width:auto;max-width:332px;object-fit:contain; }
 
-/* Milestones */
-.milestones-grid{ display:grid;grid-template-columns:repeat(4,1fr);gap:26px 20px; }
-.milestone-card{ position:relative;display:flex;flex-direction:column;filter:drop-shadow(0 10px 24px rgba(9,11,37,.10));transition:transform .45s cubic-bezier(.16,.84,.44,1), filter .45s ease; }
-.milestone-card:hover{ transform:translateY(-10px);filter:drop-shadow(0 26px 46px rgba(9,11,37,.22)); }
+/* Milestones — folded-corner number + gradient digit + icon badge, infographic style */
 
-.ms-visual{ position:relative;height:148px;border-radius:22px 22px 0 0;display:flex;align-items:center;justify-content:center;overflow:hidden; }
-.ms-visual::before{ content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 18% -10%, rgba(255,255,255,.32), transparent 60%);pointer-events:none; }
-.ms-visual::after{ content:"";position:absolute;top:0;left:-60%;width:38%;height:100%;background:linear-gradient(115deg, transparent, rgba(255,255,255,.32), transparent);transform:skewX(-14deg);transition:left .85s ease;pointer-events:none; }
-.milestone-card:hover .ms-visual::after{ left:130%; }
-.ms-visual--1{ background:linear-gradient(135deg,#3B4CFF 0%,#1118F5 100%); }
-.ms-visual--2{ background:linear-gradient(135deg,#1118F5 0%,#0D12A0 100%); }
-.ms-visual--3{ background:linear-gradient(135deg,#0D12A0 0%,#0A0E5A 100%); }
-.ms-visual--4{ background:linear-gradient(135deg,#0A0E5A 0%,#080B45 100%); }
+.milestones-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  position:relative;
+  padding-top:12px;
+}
+.milestones-grid::before{
+  content:"";
+  position:absolute;
+  top:32px;
+  left:8%;
+  right:8%;
+  height:3px;
+  background:#E8EAF6;
+  z-index:0;
+}
+.milestone-node{
+  position:relative;
+  padding:0 18px 8px;
+  text-align:left;
+  --accent:#1118F5;
+}
+.milestone-node-inner{
+  position:relative;
+  z-index:1;
+}
+.milestone-circle{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:var(--accent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  border:4px solid #fff;
+  box-shadow:0 0 0 3px #F5F6FC, 0 10px 22px rgba(17,24,245,.16);
+  margin-bottom:18px;
+  position:relative;
+}
+.milestone-circle svg{ width:22px;height:22px; stroke-width:2.2; }
+.milestone-year{
+  display:inline-flex;
+  align-items:center;
+  justify-content:flex-start;
+  min-width:118px;
+  height:42px;
+  padding:0 26px 0 16px;
+  background:var(--accent);
+  color:#fff;
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:15px;
+  letter-spacing:.02em;
+  border-radius:4px;
+  position:relative;
+  clip-path:polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
+  box-shadow:0 8px 18px rgba(0,0,0,.10);
+}
+.milestone-node h3{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:16px;
+  line-height:1.2;
+  margin:18px 0 8px;
+  color:#0A0E5A;
+}
+.milestone-node p{
+  font-size:13.5px;
+  line-height:1.7;
+  color:#6B6E8A;
+  margin:0;
+  max-width:280px;
+}
+.milestone-node:hover .milestone-circle{ transform:translateY(-2px); transition:transform .25s ease; }
+.milestone-node:hover .milestone-year{ transform:translateY(-1px); transition:transform .25s ease; }
 
-.ms-icon{ position:relative;z-index:1;width:54px;height:54px;border-radius:15px;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;color:#fff;transition:transform .45s cubic-bezier(.16,.84,.44,1); }
-.ms-icon svg{ width:27px;height:27px; }
-.milestone-card:hover .ms-icon{ transform:scale(1.1) rotate(-6deg); }
+@media (max-width:980px){
+  .milestones-grid{ grid-template-columns:repeat(2,1fr); gap:28px 0; }
+  .milestones-grid::before{ display:none; }
+  .milestone-node{ padding:0 16px; }
+}
+@media (max-width:580px){
+  .milestones-grid{ grid-template-columns:1fr; gap:32px; padding-left:24px; }
+  .milestones-grid::before{
+    display:block;
+    top:0;
+    left:23px;
+    right:auto;
+    bottom:0;
+    width:3px;
+    height:auto;
+  }
+  .milestone-node{ display:flex; gap:16px; padding:0; }
+  .milestone-node-inner{ display:flex; gap:16px; width:100%; }
+  .milestone-circle{ flex:none; margin-bottom:0; width:52px; height:52px; }
+  .milestone-content{ flex:1; }
+  .milestone-year{ height:38px; min-width:92px; font-size:14px; }
+}
 
-.ms-num{ position:absolute;right:14px;bottom:6px;z-index:1;font-family:'Anton',sans-serif;font-size:2.5rem;line-height:1;color:rgba(255,255,255,.32);letter-spacing:-.02em;pointer-events:none; }
-
-.ms-badge{ position:relative;z-index:2;align-self:center;margin-top:-16px;background:#fff;color:var(--blue-700);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.01em;padding:8px 16px;border-radius:999px;box-shadow:0 10px 22px rgba(9,11,37,.16);text-align:center;max-width:90%;transition:transform .3s ease; }
-.milestone-card:hover .ms-badge{ transform:translateY(-2px) scale(1.03); }
-
-.ms-panel{ position:relative;flex:1;padding:30px 18px 44px;text-align:center;clip-path:polygon(0 0,100% 0,100% 76%,50% 100%,0 76%);margin-top:-1px; }
-.ms-panel--1{ background:linear-gradient(160deg,#3B4CFF 0%,#0D12A0 100%); }
-.ms-panel--2{ background:linear-gradient(160deg,#1118F5 0%,#0A0E5A 100%); }
-.ms-panel--3{ background:linear-gradient(160deg,#0D12A0 0%,#080B45 100%); }
-.ms-panel--4{ background:linear-gradient(160deg,#0A0E5A 0%,#05061F 100%); }
-.ms-panel p{ position:relative;z-index:1;font-size:12.5px;line-height:1.65;color:rgba(255,255,255,.88);margin:0;max-width:220px;margin-inline:auto; }
-
-/* Milestones timeline */
-.ms-timeline{ position:relative;display:grid;grid-template-columns:repeat(4,1fr);align-items:center;margin-top:44px; }
-.ms-timeline-line{ position:absolute;left:12.5%;right:12.5%;top:50%;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--blue-accent) 0%,var(--blue-700) 34%,#0D12A0 67%,var(--blue-900) 100%);transform:translateY(-50%) scaleX(0);transform-origin:left center;transition:transform 1s cubic-bezier(.16,.84,.44,1) .2s; }
-.ms-timeline.is-visible .ms-timeline-line{ transform:translateY(-50%) scaleX(1); }
-.ms-timeline-dot{ justify-self:center;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 10px 24px rgba(9,11,37,.2);position:relative;z-index:1;animation:msDotPulse 2.6s ease-in-out infinite; }
-.ms-timeline-dot svg{ width:18px;height:18px; }
-.ms-timeline-dot--1{ background:linear-gradient(135deg,#3B4CFF,#1118F5);animation-delay:0s; }
-.ms-timeline-dot--2{ background:linear-gradient(135deg,#1118F5,#0D12A0);animation-delay:.3s; }
-.ms-timeline-dot--3{ background:linear-gradient(135deg,#0D12A0,#0A0E5A);animation-delay:.6s; }
-.ms-timeline-dot--4{ background:linear-gradient(135deg,#0A0E5A,#080B45);animation-delay:.9s; }
-@keyframes msDotPulse{ 0%,100%{box-shadow:0 0 0 0 rgba(59,76,255,.45),0 10px 24px rgba(9,11,37,.2);} 50%{box-shadow:0 0 0 9px rgba(59,76,255,0),0 10px 24px rgba(9,11,37,.2);} }
-
+/* Testimonials - ensure visible */
 /* Testimonials - ensure visible */
 #testimonials{
     overflow:hidden;
@@ -2442,14 +2499,12 @@ img{ max-width:100%; height:auto; }
 
 @media (max-width:980px){
     .about-intro-grid{ grid-template-columns:1fr;gap:36px; }
-    .milestones-grid{ grid-template-columns:repeat(2,1fr);row-gap:34px; }
-    .ms-timeline{ display:none; }
+    .milestones-grid{ grid-template-columns:repeat(2,1fr);row-gap:36px; }
     .team-grid{ grid-template-columns:repeat(2,1fr); }
     .about-stats{ grid-template-columns:repeat(2,1fr); }
 }
 @media (max-width:560px){
-    .milestones-grid{ grid-template-columns:1fr;max-width:320px;margin-inline:auto; }
-    .ms-visual{ height:168px; }
+    .milestones-grid{ grid-template-columns:1fr;max-width:360px;margin-inline:auto; }
     .team-grid{ grid-template-columns:1fr;max-width:360px;margin-inline:auto; }
     .wc-grid{ grid-template-columns:1fr; }
 }
@@ -2634,73 +2689,61 @@ img{ max-width:100%; height:auto; }
       <p class="section-sub">From a small idea in Mokopane to a team trusted across South Africa.</p>
     </div>
     <div class="milestones-grid">
-      <div class="milestone-card reveal reveal-scale" style="--d:.05s">
-        <div class="ms-visual ms-visual--1">
-          <div class="ms-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.5-2 5-2 5s3.5-.5 5-2c.8-.8.8-2.2 0-3a2.1 2.1 0 0 0-3 0Z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 19 4c0 2.52-.74 6.5-4 9a22.35 22.35 0 0 1-3.98 2.01L12 15Z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+      <div class="milestone-node reveal" style="--accent:#3B4CFF;">
+        <div class="milestone-node-inner">
+          <div class="milestone-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V5a2 2 0 0 1 2-2h9l5 5v13a0 0 0 0 1 0 0H6a2 2 0 0 1-2-2Z"/><path d="M14 3v5h5"/></svg>
           </div>
-          <span class="ms-num">01</span>
-        </div>
-        <span class="ms-badge">2022 — Founded</span>
-        <div class="ms-panel ms-panel--1">
-          <p>Rare Grade Tech was founded in Mokopane with a mission to make quality tech accessible to local businesses.</p>
+          <div class="milestone-content">
+            <div class="milestone-year">2022</div>
+            <h3>Introduction</h3>
+            <p>Rare Grade Tech was founded in Mokopane with a mission to make quality tech accessible to local businesses.</p>
+          </div>
         </div>
       </div>
-      <div class="milestone-card reveal reveal-scale" style="--d:.15s">
-        <div class="ms-visual ms-visual--2">
-          <div class="ms-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <div class="milestone-node reveal" style="--accent:#1118F5;">
+        <div class="milestone-node-inner">
+          <div class="milestone-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M17 11a4 4 0 1 0 0-8"/><path d="M1 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/><path d="M17 14a6 6 0 0 1 6 6v1"/></svg>
           </div>
-          <span class="ms-num">02</span>
-        </div>
-        <span class="ms-badge">2023 — First 20 Clients</span>
-        <div class="ms-panel ms-panel--2">
-          <p>Delivered websites, PC repairs and custom software for early adopters across Limpopo.</p>
+          <div class="milestone-content">
+            <div class="milestone-year">2023</div>
+            <h3>Growth</h3>
+            <p>Delivered websites, PC repairs and custom software for early adopters across Limpopo — first 20 clients.</p>
+          </div>
         </div>
       </div>
-      <div class="milestone-card reveal reveal-scale" style="--d:.25s">
-        <div class="ms-visual ms-visual--3">
-          <div class="ms-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+      <div class="milestone-node reveal" style="--accent:#0D12A0;">
+        <div class="milestone-node-inner">
+          <div class="milestone-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
           </div>
-          <span class="ms-num">03</span>
-        </div>
-        <span class="ms-badge">2024 — Expanded Services</span>
-        <div class="ms-panel ms-panel--3">
-          <p>Launched AI automation, mobile app development and our client portal for transparent project tracking.</p>
+          <div class="milestone-content">
+            <div class="milestone-year">2024</div>
+            <h3>Maturity</h3>
+            <p>Launched AI automation, mobile app development and our client portal for transparent project tracking.</p>
+          </div>
         </div>
       </div>
-      <div class="milestone-card reveal reveal-scale" style="--d:.35s">
-        <div class="ms-visual ms-visual--4">
-          <div class="ms-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.33-7-11a7 7 0 0 1 14 0c0 5.67-7 11-7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
+      <div class="milestone-node reveal" style="--accent:#0A0E5A;">
+        <div class="milestone-node-inner">
+          <div class="milestone-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 15 8.5 22 9.5 17 14.3 18.2 21.2 12 17.8 5.8 21.2 7 14.3 2 9.5 9 8.5Z"/></svg>
           </div>
-          <span class="ms-num">04</span>
-        </div>
-        <span class="ms-badge">2025 — 50+ Nationwide</span>
-        <div class="ms-panel ms-panel--4">
-          <p>Now trusted by 50+ businesses nationwide with consistent 5-star reviews and long-term partnerships.</p>
+          <div class="milestone-content">
+            <div class="milestone-year">2025</div>
+            <h3>Expansion</h3>
+            <p>Now trusted by 50+ businesses nationwide with consistent 5-star reviews and long-term partnerships.</p>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="ms-timeline reveal" aria-hidden="true">
-      <span class="ms-timeline-line"></span>
-      <span class="ms-timeline-dot ms-timeline-dot--1 reveal reveal-scale" style="--d:.1s">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.5-2 5-2 5s3.5-.5 5-2c.8-.8.8-2.2 0-3a2.1 2.1 0 0 0-3 0Z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 19 4c0 2.52-.74 6.5-4 9a22.35 22.35 0 0 1-3.98 2.01L12 15Z"/></svg>
-      </span>
-      <span class="ms-timeline-dot ms-timeline-dot--2 reveal reveal-scale" style="--d:.2s">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-      </span>
-      <span class="ms-timeline-dot ms-timeline-dot--3 reveal reveal-scale" style="--d:.3s">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/></svg>
-      </span>
-      <span class="ms-timeline-dot ms-timeline-dot--4 reveal reveal-scale" style="--d:.4s">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.33-7-11a7 7 0 0 1 14 0c0 5.67-7 11-7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
-      </span>
     </div>
   </div>
 </section>
+
+<!-- TESTIMONIALS
+
+<!-- TESTIMONIALS
 
 <!-- TESTIMONIALS - FIXED HEADING TEXT -->
 <section class="section section-tint" id="testimonials">
