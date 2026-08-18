@@ -2508,6 +2508,102 @@ img{ max-width:100%; height:auto; }
     .team-grid{ grid-template-columns:1fr;max-width:360px;margin-inline:auto; }
     .wc-grid{ grid-template-columns:1fr; }
 }
+
+
+/* === WHY US - 4 CARDS, REDUCED 20% + WEBSITE COLORS === */
+.lis-grid{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:17.6px !important; /* 22px * 0.8 */
+  width:100% !important;
+  margin-bottom:28px !important;
+}
+.lis-card{
+  position:relative !important;
+  background:#FFFFFF !important;
+  border:1px solid #EEF0F8 !important;
+  border-radius:999px !important;
+  min-height:75px !important; /* 94px * 0.8 */
+  display:flex !important;
+  align-items:center !important;
+  padding:14.4px 22px 14.4px 86px !important; /* 18/28/108 *0.8 */
+  margin-left:38px !important; /* 48*0.8 */
+  box-shadow:0 6.4px 19.2px rgba(10,14,90,0.06), 0 1.6px 6.4px rgba(10,14,90,0.04) !important;
+  transition:transform .25s ease, box-shadow .25s ease !important;
+}
+.lis-card:hover{
+  transform:translateY(-2px) !important;
+  box-shadow:0 11px 25px rgba(10,14,90,0.10), 0 3px 9px rgba(10,14,90,0.06) !important;
+}
+.lis-tab{
+  position:absolute !important;
+  left:-38px !important; /* -48*0.8 */
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:70px !important; /* 88*0.8 */
+  height:70px !important;
+  border-radius:50% !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  z-index:2 !important;
+  box-shadow:0 6.4px 16px rgba(10,14,90,0.22) !important;
+}
+.lis-tab-num{
+  color:#FFFFFF !important;
+  font-family:'Space Grotesk',sans-serif !important;
+  font-weight:800 !important;
+  font-size:22px !important; /* 28*0.8 */
+  line-height:1 !important;
+}
+.lis-content h4{
+  margin:0 0 3px !important;
+  font-family:'Inter',sans-serif !important;
+  font-weight:700 !important;
+  font-size:12.4px !important; /* 15.5*0.8 */
+  line-height:1.3 !important;
+  color:#0A0E5A !important;
+}
+.lis-content p{
+  margin:0 !important;
+  font-size:10.8px !important; /* 13.5*0.8 */
+  line-height:1.55 !important;
+  color:#6B6E8A !important;
+}
+.lis-card:nth-child(1) .lis-tab{ background:#1118F5 !important; }
+.lis-card:nth-child(2) .lis-tab{ background:#0D12A0 !important; }
+.lis-card:nth-child(3) .lis-tab{ background:#0A0E5A !important; }
+.lis-card:nth-child(4) .lis-tab{ background:#3B4CFF !important; }
+
+@media (max-width:980px){
+  .lis-card{
+    min-height:67px !important;
+    padding:12px 16px 12px 70px !important;
+    margin-left:32px !important;
+  }
+  .lis-tab{
+    width:64px !important;
+    height:64px !important;
+    left:-32px !important;
+  }
+  .lis-tab-num{ font-size:20px !important; }
+}
+@media (max-width:640px){
+  .lis-card{
+    min-height:62px !important;
+    padding:11px 12px 11px 58px !important;
+    margin-left:28px !important;
+  }
+  .lis-tab{
+    width:56px !important;
+    height:56px !important;
+    left:-28px !important;
+  }
+  .lis-tab-num{ font-size:18px !important; }
+  .lis-content h4{ font-size:11.5px !important; }
+  .lis-content p{ font-size:10px !important; }
+}
+
 </style>
 </head>
 <body>
@@ -2610,41 +2706,33 @@ img{ max-width:100%; height:auto; }
       </div>
       <div>
         <h3 class="about-why-title">Why Choose Us</h3>
-        <div class="wc-grid">
-          <div class="wc-item">
-            <span class="wc-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-            </span>
-            <div>
-              <h4>Reliable Support</h4>
-              <p>On-site & remote help when you need it, not just during launch.</p>
+        <div class="lis-grid">
+          <div class="lis-card">
+            <div class="lis-tab"><span class="lis-tab-num">01</span></div>
+            <div class="lis-content">
+              <h4>Local & Reachable</h4>
+              <p>Based right here in Mokopane, with fast on-site and remote support whenever you need it.</p>
             </div>
           </div>
-          <div class="wc-item">
-            <span class="wc-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </span>
-            <div>
-              <h4>Experienced Team</h4>
-              <p>Professional, skilled and dedicated people behind every project.</p>
+          <div class="lis-card">
+            <div class="lis-tab"><span class="lis-tab-num">02</span></div>
+            <div class="lis-content">
+              <h4>Full-Stack Team</h4>
+              <p>From design to deployment, we handle every layer of your project under one roof.</p>
             </div>
           </div>
-          <div class="wc-item">
-            <span class="wc-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-            </span>
-            <div>
-              <h4>Innovation First</h4>
-              <p>We use modern stacks, AI and smart automations to move faster.</p>
+          <div class="lis-card">
+            <div class="lis-tab"><span class="lis-tab-num">03</span></div>
+            <div class="lis-content">
+              <h4>Modern Technology</h4>
+              <p>We build with reliable, current tools — Firebase, cloud infrastructure and mobile-first frameworks.</p>
             </div>
           </div>
-          <div class="wc-item">
-            <span class="wc-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2.08C10.5 3.5 9.5 3 7.75 3A5.5 5.5 0 0 0 2.5 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 8.04"/><path d="M12 17a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h1Z"/></svg>
-            </span>
-            <div>
-              <h4>Client Centric</h4>
-              <p>We build around your goals, with clear updates via client portal.</p>
+          <div class="lis-card">
+            <div class="lis-tab"><span class="lis-tab-num">04</span></div>
+            <div class="lis-content">
+              <h4>Transparent Process</h4>
+              <p>Track progress, invoices and proposals in real time through your own client portal.</p>
             </div>
           </div>
         </div>
