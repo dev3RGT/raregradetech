@@ -394,8 +394,8 @@
   .contact-social a:hover{background:var(--ink-900);transform:translateY(-2px);}
 
   .contact-form{background:#000000;border-radius:var(--radius-l);padding:calc(var(--gap)*5);color:var(--white);}
-  .contact-form h3{font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:700;margin:0 0 calc(var(--gap)*1);}
-  .contact-form>p{font-size:13.8px;color:rgba(255,255,255,.6);margin:0 0 calc(var(--gap)*3.5);}
+  .contact-form h3{font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:700;margin:0 0 calc(var(--gap)*1);text-align:center;}
+  .contact-form>p{font-size:13.8px;color:rgba(255,255,255,.6);margin:0 0 calc(var(--gap)*3.5);text-align:center;}
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--gap)*2);margin-bottom:calc(var(--gap)*2);}
   .field{display:flex;flex-direction:column;gap:6px;margin-bottom:calc(var(--gap)*2);}
   .field label{font-size:12.5px;font-weight:600;color:rgba(255,255,255,.7);}
@@ -613,13 +613,13 @@
   object-fit:contain;
   object-position:bottom right;
   display:block;
-  transform:translateX(10%);
+  transform:translateX(-5%);
   filter:drop-shadow(0 40px 60px rgba(2,4,30,.55));
   animation:cheroPhotoIn 1.1s cubic-bezier(.16,.84,.44,1) .2s both;
 }
 @keyframes cheroPhotoIn{
-  from{opacity:0; transform:translateX(10%) translateY(56px) scale(.96);}
-  to{opacity:1; transform:translateX(10%) translateY(0) scale(1);}
+  from{opacity:0; transform:translateX(-5%) translateY(56px) scale(.96);}
+  to{opacity:1; transform:translateX(-5%) translateY(0) scale(1);}
 }
 
 .contact-hero-inner{
@@ -640,22 +640,11 @@
   margin:0 0 calc(var(--gap)*3);color:var(--white);text-transform:uppercase;text-wrap:balance;
   animation:fadeUpIn .8s cubic-bezier(.16,.84,.44,1) .1s both;
 }
-.visually-hidden{
-  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
-  clip:rect(0,0,0,0);white-space:nowrap;border:0;
+.chero-cta-row{
+  display:flex;flex-wrap:wrap;align-items:center;gap:calc(var(--gap)*2.5);
+  margin:0 0 calc(var(--gap)*1);
+  animation:fadeUpIn .8s cubic-bezier(.16,.84,.44,1) .3s both;
 }
-.typed-cursor{
-  display:inline-block;
-  margin-left:2px;
-  font-weight:400;
-  animation:typedBlink .9s steps(1) infinite;
-  transition:opacity .3s ease;
-}
-.typed-cursor.typed-cursor-done{
-  animation:none;
-  opacity:0;
-}
-@keyframes typedBlink{ 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
 .chero-intro{
   font-style:italic;
   font-size:clamp(15px,1.15vw,17.5px);line-height:1.7;color:var(--text-dim);
@@ -766,8 +755,8 @@ a.chero-line:hover{color:var(--blue-700);}
   .map-card:hover{transform:none;}
 }
 .map-card-head{padding:calc(var(--gap)*3) calc(var(--gap)*3) calc(var(--gap)*2);}
-.map-card-head h3{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;margin:0 0 6px;color:var(--ink-900);}
-.map-card-head p{margin:0;font-size:13.8px;color:var(--ink-600);line-height:1.5;}
+.map-card-head h3{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;margin:0 0 6px;color:var(--ink-900);text-align:center;}
+.map-card-head p{margin:0;font-size:13.8px;color:var(--ink-600);line-height:1.5;text-align:center;}
 .map-frame-wrap{position:relative;flex:1 1 auto;min-height:340px;}
 .map-frame-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;}
 .map-card-foot{
@@ -927,8 +916,18 @@ a.form-contact-item:hover{color:#FFFFFF;}
     <div class="contact-hero-inner">
       <div class="chero-content">
         <span class="chero-eyebrow">Contact Us</span>
-        <h1 class="chero-headline"><span class="visually-hidden">Get In Touch</span><span class="typed-text" id="typedHeadline" aria-hidden="true"></span><span class="typed-cursor" aria-hidden="true">|</span></h1>
+        <h1 class="chero-headline">Get In Touch</h1>
         <p class="chero-intro">Let&rsquo;s discuss how technology can help your business grow. Whether you need technical support, a website, a mobile application, AI solutions, or a custom software system, our team is ready to help.</p>
+        <div class="chero-cta-row">
+          <a class="btn btn-secondary" href="tel:+27615270749">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Call For A Consultation
+          </a>
+          <a class="btn btn-outline" href="https://wa.me/27615270749?text=Hi%20Rare%20Grade%20Tech%2C%20I%27d%20like%20to%20book%20a%20consultation%20call." target="_blank" rel="noopener">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.15c-.22.62-1.28 1.2-1.76 1.24-.45.05-.9.24-3.03-.63-2.56-1.05-4.2-3.66-4.33-3.83-.13-.17-1.03-1.37-1.03-2.62 0-1.24.65-1.85.89-2.1.22-.24.5-.3.66-.3.17 0 .33 0 .48.01.16.01.36-.06.56.43.22.53.74 1.83.8 1.97.06.13.1.29.02.46-.08.17-.13.28-.25.43-.13.15-.27.34-.38.46-.13.13-.26.27-.11.53.15.27.68 1.12 1.46 1.82 1 .89 1.85 1.17 2.11 1.3.27.13.42.11.58-.07.16-.18.68-.79.86-1.06.18-.27.36-.22.6-.13.25.09 1.55.73 1.82.86.27.13.44.2.51.31.07.13.07.66-.15 1.28z"/></svg>
+            Book A Call On WhatsApp
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -936,7 +935,7 @@ a.form-contact-item:hover{color:#FFFFFF;}
   <!-- Contact Form + Live Map -->
   <section class="section section-tint" id="contact">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head center">
         <span class="eyebrow">Send A Message</span>
         <h2 class="section-title">Let&rsquo;s Build Something Great</h2>
         <p class="section-sub">Fill in the form and we&rsquo;ll get back to you with a free consultation and quotation, or find us on the map below.</p>
@@ -1062,31 +1061,6 @@ a.form-contact-item:hover{color:#FFFFFF;}
 
 <script>
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Typewriter effect for the "Get In Touch" hero headline
-    (function () {
-      const el = document.getElementById('typedHeadline');
-      const cursor = document.querySelector('.typed-cursor');
-      if (!el) return;
-      const text = 'Get In Touch';
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduced) {
-        el.textContent = text;
-        if (cursor) cursor.style.display = 'none';
-        return;
-      }
-      let i = 0;
-      function type() {
-        el.textContent = text.slice(0, i);
-        i++;
-        if (i <= text.length) {
-          setTimeout(type, 130);
-        } else if (cursor) {
-          cursor.classList.add('typed-cursor-done');
-        }
-      }
-      setTimeout(type, 400); // let the headline's fade-up entrance start first
-    })();
 
     // Fade/slide in elements marked with .reveal (and .reveal-left/-right/-scale)
     // once they scroll into view. Without this, anything using those classes
