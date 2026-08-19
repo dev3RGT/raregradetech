@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Our Services — Rare Grade Tech</title>
+<title>Pricing — Rare Grade Tech</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="Explore Rare Grade Tech's services — software solutions, web &amp; mobile apps, AI automation, PC repair, IT support and graphic design — with pricing packages and our step-by-step process." />
+<meta name="description" content="Explore Rare Grade Tech's transparent pricing packages for software, web and mobile apps, AI automation, IT support and design." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Montserrat:ital,wght@1,800&display=swap" rel="stylesheet" />
@@ -2900,6 +2900,42 @@ img{ max-width:100%; height:auto; }
   .pricing-filter{ padding:10px 16px; font-size:12.8px; }
 }
 
+
+
+  /* ===== PRICING PAGE ADDITIONS ===== */
+  .customize-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:calc(var(--gap)*5);align-items:stretch;}
+  .customize-copy{background:linear-gradient(155deg,#1118F5 0%,#0D12A0 55%,#0A0E5A 100%);color:var(--white);border-radius:var(--radius-l);padding:calc(var(--gap)*5);display:flex;flex-direction:column;justify-content:center;}
+  .customize-copy .eyebrow{color:rgba(255,255,255,.75);}
+  .customize-copy h3{font-family:'Space Grotesk',sans-serif;font-size:clamp(25px,3vw,38px);line-height:1.05;margin:10px 0 16px;color:var(--white);}
+  .customize-copy p{color:rgba(255,255,255,.78);line-height:1.7;margin:0;max-width:510px;}
+  .customize-points{display:grid;gap:12px;margin-top:28px;}
+  .customize-point{display:flex;align-items:flex-start;gap:10px;color:rgba(255,255,255,.92);font-size:14px;line-height:1.5;}
+  .customize-point svg{width:18px;height:18px;flex:none;margin-top:2px;color:#fff;}
+  .customize-form{background:var(--surface-alt);border:1px solid var(--card-line);border-radius:var(--radius-l);padding:calc(var(--gap)*5);box-shadow:0 18px 42px rgba(15,20,90,.06);}
+  .customize-form h3{font-family:'Space Grotesk',sans-serif;font-size:22px;margin:0 0 6px;color:var(--ink-900);}
+  .customize-form > p{font-size:13.5px;color:var(--ink-600);line-height:1.55;margin:0 0 24px;}
+  .customize-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .customize-field{display:flex;flex-direction:column;gap:7px;}
+  .customize-field.full{grid-column:1 / -1;}
+  .customize-field label{font-size:12px;font-weight:700;color:var(--ink-900);}
+  .customize-field select,.customize-field input,.customize-field textarea{width:100%;border:1px solid var(--card-line);border-radius:var(--radius-s);background:#FBFBFE;color:var(--ink-900);font:inherit;font-size:13.5px;padding:12px 13px;outline:none;transition:border-color .2s ease,box-shadow .2s ease;}
+  .customize-field textarea{min-height:92px;resize:vertical;}
+  .customize-field select:focus,.customize-field input:focus,.customize-field textarea:focus{border-color:var(--blue-accent);box-shadow:0 0 0 3px rgba(59,76,255,.12);}
+  .customize-submit{margin-top:20px;width:100%;}
+  .faq-list{max-width:920px;margin:0 auto;display:grid;gap:12px;}
+  .faq-item{background:var(--surface-alt);border:1px solid var(--card-line);border-radius:var(--radius-m);overflow:hidden;}
+  .faq-item summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 22px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;color:var(--ink-900);}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:'+';font-family:'Inter',sans-serif;font-size:24px;font-weight:400;color:var(--blue-700);line-height:1;transition:transform .2s ease;}
+  .faq-item[open] summary::after{content:'−';}
+  .faq-answer{padding:0 22px 20px;color:var(--ink-600);font-size:14px;line-height:1.7;max-width:800px;}
+  .pricing-cta-banner{background:linear-gradient(155deg,#1118F5 0%,#0D12A0 55%,#0A0E5A 100%);border-radius:var(--radius-l);padding:clamp(34px,6vw,72px) calc(var(--gap)*5);text-align:center;color:var(--white);}
+  .pricing-cta-banner h2{font-family:'Montserrat',sans-serif;font-style:italic;font-weight:800;font-size:clamp(30px,5vw,58px);line-height:1;margin:0 0 14px;text-transform:uppercase;}
+  .pricing-cta-banner p{color:rgba(255,255,255,.82);font-size:16px;line-height:1.6;margin:0 auto 26px;max-width:560px;}
+  .pricing-cta-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;}
+  @media(max-width:820px){.customize-layout{grid-template-columns:1fr;}}
+  @media(max-width:560px){.customize-fields{grid-template-columns:1fr;}.customize-field.full{grid-column:auto;}.customize-copy,.customize-form{padding:calc(var(--gap)*3);}.faq-item summary{padding:17px 18px;font-size:15px;}.faq-answer{padding:0 18px 18px;}}
+
 </style>
 </head>
 <body>
@@ -2942,7 +2978,7 @@ img{ max-width:100%; height:auto; }
 
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a class="active" href="services.html">Services</a></li>
+        <li><a class="active" href="pricing.html">Pricing</a></li>
         <li><a href="index.html#solutions">Featured Projects</a></li>
         <li><a href="index.html#why-choose-us">Why Choose Us</a></li>
         <li><a href="#process">How We Work</a></li>
@@ -2960,7 +2996,7 @@ img{ max-width:100%; height:auto; }
     <div class="mobile-panel" id="mobilePanel">
       <div class="mobile-panel-inner">
         <a href="index.html">Home</a>
-        <a href="services.html">Services</a>
+        <a href="pricing.html">Pricing</a>
         <a href="index.html#solutions">Featured Projects</a>
         <a href="index.html#why-choose-us">Why Choose Us</a>
         <a href="#process">How We Work</a>
@@ -2975,149 +3011,16 @@ img{ max-width:100%; height:auto; }
 <section class="hero hero--services" id="services-hero">
     <div class="hero-texture" aria-hidden="true"></div>
     <div class="hero-inner">
-        <h1 class="headline">OUR SERVICES</h1>
-        <p class="subcopy">Software, web &amp; mobile, AI automation, IT support and design — everything your business needs, built and supported by one team.</p>
+        <h1 class="headline">PRICING THAT FITS YOUR NEXT MOVE</h1>
+        <p class="subcopy">Clear packages for ambitious ideas, with the flexibility to tailor the right solution around your goals, timeline and budget.</p>
         <div class="hero-cta">
             <a class="btn btn-secondary" href="#pricing">
-                <span>View Pricing</span>
+                <span>Explore Packages</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
         </div>
     </div>
 </section>
-
-  <!-- Services -->
-  <section class="section" id="services">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">What We Do</span>
-        <h2 class="section-title">Elevate Your Brand With Our Services</h2>
-        <p class="section-sub">Six service lines, one team. Pick what you need and we'll take it from discovery to launch and beyond.</p>
-      </div>
-
-      <div class="grid-4" id="services-grid">
-        <div class="service-card reveal" style="--d:0s">
-          <div class="icon-badge">
-            <img src="https://i.postimg.cc/rsGGkQ96/re-resized-canvas-873x628.png" alt="Software Solutions icon" loading="lazy" />
-          </div>
-          <h3>Software Solutions</h3>
-          <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>System automation</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Tailored solutions</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Cloud-based solutions</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Integration capabilities</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>User-friendly interfaces</li>
-          </ul>
-          <div class="service-more-btn">
-            <a href="#pricing" class="btn btn-outline btn-sm get-service-btn" data-service="software">
-              <span class="label">Get This Service</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-          </div>
-        </div>
-
-        <div class="service-card">
-          <div class="icon-badge">
-            <img src="https://i.postimg.cc/ydZXfVgW/mobile-resized-canvas-873x628.png" alt="Web &amp; Mobile Apps icon" loading="lazy" />
-          </div>
-          <h3>Web &amp; Mobile Apps</h3>
-          <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Mobile app creation</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Mobile-responsive websites</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Seamless integration</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>User-centric design</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Agile development</li>
-          </ul>
-          <div class="service-more-btn">
-            <a href="#pricing" class="btn btn-outline btn-sm get-service-btn" data-service="web-mobile">
-              <span class="label">Get This Service</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-          </div>
-        </div>
-
-        <div class="service-card">
-          <div class="icon-badge">
-            <img src="https://i.postimg.cc/pXZQccT8/ai-resized-canvas-873x628.png" alt="AI Automation &amp; Integrations icon" loading="lazy" />
-          </div>
-          <h3>AI Automation &amp; Integrations</h3>
-          <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Workflow automation</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>AI-powered chatbots</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Third-party API integrations</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Data syncing &amp; pipelines</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Custom AI-powered tools</li>
-          </ul>
-          <div class="service-more-btn">
-            <a href="#pricing" class="btn btn-outline btn-sm get-service-btn" data-service="ai">
-              <span class="label">Get This Service</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-          </div>
-        </div>
-
-        <div class="service-card">
-          <div class="icon-badge">
-            <img src="https://i.postimg.cc/XYtrs9fS/software-resized-canvas-873x628.png" alt="PC Repair icon" loading="lazy" />
-          </div>
-          <h3>PC Repair</h3>
-          <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Hardware repair</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Software diagnostics</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>System upgrades</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Screen replacement</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Refurbished device sales</li>
-          </ul>
-          <div class="service-more-btn">
-            <a href="#pricing" class="btn btn-outline btn-sm get-service-btn" data-service="pc-repair">
-              <span class="label">Get This Service</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-          </div>
-        </div>
-
-        <div class="service-card">
-          <div class="icon-badge">
-            <img src="https://i.postimg.cc/MZ1mVp8z/call-resized-canvas-873x628.png" alt="IT Support &amp; Maintenance icon" loading="lazy" />
-          </div>
-          <h3>IT Support &amp; Maintenance</h3>
-          <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Network setup &amp; monitoring</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Data backup &amp; recovery</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Cybersecurity essentials</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Remote &amp; on-site support</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Preventative maintenance plans</li>
-          </ul>
-          <div class="service-more-btn">
-            <a href="#pricing" class="btn btn-outline btn-sm get-service-btn" data-service="it-support">
-              <span class="label">Get This Service</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-          </div>
-        </div>
-
-        <div class="service-card">
-          <div class="icon-badge">
-            <img src="https://i.postimg.cc/Jzpq0YC5/design-resized-canvas-873x628.png" alt="Graphic Design icon" loading="lazy" />
-          </div>
-          <h3>Graphic Design</h3>
-          <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Brand identity</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Digital marketing assets</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Creative direction</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Signage &amp; typography</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Print materials</li>
-          </ul>
-          <div class="service-more-btn">
-            <a href="#pricing" class="btn btn-outline btn-sm get-service-btn" data-service="design">
-              <span class="label">Get This Service</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Pricing -->
   <section class="section section-tint" id="pricing">
@@ -3401,12 +3304,23 @@ img{ max-width:100%; height:auto; }
     </div>
   </section>
 
+  <!-- Package Customization -->
+  <section class="section" id="customize">
+    <div class="wrap">
+      <div class="section-head reveal"><span class="eyebrow">Make It Yours</span><h2 class="section-title">Build A Package Around Your Goals</h2><p class="section-sub">Start with a package, then tell us what you need adjusted. We’ll shape the scope, features and support around your next move.</p></div>
+      <div class="customize-layout reveal">
+        <div class="customize-copy"><span class="eyebrow">Flexible By Design</span><h3>Your project is not one-size-fits-all.</h3><p>Choose a starting point and share the details that matter. Our team will turn your brief into a clear recommendation and tailored quote.</p><div class="customize-points"><div class="customize-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Scope the right features for your budget.</span></div><div class="customize-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Add support, integrations or extra revisions.</span></div><div class="customize-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Receive a clear quote before work begins.</span></div></div></div>
+        <form class="customize-form" action="contact.html" method="get"><h3>Customize your package</h3><p>Give us a quick snapshot and we’ll help you choose the best fit.</p><div class="customize-fields"><div class="customize-field"><label for="package-type">Starting package</label><select id="package-type" name="package"><option>Software Solutions</option><option>Web &amp; Mobile Apps</option><option>AI Automation</option><option>PC Repair</option><option>IT Support</option><option>Graphic Design</option></select></div><div class="customize-field"><label for="budget">Estimated budget</label><select id="budget" name="budget"><option>Help me choose</option><option>Under R10,000</option><option>R10,000 – R25,000</option><option>R25,000 – R50,000</option><option>R50,000+</option></select></div><div class="customize-field full"><label for="project-notes">What would you like to include?</label><textarea id="project-notes" name="notes" placeholder="Tell us about your goals, features, timeline or support needs..."></textarea></div></div><button class="btn btn-block-ink customize-submit" type="submit">Request a Quote <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form>
+      </div>
+    </div>
+  </section>
+
   <!-- How We Work -->
   <section class="section" id="process">
     <div class="wrap">
       <div class="section-head reveal">
         <span class="eyebrow">How We Work</span>
-        <h2 class="section-title">Your Journey When You Choose A Service</h2>
+        <h2 class="section-title">Your Journey When You Choose A Package</h2>
         <p class="section-sub">A clear, collaborative process from first conversation to launch — and beyond.</p>
       </div>
 
@@ -3476,6 +3390,12 @@ img{ max-width:100%; height:auto; }
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section class="section section-tint" id="faq"><div class="wrap"><div class="section-head reveal"><span class="eyebrow">Questions, Answered</span><h2 class="section-title">Frequently Asked Questions</h2><p class="section-sub">Everything you need to know before choosing a package or requesting a tailored quote.</p></div><div class="faq-list reveal"><details class="faq-item"><summary>How long does a project take?</summary><div class="faq-answer">Most projects take between two and twelve weeks, depending on the package, scope and feedback turnaround. We’ll confirm a realistic timeline before work begins.</div></details><details class="faq-item"><summary>Do you offer refunds?</summary><div class="faq-answer">Because work is tailored and delivery begins after approval, refunds are assessed according to the agreed project terms. We’ll make the scope and payment milestones clear upfront.</div></details><details class="faq-item"><summary>How many revisions are included?</summary><div class="faq-answer">Each package includes a defined number of revision rounds. Additional revisions can be added to a custom quote when your project needs them.</div></details><details class="faq-item"><summary>Can I upgrade my package?</summary><div class="faq-answer">Yes. Packages can be upgraded as your needs grow. We’ll review the remaining scope and recommend the most practical next step.</div></details><details class="faq-item"><summary>Do you offer payment plans?</summary><div class="faq-answer">Payment plans are available for qualifying projects and are agreed before kickoff. Ask about milestones when you request your quote.</div></details><details class="faq-item"><summary>Do you provide ongoing support?</summary><div class="faq-answer">Yes. Support options range from the included post-launch period to ongoing maintenance and support plans tailored to your needs.</div></details><details class="faq-item"><summary>What happens after I purchase?</summary><div class="faq-answer">We’ll confirm your requirements, schedule a discovery session, finalise the project plan and begin the first phase with clear next steps.</div></details><details class="faq-item"><summary>Are hosting and domain included?</summary><div class="faq-answer">Hosting and domain registration depend on the package and project requirements. We’ll state all recurring costs clearly in your quote before approval.</div></details></div></div></section>
+
+  <!-- Strong CTA -->
+  <section class="section" id="start-project"><div class="wrap"><div class="pricing-cta-banner reveal"><h2>Ready To Get Started?</h2><p>Let’s turn your idea into something people remember.</p><div class="pricing-cta-actions"><a class="btn btn-secondary" href="contact.html">Get a Quote <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn btn-outline" href="contact.html">Start a Project</a></div></div></div></section>
+
 <footer class="site-footer">
     <div class="wrap footer-grid">
       <div class="footer-brand">
@@ -3495,7 +3415,7 @@ img{ max-width:100%; height:auto; }
         <h5>Company</h5>
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="services.html">Services</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
           <li><a href="index.html#solutions">Featured Projects</a></li>
           <li><a href="contact.html">Contact Us</a></li>
         </ul>
@@ -3620,19 +3540,6 @@ img{ max-width:100%; height:auto; }
     f.addEventListener('click', () => activate(f.dataset.filter));
   });
 
-  // "Get This Service" buttons on the service cards jump to pricing
-  // and pre-select the matching filter.
-  document.querySelectorAll('.get-service-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const key = btn.dataset.service;
-      if (key) {
-        e.preventDefault();
-        activate(key);
-        const target = document.getElementById('pricing');
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
 })();
 </script>
 
