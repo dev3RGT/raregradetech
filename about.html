@@ -2373,27 +2373,26 @@ img{ max-width:100%; height:auto; }
 .logo-item{ display:flex;align-items:center;justify-content:center;flex-shrink:0;height:116px; }
 .logo-item img{ height:100%;width:auto;max-width:332px;object-fit:contain; }
 
-/* Milestones — single horizontal flow, icons linked by arrowed connectors */
+/* Milestones — infinite auto-scrolling flow, same effect as Trusted By logos */
 
-.milestones-scroll{
-  overflow-x:auto;
-  overflow-y:visible;
-  padding:14px 4px 22px;
-  margin:0 -4px;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:thin;
-  scrollbar-color:#C7CCEC transparent;
+.milestone-marquee{
+  position:relative;
+  overflow:hidden;
+  width:100%;
+  cursor:grab;
+  padding:14px 0 22px;
+  -webkit-mask-image:linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  mask-image:linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
 }
-.milestones-scroll::-webkit-scrollbar{ height:6px; }
-.milestones-scroll::-webkit-scrollbar-thumb{ background:#C7CCEC; border-radius:6px; }
-.milestones-scroll::-webkit-scrollbar-track{ background:transparent; }
+.milestone-marquee:active{ cursor:grabbing; }
 
-.milestones-row{
+.milestone-track{
   display:flex;
   align-items:flex-start;
+  flex-shrink:0;
   gap:0;
   width:max-content;
-  min-width:100%;
+  will-change:transform;
 }
 .milestone-node{
   position:relative;
@@ -2718,7 +2717,7 @@ img{ max-width:100%; height:auto; }
 
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="#services">Services</a></li>
+        <li><a href="services.html">Services</a></li>
         <li><a href="#solutions">Featured Projects</a></li>
         <li><a href="#why-choose-us">Why Choose Us</a></li>
         <li><a href="#process">How We Work</a></li>
@@ -2736,7 +2735,7 @@ img{ max-width:100%; height:auto; }
     <div class="mobile-panel" id="mobilePanel">
       <div class="mobile-panel-inner">
         <a href="index.html">Home</a>
-        <a href="#services">Services</a>
+        <a href="services.html">Services</a>
         <a href="#solutions">Featured Projects</a>
         <a href="#why-choose-us">Why Choose Us</a>
         <a href="#process">How We Work</a>
@@ -2849,9 +2848,9 @@ img{ max-width:100%; height:auto; }
       <h2 class="section-title">Milestones</h2>
       <p class="section-sub">From our humble beginnings to where we are today, every milestone reflects our growth, innovation and commitment to delivering better technology solutions.</p>
     </div>
-    <div class="milestones-scroll">
-      <div class="milestones-row">
-        <div class="milestone-node reveal" style="--accent:#3B4CFF;">
+    <div class="milestone-marquee" id="milestoneMarquee">
+      <div class="milestone-track" id="milestoneTrack">
+        <div class="milestone-node" style="--accent:#3B4CFF;">
           <div class="milestone-node-inner">
             <div class="milestone-circle">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
@@ -2866,7 +2865,7 @@ img{ max-width:100%; height:auto; }
         <div class="milestone-connector" aria-hidden="true">
           <svg viewBox="0 0 46 14" preserveAspectRatio="none"><line x1="0" y1="7" x2="34" y2="7"/><polygon points="32,2 44,7 32,12"/></svg>
         </div>
-        <div class="milestone-node reveal" style="--accent:#1118F5;">
+        <div class="milestone-node" style="--accent:#1118F5;">
           <div class="milestone-node-inner">
             <div class="milestone-circle">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
@@ -2881,7 +2880,7 @@ img{ max-width:100%; height:auto; }
         <div class="milestone-connector" aria-hidden="true">
           <svg viewBox="0 0 46 14" preserveAspectRatio="none"><line x1="0" y1="7" x2="34" y2="7"/><polygon points="32,2 44,7 32,12"/></svg>
         </div>
-        <div class="milestone-node reveal" style="--accent:#0D12A0;">
+        <div class="milestone-node" style="--accent:#0D12A0;">
           <div class="milestone-node-inner">
             <div class="milestone-circle">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V5a2 2 0 0 1 2-2h9l5 5v13a0 0 0 0 1 0 0H6a2 2 0 0 1-2-2Z"/><path d="M14 3v5h5"/></svg>
@@ -2896,7 +2895,7 @@ img{ max-width:100%; height:auto; }
         <div class="milestone-connector" aria-hidden="true">
           <svg viewBox="0 0 46 14" preserveAspectRatio="none"><line x1="0" y1="7" x2="34" y2="7"/><polygon points="32,2 44,7 32,12"/></svg>
         </div>
-        <div class="milestone-node reveal" style="--accent:#0A0E5A;">
+        <div class="milestone-node" style="--accent:#0A0E5A;">
           <div class="milestone-node-inner">
             <div class="milestone-circle">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/></svg>
@@ -2911,7 +2910,7 @@ img{ max-width:100%; height:auto; }
         <div class="milestone-connector" aria-hidden="true">
           <svg viewBox="0 0 46 14" preserveAspectRatio="none"><line x1="0" y1="7" x2="34" y2="7"/><polygon points="32,2 44,7 32,12"/></svg>
         </div>
-        <div class="milestone-node reveal" style="--accent:#3B4CFF;">
+        <div class="milestone-node" style="--accent:#3B4CFF;">
           <div class="milestone-node-inner">
             <div class="milestone-circle">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V5a2 2 0 0 1 2-2h9l5 5v13a0 0 0 0 1 0 0H6a2 2 0 0 1-2-2Z"/><path d="M14 3v5h5"/></svg>
@@ -2926,7 +2925,7 @@ img{ max-width:100%; height:auto; }
         <div class="milestone-connector" aria-hidden="true">
           <svg viewBox="0 0 46 14" preserveAspectRatio="none"><line x1="0" y1="7" x2="34" y2="7"/><polygon points="32,2 44,7 32,12"/></svg>
         </div>
-        <div class="milestone-node reveal" style="--accent:#1118F5;">
+        <div class="milestone-node" style="--accent:#1118F5;">
           <div class="milestone-node-inner">
             <div class="milestone-circle">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M17 11a4 4 0 1 0 0-8"/><path d="M1 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/><path d="M17 14a6 6 0 0 1 6 6v1"/></svg>
@@ -2941,7 +2940,7 @@ img{ max-width:100%; height:auto; }
         <div class="milestone-connector" aria-hidden="true">
           <svg viewBox="0 0 46 14" preserveAspectRatio="none"><line x1="0" y1="7" x2="34" y2="7"/><polygon points="32,2 44,7 32,12"/></svg>
         </div>
-        <div class="milestone-node reveal" style="--accent:#0D12A0;">
+        <div class="milestone-node" style="--accent:#0D12A0;">
           <div class="milestone-node-inner">
             <div class="milestone-circle">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/><path d="M17.5 3.5a3.5 3.5 0 0 1 0 7"/></svg>
@@ -2956,7 +2955,7 @@ img{ max-width:100%; height:auto; }
         <div class="milestone-connector" aria-hidden="true">
           <svg viewBox="0 0 46 14" preserveAspectRatio="none"><line x1="0" y1="7" x2="34" y2="7"/><polygon points="32,2 44,7 32,12"/></svg>
         </div>
-        <div class="milestone-node reveal" style="--accent:#3B4CFF;">
+        <div class="milestone-node" style="--accent:#3B4CFF;">
           <div class="milestone-node-inner">
             <div class="milestone-circle">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 15 8.5 22 9.5 17 14.3 18.2 21.2 12 17.8 5.8 21.2 7 14.3 2 9.5 9 8.5Z"/></svg>
@@ -2971,7 +2970,7 @@ img{ max-width:100%; height:auto; }
         <div class="milestone-connector" aria-hidden="true">
           <svg viewBox="0 0 46 14" preserveAspectRatio="none"><line x1="0" y1="7" x2="34" y2="7"/><polygon points="32,2 44,7 32,12"/></svg>
         </div>
-        <div class="milestone-node reveal" style="--accent:#0D12A0;">
+        <div class="milestone-node" style="--accent:#0D12A0;">
           <div class="milestone-node-inner">
             <div class="milestone-circle">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
@@ -2982,6 +2981,9 @@ img{ max-width:100%; height:auto; }
               <p>Moved into a larger office and expanded our team to support continued growth and an increasing demand for our services.</p>
             </div>
           </div>
+        </div>
+        <div class="milestone-connector" aria-hidden="true">
+          <svg viewBox="0 0 46 14" preserveAspectRatio="none"><line x1="0" y1="7" x2="34" y2="7"/><polygon points="32,2 44,7 32,12"/></svg>
         </div>
       </div>
     </div>
@@ -3297,6 +3299,59 @@ img{ max-width:100%; height:auto; }
     window.addEventListener('resize', syncNavHeight);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
   }
+})();
+
+// Generic infinite marquee: duplicate track content, drag-scroll, slow-stop on hover
+function initMarquee(marqueeEl, trackEl, baseSpeed){
+  if(!marqueeEl || !trackEl) return;
+  // duplicate for seamless loop
+  trackEl.innerHTML = trackEl.innerHTML + trackEl.innerHTML;
+  let x = 0;
+  let startX = 0;
+  let startTranslate = 0;
+  let isDragging = false;
+  let isHovering = false;
+  let rafId = null;
+  let targetSpeed = baseSpeed;
+  let currentSpeed = baseSpeed;
+  let halfWidth = trackEl.scrollWidth / 2;
+  function calcHalf(){ halfWidth = trackEl.scrollWidth / 2; }
+  function animate(){
+    if(!isDragging){
+      if(Math.abs(currentSpeed - targetSpeed) > 0.01){
+        currentSpeed += (targetSpeed - currentSpeed) * 0.08;
+      } else { currentSpeed = targetSpeed; }
+    }
+    if(!isDragging){
+      x -= currentSpeed;
+      if(Math.abs(x) >= halfWidth) x = 0;
+      trackEl.style.transform = 'translate3d(' + x + 'px,0,0)';
+    }
+    rafId = requestAnimationFrame(animate);
+  }
+  marqueeEl.addEventListener('mouseenter', ()=>{ isHovering = true; targetSpeed = 0; });
+  marqueeEl.addEventListener('mouseleave', ()=>{ isHovering = false; if(!isDragging) targetSpeed = baseSpeed; });
+  marqueeEl.addEventListener('mousedown', (e)=>{ isDragging = true; startX = e.clientX; startTranslate = x; marqueeEl.style.cursor='grabbing'; targetSpeed=0; });
+  window.addEventListener('mousemove', (e)=>{ if(!isDragging) return; const diff = e.clientX - startX; x = startTranslate + diff; trackEl.style.transform = 'translate3d(' + x + 'px,0,0)'; });
+  window.addEventListener('mouseup', ()=>{ if(!isDragging) return; isDragging=false; marqueeEl.style.cursor='grab'; if(x>0) x=0; if(Math.abs(x)>=halfWidth) x = x % halfWidth; if(!isHovering) targetSpeed=baseSpeed; });
+  marqueeEl.addEventListener('touchstart', (e)=>{ isDragging=true; startX=e.touches[0].clientX; startTranslate=x; targetSpeed=0; }, {passive:true});
+  window.addEventListener('touchmove', (e)=>{ if(!isDragging) return; const diff = e.touches[0].clientX - startX; x = startTranslate + diff; trackEl.style.transform = 'translate3d(' + x + 'px,0,0)'; }, {passive:true});
+  window.addEventListener('touchend', ()=>{ if(!isDragging) return; isDragging=false; if(!isHovering) targetSpeed=baseSpeed; if(x>0) x=0; if(Math.abs(x)>=halfWidth) x = x % halfWidth; });
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{ if(entry.isIntersecting){ if(!rafId) animate(); } else { if(rafId){ cancelAnimationFrame(rafId); rafId=null; }} });
+  }, {threshold:0.1});
+  observer.observe(marqueeEl);
+  window.addEventListener('resize', calcHalf);
+  window.addEventListener('load', calcHalf);
+  calcHalf();
+  animate();
+}
+
+// Milestones infinite scroll — same effect and styling as Trusted By logos
+(function(){
+  const marquee = document.getElementById('milestoneMarquee');
+  const track = document.getElementById('milestoneTrack');
+  initMarquee(marquee, track, 0.5);
 })();
 
 // Trusted logos infinite scroll with slow stop on hover (same easing as testimonials)
