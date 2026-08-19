@@ -815,6 +815,23 @@ a.form-contact-item:hover{color:#FFFFFF;}
   box-shadow:0 8px 30px rgba(2,4,30,.35);
 }
 
+/* Buttons — same modern pill sizing as home/about */
+.btn{
+  border-radius: 999px !important;
+  padding: 15px 30px !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+.btn-sm{ border-radius: 999px !important; padding: 11px 22px !important; }
+
+@media (max-width: 768px){
+  .navbar .wrap{ padding-block:14px !important; }
+  .logo-image{ height:44px !important; }
+}
+@media (max-width: 480px){
+  .btn{ padding:13px 20px !important; font-size:14px !important; }
+}
+
 /* Headings — Montserrat ExtraBold Italic, same as home */
 .chero-headline, .section-title{
   font-family:'Montserrat', sans-serif !important;
