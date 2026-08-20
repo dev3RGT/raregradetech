@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Pricing — Rare Grade Tech</title>
+<title>Our Services — Rare Grade Tech</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="Explore Rare Grade Tech's transparent pricing packages for software, web and mobile apps, AI automation, IT support and design." />
+<meta name="description" content="Explore Rare Grade Tech's services — software solutions, web &amp; mobile apps, AI automation &amp; integrations, PC repair, IT support and graphic design — with clear explanations and pricing packages." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Montserrat:ital,wght@1,800&display=swap" rel="stylesheet" />
@@ -2744,6 +2744,94 @@ img{ max-width:100%; height:auto; }
 /* ===== SERVICES PAGE — service card CTA relabel ===== */
 #services-grid .service-more-btn .btn{ width:100%; }
 
+/* ===== OUR SERVICES (tabs, 40/60 split) ===== */
+.svc-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin:0 0 44px;
+}
+.svc-tab{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:11px 22px;
+  border-radius:999px;
+  border:1px solid var(--card-line);
+  background:var(--surface-alt);
+  color:var(--ink-600);
+  font-size:13.5px;
+  font-weight:700;
+  letter-spacing:.01em;
+  cursor:pointer;
+  transition:background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.svc-tab:hover{ transform:translateY(-2px); border-color:var(--blue-accent); color:var(--blue-700); }
+.svc-tab.is-active{
+  background:linear-gradient(165deg, #151DFF 0%, #1118F5 38%, #0D12A0 100%);
+  border-color:transparent;
+  color:#fff;
+  box-shadow:0 12px 24px rgba(17,24,245,.28);
+}
+
+.svc-panel{ display:none; }
+.svc-panel.is-active{ display:block; }
+
+.svc-grid{
+  display:grid;
+  grid-template-columns:2fr 3fr;
+  gap:calc(var(--gap)*7);
+  align-items:center;
+}
+.svc-text{ display:flex; flex-direction:column; }
+.svc-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:clamp(1.5rem,2.2vw,2.1rem);
+  line-height:1.15;
+  letter-spacing:-.01em;
+  margin:10px 0 14px;
+  color:var(--ink-900);
+}
+.svc-desc{
+  font-size:15.5px;
+  line-height:1.7;
+  color:var(--ink-600);
+  margin:0 0 22px;
+}
+.svc-examples{
+  display:flex;
+  flex-direction:column;
+  gap:calc(var(--gap)*1.4);
+  margin-bottom:28px;
+}
+.svc-examples li{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  font-size:14px;
+  color:var(--ink-600);
+  line-height:1.55;
+}
+.svc-examples li svg{ width:16px;height:16px;flex:none;margin-top:2px;color:var(--blue-700); }
+.svc-cta{ align-self:flex-start; }
+
+.svc-media img{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+@media (max-width:900px){
+  .svc-grid{ grid-template-columns:1fr; gap:calc(var(--gap)*4); }
+}
+@media (max-width:680px){
+  .svc-tabs{ gap:8px; }
+  .svc-tab{ padding:10px 16px; font-size:12.8px; }
+}
+
 /* ===== PRICING SECTION ===== */
 #pricing{ background:var(--surface); }
 .pricing-filters{
@@ -2981,7 +3069,7 @@ img{ max-width:100%; height:auto; }
         <li><a href="index.html#solutions">Featured Projects</a></li>
         <li><a href="index.html#why-choose-us">Why Choose Us</a></li>
         <li><a href="#process">How We Work</a></li>
-        <li><a class="active" href="pricing.html">Pricing</a></li>
+        <li><a class="active" href="services.html">Services</a></li>
         <li><a href="about.html">About Us</a></li>
         <li><a href="contact.html">Contact Us</a></li>
       </ul>
@@ -2999,7 +3087,7 @@ img{ max-width:100%; height:auto; }
         <a href="index.html#solutions">Featured Projects</a>
         <a href="index.html#why-choose-us">Why Choose Us</a>
         <a href="#process">How We Work</a>
-        <a href="pricing.html">Pricing</a>
+        <a href="services.html">Services</a>
         <a href="about.html">About Us</a>
         <a href="contact.html">Contact Us</a>
         <a class="btn btn-primary" href="index.html#portal">Client Portal</a>
@@ -3011,16 +3099,158 @@ img{ max-width:100%; height:auto; }
 <section class="hero hero--services" id="services-hero">
     <div class="hero-texture" aria-hidden="true"></div>
     <div class="hero-inner">
-        <h1 class="headline">PRICING THAT FITS YOUR NEXT MOVE</h1>
-        <p class="subcopy">Clear packages for ambitious ideas, with the flexibility to tailor the right solution around your goals, timeline and budget.</p>
+        <h1 class="headline">OUR SERVICES</h1>
+        <p class="subcopy">Software, web &amp; mobile apps, AI automation, IT support and design — see exactly what each service includes, then explore our packages and pricing below.</p>
         <div class="hero-cta">
-            <a class="btn btn-secondary" href="#pricing">
-                <span>Explore Packages</span>
+            <a class="btn btn-secondary" href="#services">
+                <span>Explore Our Services</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
         </div>
     </div>
 </section>
+
+  <!-- Our Services -->
+  <section class="section" id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">What We Do</span>
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-sub">Six service lines, one team. Tap a service below to see exactly what it includes.</p>
+      </div>
+
+      <div class="svc-tabs reveal" id="svcTabs">
+        <button type="button" class="svc-tab is-active" data-svc="software">Software Solutions</button>
+        <button type="button" class="svc-tab" data-svc="web-mobile">Web &amp; Mobile Apps</button>
+        <button type="button" class="svc-tab" data-svc="ai">AI Automation &amp; Integrations</button>
+        <button type="button" class="svc-tab" data-svc="pc-repair">PC Repair</button>
+        <button type="button" class="svc-tab" data-svc="it-support">IT Support &amp; Maintenance</button>
+        <button type="button" class="svc-tab" data-svc="design">Graphic Design</button>
+      </div>
+
+      <div id="svcPanels">
+
+        <!-- Software Solutions -->
+        <div class="svc-panel is-active reveal" data-svc-panel="software">
+          <div class="svc-grid">
+            <div class="svc-text">
+              <span class="eyebrow">Software Solutions</span>
+              <h3 class="svc-title">Custom Software Built Around Your Business</h3>
+              <p class="svc-desc">We build software specifically around how your business actually runs — not an off-the-shelf tool you have to bend your workflow around. We map out your current process, then build a system that automates the repetitive parts and keeps everything organised in one place.</p>
+              <ul class="svc-examples">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>A booking &amp; scheduling system that manages appointments automatically</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>An internal stock or inventory tracker for a shop or warehouse</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>A staff system for logging hours, leave and payroll info</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>A custom dashboard pulling your sales, stock and customer data into one screen</li>
+              </ul>
+              <a class="btn btn-outline btn-sm svc-cta" data-target-filter="software" href="#pricing">See Pricing &amp; Packages</a>
+            </div>
+            <div class="svc-media">
+              <img src="https://i.postimg.cc/zDtTg9PX/dashmock.png" alt="Software Solutions example mockup" loading="lazy" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Web & Mobile Apps -->
+        <div class="svc-panel reveal" data-svc-panel="web-mobile">
+          <div class="svc-grid">
+            <div class="svc-text">
+              <span class="eyebrow">Web &amp; Mobile Apps</span>
+              <h3 class="svc-title">Websites &amp; Apps Your Customers Actually Use</h3>
+              <p class="svc-desc">We design and build the websites and apps your customers interact with every day — from a simple business website to a full mobile app with logins, payments and notifications. Everything is mobile-responsive and built to load fast and look sharp on any device.</p>
+              <ul class="svc-examples">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>A business website with an online booking or contact form</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>An e-commerce store where customers can browse, add to cart and pay online</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>A mobile app for iOS &amp; Android with accounts and push notifications</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>A client portal where customers log in and track orders or projects</li>
+              </ul>
+              <a class="btn btn-outline btn-sm svc-cta" data-target-filter="web-mobile" href="#pricing">See Pricing &amp; Packages</a>
+            </div>
+            <div class="svc-media">
+              <img src="https://i.postimg.cc/Qxv4pBn5/1bus.png" alt="Web & Mobile Apps example mockup" loading="lazy" />
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Automation & Integrations -->
+        <div class="svc-panel reveal" data-svc-panel="ai">
+          <div class="svc-grid">
+            <div class="svc-text">
+              <span class="eyebrow">AI Automation &amp; Integrations</span>
+              <h3 class="svc-title">AI That Actually Saves You Time</h3>
+              <p class="svc-desc">We connect the tools you already use and add AI where it genuinely saves you time — not as a gimmick. Think automatic replies, smart data sorting, and systems that talk to each other instead of you copying information between apps by hand.</p>
+              <ul class="svc-examples">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>An AI chatbot on your website or WhatsApp that answers common customer questions</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Automatically syncing new orders from your website into your accounting software</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>AI data capture that reads documents or invoices and fills in the details for you</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Connecting your CRM, email and calendar so a new lead triggers a follow-up automatically</li>
+              </ul>
+              <a class="btn btn-outline btn-sm svc-cta" data-target-filter="ai" href="#pricing">See Pricing &amp; Packages</a>
+            </div>
+            <div class="svc-media"></div>
+          </div>
+        </div>
+
+        <!-- PC Repair -->
+        <div class="svc-panel reveal" data-svc-panel="pc-repair">
+          <div class="svc-grid">
+            <div class="svc-text">
+              <span class="eyebrow">PC Repair</span>
+              <h3 class="svc-title">Hands-On Repairs, Diagnosed Properly First</h3>
+              <p class="svc-desc">We diagnose and repair desktops and laptops — from hardware faults to a machine that's simply become too slow to use. We identify the actual problem before quoting, so you're never paying to replace parts that didn't need replacing.</p>
+              <ul class="svc-examples">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Fixing a laptop or PC that won't boot or keeps crashing</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Replacing a broken screen, keyboard or failing hard drive</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Removing viruses or malware and restoring a slow PC to full speed</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Data recovery from a damaged or corrupted drive</li>
+              </ul>
+              <a class="btn btn-outline btn-sm svc-cta" data-target-filter="pc-repair" href="#pricing">See Pricing &amp; Packages</a>
+            </div>
+            <div class="svc-media"></div>
+          </div>
+        </div>
+
+        <!-- IT Support & Maintenance -->
+        <div class="svc-panel reveal" data-svc-panel="it-support">
+          <div class="svc-grid">
+            <div class="svc-text">
+              <span class="eyebrow">IT Support &amp; Maintenance</span>
+              <h3 class="svc-title">Ongoing Care So Small Issues Never Become Downtime</h3>
+              <p class="svc-desc">Ongoing support for your business's computers, network and systems so small issues get caught before they cause downtime. This is a plan-based service — we monitor, maintain and respond, rather than only showing up once something's already broken.</p>
+              <ul class="svc-examples">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Monthly monitoring and maintenance of office computers and network</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Setting up and securing a new office Wi-Fi or network</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Regular data backups so you never lose important files</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Fast remote or on-site support when something goes wrong</li>
+              </ul>
+              <a class="btn btn-outline btn-sm svc-cta" data-target-filter="it-support" href="#pricing">See Pricing &amp; Packages</a>
+            </div>
+            <div class="svc-media"></div>
+          </div>
+        </div>
+
+        <!-- Graphic Design -->
+        <div class="svc-panel reveal" data-svc-panel="design">
+          <div class="svc-grid">
+            <div class="svc-text">
+              <span class="eyebrow">Graphic Design</span>
+              <h3 class="svc-title">A Visual Identity That Matches The Work You Do</h3>
+              <p class="svc-desc">Visual identity and marketing material that makes your business look as professional as the work you do — from your logo to everything you post and print. Built to stay consistent across every touchpoint with your name on it.</p>
+              <ul class="svc-examples">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Logo design and a full brand colour &amp; font palette</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Social media templates for posts, stories and ads</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Business cards, flyers and signage</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>A brand guidelines document so your look stays consistent everywhere</li>
+              </ul>
+              <a class="btn btn-outline btn-sm svc-cta" data-target-filter="design" href="#pricing">See Pricing &amp; Packages</a>
+            </div>
+            <div class="svc-media"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
 
   <!-- Pricing -->
   <section class="section section-tint" id="pricing">
@@ -3415,7 +3645,7 @@ img{ max-width:100%; height:auto; }
         <h5>Company</h5>
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="services.html">Services</a></li>
           <li><a href="index.html#solutions">Featured Projects</a></li>
           <li><a href="contact.html">Contact Us</a></li>
         </ul>
@@ -3540,6 +3770,37 @@ img{ max-width:100%; height:auto; }
     f.addEventListener('click', () => activate(f.dataset.filter));
   });
 
+})();
+
+// Our Services tabs
+(function(){
+  const tabs = document.querySelectorAll('.svc-tab');
+  const panels = document.querySelectorAll('.svc-panel');
+  if (!tabs.length) return;
+
+  function activateSvc(key){
+    tabs.forEach(t => t.classList.toggle('is-active', t.dataset.svc === key));
+    panels.forEach(p => p.classList.toggle('is-active', p.dataset.svcPanel === key));
+  }
+
+  tabs.forEach(t => {
+    t.addEventListener('click', () => activateSvc(t.dataset.svc));
+  });
+
+  // "See Pricing & Packages" buttons jump to the pricing section
+  // and pre-select the matching pricing filter.
+  document.querySelectorAll('.svc-cta[data-target-filter]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const key = btn.dataset.targetFilter;
+      const filterBtn = document.querySelector('.pricing-filter[data-filter="' + key + '"]');
+      if (filterBtn) {
+        e.preventDefault();
+        filterBtn.click();
+        const target = document.getElementById('pricing');
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
 })();
 </script>
 
