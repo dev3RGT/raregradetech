@@ -2746,6 +2746,7 @@ img{ max-width:100%; height:auto; }
 
 /* ===== OUR SERVICES (tabs, 40/60 split) ===== */
 .svc-tabs{
+  position:relative;
   display:flex;
   flex-wrap:wrap;
   align-items:center;
@@ -2753,7 +2754,21 @@ img{ max-width:100%; height:auto; }
   gap:10px;
   margin:0 0 44px;
 }
+.svc-tab-indicator{
+  position:absolute;
+  top:0;
+  left:0;
+  border-radius:999px;
+  background:linear-gradient(165deg, #151DFF 0%, #1118F5 38%, #0D12A0 100%);
+  box-shadow:0 12px 24px rgba(17,24,245,.28);
+  z-index:0;
+  pointer-events:none;
+  transition:transform .6s cubic-bezier(.22,1,.36,1), width .6s cubic-bezier(.22,1,.36,1), height .6s cubic-bezier(.22,1,.36,1);
+}
+.svc-tabs:not(.is-ready) .svc-tab-indicator{ transition:none; opacity:0; }
 .svc-tab{
+  position:relative;
+  z-index:1;
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -2766,18 +2781,28 @@ img{ max-width:100%; height:auto; }
   font-weight:700;
   letter-spacing:.01em;
   cursor:pointer;
-  transition:background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  transition:background .2s ease, color .25s ease .05s, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
 }
 .svc-tab:hover{ transform:translateY(-2px); border-color:var(--blue-accent); color:var(--blue-700); }
 .svc-tab.is-active{
-  background:linear-gradient(165deg, #151DFF 0%, #1118F5 38%, #0D12A0 100%);
+  background:transparent;
   border-color:transparent;
   color:#fff;
-  box-shadow:0 12px 24px rgba(17,24,245,.28);
+  box-shadow:none;
 }
 
 .svc-panel{ display:none; }
 .svc-panel.is-active{ display:block; }
+@keyframes svcContentSlideIn{
+  from{ opacity:0; transform:translateX(var(--slide-x, 64px)); }
+  to{ opacity:1; transform:translateX(0); }
+}
+.svc-panel.is-active .svc-text,
+.svc-panel.is-active .svc-media{
+  animation:svcContentSlideIn .85s cubic-bezier(.22,1,.36,1) backwards;
+}
+.svc-panel.is-active .svc-text{ animation-delay:.05s; }
+.svc-panel.is-active .svc-media{ animation-delay:.16s; }
 
 .svc-grid{
   display:grid;
@@ -2837,6 +2862,7 @@ img{ max-width:100%; height:auto; }
 /* ===== PRICING SECTION ===== */
 #pricing{ background:var(--surface); }
 .pricing-filters{
+  position:relative;
   display:flex;
   flex-wrap:wrap;
   align-items:center;
@@ -2844,7 +2870,21 @@ img{ max-width:100%; height:auto; }
   gap:10px;
   margin:0 0 44px;
 }
+.pricing-filter-indicator{
+  position:absolute;
+  top:0;
+  left:0;
+  border-radius:999px;
+  background:linear-gradient(165deg, #151DFF 0%, #1118F5 38%, #0D12A0 100%);
+  box-shadow:0 12px 24px rgba(17,24,245,.28);
+  z-index:0;
+  pointer-events:none;
+  transition:transform .6s cubic-bezier(.22,1,.36,1), width .6s cubic-bezier(.22,1,.36,1), height .6s cubic-bezier(.22,1,.36,1);
+}
+.pricing-filters:not(.is-ready) .pricing-filter-indicator{ transition:none; opacity:0; }
 .pricing-filter{
+  position:relative;
+  z-index:1;
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -2857,14 +2897,14 @@ img{ max-width:100%; height:auto; }
   font-weight:700;
   letter-spacing:.01em;
   cursor:pointer;
-  transition:background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  transition:background .2s ease, color .25s ease .05s, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
 }
 .pricing-filter:hover{ transform:translateY(-2px); border-color:var(--blue-accent); color:var(--blue-700); }
 .pricing-filter.is-active{
-  background:linear-gradient(165deg, #151DFF 0%, #1118F5 38%, #0D12A0 100%);
+  background:transparent;
   border-color:transparent;
   color:#fff;
-  box-shadow:0 12px 24px rgba(17,24,245,.28);
+  box-shadow:none;
 }
 
 .pricing-grid{
@@ -2875,6 +2915,22 @@ img{ max-width:100%; height:auto; }
 }
 .pricing-panel{ display:none; }
 .pricing-panel.is-active{ display:block; }
+@keyframes priceCardSlideIn{
+  from{ opacity:0; transform:translateX(var(--slide-x, 64px)); }
+  to{ opacity:1; transform:translateX(0); }
+}
+.pricing-panel.is-active .price-card{
+  animation:priceCardSlideIn .85s cubic-bezier(.22,1,.36,1) backwards;
+}
+.pricing-panel.is-active .price-card:nth-child(1){ animation-delay:.05s; }
+.pricing-panel.is-active .price-card:nth-child(2){ animation-delay:.15s; }
+.pricing-panel.is-active .price-card:nth-child(3){ animation-delay:.25s; }
+@media (prefers-reduced-motion:reduce){
+  .pricing-panel.is-active .price-card{ animation:none; }
+  .svc-panel.is-active .svc-text,
+  .svc-panel.is-active .svc-media{ animation:none; }
+  .pricing-filter-indicator, .svc-tab-indicator{ transition:none; }
+}
 
 .price-card{
   position:relative;
@@ -3122,6 +3178,7 @@ img{ max-width:100%; height:auto; }
       </div>
 
       <div class="svc-tabs reveal" id="svcTabs">
+        <span class="svc-tab-indicator" id="svcTabIndicator" aria-hidden="true"></span>
         <button type="button" class="svc-tab is-active" data-svc="software">Software Solutions</button>
         <button type="button" class="svc-tab" data-svc="web-mobile">Web &amp; Mobile Apps</button>
         <button type="button" class="svc-tab" data-svc="ai">AI Automation &amp; Integrations</button>
@@ -3272,6 +3329,7 @@ img{ max-width:100%; height:auto; }
       </div>
 
       <div class="pricing-filters reveal" id="pricingFilters">
+        <span class="pricing-filter-indicator" id="pricingFilterIndicator" aria-hidden="true"></span>
         <button type="button" class="pricing-filter is-active" data-filter="software">Software Solutions</button>
         <button type="button" class="pricing-filter" data-filter="web-mobile">Web &amp; Mobile Apps</button>
         <button type="button" class="pricing-filter" data-filter="ai">AI Automation</button>
@@ -3767,34 +3825,106 @@ img{ max-width:100%; height:auto; }
 
 // Pricing pill filters
 (function(){
-  const filters = document.querySelectorAll('.pricing-filter');
+  const wrap = document.getElementById('pricingFilters');
+  const indicator = document.getElementById('pricingFilterIndicator');
+  const filters = Array.from(document.querySelectorAll('.pricing-filter'));
   const panels = document.querySelectorAll('.pricing-panel');
   if (!filters.length) return;
 
+  const order = filters.map(f => f.dataset.filter);
+  let currentIndex = Math.max(0, order.indexOf(document.querySelector('.pricing-filter.is-active')?.dataset.filter || order[0]));
+
+  function moveIndicator(btn){
+    if (!indicator || !wrap || !btn) return;
+    const wrapRect = wrap.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    indicator.style.width = btnRect.width + 'px';
+    indicator.style.height = btnRect.height + 'px';
+    indicator.style.transform =
+      'translate(' + (btnRect.left - wrapRect.left) + 'px,' + (btnRect.top - wrapRect.top) + 'px)';
+  }
+
   function activate(key){
+    const newIndex = order.indexOf(key);
+    if (newIndex === -1) return;
+    const dir = newIndex > currentIndex ? 1 : (newIndex < currentIndex ? -1 : 0);
+    currentIndex = newIndex;
+
     filters.forEach(f => f.classList.toggle('is-active', f.dataset.filter === key));
-    panels.forEach(p => p.classList.toggle('is-active', p.dataset.panel === key));
+    panels.forEach(p => {
+      const isTarget = p.dataset.panel === key;
+      if (isTarget) p.style.setProperty('--slide-x', (dir < 0 ? -64 : 64) + 'px');
+      p.classList.toggle('is-active', isTarget);
+    });
+    const activeBtn = document.querySelector('.pricing-filter[data-filter="' + key + '"]');
+    moveIndicator(activeBtn);
   }
 
   filters.forEach(f => {
     f.addEventListener('click', () => activate(f.dataset.filter));
   });
 
+  // Position the indicator instantly on load (no slide-in from the corner),
+  // then enable the transition for subsequent clicks/resizes.
+  const initialActive = document.querySelector('.pricing-filter.is-active') || filters[0];
+  moveIndicator(initialActive);
+  requestAnimationFrame(() => wrap.classList.add('is-ready'));
+
+  window.addEventListener('resize', () => {
+    const current = document.querySelector('.pricing-filter.is-active') || filters[0];
+    moveIndicator(current);
+  });
+
 })();
 
 // Our Services tabs
 (function(){
-  const tabs = document.querySelectorAll('.svc-tab');
+  const wrap = document.getElementById('svcTabs');
+  const indicator = document.getElementById('svcTabIndicator');
+  const tabs = Array.from(document.querySelectorAll('.svc-tab'));
   const panels = document.querySelectorAll('.svc-panel');
   if (!tabs.length) return;
 
+  const order = tabs.map(t => t.dataset.svc);
+  let currentIndex = Math.max(0, order.indexOf(document.querySelector('.svc-tab.is-active')?.dataset.svc || order[0]));
+
+  function moveIndicator(btn){
+    if (!indicator || !wrap || !btn) return;
+    const wrapRect = wrap.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    indicator.style.width = btnRect.width + 'px';
+    indicator.style.height = btnRect.height + 'px';
+    indicator.style.transform =
+      'translate(' + (btnRect.left - wrapRect.left) + 'px,' + (btnRect.top - wrapRect.top) + 'px)';
+  }
+
   function activateSvc(key){
+    const newIndex = order.indexOf(key);
+    if (newIndex === -1) return;
+    const dir = newIndex > currentIndex ? 1 : (newIndex < currentIndex ? -1 : 0);
+    currentIndex = newIndex;
+
     tabs.forEach(t => t.classList.toggle('is-active', t.dataset.svc === key));
-    panels.forEach(p => p.classList.toggle('is-active', p.dataset.svcPanel === key));
+    panels.forEach(p => {
+      const isTarget = p.dataset.svcPanel === key;
+      if (isTarget) p.style.setProperty('--slide-x', (dir < 0 ? -64 : 64) + 'px');
+      p.classList.toggle('is-active', isTarget);
+    });
+    const activeTab = document.querySelector('.svc-tab[data-svc="' + key + '"]');
+    moveIndicator(activeTab);
   }
 
   tabs.forEach(t => {
     t.addEventListener('click', () => activateSvc(t.dataset.svc));
+  });
+
+  const initialActive = document.querySelector('.svc-tab.is-active') || tabs[0];
+  moveIndicator(initialActive);
+  requestAnimationFrame(() => wrap.classList.add('is-ready'));
+
+  window.addEventListener('resize', () => {
+    const current = document.querySelector('.svc-tab.is-active') || tabs[0];
+    moveIndicator(current);
   });
 
   // "See Pricing & Packages" buttons jump to the pricing section
