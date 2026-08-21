@@ -2752,7 +2752,7 @@ img{ max-width:100%; height:auto; }
   align-items:center;
   justify-content:center;
   gap:10px;
-  margin:0 0 44px;
+  margin:0 0 calc(var(--gap)*3);
 }
 .svc-tab-indicator{
   position:absolute;
@@ -2849,6 +2849,10 @@ img{ max-width:100%; height:auto; }
   width:100%;
   height:auto;
   display:block;
+}
+.svc-panel[data-svc-panel="it-support"] .svc-media img{
+  width:78%;
+  margin:0 auto;
 }
 
 @media (max-width:900px){
@@ -3268,7 +3272,7 @@ img{ max-width:100%; height:auto; }
               <a class="btn btn-outline btn-sm svc-cta" data-target-filter="pc-repair" href="#pricing">See Pricing &amp; Packages</a>
             </div>
             <div class="svc-media">
-              <img src="https://i.postimg.cc/XYWBCZzk/6.png" alt="PC Repair example mockup" loading="lazy" />
+              <img src="https://i.postimg.cc/wT5GgW4X/pc-repair.png" alt="PC Repair example mockup" loading="lazy" />
             </div>
           </div>
         </div>
