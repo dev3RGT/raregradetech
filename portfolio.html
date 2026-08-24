@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Our Portfolio — Rare Grade Tech</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Browse Rare Grade Tech's portfolio — real client websites, web apps and mobile experiences we've designed and built, filterable by service category." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Montserrat:ital,wght@1,800&display=swap" rel="stylesheet" />
+<style>
+
+  :root{
+    --blue-900:#0A0E5A;
+    --blue-800:#0D12A0;
+    --blue-700:#1118F5;
+    --blue-accent:#3B4CFF;
+    --ink:#05060B;
+    --white:#FFFFFF;
+    --line:rgba(255,255,255,.16);
+    --line-soft:rgba(255,255,255,.10);
+    --glass:rgba(255,255,255,.07);
+    --text-dim:rgba(255,255,255,.78);
+    --text-faint:rgba(255,255,255,.58);
+
+    --surface:#F5F6FC;
+    --surface-alt:#FFFFFF;
+    --card-line:#E5E7F6;
+    --ink-900:#090B25;
+    --ink-600:#54566F;
+    --ink-400:#8688A0;
+
+    --radius-s:10px;
+    --radius-m:16px;
+    --radius-l:28px;
+    --container:1360px;
+    --gap:8px;
+    --nav-h:107px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;overflow-x:hidden;}
+  body{
+    margin:0;
+    max-width:100vw;
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
+    background:var(--surface-alt);
+    color:var(--ink-900);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  img{max-width:100%;display:block;height:auto;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;}
+  ul{margin:0;padding:0;list-style:none;}
+  .wrap{max-width:var(--container);margin:0 auto;padding-inline:calc(var(--gap)*5);}
+  section[id]{scroll-margin-top:96px;}
+
+  /* ---------- Utility bar ---------- */
+  .utility-bar{
+    background:var(--white);
+    color:var(--ink);
+    font-size:13.5px;
+    font-weight:600;
+    position:relative;
+    z-index:41;
+    transition:transform .6s cubic-bezier(.16,.84,.44,1), opacity .5s ease;
+  }
+  .utility-bar.is-hidden{ transform:translateY(-100%); opacity:0; pointer-events:none; }
+  .utility-bar.is-removed{ display:none; }
+  .utility-bar .wrap{ display:flex; align-items:center; justify-content:space-between; gap:calc(var(--gap)*4); padding-block:calc(var(--gap)*1.75); }
+  .utility-left{display:flex;align-items:center;gap:calc(var(--gap)*4);flex-wrap:wrap;}
+  .utility-item{display:flex;align-items:center;gap:calc(var(--gap)*1.25);color:var(--ink);}
+  .utility-item svg{color:var(--blue-700);flex:none;}
+  .utility-social{display:flex;align-items:center;gap:calc(var(--gap)*1.25);}
+  .utility-social a{ width:30px;height:30px;border-radius:50%; background:var(--blue-700); display:flex;align-items:center;justify-content:center; color:var(--white); transition:background .18s ease, transform .18s ease; }
+  .utility-social a:hover{background:var(--ink);transform:translateY(-1px);}
+
+  /* ---------- Nav ---------- */
+  .navbar{
+    position:-webkit-sticky !important; position:sticky !important; top:0 !important; z-index:40;
+    background:transparent;
+    transition:background .25s ease, box-shadow .25s ease, backdrop-filter .25s ease;
+  }
+  .navbar.scrolled{ background:#0404d8; backdrop-filter:blur(14px); box-shadow:0 8px 30px rgba(2,4,30,.35); }
+  .navbar .wrap{ display:flex; align-items:center; justify-content:space-between; padding-block:calc(var(--gap)*0.1); gap:calc(var(--gap)*4); }
+  .logo{display:flex;align-items:center;gap:calc(var(--gap)*1.5);}
+  .logo-image{ height:59px; width:auto; max-width:308px; object-fit:contain; flex:none; }
+
+  .nav-links{display:flex;align-items:center;gap:calc(var(--gap)*4.5);}
+  .nav-links a{ font-size:14.5px;font-weight:600;color:rgba(255,255,255,.88); position:relative;padding-block:4px; }
+  .nav-links a.active{color:var(--white);}
+  .nav-links a.active::after{ content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--white);border-radius:2px; }
+  .nav-links a:hover{color:var(--white);}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-weight:700;font-size:14.5px;
+    border-radius:var(--radius-s);
+    padding:14px 26px;
+    border:1px solid transparent;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+  }
+  .btn-primary{background:var(--ink);color:var(--white);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(0,0,0,.35);}
+  .btn-secondary{background:var(--white);color:var(--ink);}
+  .btn-secondary:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(0,0,0,.18);}
+  .btn-outline{background:transparent;color:var(--white);border-color:rgba(255,255,255,.4);}
+  .btn-outline:hover{background:rgba(255,255,255,.1);transform:translateY(-2px);}
+  .btn-block-ink{background:var(--blue-700);color:var(--white);}
+  .btn-block-ink:hover{background:var(--blue-800);transform:translateY(-2px);box-shadow:0 12px 24px rgba(17,24,245,.35);}
+  .btn-sm{padding:11px 20px;font-size:13.5px;}
+
+  .nav-cta{display:none;}
+  @media(min-width:900px){ .nav-cta{display:inline-flex;} }
+  @media(min-width:981px){ .navbar .wrap{ min-height:var(--nav-h); } }
+
+  .nav-toggle{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+    width:44px;height:44px;border-radius:var(--radius-s);
+    background:rgba(255,255,255,.08);border:1px solid var(--line);
+    color:var(--white);cursor:pointer;
+    transition:background .3s ease, border-color .3s ease;
+  }
+  .nav-toggle:hover{ background:rgba(255,255,255,.14); }
+  .nav-toggle .burger-line{ display:block;width:20px;height:2px;border-radius:2px;background:var(--white); transition:transform .45s cubic-bezier(.65,0,.35,1), opacity .3s ease, width .3s ease; transform-origin:center; }
+  .nav-toggle[aria-expanded="true"] .burger-line:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] .burger-line:nth-child(2){ opacity:0; width:0; }
+  .nav-toggle[aria-expanded="true"] .burger-line:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+  @media(min-width:900px){ .nav-toggle{display:none;} }
+
+  .mobile-panel{
+    position:absolute;top:100%;left:0;right:0;
+    display:grid;grid-template-rows:0fr;opacity:0;overflow:hidden;
+    background:#0E16F5;backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);
+    transition:grid-template-rows .55s cubic-bezier(.22,1,.36,1), opacity .4s ease;
+  }
+  .mobile-panel.open{ grid-template-rows:1fr; opacity:1; }
+  .mobile-panel-inner{ min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:calc(var(--gap)*1); padding:calc(var(--gap)*3) calc(var(--gap)*5) calc(var(--gap)*4); }
+  .mobile-panel-inner > *{ opacity:0;transform:translateY(-8px); transition:opacity .4s ease, transform .45s cubic-bezier(.22,1,.36,1); }
+  .mobile-panel.open .mobile-panel-inner > *{ opacity:1;transform:translateY(0); }
+  .mobile-panel.open .mobile-panel-inner > *:nth-child(1){ transition-delay:.05s; }
+  .mobile-panel.open .mobile-panel-inner > *:nth-child(2){ transition-delay:.09s; }
+  .mobile-panel.open .mobile-panel-inner > *:nth-child(3){ transition-delay:.13s; }
+  .mobile-panel.open .mobile-panel-inner > *:nth-child(4){ transition-delay:.17s; }
+  .mobile-panel.open .mobile-panel-inner > *:nth-child(5){ transition-delay:.21s; }
+  .mobile-panel.open .mobile-panel-inner > *:nth-child(6){ transition-delay:.25s; }
+  .mobile-panel a{ color:#FFFFFF !important; font-weight:600;font-size:15px;padding:10px 0; transition:opacity .25s ease, transform .25s ease; }
+  .mobile-panel a:hover, .mobile-panel a:active{ opacity:.8; }
+  .mobile-panel .btn{margin-top:calc(var(--gap)*1.5);}
+
+  /* ---------- Shared section system ---------- */
+  .section{padding-block:calc(var(--gap)*9);}
+  .section-tint{background:var(--surface);}
+  .section-head{max-width:640px;margin-bottom:calc(var(--gap)*7);}
+  .section-head.center{margin-inline:auto;text-align:center;}
+  .section-head.center .eyebrow{justify-content:center;}
+  .section-head.center .eyebrow::before{display:none;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-700);margin-bottom:calc(var(--gap)*2);}
+  .eyebrow::before{content:"";width:20px;height:2px;background:currentColor;border-radius:2px;}
+  .section-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(1.9rem,2.6vw,2.75rem);line-height:1.08;letter-spacing:-.01em;margin:0 0 calc(var(--gap)*2);}
+  .section-sub{font-size:15.5px;line-height:1.7;color:var(--ink-600);margin:0;max-width:640px;}
+  .section-head.center .section-sub{margin-inline:auto;}
+
+  /* ---------- Hero (identical to services.html hero--services) ---------- */
+  .hero{
+    position:relative;overflow:hidden;isolation:isolate;
+    background:linear-gradient(155deg, var(--blue-700) 0%, #171FE0 22%, #131AAE 46%, var(--blue-900) 78%, #080B45 100%);
+    margin-top:calc(-1 * var(--nav-h));
+    padding-top:var(--nav-h);
+  }
+  .hero--portfolio{
+    min-height:56vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .hero-texture{
+    position:absolute;inset:0;
+    background-image:url('https://i.postimg.cc/QdQW2r95/hero.png');
+    background-size:cover;
+    background-position:60% 30%;
+    z-index:0;
+    pointer-events:none;
+    display:block;
+  }
+  .hero-inner{
+    position:relative;z-index:1;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    min-height:calc(56vh - var(--nav-h));
+    width:100%;max-width:var(--container);margin:0 auto;
+    padding:56px calc(var(--gap)*5) 64px;
+    gap:22px;
+  }
+  .headline{
+    font-family:'Montserrat',sans-serif;font-weight:800;font-style:italic;
+    font-size:clamp(42px,7vw,86px);line-height:.92;letter-spacing:-0.02em;
+    color:var(--white);margin:0;text-transform:uppercase;text-align:center;
+  }
+  .subcopy{
+    font-size:16px;line-height:1.6;color:rgba(255,255,255,.88);
+    max-width:560px;margin:0 auto;text-align:center;
+  }
+  .hero-cta{margin-top:8px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+
+  /* ---------- Filter tabs (identical pattern to services.html svc-tabs) ---------- */
+  .svc-tabs{ position:relative; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:10px; margin:0 0 calc(var(--gap)*7); }
+  .svc-tab-indicator{
+    position:absolute;top:0;left:0;border-radius:999px;
+    background:linear-gradient(165deg, #151DFF 0%, #1118F5 38%, #0D12A0 100%);
+    box-shadow:0 12px 24px rgba(17,24,245,.28);
+    z-index:0;pointer-events:none;
+    transition:transform .6s cubic-bezier(.22,1,.36,1), width .6s cubic-bezier(.22,1,.36,1), height .6s cubic-bezier(.22,1,.36,1);
+  }
+  .svc-tabs:not(.is-ready) .svc-tab-indicator{ transition:none; opacity:0; }
+  .svc-tab{
+    position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;
+    padding:11px 22px;border-radius:999px;border:1px solid var(--card-line);
+    background:var(--surface-alt);color:var(--ink-600);
+    font-size:13.5px;font-weight:700;letter-spacing:.01em;cursor:pointer;
+    transition:background .2s ease, color .25s ease .05s, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .svc-tab:hover{ transform:translateY(-2px); border-color:var(--blue-accent); color:var(--blue-700); }
+  .svc-tab.is-active{ background:transparent; border-color:transparent; color:#fff; box-shadow:none; }
+  @media (max-width:680px){ .svc-tabs{ gap:8px; } .svc-tab{ padding:10px 16px; font-size:12.8px; } }
+
+  /* ---------- Portfolio showcase sections (40% text / 60% image, full-bleed section) ---------- */
+  .port-section{ padding-block:calc(var(--gap)*10); border-bottom:1px solid var(--card-line); }
+  .port-section:last-of-type{ border-bottom:none; }
+  .port-section.is-hidden{ display:none; }
+  .port-section.alt{ background:var(--surface); }
+  .port-grid{
+    display:grid;
+    grid-template-columns:2fr 3fr;
+    gap:calc(var(--gap)*8);
+    align-items:center;
+  }
+  .port-text{ display:flex; flex-direction:column; }
+  .port-index{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:.1em;
+    color:var(--ink-400);margin-bottom:calc(var(--gap)*2);text-transform:uppercase;
+  }
+  .port-title{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;
+    font-size:clamp(1.6rem,2.4vw,2.3rem);line-height:1.14;letter-spacing:-.01em;
+    margin:10px 0 14px;color:var(--ink-900);
+  }
+  .port-desc{ font-size:15.5px;line-height:1.7;color:var(--ink-600);margin:0 0 22px; }
+  .port-tags{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px; }
+  .port-tag{
+    font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--blue-700);background:rgba(17,24,245,.08);
+    border-radius:999px;padding:6px 13px;
+  }
+  .port-examples{ display:flex;flex-direction:column;gap:calc(var(--gap)*1.4); margin-bottom:28px; }
+  .port-examples li{ display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--ink-600);line-height:1.55; }
+  .port-examples li svg{ width:16px;height:16px;flex:none;margin-top:2px;color:var(--blue-700); }
+  .port-cta{ align-self:flex-start; }
+
+  .port-media{ position:relative; isolation:isolate; }
+  .port-media-glow{
+    position:absolute;inset:-8%;z-index:-1;
+    background:radial-gradient(closest-side, rgba(17,24,245,.16), transparent 70%);
+    filter:blur(32px);pointer-events:none;
+  }
+  .port-media-frame{
+    background:linear-gradient(165deg,#EEF0FC 0%,#F7F8FE 100%);
+    border:1px solid var(--card-line);
+    border-radius:var(--radius-l);
+    padding:calc(var(--gap)*3);
+  }
+  .port-media-frame img{
+    width:100%;
+    height:auto;
+    display:block;
+    border-radius:var(--radius-m);
+    box-shadow:0 40px 80px rgba(4,8,80,.22), 0 12px 28px rgba(4,8,80,.12);
+  }
+
+  @media (max-width:900px){
+    .port-grid{ grid-template-columns:1fr; gap:calc(var(--gap)*5); }
+    .port-media{ order:2; }
+    .port-text{ order:1; }
+  }
+  @media (max-width:768px){
+    .port-section{ padding-block:56px; }
+    .port-media-frame{ padding:calc(var(--gap)*2); }
+    .port-cta{ width:100%; }
+    .port-cta .btn{ width:100%; justify-content:center; }
+  }
+
+  /* ---------- Empty state for filtered-out categories ---------- */
+  .port-empty{ display:none; text-align:center; padding:calc(var(--gap)*10) calc(var(--gap)*5); }
+  .port-empty.is-visible{ display:block; }
+  .port-empty h3{ font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.5rem;margin:0 0 10px;color:var(--ink-900); }
+  .port-empty p{ font-size:15px;color:var(--ink-600);max-width:440px;margin:0 auto 22px;line-height:1.65; }
+
+  /* ---------- CTA banner ---------- */
+  .port-cta-banner{
+    background:linear-gradient(155deg,#1118F5 0%,#0D12A0 55%,#0A0E5A 100%);
+    border-radius:var(--radius-l);
+    padding:clamp(34px,6vw,72px) calc(var(--gap)*5);
+    text-align:center;color:var(--white);
+  }
+  .port-cta-banner h2{
+    font-family:'Montserrat',sans-serif;font-style:italic;font-weight:800;
+    font-size:clamp(28px,4.6vw,50px);line-height:1;margin:0 0 14px;text-transform:uppercase;
+  }
+  .port-cta-banner p{ color:rgba(255,255,255,.82);font-size:16px;line-height:1.6;margin:0 auto 26px;max-width:520px; }
+  .port-cta-actions{ display:flex;flex-wrap:wrap;justify-content:center;gap:12px; }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.16,.84,.44,1), transform .8s cubic-bezier(.16,.84,.44,1);will-change:opacity,transform;}
+  .reveal.is-visible{opacity:1;transform:translateY(0);}
+
+  /* ---------- Header transparent-over-hero / solid-once-scrolled + Montserrat headings ---------- */
+  .navbar{ background:transparent; box-shadow:none; }
+  .navbar.scrolled{ background:#0404d8; box-shadow:0 8px 30px rgba(2,4,30,.35); }
+  .headline, .section-title{ font-family:'Montserrat', sans-serif; }
+  .headline{ font-weight:800; font-style:italic; }
+
+  /* ---------- Footer (identical bg image + gradient as services.html) ---------- */
+  .site-footer{
+    background:
+      linear-gradient(155deg, rgba(5,7,45,.85) 0%, rgba(10,14,90,.80) 45%, rgba(17,24,245,.55) 100%),
+      url('https://i.postimg.cc/W4rjp5x0/footer.png');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    color:rgba(255,255,255,.7);
+    padding-top:calc(var(--gap)*9);
+  }
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:calc(var(--gap)*5);padding-bottom:calc(var(--gap)*7);}
+  .footer-brand .logo{margin-bottom:calc(var(--gap)*2.5);}
+  .footer-brand p{font-size:13.8px;line-height:1.7;color:rgba(255,255,255,.55);max-width:280px;margin:0 0 calc(var(--gap)*2.5);}
+  .footer-social{display:flex;gap:10px;}
+  .footer-social a{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;color:var(--white);transition:background .2s ease, transform .2s ease;}
+  .footer-social a:hover{background:var(--blue-700);transform:translateY(-2px);}
+  .footer-col h5{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--white);margin:0 0 calc(var(--gap)*2.5);}
+  .footer-col li{margin-bottom:calc(var(--gap)*1.5);}
+  .footer-col a{font-size:14px;color:rgba(255,255,255,.6);transition:color .18s ease;}
+  .footer-col a:hover{color:var(--white);}
+  .footer-contact li{display:flex;gap:10px;align-items:flex-start;font-size:13.8px;color:rgba(255,255,255,.65);line-height:1.5;}
+  .footer-contact svg{width:16px;height:16px;flex:none;margin-top:2px;color:#FFFFFF;}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-block:calc(var(--gap)*3);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:calc(var(--gap)*2);font-size:12.8px;color:rgba(255,255,255,.45);}
+  .footer-bottom a{color:rgba(255,255,255,.6);}
+  .footer-bottom a:hover{color:var(--white);}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:768px){
+    :root{ --container:100%; }
+    .wrap{ padding-inline:18px; }
+    .navbar .wrap{ padding-block:14px; }
+    .logo-image{ height:44px; }
+    .nav-links{ display:none; }
+    .nav-toggle{ display:flex; }
+    .utility-bar .wrap{ flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:10px;padding-block:10px; }
+    .utility-left{ gap:14px;flex-wrap:nowrap; }
+    .utility-item span{ display:none; }
+    .utility-social{ align-self:center;gap:10px;flex-wrap:nowrap; }
+    .hero-inner{ gap:18px; }
+    .headline{ font-size:clamp(32px,9vw,42px); line-height:.95; }
+    .subcopy{ font-size:15px; line-height:1.6; }
+    .section{ padding-block:56px; }
+    .section-head{ margin-bottom:28px; }
+    .section-title{ font-size:clamp(26px,7vw,32px); }
+    .section-sub{ font-size:14px; }
+    .footer-grid{ grid-template-columns:1fr; gap:28px; }
+    .footer-bottom{ flex-direction:column; gap:10px; text-align:center; }
+  }
+  @media (max-width:600px){
+    .footer-grid{ grid-template-columns:1fr 1fr; }
+    .footer-brand{ grid-column:1 / -1; }
+  }
+  @media (max-width:480px){
+    .wrap{ padding-inline:16px; }
+    .headline{ font-size:30px; }
+    .btn{ padding:13px 20px;font-size:14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="utility-bar">
+  <div class="wrap">
+    <div class="utility-left">
+      <a class="utility-item" href="tel:+27615270749" aria-label="Call +27 61 527 0749">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>+27 61 527 0749</span>
+      </a>
+      <a class="utility-item" href="mailto:info@raregradetech.com" aria-label="Email info@raregradetech.com">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6c0-1.1-.9-2-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6z"/><path d="m22 6-10 7L2 6"/></svg>
+        <span>info@raregradetech.com</span>
+      </a>
+      <span class="utility-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span>Mon – Fri: 8:00 – 17:00</span>
+      </span>
+      <span class="utility-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>69 Hooge Street, Mokopane</span>
+      </span>
+    </div>
+    <div class="utility-social">
+      <a href="https://www.facebook.com/profile.php?id=61551174479756" aria-label="Facebook"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8.5H16l.5-3.5h-3V7.7c0-1 .3-1.7 1.7-1.7H16.5V2.8C16 2.75 15 2.7 13.9 2.7c-2.4 0-4 1.45-4 4.1V10H7.4v3.5H10V22h3.5z"/></svg></a>
+      <a href="#" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="#" aria-label="YouTube"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M10.5 9.5v5l4.5-2.5z" fill="currentColor" stroke="none"/></svg></a>
+      <a href="#" aria-label="Tumblr"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14.7 21.3c-3 0-4.9-1.7-4.9-4.6V11h-2.3V8.4c2.4-.6 3.4-2.7 3.5-4.7h2.6v4.4h3v3h-3v5c0 1.2.6 1.9 1.8 1.9.5 0 1-.1 1.3-.3l.7 2.9c-.6.3-1.7.6-2.7.6z"/></svg></a>
+    </div>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav class="navbar" id="navbar">
+  <div class="wrap">
+    <a class="logo" href="index.html">
+      <img class="logo-image" src="https://i.postimg.cc/jSdtxk2y/1.png" alt="Rare Grade Tech" />
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a class="active" href="portfolio.html">Portfolio</a></li>
+      <li><a href="index.html#why-choose-us">Shop</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+
+    <a class="btn btn-primary nav-cta" href="index.html#portal">Client Portal</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+    </button>
+  </div>
+  <div class="mobile-panel" id="mobilePanel">
+    <div class="mobile-panel-inner">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="index.html#why-choose-us">Shop</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact Us</a>
+      <a class="btn btn-primary" href="index.html#portal">Client Portal</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO — SAME BG / STYLE AS SERVICES PAGE, NO OVERLAY -->
+<section class="hero hero--portfolio" id="portfolio-hero">
+  <div class="hero-texture" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <h1 class="headline">OUR PORTFOLIO</h1>
+    <p class="subcopy">Real client websites, web apps and mobile experiences — designed, built and shipped end-to-end. Filter by service below to see work in that category.</p>
+    <div class="hero-cta">
+      <a class="btn btn-secondary" href="#portfolio">
+        <span>Explore Our Work</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Portfolio -->
+<section class="section" id="portfolio">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow">Selected Work</span>
+      <h2 class="section-title">Featured Projects</h2>
+      <p class="section-sub">Every project below is a live, shipped build — not a template. Filter by category to see the kind of work we do in each area.</p>
+    </div>
+
+    <div class="svc-tabs reveal" id="portTabs">
+      <span class="svc-tab-indicator" id="portTabIndicator" aria-hidden="true"></span>
+      <button type="button" class="svc-tab is-active" data-svc="all">All Projects</button>
+      <button type="button" class="svc-tab" data-svc="software">Software Solutions</button>
+      <button type="button" class="svc-tab" data-svc="web-mobile">Web &amp; Mobile Apps</button>
+      <button type="button" class="svc-tab" data-svc="ai">AI Automation &amp; Integrations</button>
+      <button type="button" class="svc-tab" data-svc="pc-repair">PC Repair</button>
+      <button type="button" class="svc-tab" data-svc="it-support">IT Support &amp; Maintenance</button>
+      <button type="button" class="svc-tab" data-svc="design">Graphic Design</button>
+    </div>
+  </div>
+
+  <div class="port-empty" id="portEmpty">
+    <h3>More work coming soon in this category</h3>
+    <p>We're always shipping — this category's case studies are on the way. In the meantime, tell us about your project and we'll show you exactly how we'd approach it.</p>
+    <a class="btn btn-block-ink" href="contact.html">
+      <span>Start a Conversation</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+  <div id="portList">
+
+    <!-- Project 1: RGT Website -->
+    <div class="port-section reveal" data-categories="web-mobile design">
+      <div class="wrap port-grid">
+        <div class="port-text">
+          <span class="port-index">01 — Web &amp; Mobile Apps · Graphic Design</span>
+          <h3 class="port-title">Rare Grade Tech — Our Own Website</h3>
+          <p class="port-desc">The site you're on right now. A cinematic, single-page HTML build with an animated hero, sliding service tabs, live pricing filters and a client portal — the same fast, self-contained approach we build for every client.</p>
+          <ul class="port-examples">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Animated hero and sliding-pill service &amp; pricing tabs</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Single self-contained HTML file — no build step, loads fast</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Fully responsive, from mobile through to widescreen desktop</li>
+          </ul>
+          <a class="btn btn-block-ink port-cta" href="contact.html">
+            <span>Start a Project Like This</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <div class="port-media">
+          <div class="port-media-glow" aria-hidden="true"></div>
+          <div class="port-media-frame">
+            <img src="https://i.postimg.cc/nzKYRHG9/rgtwebsite.png" alt="Rare Grade Tech website — full page screenshot" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 2: Mokopane FM -->
+    <div class="port-section alt reveal" data-categories="web-mobile software">
+      <div class="wrap port-grid">
+        <div class="port-text">
+          <span class="port-index">02 — Web &amp; Mobile Apps · Software Solutions</span>
+          <h3 class="port-title">Mokopane FM — 100.0 MHz Radio Station</h3>
+          <p class="port-desc">"The Voice of Mogalakwena" — a Firebase-powered station site with a live admin dashboard controlling the show lineup, photo carousel, news and sponsored ads, all editable in real time without touching code.</p>
+          <ul class="port-examples">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Admin-controlled show lineup, photo gallery and news feed</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Rotating sponsor popup carousel with click &amp; impression tracking</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Live-listen player, shipped as one self-contained HTML file</li>
+          </ul>
+          <a class="btn btn-block-ink port-cta" href="contact.html">
+            <span>Start a Project Like This</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <div class="port-media">
+          <div class="port-media-glow" aria-hidden="true"></div>
+          <div class="port-media-frame">
+            <img src="https://i.postimg.cc/rsQGTQHH/mkfmwebsite.png" alt="Mokopane FM website — full page screenshot" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 3: 1BUSKET -->
+    <div class="port-section reveal" data-categories="web-mobile software">
+      <div class="wrap port-grid">
+        <div class="port-text">
+          <span class="port-index">03 — Web &amp; Mobile Apps · Software Solutions</span>
+          <h3 class="port-title">1BUSKET — Premium Delivery, Web &amp; Mobile</h3>
+          <p class="port-desc">A Firebase-backed delivery and pickup platform with live vendor menus, real-time order tracking and distance-based fees — built as one fast, installable app-like experience across web and mobile.</p>
+          <ul class="port-examples">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Real-time vendor menus and live order tracking via Firebase</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Delivery/pickup toggle with dynamic, distance-based fee calculation</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Cart, checkout and order history, installable without an app store</li>
+          </ul>
+          <a class="btn btn-block-ink port-cta" href="contact.html">
+            <span>Start a Project Like This</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <div class="port-media">
+          <div class="port-media-glow" aria-hidden="true"></div>
+          <div class="port-media-frame">
+            <img src="https://i.postimg.cc/2y8v0n5F/1busket.png" alt="1BUSKET web and mobile app — full page screenshot" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA banner -->
+<section class="section section-tint">
+  <div class="wrap">
+    <div class="port-cta-banner reveal">
+      <h2>Have a Project in Mind?</h2>
+      <p>Tell us what you're building — website, app or platform — and we'll show you how we'd approach it, with clear pricing and a realistic timeline.</p>
+      <div class="port-cta-actions">
+        <a class="btn btn-secondary" href="contact.html">Start Your Project</a>
+        <a class="btn btn-outline" href="services.html">View Our Services</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="index.html">
+        <img class="logo-image" src="https://i.postimg.cc/jSdtxk2y/1.png" alt="Rare Grade Tech" />
+      </a>
+      <p>Software, web &amp; mobile apps, design and IT services for start-ups, businesses and individuals across South Africa.</p>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/profile.php?id=61551174479756" aria-label="Facebook"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8.5H16l.5-3.5h-3V7.7c0-1 .3-1.7 1.7-1.7H16.5V2.8C16 2.75 15 2.7 13.9 2.7c-2.4 0-4 1.45-4 4.1V10H7.4v3.5H10V22h3.5z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/></svg></a>
+        <a href="#" aria-label="Tumblr"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M14.7 21.3c-3 0-4.9-1.7-4.9-4.6V11h-2.3V8.4c2.4-.6 3.4-2.7 3.5-4.7h2.6v4.4h3v3h-3v5c0 1.2.6 1.9 1.8 1.9.5 0 1-.1 1.3-.3l.7 2.9c-.6.3-1.7.6-2.7.6z"/></svg></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Explore</h5>
+      <ul>
+        <li><a href="index.html#why-choose-us">Why Choose Us</a></li>
+        <li><a href="services.html#process">How We Work</a></li>
+        <li><a href="index.html#testimonials">Testimonials</a></li>
+        <li><a href="index.html#portal">Client Portal</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Contact Info</h5>
+      <ul class="footer-contact">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>69 Hooge Str, Mokopane, Limpopo, South Africa</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>08:00 – 17:00</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+27 61 527 0749</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6c0-1.1-.9-2-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6z"/><path d="m22 6-10 7L2 6"/></svg>admin@raregradetech.com</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap footer-bottom">
+    <span>© <span id="year"></span> Rare Grade Tech. All Rights Reserved.</span>
+    <span>© Copyright 2025. All Rights Reserved. Rare Grade Tech.</span>
+  </div>
+</footer>
+
+<script>
+// Reveal animation (same as home/services/about)
+(function () {
+  const revealEls = document.querySelectorAll('.reveal');
+  if (!revealEls.length) return;
+  if (!('IntersectionObserver' in window)) {
+    revealEls.forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+})();
+
+// Utility bar disappears after 20s
+(function () {
+  const bar = document.querySelector('.utility-bar');
+  if (!bar) return;
+  setTimeout(() => {
+    bar.classList.add('is-hidden');
+    bar.addEventListener('transitionend', () => {
+      bar.classList.add('is-removed');
+    }, { once: true });
+  }, 20000);
+})();
+
+// Navbar scroll + mobile toggle
+(function(){
+  const navbar = document.getElementById('navbar');
+  const toggle = document.getElementById('navToggle');
+  const panel = document.getElementById('mobilePanel');
+  if(navbar){
+    const onScroll = () => {
+      if(window.scrollY > 40) navbar.classList.add('scrolled');
+      else navbar.classList.remove('scrolled');
+    };
+    document.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+  if(toggle && panel){
+    toggle.addEventListener('click', ()=>{
+      const open = panel.classList.contains('open');
+      panel.classList.toggle('open', !open);
+      toggle.setAttribute('aria-expanded', String(!open));
+    });
+    panel.querySelectorAll('a').forEach(a=>{
+      a.addEventListener('click', ()=>{
+        panel.classList.remove('open');
+        toggle.setAttribute('aria-expanded','false');
+      });
+    });
+  }
+  const navbarEl = document.getElementById('navbar');
+  if (navbarEl) {
+    function syncNavHeight() {
+      document.documentElement.style.setProperty('--nav-h', navbarEl.getBoundingClientRect().height + 'px');
+    }
+    syncNavHeight();
+    window.addEventListener('load', syncNavHeight);
+    window.addEventListener('resize', syncNavHeight);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
+  }
+})();
+
+// Footer year
+(function(){
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+})();
+
+// Portfolio filter tabs (same sliding-indicator pattern as services.html)
+(function(){
+  const wrap = document.getElementById('portTabs');
+  const indicator = document.getElementById('portTabIndicator');
+  const tabs = Array.from(document.querySelectorAll('#portTabs .svc-tab'));
+  const sections = Array.from(document.querySelectorAll('.port-section'));
+  const emptyState = document.getElementById('portEmpty');
+  if (!tabs.length) return;
+
+  function moveIndicator(btn){
+    if (!indicator || !wrap || !btn) return;
+    const wrapRect = wrap.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    indicator.style.width = btnRect.width + 'px';
+    indicator.style.height = btnRect.height + 'px';
+    indicator.style.transform =
+      'translate(' + (btnRect.left - wrapRect.left) + 'px,' + (btnRect.top - wrapRect.top) + 'px)';
+  }
+
+  function applyFilter(key){
+    tabs.forEach(t => t.classList.toggle('is-active', t.dataset.svc === key));
+    let visibleCount = 0;
+    sections.forEach(sec => {
+      const cats = (sec.dataset.categories || '').split(' ');
+      const show = key === 'all' || cats.includes(key);
+      sec.classList.toggle('is-hidden', !show);
+      if (show) visibleCount++;
+    });
+    emptyState.classList.toggle('is-visible', visibleCount === 0);
+    const activeTab = document.querySelector('#portTabs .svc-tab[data-svc="' + key + '"]');
+    moveIndicator(activeTab);
+  }
+
+  tabs.forEach(t => {
+    t.addEventListener('click', () => applyFilter(t.dataset.svc));
+  });
+
+  const initialActive = document.querySelector('#portTabs .svc-tab.is-active') || tabs[0];
+  moveIndicator(initialActive);
+  requestAnimationFrame(() => wrap.classList.add('is-ready'));
+
+  window.addEventListener('resize', () => {
+    const current = document.querySelector('#portTabs .svc-tab.is-active') || tabs[0];
+    moveIndicator(current);
+  });
+})();
+</script>
+
+</body>
+</html>
