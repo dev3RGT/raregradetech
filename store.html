@@ -1,0 +1,1094 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Store — Rare Grade Tech</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Shop gadgets and software from Rare Grade Tech — genuine devices and licensed software, sourced and supported end-to-end." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Montserrat:ital,wght@1,800&display=swap" rel="stylesheet" />
+<style>
+
+  :root{
+    --blue-900:#0A0E5A;
+    --blue-800:#0D12A0;
+    --blue-700:#1118F5;
+    --blue-accent:#3B4CFF;
+    --ink:#05060B;
+    --white:#FFFFFF;
+    --line:rgba(255,255,255,.16);
+    --line-soft:rgba(255,255,255,.10);
+    --glass:rgba(255,255,255,.07);
+    --text-dim:rgba(255,255,255,.78);
+    --text-faint:rgba(255,255,255,.58);
+
+    --surface:#F5F6FC;
+    --surface-alt:#FFFFFF;
+    --card-line:#E5E7F6;
+    --ink-900:#090B25;
+    --ink-600:#54566F;
+    --ink-400:#8688A0;
+
+    --radius-s:10px;
+    --radius-m:16px;
+    --radius-l:28px;
+    --container:1360px;
+    --gap:8px;
+    --nav-h:107px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;overflow-x:hidden;}
+  body{
+    margin:0;
+    max-width:100vw;
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
+    background:var(--surface-alt);
+    color:var(--ink-900);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  img{max-width:100%;display:block;height:auto;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;}
+  ul{margin:0;padding:0;list-style:none;}
+  .wrap{max-width:var(--container);margin:0 auto;padding-inline:calc(var(--gap)*5);}
+  section[id]{scroll-margin-top:96px;}
+
+  /* ---------- Utility bar ---------- */
+  .utility-bar{
+    background:var(--white);
+    color:var(--ink);
+    font-size:13.5px;
+    font-weight:600;
+    position:relative;
+    z-index:41;
+    transition:transform .6s cubic-bezier(.16,.84,.44,1), opacity .5s ease;
+  }
+  .utility-bar.is-hidden{ transform:translateY(-100%); opacity:0; pointer-events:none; }
+  .utility-bar.is-removed{ display:none; }
+  .utility-bar .wrap{ display:flex; align-items:center; justify-content:space-between; gap:calc(var(--gap)*4); padding-block:calc(var(--gap)*1.75); }
+  .utility-left{display:flex;align-items:center;gap:calc(var(--gap)*4);flex-wrap:wrap;}
+  .utility-item{display:flex;align-items:center;gap:calc(var(--gap)*1.25);color:var(--ink);}
+  .utility-item svg{color:var(--blue-700);flex:none;}
+  .utility-social{display:flex;align-items:center;gap:calc(var(--gap)*1.25);}
+  .utility-social a{ width:30px;height:30px;border-radius:50%; background:var(--blue-700); display:flex;align-items:center;justify-content:center; color:var(--white); transition:background .18s ease, transform .18s ease; }
+  .utility-social a:hover{background:var(--ink);transform:translateY(-1px);}
+
+  /* ---------- Nav ---------- */
+  .navbar{
+    position:-webkit-sticky !important; position:sticky !important; top:0 !important; z-index:40;
+    background:#0404d8;
+    transition:background .25s ease, box-shadow .25s ease, backdrop-filter .25s ease;
+  }
+  .navbar.scrolled{ background:#0404d8; backdrop-filter:blur(14px); box-shadow:0 8px 30px rgba(2,4,30,.35); }
+  .navbar .wrap{ display:flex; align-items:center; justify-content:space-between; padding-block:calc(var(--gap)*0.1); gap:calc(var(--gap)*4); }
+  .logo{display:flex;align-items:center;gap:calc(var(--gap)*1.5);}
+  .logo-image{ height:59px; width:auto; max-width:308px; object-fit:contain; flex:none; }
+
+  .nav-links{display:flex;align-items:center;gap:calc(var(--gap)*4.5);}
+  .nav-links a{ font-size:14.5px;font-weight:600;color:rgba(255,255,255,.88); position:relative;padding-block:4px; }
+  .nav-links a.active{color:var(--white);}
+  .nav-links a.active::after{ content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--white);border-radius:2px; }
+  .nav-links a:hover{color:var(--white);}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-weight:700;font-size:14.5px;
+    border-radius:999px;
+    padding:14px 26px;
+    border:1px solid transparent;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+  }
+  .btn-primary{background:var(--ink);color:var(--white);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(0,0,0,.35);}
+  .btn-secondary{background:var(--white);color:var(--ink);}
+  .btn-secondary:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(0,0,0,.18);}
+  .btn-outline{background:transparent;color:var(--white);border-color:rgba(255,255,255,.4);}
+  .btn-outline:hover{background:rgba(255,255,255,.1);transform:translateY(-2px);}
+  .btn-block-ink{background:var(--blue-700);color:var(--white);}
+  .btn-block-ink:hover{background:var(--blue-800);transform:translateY(-2px);box-shadow:0 12px 24px rgba(17,24,245,.35);}
+  .btn-sm{padding:11px 20px;font-size:13.5px;}
+
+  .nav-cta{display:none;}
+  @media(min-width:900px){ .nav-cta{display:inline-flex;} }
+  @media(min-width:981px){ .navbar .wrap{ min-height:var(--nav-h); } }
+
+  .nav-toggle{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+    width:44px;height:44px;border-radius:var(--radius-s);
+    background:rgba(255,255,255,.08);border:1px solid var(--line);
+    color:var(--white);cursor:pointer;
+    transition:background .3s ease, border-color .3s ease;
+  }
+  .nav-toggle:hover{ background:rgba(255,255,255,.14); }
+  .nav-toggle .burger-line{ display:block;width:20px;height:2px;border-radius:2px;background:var(--white); transition:transform .45s cubic-bezier(.65,0,.35,1), opacity .3s ease, width .3s ease; transform-origin:center; }
+  .nav-toggle[aria-expanded="true"] .burger-line:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] .burger-line:nth-child(2){ opacity:0; width:0; }
+  .nav-toggle[aria-expanded="true"] .burger-line:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+  @media(min-width:900px){ .nav-toggle{display:none;} }
+
+  .mobile-panel{
+    position:absolute;top:100%;left:0;right:0;
+    display:grid;grid-template-rows:0fr;opacity:0;overflow:hidden;
+    background:#0E16F5;backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);
+    transition:grid-template-rows .55s cubic-bezier(.22,1,.36,1), opacity .4s ease;
+  }
+  .mobile-panel.open{ grid-template-rows:1fr; opacity:1; }
+  .mobile-panel-inner{ min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:calc(var(--gap)*1); padding:calc(var(--gap)*3) calc(var(--gap)*5) calc(var(--gap)*4); }
+  .mobile-panel-inner > *{ opacity:0;transform:translateY(-8px); transition:opacity .4s ease, transform .45s cubic-bezier(.22,1,.36,1); }
+  .mobile-panel.open .mobile-panel-inner > *{ opacity:1;transform:translateY(0); }
+  .mobile-panel.open .mobile-panel-inner > *:nth-child(1){ transition-delay:.05s; }
+  .mobile-panel.open .mobile-panel-inner > *:nth-child(2){ transition-delay:.09s; }
+  .mobile-panel.open .mobile-panel-inner > *:nth-child(3){ transition-delay:.13s; }
+  .mobile-panel.open .mobile-panel-inner > *:nth-child(4){ transition-delay:.17s; }
+  .mobile-panel.open .mobile-panel-inner > *:nth-child(5){ transition-delay:.21s; }
+  .mobile-panel.open .mobile-panel-inner > *:nth-child(6){ transition-delay:.25s; }
+  .mobile-panel a{ color:#FFFFFF !important; font-weight:600;font-size:15px;padding:10px 0; transition:opacity .25s ease, transform .25s ease; }
+  .mobile-panel a:hover, .mobile-panel a:active{ opacity:.8; }
+  .mobile-panel .btn{margin-top:calc(var(--gap)*1.5);}
+
+  /* ---------- Shared section system ---------- */
+  .section{padding-block:calc(var(--gap)*9);}
+  .section-tint{background:var(--surface);}
+  .section-head{max-width:640px;margin-bottom:calc(var(--gap)*7);}
+  .section-head.center{margin-inline:auto;text-align:center;}
+  .section-head.center .eyebrow{justify-content:center;}
+  .section-head.center .eyebrow::before{display:none;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-700);margin-bottom:calc(var(--gap)*2);}
+  .eyebrow::before{content:"";width:20px;height:2px;background:currentColor;border-radius:2px;}
+  .section-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(1.9rem,2.6vw,2.75rem);line-height:1.08;letter-spacing:-.01em;margin:0 0 calc(var(--gap)*2);}
+  .section-sub{font-size:15.5px;line-height:1.7;color:var(--ink-600);margin:0;max-width:640px;}
+  .section-head.center .section-sub{margin-inline:auto;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;overflow:hidden;isolation:isolate;
+    background:var(--surface-alt);
+  }
+  .hero--store{ padding:36px 0 52px; }
+  .hero-inner{
+    position:relative;z-index:1;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    width:100%;max-width:var(--container);margin:0 auto;
+    padding:0 calc(var(--gap)*5);
+  }
+
+  /* ---------- Hero ad carousel ---------- */
+  .ad-carousel{
+    position:relative;
+    width:100%;
+    max-width:1080px;
+    margin:0 auto;
+    border-radius:var(--radius-l);
+    overflow:hidden;
+    border:1px solid var(--card-line);
+    background:var(--surface);
+    box-shadow:0 20px 50px rgba(9,11,37,.14);
+    transition:height .6s cubic-bezier(.22,1,.36,1);
+  }
+  .ad-track{ display:flex; height:100%; transition:transform .6s cubic-bezier(.22,1,.36,1); }
+  .ad-slide{ position:relative; flex:0 0 100%; height:100%; }
+  .ad-card-link{ display:block; width:100%; height:100%; }
+  .ad-slide img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+  .ad-dots{ position:absolute; left:0; right:0; bottom:16px; z-index:2; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .ad-dot{
+    width:8px;height:8px;border-radius:50%;border:none;padding:0;cursor:pointer;
+    background:rgba(255,255,255,.55); box-shadow:0 1px 4px rgba(0,0,0,.25);
+    transition:background .25s ease, transform .25s ease; transform:scale(1);
+  }
+  .ad-dot.is-active{ background:#fff; transform:scale(1.25); }
+  .ad-arrow{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;
+    background:rgba(5,6,20,.45); color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    z-index:3; backdrop-filter:blur(2px);
+    transition:background .2s ease, transform .2s ease;
+  }
+  .ad-arrow:hover{ background:rgba(5,6,20,.72); }
+  .ad-arrow:active{ transform:translateY(-50%) scale(.92); }
+  .ad-arrow.ad-prev{ left:14px; }
+  .ad-arrow.ad-next{ right:14px; }
+  @media (max-width:600px){
+    .ad-carousel{ border-radius:var(--radius-m); }
+    .ad-arrow{ width:36px;height:36px; }
+    .ad-arrow.ad-prev{ left:8px; }
+    .ad-arrow.ad-next{ right:8px; }
+  }
+
+  /* ---------- Store toolbar: search + tabs ---------- */
+  .store-toolbar{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:20px; flex-wrap:wrap;
+    margin-bottom:calc(var(--gap)*4);
+  }
+  .store-search{ position:relative; flex:1 1 300px; max-width:420px; }
+  .store-search svg{ position:absolute; left:18px; top:50%; transform:translateY(-50%); color:var(--ink-400); pointer-events:none; }
+  .store-search input{
+    width:100%; font-family:inherit; font-size:14.5px; color:var(--ink-900);
+    padding:14px 20px 14px 46px; border-radius:999px;
+    border:1px solid var(--card-line); background:var(--surface);
+    transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .store-search input::placeholder{ color:var(--ink-400); }
+  .store-search input:focus{ outline:none; border-color:var(--blue-accent); background:var(--surface-alt); box-shadow:0 0 0 4px rgba(59,76,255,.12); }
+
+  .store-tabs{ position:relative; display:flex; align-items:center; gap:10px; flex:0 0 auto; }
+  .store-tab-indicator{
+    position:absolute;top:0;left:0;border-radius:999px;
+    background:linear-gradient(165deg, #151DFF 0%, #1118F5 38%, #0D12A0 100%);
+    box-shadow:0 12px 24px rgba(17,24,245,.28);
+    z-index:0;pointer-events:none;
+    transition:transform .5s cubic-bezier(.22,1,.36,1), width .5s cubic-bezier(.22,1,.36,1), height .5s cubic-bezier(.22,1,.36,1);
+  }
+  .store-tabs:not(.is-ready) .store-tab-indicator{ transition:none; opacity:0; }
+  .store-tab{
+    position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;
+    padding:12px 24px;border-radius:999px;border:1px solid var(--card-line);
+    background:var(--surface-alt);color:var(--ink-600);
+    font-size:13.5px;font-weight:700;letter-spacing:.01em;cursor:pointer;
+    transition:background .2s ease, color .25s ease .05s, border-color .2s ease, transform .2s ease;
+  }
+  .store-tab:hover{ transform:translateY(-2px); border-color:var(--blue-accent); color:var(--blue-700); }
+  .store-tab.is-active{ background:transparent; border-color:transparent; color:#fff; }
+  @media (max-width:600px){ .store-toolbar{ flex-direction:column; align-items:stretch; } .store-search{ max-width:none; } .store-tabs{ justify-content:stretch; } .store-tab{ flex:1; padding:12px 14px; } }
+
+  /* ---------- Brand filter row (slides down) ---------- */
+  .brand-row-wrap{
+    display:grid; grid-template-rows:0fr; opacity:0;
+    transition:grid-template-rows .5s cubic-bezier(.22,1,.36,1), opacity .4s ease, margin-bottom .5s cubic-bezier(.22,1,.36,1);
+    margin-bottom:0;
+  }
+  .brand-row-wrap.open{ grid-template-rows:1fr; opacity:1; margin-bottom:calc(var(--gap)*4); }
+  .brand-row-inner{ min-height:0; overflow:hidden; }
+  .brand-row{ display:flex; flex-wrap:wrap; gap:14px; padding-top:4px; }
+  .brand-tile{
+    width:86px; height:86px; border-radius:var(--radius-m);
+    border:2px solid var(--card-line); background:#FFFFFF;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; position:relative;
+    transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+    overflow:hidden;
+    padding:6px;
+  }
+  .brand-tile img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    object-position:center;
+    border-radius:8px;
+    display:block;
+    background:#FFFFFF;
+  }
+  .brand-tile:hover{ transform:translateY(-3px); border-color:var(--blue-accent); }
+  .brand-tile.is-active{ border-color:var(--blue-700); box-shadow:0 10px 22px rgba(17,24,245,.24); }
+  .brand-tile-label{ position:absolute; bottom:-20px; left:50%; transform:translateX(-50%); font-size:10.5px; font-weight:700; color:var(--ink-400); white-space:nowrap; letter-spacing:.02em; }
+
+  /* ---------- Product grid ---------- */
+  .product-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(253px,1fr)); gap:22px; margin-top:calc(var(--gap)*5); }
+  .product-card{
+    background:var(--surface-alt); border:1px solid var(--card-line); border-radius:var(--radius-m);
+    overflow:hidden; display:flex; flex-direction:column;
+    transition:transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s ease, border-color .25s ease;
+  }
+  .product-card:hover{ transform:translateY(-5px); box-shadow:0 18px 36px rgba(9,11,37,.1); border-color:var(--blue-accent); }
+  .product-media{ aspect-ratio:1/1; background:var(--surface); display:flex; align-items:center; justify-content:center; padding:22px; position:relative; }
+  .product-media img{ max-width:100%; max-height:100%; object-fit:contain; }
+  .condition-badge{
+    position:absolute; top:10px; left:10px; z-index:2;
+    font-size:9.5px; font-weight:800; letter-spacing:.04em; text-transform:uppercase;
+    padding:5px 9px; border-radius:999px;
+    background:#0A0E5A; color:#fff; box-shadow:0 4px 12px rgba(0,0,0,.15);
+  }
+  .condition-badge.brand-new{ background:#1118F5; }
+  .condition-badge.pre-owned{ background:#05060B; }
+  .spec-badges{
+    position:absolute; top:50%; right:10px; transform:translateY(-50%); z-index:2;
+    display:flex; flex-direction:column; align-items:flex-end; justify-content:center; gap:8px;
+  }
+  .spec-badge{
+    width:44px; height:44px; flex:none;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-size:8.5px; font-weight:800; letter-spacing:.01em; line-height:1.15;
+    padding:3px; border-radius:8px;
+    background:#fff; color:#090B25;
+    border:1px solid #E5E7F6; backdrop-filter:blur(6px);
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+  }
+
+  .product-body{ padding:16px 18px 20px; display:flex; flex-direction:column; gap:8px; flex:1; }
+  .product-name{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:var(--ink-900); margin:0; }
+  .product-price{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; color:var(--blue-700); margin:0 0 4px; }
+  .product-cta{
+    margin-top:auto; align-self:flex-start; display:inline-flex; align-items:center; gap:6px;
+    font-size:12.5px; font-weight:700; color:var(--blue-700); cursor:pointer;
+    padding:9px 16px; border-radius:999px; border:1px solid rgba(17,24,245,.22); background:rgba(17,24,245,.06);
+    transition:background .2s ease, color .2s ease, transform .2s ease, border-color .2s ease;
+  }
+  .product-cta:hover{ background:var(--blue-700); color:#fff; transform:translateY(-2px); }
+  .product-cta svg{ width:13px; height:13px; flex:none; }
+  .product-cta.is-added{ background:var(--blue-700); border-color:var(--blue-700); color:#fff; }
+
+  /* ---------- Floating cart ---------- */
+  .floating-cart-btn{
+    position:fixed; right:24px; bottom:24px; z-index:60;
+    width:56px; height:56px; border-radius:50%; border:none; cursor:pointer;
+    background:var(--blue-700); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 14px 30px rgba(17,24,245,.35);
+    transform:scale(0); opacity:0; pointer-events:none;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1), opacity .25s ease, background .2s ease;
+  }
+  .floating-cart-btn.is-visible{ transform:scale(1); opacity:1; pointer-events:auto; }
+  .floating-cart-btn.bump{ animation:cartBump .45s ease; }
+  @keyframes cartBump{ 0%{ transform:scale(1); } 40%{ transform:scale(1.2); } 100%{ transform:scale(1); } }
+  .floating-cart-badge{
+    position:absolute; top:-4px; right:-4px; min-width:20px; height:20px; border-radius:999px;
+    background:#fff; color:var(--blue-700); font-size:11px; font-weight:800;
+    display:flex; align-items:center; justify-content:center; padding:0 5px;
+    box-shadow:0 2px 6px rgba(0,0,0,.2);
+  }
+
+  .cart-overlay{
+    position:fixed; inset:0; z-index:65; background:rgba(5,6,20,.4);
+    opacity:0; pointer-events:none; transition:opacity .3s ease;
+  }
+  .cart-overlay.open{ opacity:1; pointer-events:auto; }
+
+  .cart-drawer{
+    position:fixed; top:0; right:0; height:100vh; width:min(400px,92vw); z-index:70;
+    background:var(--surface-alt); box-shadow:-20px 0 50px rgba(9,11,37,.18);
+    display:flex; flex-direction:column;
+    transform:translateX(100%); transition:transform .4s cubic-bezier(.22,1,.36,1);
+  }
+  .cart-drawer.open{ transform:translateX(0); }
+  .cart-drawer-head{ display:flex; align-items:center; justify-content:space-between; padding:22px 22px 16px; border-bottom:1px solid var(--card-line); }
+  .cart-drawer-head h3{ font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; margin:0; color:var(--ink-900); }
+  .cart-drawer-close{ width:32px; height:32px; border-radius:50%; border:1px solid var(--card-line); background:var(--surface-alt); color:var(--ink-600); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color .2s ease, color .2s ease; }
+  .cart-drawer-close:hover{ border-color:var(--blue-accent); color:var(--blue-700); }
+  .cart-drawer-items{ flex:1; overflow-y:auto; }
+  .cart-empty{ padding:48px 22px; text-align:center; color:var(--ink-400); font-size:14px; }
+  .cart-item{ display:flex; align-items:center; gap:12px; padding:14px 22px; border-bottom:1px solid var(--card-line); }
+  .cart-item-thumb{ width:48px; height:48px; border-radius:10px; background:var(--surface); display:flex; align-items:center; justify-content:center; flex:none; overflow:hidden; }
+  .cart-item-thumb img{ max-width:80%; max-height:80%; object-fit:contain; }
+  .cart-item-info{ flex:1; min-width:0; }
+  .cart-item-name{ font-size:13.5px; font-weight:700; color:var(--ink-900); margin:0 0 3px; }
+  .cart-item-price{ font-size:12px; color:var(--ink-600); margin:0; }
+  .cart-item-qty{ display:flex; align-items:center; gap:8px; flex:none; }
+  .qty-btn{ width:24px; height:24px; border-radius:50%; border:1px solid var(--card-line); background:var(--surface-alt); color:var(--ink-600); font-size:14px; font-weight:700; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color .2s ease, color .2s ease; }
+  .qty-btn:hover{ border-color:var(--blue-accent); color:var(--blue-700); }
+  .cart-item-qty span{ font-size:13px; font-weight:700; min-width:14px; text-align:center; }
+  .cart-item-remove{ flex:none; color:var(--ink-400); cursor:pointer; background:none; border:none; padding:4px; display:flex; transition:color .2s ease; }
+  .cart-item-remove:hover{ color:#e0433a; }
+  .cart-drawer-footer{ padding:18px 22px 22px; border-top:1px solid var(--card-line); }
+  .cart-total-row{ display:flex; align-items:center; justify-content:space-between; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15.5px; color:var(--ink-900); margin-bottom:16px; }
+
+  /* ---------- Empty states ---------- */
+  .store-empty{ display:none; text-align:center; padding:calc(var(--gap)*10) calc(var(--gap)*5); }
+  .store-empty.is-visible{ display:block; }
+  .store-empty h3{ font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.5rem;margin:0 0 10px;color:var(--ink-900); }
+  .store-empty p{ font-size:15px;color:var(--ink-600);max-width:440px;margin:0 auto 22px;line-height:1.65; }
+
+  /* ---------- CTA banner ---------- */
+  .store-cta-banner{
+    background:linear-gradient(155deg,#1118F5 0%,#0D12A0 55%,#0A0E5A 100%);
+    border-radius:var(--radius-l);
+    padding:clamp(34px,6vw,72px) calc(var(--gap)*5);
+    text-align:center;color:var(--white);
+  }
+  .store-cta-banner h2{
+    font-family:'Montserrat',sans-serif;font-style:italic;font-weight:800;
+    font-size:clamp(28px,4.6vw,50px);line-height:1;margin:0 0 14px;text-transform:uppercase;
+  }
+  .store-cta-banner p{ color:rgba(255,255,255,.82);font-size:16px;line-height:1.6;margin:0 auto 26px;max-width:520px; }
+  .store-cta-actions{ display:flex;flex-wrap:wrap;justify-content:center;gap:12px; }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.16,.84,.44,1), transform .8s cubic-bezier(.16,.84,.44,1);will-change:opacity,transform;}
+  .reveal.is-visible{opacity:1;transform:translateY(0);}
+
+  .navbar{ background:#0404d8; box-shadow:0 4px 18px rgba(2,4,30,.12); }
+  .navbar.scrolled{ background:#0404d8; box-shadow:0 8px 30px rgba(2,4,30,.35); }
+  .section-title{ font-family:'Montserrat', sans-serif; }
+
+  /* ---------- Footer ---------- */
+  .site-footer{
+    background:
+      linear-gradient(155deg, rgba(5,7,45,.85) 0%, rgba(10,14,90,.80) 45%, rgba(17,24,245,.55) 100%),
+      url('https://i.postimg.cc/W4rjp5x0/footer.png');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    color:rgba(255,255,255,.7);
+    padding-top:calc(var(--gap)*9);
+  }
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:calc(var(--gap)*5);padding-bottom:calc(var(--gap)*7);}
+  .footer-brand .logo{margin-bottom:calc(var(--gap)*2.5);}
+  .footer-brand p{font-size:13.8px;line-height:1.7;color:rgba(255,255,255,.55);max-width:280px;margin:0 0 calc(var(--gap)*2.5);}
+  .footer-social{display:flex;gap:10px;}
+  .footer-social a{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;color:var(--white);transition:background .2s ease, transform .2s ease;}
+  .footer-social a:hover{background:var(--blue-700);transform:translateY(-2px);}
+  .footer-col h5{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--white);margin:0 0 calc(var(--gap)*2.5);}
+  .footer-col li{margin-bottom:calc(var(--gap)*1.5);}
+  .footer-col a{font-size:14px;color:rgba(255,255,255,.6);transition:color .18s ease;}
+  .footer-col a:hover{color:var(--white);}
+  .footer-contact li{display:flex;gap:10px;align-items:flex-start;font-size:13.8px;color:rgba(255,255,255,.65);line-height:1.5;}
+  .footer-contact svg{width:16px;height:16px;flex:none;margin-top:2px;color:#FFFFFF;}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-block:calc(var(--gap)*3);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:calc(var(--gap)*2);font-size:12.8px;color:rgba(255,255,255,.45);}
+  .footer-bottom a{color:rgba(255,255,255,.6);}
+  .footer-bottom a:hover{color:var(--white);}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:768px){
+    :root{ --container:100%; }
+    .wrap{ padding-inline:18px; }
+    .navbar .wrap{ padding-block:14px; }
+    .logo-image{ height:44px; }
+    .nav-links{ display:none; }
+    .nav-toggle{ display:flex; }
+    .utility-bar .wrap{ flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:10px;padding-block:10px; }
+    .utility-left{ gap:14px;flex-wrap:nowrap; }
+    .utility-item span{ display:none; }
+    .utility-social{ align-self:center;gap:10px;flex-wrap:nowrap; }
+    .hero--store{ padding:24px 0 40px; }
+    .section{ padding-block:56px; }
+    .section-head{ margin-bottom:28px; }
+    .section-title{ font-size:clamp(26px,7vw,32px); }
+    .section-sub{ font-size:14px; }
+    .footer-grid{ grid-template-columns:1fr; gap:28px; }
+    .footer-bottom{ flex-direction:column; gap:10px; text-align:center; }
+  }
+  @media (max-width:600px){
+    .footer-grid{ grid-template-columns:1fr 1fr; }
+    .footer-brand{ grid-column:1 / -1; }
+  }
+  @media (max-width:480px){
+    .wrap{ padding-inline:16px; }
+    .btn{ padding:13px 20px;font-size:14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="utility-bar">
+  <div class="wrap">
+    <div class="utility-left">
+      <a class="utility-item" href="tel:+27615270749" aria-label="Call +27 61 527 0749">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>+27 61 527 0749</span>
+      </a>
+      <a class="utility-item" href="mailto:info@raregradetech.com" aria-label="Email info@raregradetech.com">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6c0-1.1-.9-2-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6z"/><path d="m22 6-10 7L2 6"/></svg>
+        <span>info@raregradetech.com</span>
+      </a>
+      <span class="utility-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span>Mon – Fri: 8:00 – 17:00</span>
+      </span>
+      <span class="utility-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>69 Hooge Street, Mokopane</span>
+      </span>
+    </div>
+    <div class="utility-social">
+      <a href="https://www.facebook.com/profile.php?id=61551174479756" aria-label="Facebook"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8.5H16l.5-3.5h-3V7.7c0-1 .3-1.7 1.7-1.7H16.5V2.8C16 2.75 15 2.7 13.9 2.7c-2.4 0-4 1.45-4 4.1V10H7.4v3.5H10V22h3.5z"/></svg></a>
+      <a href="#" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="#" aria-label="YouTube"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M10.5 9.5v5l4.5-2.5z" fill="currentColor" stroke="none"/></svg></a>
+      <a href="#" aria-label="Tumblr"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14.7 21.3c-3 0-4.9-1.7-4.9-4.6V11h-2.3V8.4c2.4-.6 3.4-2.7 3.5-4.7h2.6v4.4h3v3h-3v5c0 1.2.6 1.9 1.8 1.9.5 0 1-.1 1.3-.3l.7 2.9c-.6.3-1.7.6-2.7.6z"/></svg></a>
+    </div>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav class="navbar" id="navbar">
+  <div class="wrap">
+    <a class="logo" href="index.html">
+      <img class="logo-image" src="https://i.postimg.cc/jSdtxk2y/1.png" alt="Rare Grade Tech" />
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a class="active" href="store.html">Store</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+
+    <a class="btn btn-primary nav-cta" href="contact.html">Client Portal</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+    </button>
+  </div>
+  <div class="mobile-panel" id="mobilePanel">
+    <div class="mobile-panel-inner">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="store.html">Shop</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact Us</a>
+      <a class="btn btn-primary" href="contact.html">Client Portal</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO — auto-scrolling ad carousel -->
+<section class="hero hero--store" id="store-hero">
+  <div class="hero-inner">
+    <div class="ad-carousel reveal" id="adCarousel">
+      <div class="ad-track" id="adTrack">
+        <div class="ad-slide">
+          <a class="ad-card-link" href="contact.html" aria-label="Enquire about the MacBook Pro">
+            <img src="https://i.postimg.cc/jjm9pVkH/macbookpro.png" alt="MacBook Pro promotion" loading="lazy" />
+          </a>
+        </div>
+        <div class="ad-slide">
+          <a class="ad-card-link" href="#products" aria-label="Shop the current store lineup">
+            <img src="https://i.postimg.cc/x1H9xRdy/ads.png" alt="Rare Grade Tech Store promotion" loading="lazy" />
+          </a>
+        </div>
+      </div>
+      <button type="button" class="ad-arrow ad-prev" id="adPrev" aria-label="Previous slide">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button type="button" class="ad-arrow ad-next" id="adNext" aria-label="Next slide">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+      <div class="ad-dots" id="adDots">
+        <button type="button" class="ad-dot is-active" data-index="0" aria-label="Show slide 1"></button>
+        <button type="button" class="ad-dot" data-index="1" aria-label="Show slide 2"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Store -->
+<section class="section" id="products">
+  <div class="wrap">
+    <div class="store-toolbar reveal">
+      <div class="store-search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="storeSearchInput" placeholder="Search products…" autocomplete="off" />
+      </div>
+      <div class="store-tabs" id="storeTabs">
+        <span class="store-tab-indicator" id="storeTabIndicator" aria-hidden="true"></span>
+        <button type="button" class="store-tab is-active" data-tab="gadgets">Gadgets</button>
+        <button type="button" class="store-tab" data-tab="software">Software Products</button>
+      </div>
+    </div>
+
+    <div class="brand-row-wrap open reveal" id="brandRowWrap">
+      <div class="brand-row-inner">
+        <div class="brand-row" id="brandRow">
+          <button type="button" class="brand-tile" data-brand="apple" aria-label="Filter by Apple">
+            <img src="https://i.postimg.cc/MfGz23RL/apple-trans.png" alt="Apple" loading="lazy" />
+          </button>
+          <button type="button" class="brand-tile" data-brand="dell" aria-label="Filter by Dell">
+            <img src="https://i.postimg.cc/y6ck2STY/dell-trans.png" alt="Dell" loading="lazy" />
+          </button>
+          <button type="button" class="brand-tile" data-brand="samsung" aria-label="Filter by Samsung">
+            <img src="https://i.postimg.cc/HsmVmsSy/samsung-trans.png" alt="Samsung" loading="lazy" />
+          </button>
+          <button type="button" class="brand-tile" data-brand="lenovo" aria-label="Filter by Lenovo">
+            <img src="https://i.postimg.cc/nzFw6vvR/lenovo-1.jpg" alt="Lenovo" loading="lazy" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gadgets panel -->
+    <div id="gadgetsPanel">
+      <div class="product-grid" id="productGrid">
+
+        <div class="product-card reveal" data-brand="apple" data-search="iphone 16 apple">
+          <div class="product-media">
+            <span class="condition-badge brand-new">Brand New</span>
+            <div class="spec-badges"><span class="spec-badge">128GB</span><span class="spec-badge">A18 Chip</span><span class="spec-badge">6.1" OLED</span></div>
+            <img src="https://i.postimg.cc/K8nRkFtF/iphone16.png" alt="iPhone 16" loading="lazy" />
+          </div>
+          <div class="product-body">
+            <h3 class="product-name">iPhone 16</h3>
+            <p class="product-price">R17 499</p>
+            <button type="button" class="product-cta add-to-cart-btn" data-id="iphone-16" data-name="iPhone 16" data-price="17499" data-image="https://i.postimg.cc/K8nRkFtF/iphone16.png">
+              <span class="cta-label">Add to Cart</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="product-card reveal" data-brand="apple" data-search="iphone 17 pro apple">
+          <div class="product-media">
+            <span class="condition-badge pre-owned">Pre-Owned</span>
+            <div class="spec-badges"><span class="spec-badge">512GB</span><span class="spec-badge">A19 Pro</span><span class="spec-badge">Titanium</span></div>
+            <img src="https://i.postimg.cc/g29x2rXQ/iphone17pro.png" alt="iPhone 17 Pro" loading="lazy" />
+          </div>
+          <div class="product-body">
+            <h3 class="product-name">iPhone 17 Pro</h3>
+            <p class="product-price">R24 999</p>
+            <button type="button" class="product-cta add-to-cart-btn" data-id="iphone-17-pro" data-name="iPhone 17 Pro" data-price="24999" data-image="https://i.postimg.cc/g29x2rXQ/iphone17pro.png">
+              <span class="cta-label">Add to Cart</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="product-card reveal" data-brand="apple" data-search="iphone 17 apple">
+          <div class="product-media">
+            <span class="condition-badge brand-new">Brand New</span>
+            <div class="spec-badges"><span class="spec-badge">256GB</span><span class="spec-badge">A19 Chip</span><span class="spec-badge">120Hz</span></div>
+            <img src="https://i.postimg.cc/P5GC5NpY/iphone17.png" alt="iPhone 17" loading="lazy" />
+          </div>
+          <div class="product-body">
+            <h3 class="product-name">iPhone 17</h3>
+            <p class="product-price">R19 999</p>
+            <button type="button" class="product-cta add-to-cart-btn" data-id="iphone-17" data-name="iPhone 17" data-price="19999" data-image="https://i.postimg.cc/P5GC5NpY/iphone17.png">
+              <span class="cta-label">Add to Cart</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="store-empty" id="noResults">
+        <h3>No products match</h3>
+        <p>Try a different search term, or clear the brand filter to see everything we have in stock.</p>
+      </div>
+    </div>
+
+    <!-- Software panel -->
+    <div class="store-empty" id="softwarePanel">
+      <h3>Software coming soon</h3>
+      <p>We're finalising our licensed software lineup. Tell us what you need and we'll source it for you.</p>
+      <a class="btn btn-block-ink" href="contact.html">
+        <span>Ask About Software</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="index.html">
+        <img class="logo-image" src="https://i.postimg.cc/jSdtxk2y/1.png" alt="Rare Grade Tech" />
+      </a>
+      <p>Software, web &amp; mobile apps, design and IT services for start-ups, businesses and individuals across South Africa.</p>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/profile.php?id=61551174479756" aria-label="Facebook"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8.5H16l.5-3.5h-3V7.7c0-1 .3-1.7 1.7-1.7H16.5V2.8C16 2.75 15 2.7 13.9 2.7c-2.4 0-4 1.45-4 4.1V10H7.4v3.5H10V22h3.5z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/></svg></a>
+        <a href="#" aria-label="Tumblr"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M14.7 21.3c-3 0-4.9-1.7-4.9-4.6V11h-2.3V8.4c2.4-.6 3.4-2.7 3.5-4.7h2.6v4.4h3v3h-3v5c0 1.2.6 1.9 1.8 1.9.5 0 1-.1 1.3-.3l.7 2.9c-.6.3-1.7.6-2.7.6z"/></svg></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="store.html">Shop</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Explore</h5>
+      <ul>
+        <li><a href="index.html#why-choose-us">Why Choose Us</a></li>
+        <li><a href="services.html#process">How We Work</a></li>
+        <li><a href="index.html#testimonials">Testimonials</a></li>
+        <li><a href="index.html#portal">Client Portal</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Contact Info</h5>
+      <ul class="footer-contact">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>69 Hooge Str, Mokopane, Limpopo, South Africa</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>08:00 – 17:00</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+27 61 527 0749</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6c0-1.1-.9-2-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6z"/><path d="m22 6-10 7L2 6"/></svg>admin@raregradetech.com</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap footer-bottom">
+    <span>© <span id="year"></span> Rare Grade Tech. All Rights Reserved.</span>
+    <span>© Copyright 2025. All Rights Reserved. Rare Grade Tech.</span>
+  </div>
+</footer>
+
+<!-- Floating cart -->
+<button type="button" class="floating-cart-btn" id="floatingCartBtn" aria-label="View cart">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+  <span class="floating-cart-badge" id="cartBadge">0</span>
+</button>
+
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-drawer-head">
+    <h3>Your Cart</h3>
+    <button type="button" class="cart-drawer-close" id="cartClose" aria-label="Close cart">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="cart-drawer-items" id="cartItems"></div>
+  <div class="cart-drawer-footer">
+    <div class="cart-total-row"><span>Total</span><span id="cartTotal">R0</span></div>
+    <a class="btn btn-block-ink" href="contact.html" style="width:100%;justify-content:center;">
+      <span>Enquire About This Order</span>
+    </a>
+  </div>
+</aside>
+
+<script>
+// Reveal animation
+(function () {
+  const revealEls = document.querySelectorAll('.reveal');
+  if (!revealEls.length) return;
+  if (!('IntersectionObserver' in window)) {
+    revealEls.forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+})();
+
+// Utility bar disappears after 20s
+(function () {
+  const bar = document.querySelector('.utility-bar');
+  if (!bar) return;
+  setTimeout(() => {
+    bar.classList.add('is-hidden');
+    bar.addEventListener('transitionend', () => {
+      bar.classList.add('is-removed');
+    }, { once: true });
+  }, 20000);
+})();
+
+// Navbar scroll + mobile toggle
+(function(){
+  const navbar = document.getElementById('navbar');
+  const toggle = document.getElementById('navToggle');
+  const panel = document.getElementById('mobilePanel');
+  if(navbar){
+    const onScroll = () => {
+      if(window.scrollY > 40) navbar.classList.add('scrolled');
+      else navbar.classList.remove('scrolled');
+    };
+    document.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+  if(toggle && panel){
+    toggle.addEventListener('click', ()=>{
+      const open = panel.classList.contains('open');
+      panel.classList.toggle('open', !open);
+      toggle.setAttribute('aria-expanded', String(!open));
+    });
+    panel.querySelectorAll('a').forEach(a=>{
+      a.addEventListener('click', ()=>{
+        panel.classList.remove('open');
+        toggle.setAttribute('aria-expanded','false');
+      });
+    });
+  }
+  const navbarEl = document.getElementById('navbar');
+  if (navbarEl) {
+    function syncNavHeight() {
+      document.documentElement.style.setProperty('--nav-h', navbarEl.getBoundingClientRect().height + 'px');
+    }
+    syncNavHeight();
+    window.addEventListener('load', syncNavHeight);
+    window.addEventListener('resize', syncNavHeight);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
+  }
+})();
+
+// Footer year
+(function(){
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+})();
+
+// Store: tabs, brand filter, search
+(function(){
+  const tabsWrap = document.getElementById('storeTabs');
+  const indicator = document.getElementById('storeTabIndicator');
+  const tabs = Array.from(document.querySelectorAll('#storeTabs .store-tab'));
+  const brandRowWrap = document.getElementById('brandRowWrap');
+  const brandTiles = Array.from(document.querySelectorAll('.brand-tile'));
+  const gadgetsPanel = document.getElementById('gadgetsPanel');
+  const softwarePanel = document.getElementById('softwarePanel');
+  const productGrid = document.getElementById('productGrid');
+  const productCards = Array.from(document.querySelectorAll('.product-card'));
+  const noResults = document.getElementById('noResults');
+  const searchInput = document.getElementById('storeSearchInput');
+
+  let activeTab = 'gadgets';
+  let activeBrand = null;
+
+  function moveIndicator(btn){
+    if (!indicator || !tabsWrap || !btn) return;
+    const wrapRect = tabsWrap.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    indicator.style.width = btnRect.width + 'px';
+    indicator.style.height = btnRect.height + 'px';
+    indicator.style.transform =
+      'translate(' + (btnRect.left - wrapRect.left) + 'px,' + (btnRect.top - wrapRect.top) + 'px)';
+  }
+
+  function runFilter(){
+    const query = searchInput.value.trim().toLowerCase();
+    let anyVisible = false;
+    productCards.forEach(card => {
+      const matchesBrand = !activeBrand || card.dataset.brand === activeBrand;
+      const matchesQuery = !query || card.dataset.search.includes(query);
+      const show = matchesBrand && matchesQuery;
+      card.style.display = show ? '' : 'none';
+      if (show) anyVisible = true;
+    });
+    const showGadgets = activeTab === 'gadgets';
+    productGrid.style.display = (showGadgets && anyVisible) ? '' : 'none';
+    noResults.classList.toggle('is-visible', showGadgets && !anyVisible);
+  }
+
+  function applyTab(tab){
+    activeTab = tab;
+    tabs.forEach(t => t.classList.toggle('is-active', t.dataset.tab === tab));
+    const activeTabBtn = tabs.find(t => t.dataset.tab === tab);
+    moveIndicator(activeTabBtn);
+
+    if (tab === 'gadgets') {
+      brandRowWrap.classList.add('open');
+      gadgetsPanel.style.display = '';
+      softwarePanel.classList.remove('is-visible');
+    } else {
+      brandRowWrap.classList.remove('open');
+      activeBrand = null;
+      brandTiles.forEach(t => t.classList.remove('is-active'));
+      gadgetsPanel.style.display = 'none';
+      softwarePanel.classList.add('is-visible');
+    }
+    runFilter();
+  }
+
+  function applyBrand(brand){
+    activeBrand = (activeBrand === brand) ? null : brand;
+    brandTiles.forEach(t => t.classList.toggle('is-active', t.dataset.brand === activeBrand));
+    runFilter();
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => applyTab(t.dataset.tab)));
+  brandTiles.forEach(t => t.addEventListener('click', () => applyBrand(t.dataset.brand)));
+  searchInput.addEventListener('input', runFilter);
+
+  const initialTab = tabs.find(t => t.classList.contains('is-active')) || tabs[0];
+  moveIndicator(initialTab);
+  requestAnimationFrame(() => tabsWrap.classList.add('is-ready'));
+  runFilter();
+
+  window.addEventListener('resize', () => {
+    const current = tabs.find(t => t.classList.contains('is-active')) || tabs[0];
+    moveIndicator(current);
+  });
+})();
+
+// Ad carousel: auto-advance every 30s
+(function(){
+  const carousel = document.getElementById('adCarousel');
+  const track = document.getElementById('adTrack');
+  const slides = Array.from(track.children);
+  const dots = Array.from(document.querySelectorAll('#adDots .ad-dot'));
+  const prevBtn = document.getElementById('adPrev');
+  const nextBtn = document.getElementById('adNext');
+  if (!slides.length) return;
+
+  // Both slides now share one rectangle shape: 20% wider, 10% shorter than 16:9.
+  const RATIO = (16 * 1.2) / (9 * 0.9);
+
+  let current = 0;
+  let timer = null;
+
+  function setHeight(){
+    const w = carousel.getBoundingClientRect().width;
+    carousel.style.height = (w / RATIO) + 'px';
+  }
+
+  function goTo(index){
+    current = (index + slides.length) % slides.length;
+    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
+  }
+
+  function restartTimer(){
+    if (timer) clearInterval(timer);
+    timer = setInterval(() => goTo(current + 1), 30000);
+  }
+
+  dots.forEach(d => d.addEventListener('click', () => {
+    goTo(parseInt(d.dataset.index, 10));
+    restartTimer();
+  }));
+
+  if (prevBtn) prevBtn.addEventListener('click', () => { goTo(current - 1); restartTimer(); });
+  if (nextBtn) nextBtn.addEventListener('click', () => { goTo(current + 1); restartTimer(); });
+
+  setHeight();
+  restartTimer();
+
+  window.addEventListener('resize', setHeight);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(setHeight);
+})();
+
+// Floating cart
+(function(){
+  const CART_KEY = 'rgt_store_cart';
+  const floatingBtn = document.getElementById('floatingCartBtn');
+  const badge = document.getElementById('cartBadge');
+  const overlay = document.getElementById('cartOverlay');
+  const drawer = document.getElementById('cartDrawer');
+  const closeBtn = document.getElementById('cartClose');
+  const itemsEl = document.getElementById('cartItems');
+  const totalEl = document.getElementById('cartTotal');
+  const addButtons = Array.from(document.querySelectorAll('.add-to-cart-btn'));
+
+  function loadCart(){
+    try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
+    catch (e) { return []; }
+  }
+  function saveCart(){
+    try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) {}
+  }
+  function formatPrice(n){
+    return 'R' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+
+  let cart = loadCart();
+
+  function render(){
+    const count = cart.reduce((s, c) => s + c.qty, 0);
+    badge.textContent = count;
+    floatingBtn.classList.toggle('is-visible', count > 0);
+
+    const total = cart.reduce((s, c) => s + c.price * c.qty, 0);
+    totalEl.textContent = formatPrice(total);
+
+    if (!cart.length) {
+      itemsEl.innerHTML = '<div class="cart-empty">Your cart is empty.</div>';
+      return;
+    }
+    itemsEl.innerHTML = cart.map(it => `
+      <div class="cart-item" data-id="${it.id}">
+        <div class="cart-item-thumb"><img src="${it.image}" alt="${it.name}" loading="lazy" /></div>
+        <div class="cart-item-info">
+          <p class="cart-item-name">${it.name}</p>
+          <p class="cart-item-price">${formatPrice(it.price)} × ${it.qty}</p>
+        </div>
+        <div class="cart-item-qty">
+          <button type="button" class="qty-btn" data-action="dec" data-id="${it.id}" aria-label="Decrease quantity">−</button>
+          <span>${it.qty}</span>
+          <button type="button" class="qty-btn" data-action="inc" data-id="${it.id}" aria-label="Increase quantity">+</button>
+        </div>
+        <button type="button" class="cart-item-remove" data-action="remove" data-id="${it.id}" aria-label="Remove ${it.name}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    `).join('');
+  }
+
+  function bump(){
+    floatingBtn.classList.remove('bump');
+    void floatingBtn.offsetWidth;
+    floatingBtn.classList.add('bump');
+  }
+
+  function addToCart(item){
+    const existing = cart.find(c => c.id === item.id);
+    if (existing) existing.qty += 1;
+    else cart.push(Object.assign({ qty: 1 }, item));
+    saveCart();
+    render();
+    bump();
+  }
+
+  function changeQty(id, delta){
+    const it = cart.find(c => c.id === id);
+    if (!it) return;
+    it.qty += delta;
+    if (it.qty <= 0) cart = cart.filter(c => c.id !== id);
+    saveCart();
+    render();
+  }
+
+  function removeItem(id){
+    cart = cart.filter(c => c.id !== id);
+    saveCart();
+    render();
+  }
+
+  function openDrawer(){
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+  }
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+  }
+
+  addButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      addToCart({
+        id: btn.dataset.id,
+        name: btn.dataset.name,
+        price: parseInt(btn.dataset.price, 10),
+        image: btn.dataset.image
+      });
+      const label = btn.querySelector('.cta-label');
+      const original = label.textContent;
+      btn.classList.add('is-added');
+      label.textContent = 'Added ✓';
+      setTimeout(() => {
+        btn.classList.remove('is-added');
+        label.textContent = original;
+      }, 1300);
+    });
+  });
+
+  floatingBtn.addEventListener('click', openDrawer);
+  closeBtn.addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+
+  itemsEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const id = btn.dataset.id;
+    if (btn.dataset.action === 'inc') changeQty(id, 1);
+    else if (btn.dataset.action === 'dec') changeQty(id, -1);
+    else if (btn.dataset.action === 'remove') removeItem(id);
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>
