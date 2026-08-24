@@ -236,7 +236,7 @@
     display:grid;
     grid-template-columns:2fr 3fr;
     gap:calc(var(--gap)*8);
-    align-items:center;
+    align-items:start;
   }
   .port-text{ display:flex; flex-direction:column; }
   .port-index{
@@ -260,24 +260,10 @@
   .port-examples li svg{ width:16px;height:16px;flex:none;margin-top:2px;color:var(--blue-700); }
   .port-cta{ align-self:flex-start; }
 
-  .port-media{ position:relative; isolation:isolate; }
-  .port-media-glow{
-    position:absolute;inset:-8%;z-index:-1;
-    background:radial-gradient(closest-side, rgba(17,24,245,.16), transparent 70%);
-    filter:blur(32px);pointer-events:none;
-  }
-  .port-media-frame{
-    background:linear-gradient(165deg,#EEF0FC 0%,#F7F8FE 100%);
-    border:1px solid var(--card-line);
-    border-radius:var(--radius-l);
-    padding:calc(var(--gap)*3);
-  }
-  .port-media-frame img{
+  .port-media img{
     width:100%;
     height:auto;
     display:block;
-    border-radius:var(--radius-m);
-    box-shadow:0 40px 80px rgba(4,8,80,.22), 0 12px 28px rgba(4,8,80,.12);
   }
 
   @media (max-width:900px){
@@ -287,7 +273,6 @@
   }
   @media (max-width:768px){
     .port-section{ padding-block:56px; }
-    .port-media-frame{ padding:calc(var(--gap)*2); }
     .port-cta{ width:100%; }
     .port-cta .btn{ width:100%; justify-content:center; }
   }
@@ -500,7 +485,7 @@
     <div class="port-section reveal" data-categories="web-mobile design">
       <div class="wrap port-grid">
         <div class="port-text">
-          <span class="port-index">01 — Web &amp; Mobile Apps · Graphic Design</span>
+          <span class="port-index">01 — Web &amp; Mobile Apps</span>
           <h3 class="port-title">Rare Grade Tech — Our Own Website</h3>
           <p class="port-desc">The site you're on right now. A cinematic, single-page HTML build with an animated hero, sliding service tabs, live pricing filters and a client portal — the same fast, self-contained approach we build for every client.</p>
           <ul class="port-examples">
@@ -514,10 +499,7 @@
           </a>
         </div>
         <div class="port-media">
-          <div class="port-media-glow" aria-hidden="true"></div>
-          <div class="port-media-frame">
-            <img src="https://i.postimg.cc/nzKYRHG9/rgtwebsite.png" alt="Rare Grade Tech website — full page screenshot" loading="lazy" />
-          </div>
+          <img src="https://i.postimg.cc/nzKYRHG9/rgtwebsite.png" alt="Rare Grade Tech website — full page screenshot" loading="lazy" />
         </div>
       </div>
     </div>
@@ -526,7 +508,7 @@
     <div class="port-section alt reveal" data-categories="web-mobile software">
       <div class="wrap port-grid">
         <div class="port-text">
-          <span class="port-index">02 — Web &amp; Mobile Apps · Software Solutions</span>
+          <span class="port-index">02 — Web &amp; Mobile Apps</span>
           <h3 class="port-title">Mokopane FM — 100.0 MHz Radio Station</h3>
           <p class="port-desc">"The Voice of Mogalakwena" — a Firebase-powered station site with a live admin dashboard controlling the show lineup, photo carousel, news and sponsored ads, all editable in real time without touching code.</p>
           <ul class="port-examples">
@@ -540,10 +522,7 @@
           </a>
         </div>
         <div class="port-media">
-          <div class="port-media-glow" aria-hidden="true"></div>
-          <div class="port-media-frame">
-            <img src="https://i.postimg.cc/rsQGTQHH/mkfmwebsite.png" alt="Mokopane FM website — full page screenshot" loading="lazy" />
-          </div>
+          <img src="https://i.postimg.cc/rsQGTQHH/mkfmwebsite.png" alt="Mokopane FM website — full page screenshot" loading="lazy" />
         </div>
       </div>
     </div>
@@ -552,7 +531,7 @@
     <div class="port-section reveal" data-categories="web-mobile software">
       <div class="wrap port-grid">
         <div class="port-text">
-          <span class="port-index">03 — Web &amp; Mobile Apps · Software Solutions</span>
+          <span class="port-index">03 — Web &amp; Mobile Apps</span>
           <h3 class="port-title">1BUSKET — Premium Delivery, Web &amp; Mobile</h3>
           <p class="port-desc">A Firebase-backed delivery and pickup platform with live vendor menus, real-time order tracking and distance-based fees — built as one fast, installable app-like experience across web and mobile.</p>
           <ul class="port-examples">
@@ -566,10 +545,7 @@
           </a>
         </div>
         <div class="port-media">
-          <div class="port-media-glow" aria-hidden="true"></div>
-          <div class="port-media-frame">
-            <img src="https://i.postimg.cc/2y8v0n5F/1busket.png" alt="1BUSKET web and mobile app — full page screenshot" loading="lazy" />
-          </div>
+          <img src="https://i.postimg.cc/2y8v0n5F/1busket.png" alt="1BUSKET web and mobile app — full page screenshot" loading="lazy" />
         </div>
       </div>
     </div>
