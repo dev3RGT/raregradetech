@@ -279,9 +279,10 @@
   .brand-row-wrap.open{ grid-template-rows:1fr; opacity:1; margin-bottom:15px; }
   .brand-row-inner{ min-height:0; overflow:hidden; }
 
-  .filters-row{ display:flex; align-items:flex-start; gap:32px; flex-wrap:wrap; padding-top:4px; }
-  .filter-rail-group{ position:relative; display:flex; align-items:center; gap:8px; flex:1 1 260px; min-width:0; }
-  .filter-rail-group.filter-rail-extra{ justify-content:flex-end; }
+  .filters-row{ display:flex; align-items:center; gap:24px; flex-wrap:nowrap; padding-top:4px; padding-bottom:8px; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; -ms-overflow-style:none; }
+  .filters-row::-webkit-scrollbar{ display:none; }
+  .filter-rail-group{ position:relative; display:flex; align-items:center; gap:8px; flex:0 0 auto; min-width:0; }
+  .filter-rail-group.filter-rail-extra{ justify-content:flex-start; flex:1 1 auto; min-width:220px; max-width:520px; }
 
   .rail-arrow{
     flex:none; width:22px; height:22px; padding:0;
@@ -296,8 +297,9 @@
   .rail-arrow[hidden]{ display:none; }
 
   .filter-rail{
-    display:flex; align-items:center; gap:18px;
-    overflow-x:auto; scroll-behavior:smooth; min-width:0;
+    display:flex; align-items:center; gap:10px;
+    overflow-x:auto; overflow-y:hidden; flex-wrap:nowrap;
+    scroll-behavior:smooth; flex:1; min-width:0;
     scrollbar-width:none; -ms-overflow-style:none;
     padding:6px 2px;
   }
@@ -305,14 +307,14 @@
 
   /* Logos sit directly on the page — no card/container */
   .brand-tile{
-    width:62px; height:62px; flex:none;
+    width:55.8px; height:55.8px; flex:none;
     border:none; background:transparent; padding:0; margin:0;
     display:flex; align-items:center; justify-content:center;
     cursor:pointer; position:relative;
     transition:transform .2s ease, opacity .2s ease;
   }
   .brand-tile img, .brand-tile svg{
-    width:100%; height:100%; object-fit:contain; object-position:center;
+    width:90%; height:90%; object-fit:contain; object-position:center;
     display:block; background:transparent; border-radius:0;
   }
   .brand-tile:hover{ transform:translateY(-3px); }
@@ -336,7 +338,7 @@
   .filter-pill-divider{ flex:none; width:1px; height:22px; background:var(--card-line); }
 
   /* ---------- Price range slider ---------- */
-  .filter-price-group{ flex:0 0 auto; }
+  .filter-price-group{ flex:0 0 auto; min-width:220px; }
   .price-slider{ display:flex; flex-direction:column; gap:9px; width:220px; padding:5px 2px 0; }
   .price-slider-labels{ display:flex; align-items:center; justify-content:space-between; font-size:12px; font-weight:700; color:var(--ink-900); }
   .price-slider-labels span{ color:var(--blue-700); }
@@ -365,7 +367,7 @@
   .price-range:focus::-moz-range-thumb{ box-shadow:0 0 0 4px rgba(59,76,255,.22); }
 
   /* ---------- Sort select ---------- */
-  .filter-sort-group{ flex:0 0 auto; }
+  .filter-sort-group{ flex:0 0 auto; min-width:140px; }
   .sort-select-wrap{ display:flex; align-items:center; gap:9px; }
   .sort-select-label{ font-size:12.5px; font-weight:700; color:var(--ink-400); text-transform:uppercase; letter-spacing:.04em; }
   .sort-select{
@@ -378,7 +380,7 @@
   .sort-select:hover, .sort-select:focus{ border-color:var(--blue-accent); color:var(--blue-700); outline:none; }
 
   @media (max-width:900px){
-    .filters-row{ flex-direction:column; gap:18px; }
+    .filters-row{ flex-direction:row; gap:18px; overflow-x:auto; flex-wrap:nowrap; }
     .filter-rail-group.filter-rail-extra{ justify-content:flex-start; }
     .price-slider{ width:100%; }
   }
