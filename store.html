@@ -305,13 +305,13 @@
 
   /* Logos sit directly on the page — no card/container */
   .brand-tile{
-    width:69px; height:69px; flex:none;
+    width:62px; height:62px; flex:none;
     border:none; background:transparent; padding:0; margin:0;
     display:flex; align-items:center; justify-content:center;
     cursor:pointer; position:relative;
     transition:transform .2s ease, opacity .2s ease;
   }
-  .brand-tile img{
+  .brand-tile img, .brand-tile svg{
     width:100%; height:100%; object-fit:contain; object-position:center;
     display:block; background:transparent; border-radius:0;
   }
@@ -740,16 +740,22 @@
             </button>
             <div class="filter-rail" id="brandRow">
               <button type="button" class="brand-tile" data-brand="apple" aria-label="Filter by Apple">
-                <img src="https://i.postimg.cc/MfGz23RL/apple-trans.png" alt="Apple" loading="lazy" />
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50" aria-label="Apple">
+<path d="M 44.527344 34.75 C 43.449219 37.144531 42.929688 38.214844 41.542969 40.328125 C 39.601563 43.28125 36.863281 46.96875 33.480469 46.992188 C 30.46875 47.019531 29.691406 45.027344 25.601563 45.0625 C 21.515625 45.082031 20.664063 47.03125 17.648438 47 C 14.261719 46.96875 11.671875 43.648438 9.730469 40.699219 C 4.300781 32.429688 3.726563 22.734375 7.082031 17.578125 C 9.457031 13.921875 13.210938 11.773438 16.738281 11.773438 C 20.332031 11.773438 22.589844 13.746094 25.558594 13.746094 C 28.441406 13.746094 30.195313 11.769531 34.351563 11.769531 C 37.492188 11.769531 40.8125 13.480469 43.1875 16.433594 C 35.421875 20.691406 36.683594 31.78125 44.527344 34.75 Z M 31.195313 8.46875 C 32.707031 6.527344 33.855469 3.789063 33.4375 1 C 30.972656 1.167969 28.089844 2.742188 26.40625 4.78125 C 24.878906 6.640625 23.613281 9.398438 24.105469 12.066406 C 26.796875 12.152344 29.582031 10.546875 31.195313 8.46875 Z"></path>
+</svg>
               </button>
-              <button type="button" class="brand-tile" data-brand="dell" aria-label="Filter by Dell">
-                <img src="https://i.postimg.cc/y6ck2STY/dell-trans.png" alt="Dell" loading="lazy" />
+              <button type="button" class="brand-tile" data-brand="hp" aria-label="Filter by HP">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50" aria-label="HP">
+    <path d="M 25.205078 2.0078125 L 20.150391 16 L 23.394531 16 C 25.514531 16 26.657641 17.631953 25.931641 19.626953 L 20.492188 34.001953 L 16.574219 34 L 22.150391 19 L 18.964844 19 L 13.388672 34 L 9.1503906 34 L 20.798828 2.3945312 C 20.327828 2.4815313 19.860391 2.5793125 19.400391 2.6953125 C 9.4163906 5.2023125 2.0019531 14.250953 2.0019531 25.001953 C 2.0019531 35.382953 8.9149062 44.174391 18.378906 47.025391 C 18.699906 47.122391 19.024562 47.215828 19.351562 47.298828 L 20.042969 45.386719 L 24.068359 34.257812 L 24.070312 34.257812 L 30.589844 16 L 38.392578 16 C 40.514578 16 41.656641 17.631953 40.931641 19.626953 L 36.183594 32.314453 C 35.845594 33.241453 34.762391 34 33.775391 34 L 28.150391 34 L 23.826172 45.941406 L 23.111328 47.917969 C 23.403328 47.941969 23.695234 47.964562 23.990234 47.976562 C 24.326234 47.991563 24.662953 48.001953 25.001953 48.001953 C 37.683953 48.001953 48.001953 37.684953 48.001953 25.001953 C 48.000953 12.609953 38.148187 2.4814375 25.867188 2.0234375 C 25.647188 2.0154375 25.426078 2.0098125 25.205078 2.0078125 z M 33.964844 19 L 29.455078 31 L 32.640625 31 L 37.150391 19 L 33.964844 19 z"></path>
+</svg>
               </button>
               <button type="button" class="brand-tile" data-brand="samsung" aria-label="Filter by Samsung">
                 <img src="https://i.postimg.cc/HsmVmsSy/samsung-trans.png" alt="Samsung" loading="lazy" />
               </button>
-              <button type="button" class="brand-tile" data-brand="lenovo" aria-label="Filter by Lenovo">
-                <img src="https://i.postimg.cc/nzFw6vvR/lenovo-1.jpg" alt="Lenovo" loading="lazy" />
+              <button type="button" class="brand-tile" data-brand="windows" aria-label="Filter by Windows">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50" aria-label="Windows">
+<path d="M19.852 7.761l-15 2.25C4.362 10.085 4 10.505 4 11v12c0 .553.448 1 1 1h15c.552 0 1-.447 1-1V8.75c0-.291-.127-.567-.348-.758C20.432 7.803 20.139 7.721 19.852 7.761zM45.652 4.242c-.22-.189-.512-.271-.801-.231l-21 3.15C23.362 7.235 23 7.655 23 8.15V23c0 .553.448 1 1 1h21c.552 0 1-.447 1-1V5C46 4.709 45.873 4.433 45.652 4.242zM20 26H5c-.552 0-1 .447-1 1v12c0 .495.362.915.852.989l15 2.25c.05.007.099.011.148.011.238 0 .47-.085.652-.242C20.873 41.817 21 41.541 21 41.25V27C21 26.447 20.552 26 20 26zM45 26H24c-.552 0-1 .447-1 1v14.85c0 .495.362.915.852.989l21 3.15C44.901 45.996 44.951 46 45 46c.238 0 .47-.085.652-.242C45.873 45.567 46 45.291 46 45V27C46 26.447 45.552 26 45 26z"></path>
+</svg>
               </button>
             </div>
             <button type="button" class="rail-arrow rail-arrow-next" id="brandRailNext" aria-label="Scroll brands right" hidden>
