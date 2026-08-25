@@ -643,6 +643,53 @@
     margin:0;
   }
 
+
+  /* Blue pill-shaped tabs like Add to Cart */
+  .filter-pill.blue-pill{
+    background:var(--blue-700);
+    color:#fff;
+    border:1px solid var(--blue-700);
+    padding:10px 18px;
+    border-radius:999px;
+    font-size:12.5px;
+    font-weight:700;
+    box-shadow:0 6px 16px rgba(17,24,245,.28);
+    transition:background .25s ease, transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease, border-color .2s ease;
+  }
+  .filter-pill.blue-pill:hover{
+    background:var(--blue-accent);
+    border-color:var(--blue-accent);
+    transform:translateY(-2px);
+    box-shadow:0 12px 26px rgba(17,24,245,.4);
+  }
+  .filter-pill.blue-pill.is-active{
+    background:#fff;
+    border-color:#fff;
+    color:var(--blue-700);
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    transform:translateY(-1px);
+  }
+  /* Keep center */
+  #extraFilterRow{
+    justify-content:center;
+    align-items:center;
+    gap:12px !important;
+  }
+  .filter-rail-group.filter-rail-extra{
+    justify-content:center;
+    margin:0 auto;
+  }
+  /* Arrows - no containers, just chevrons */
+  .rail-arrow{
+    flex:none; width:22px; height:22px; padding:0;
+    border:none; background:transparent; color:var(--blue-700); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:color .2s ease, transform .2s ease, opacity .2s ease;
+  }
+  .rail-arrow svg{ width:18px; height:18px; }
+  .rail-arrow:hover{ color:var(--blue-800); transform:translateY(-1px); }
+  .rail-arrow[hidden]{ display:none; }
+
 </style>
 </head>
 <body>
@@ -822,19 +869,15 @@
             <button type="button" class="rail-arrow rail-arrow-prev" id="extraRailPrev" aria-label="Scroll filters left" hidden>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
             </button>
-            <div class="filter-rail" id="extraFilterRow">
-              <button type="button" class="filter-pill brand-icon" data-group="category" data-value="phones" aria-label="Phones">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABK0lEQVR4nO2ZTWrDMBCFn+Rb+EpJrlNnZ+hMcqMs25wpP5uuHCaOCRgHUtkjlfI+mJVh5I83ssACCPl7VNBNgB4j5BqhXVrJNUC+K3yui0gEyD795acrQDR7Eo/FfyLkA2jr9G5tHaFN30u7rMn043QXaZbq+ZDpAvRrqZ7vLHqxRYck+jGzWdfdzGS6CDkjF8NMj8VSXiJAD6/6ujNe0JIwmWGzpiYUS4tMPE9KKJYWGScwTii1rzv/cI+09ZwEpr9aml9k2XNEtiVF7DRuljzZYyERlwJFfglFQBEfKAKK+EARUMQHioAiPlAEFPGBIqCIDxQBRXygCCjiw/Pvu0udkAu7F/cSCTkvQ+0K2Uukgq6QE7sLcUhDUAJLxkZh5p65WI/sSRCCt7gBIksSJ2xI0F0AAAAASUVORK5CYII=" alt="Phones" loading="lazy" />
-              </button>
-              <button type="button" class="filter-pill brand-icon" data-group="category" data-value="desktop" aria-label="Desktop">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAvElEQVR4nO3YQQ6CMBSE4WF6C08kXspEex0vJWvOgClhh7qx1Hkwf/JWJE2/NIUEwDl3rBJuFyIPRJ6CzJCQ+xUkGGJa5vkOMj9EkPhpv4b8KRoiFg0Ri4aIRUPEoiFi0RCxaIhYNEQsGiIWDYkGYbCBIdAaRILgyx4Nodhgt3/jE3JfHkRCJNzPK4jbY/z1oqoUEHI9dcgPIo8VL+9Y1ixrN2MsiE3eRt2MaVTlk1idDBpCNv1GwDmH2r0AnGLwEzLL4O8AAAAASUVORK5CYII=" alt="Desktop" loading="lazy" />
-              </button>
-              <button type="button" class="filter-pill brand-icon" data-group="category" data-value="laptops" aria-label="Laptops">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAzElEQVR4nO3YQQrCMBSE4elUvI5u9QR6qoIJVa/iMfQmFb1GJYKrUhUa2lHmg2xKaN5P6KaAmZlZNtW8QDwS4U7EVnTdCsR9mrU3o0A4CAzafrMKhLo3JNWmTUC9Gnq3RLx0Bwjnoe8Fwvp1M+8Ofx4Icfw0p0NGRoeIoUPE0CFi6BAxdIgYOkQMHSKGDhFDh4ihQ8TQIWL41yHM/k82noDdAqhm3RHSs7hMe3Kfi9wvnGqBiNeph8iwGpSI2x+PaUqEzXhfqJmZGXQ9AJycU2jDSBgdAAAAAElFTkSuQmCC" alt="Laptops" loading="lazy" />
-              </button>
-              <button type="button" class="filter-pill brand-icon" data-group="category" data-value="macbook" aria-label="MacBook">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABmklEQVR4nO3YoU8cQRTH8e+8TWnaVNRgEJjSXIJCtaYGi0EQFAmqqoqkIZUL9942Fa2oKwpBAoKEhH+BC4L0JKIJ4BEVILg2Kck2x24qroTlyB43084v+Zkzs599b8UNxMTExMTE1BDB9gXLA2vrOkgeYokQ/CoRgl8lQvCrRAj/NURPE2zOYdsBQ/QSbArWHgh6EjLkALJRh26Ftlrngr2B5nPQVw5dceh6gs2DPkvIpgX96jvkF6y+pDLZpGA/vIU4bLcacfWtHPk+kXfVEHtR4xrng4IsVUOaDe8hDvtSDYHuCnoNEewb5K6akj6uC8OAIHmCzd4CMiLYsdcQwQ7h06ObGA796Ptq5d06dKPAfH6Y0JwR7DW8n4BUhOxtnWcxSEhR/Slop+f3i7rPYfCQ+ykRgl8lQvCr/HMQCfMWPu9pK9hJSO9k/hrRHdN9K/0/gO7VcG5eQvSsgKRjBJf0aflCOn/+Gzh0Bz6ME0zSJ4ItlxNplxcBxVTCrS6UumbDYZuCfh/+Q1k/105twRaHvBoxMTHcY34DMeUHa2GumSsAAAAASUVORK5CYII=" alt="MacBook" loading="lazy" />
-              </button>
+                                                <div class="filter-rail" id="extraFilterRow">
+              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="laptops">Laptops</button>
+              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="macbook">MacBook</button>
+              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="iphone">iPhone</button>
+              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="ipad">iPad</button>
+              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="desktop">Desktop</button>
+              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="imac">iMac</button>
+              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="apple-watch">Apple Watch</button>
+              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="accessories">Accessories</button>
             </div>
             <button type="button" class="rail-arrow rail-arrow-next" id="extraRailNext" aria-label="Scroll filters right" hidden>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
