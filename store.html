@@ -85,7 +85,7 @@
   .navbar.scrolled{ background:#0404d8; backdrop-filter:blur(14px); box-shadow:0 8px 30px rgba(2,4,30,.35); }
   .navbar .wrap{ display:flex; align-items:center; justify-content:space-between; padding-block:calc(var(--gap)*0.1); gap:calc(var(--gap)*4); }
   .logo{display:flex;align-items:center;gap:calc(var(--gap)*1.5);}
-  .logo-image{ height:59px; width:auto; max-width:308px; object-fit:contain; flex:none; }
+  .logo-image{ height:62px; width:auto; max-width:220px; object-fit:contain; flex:none; }
 
   .nav-links{display:flex;align-items:center;gap:calc(var(--gap)*4.5);}
   .nav-links a{ font-size:14.5px;font-weight:600;color:rgba(255,255,255,.88); position:relative;padding-block:4px; }
@@ -154,6 +154,7 @@
 
   /* ---------- Shared section system ---------- */
   .section{padding-block:calc(var(--gap)*9);}
+  #products{ padding-top:0; }
   .section-tint{background:var(--surface);}
   .section-head{max-width:640px;margin-bottom:calc(var(--gap)*7);}
   .section-head.center{margin-inline:auto;text-align:center;}
@@ -170,7 +171,7 @@
     position:relative;overflow:hidden;isolation:isolate;
     background:var(--surface-alt);
   }
-  .hero--store{ padding:36px 0 52px; }
+  .hero--store{ padding:36px 0 0; }
   .hero-inner{
     position:relative;z-index:1;
     display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
@@ -178,19 +179,24 @@
     padding:0 calc(var(--gap)*5);
   }
 
-  /* ---------- Hero ad carousel ---------- */
-  .ad-carousel{
-    position:relative;
+  /* ---------- Hero ad carousels (2 cards, 70/30 split) ---------- */
+  .ad-row{
+    display:flex;
+    align-items:stretch;
+    gap:3%;
     width:100%;
     max-width:1080px;
-    margin:0 auto;
-    border-radius:var(--radius-l);
+    margin:0 auto 1.5%;
+  }
+  .ad-carousel{
+    position:relative;
     overflow:hidden;
     border:1px solid var(--card-line);
     background:var(--surface);
-    box-shadow:0 20px 50px rgba(9,11,37,.14);
     transition:height .6s cubic-bezier(.22,1,.36,1);
   }
+  .ad-carousel--wide{ flex:1 1 70%; border-radius:var(--radius-l); }
+  .ad-carousel--narrow{ flex:1 1 30%; border-radius:var(--radius-l); }
   .ad-track{ display:flex; height:100%; transition:transform .6s cubic-bezier(.22,1,.36,1); }
   .ad-slide{ position:relative; flex:0 0 100%; height:100%; }
   .ad-card-link{ display:block; width:100%; height:100%; }
@@ -214,8 +220,14 @@
   .ad-arrow:active{ transform:translateY(-50%) scale(.92); }
   .ad-arrow.ad-prev{ left:14px; }
   .ad-arrow.ad-next{ right:14px; }
+  .ad-carousel--narrow .ad-arrow{ width:32px; height:32px; }
+  .ad-carousel--narrow .ad-arrow.ad-prev{ left:8px; }
+  .ad-carousel--narrow .ad-arrow.ad-next{ right:8px; }
+  @media (max-width:700px){
+    .ad-row{ flex-direction:column; }
+    .ad-carousel--wide, .ad-carousel--narrow{ flex:1 1 100%; border-radius:var(--radius-m); }
+  }
   @media (max-width:600px){
-    .ad-carousel{ border-radius:var(--radius-m); }
     .ad-arrow{ width:36px;height:36px; }
     .ad-arrow.ad-prev{ left:8px; }
     .ad-arrow.ad-next{ right:8px; }
@@ -225,7 +237,7 @@
   .store-toolbar{
     display:flex; align-items:center; justify-content:space-between;
     gap:20px; flex-wrap:wrap;
-    margin-bottom:calc(var(--gap)*4);
+    margin-bottom:18px;
   }
   .store-search{ position:relative; flex:1 1 300px; max-width:420px; }
   .store-search svg{ position:absolute; left:18px; top:50%; transform:translateY(-50%); color:var(--ink-400); pointer-events:none; }
@@ -264,7 +276,7 @@
     transition:grid-template-rows .5s cubic-bezier(.22,1,.36,1), opacity .4s ease, margin-bottom .5s cubic-bezier(.22,1,.36,1);
     margin-bottom:0;
   }
-  .brand-row-wrap.open{ grid-template-rows:1fr; opacity:1; margin-bottom:calc(var(--gap)*4); }
+  .brand-row-wrap.open{ grid-template-rows:1fr; opacity:1; margin-bottom:15px; }
   .brand-row-inner{ min-height:0; overflow:hidden; }
 
   .filters-row{ display:flex; align-items:flex-start; gap:32px; flex-wrap:wrap; padding-top:4px; }
@@ -272,16 +284,15 @@
   .filter-rail-group.filter-rail-extra{ justify-content:flex-end; }
 
   .rail-arrow{
-    flex:none; width:30px; height:30px; border-radius:50%; padding:0;
-    border:1px solid var(--card-line); background:#fff; color:var(--ink-600); cursor:pointer;
+    flex:none; width:22px; height:22px; padding:0;
+    border:none; background:transparent; color:var(--blue-700); cursor:pointer;
     display:flex; align-items:center; justify-content:center;
-    box-shadow:0 4px 10px rgba(9,11,37,.08);
-    transition:border-color .2s ease, color .2s ease, transform .2s ease, opacity .2s ease;
+    transition:color .2s ease, transform .2s ease, opacity .2s ease;
   }
-  .rail-arrow svg{ width:14px; height:14px; }
-  .rail-arrow:hover{ border-color:var(--blue-accent); color:var(--blue-700); transform:translateY(-1px); }
-  .rail-arrow:disabled{ opacity:.35; cursor:default; transform:none; }
-  .rail-arrow:disabled:hover{ border-color:var(--card-line); color:var(--ink-600); }
+  .rail-arrow svg{ width:18px; height:18px; }
+  .rail-arrow:hover{ color:var(--blue-800); transform:translateY(-1px); }
+  .rail-arrow:disabled{ opacity:.3; cursor:default; transform:none; }
+  .rail-arrow:disabled:hover{ color:var(--blue-700); }
   .rail-arrow[hidden]{ display:none; }
 
   .filter-rail{
@@ -324,9 +335,52 @@
   .filter-pill.is-active{ background:var(--blue-700); border-color:var(--blue-700); color:#fff; box-shadow:0 8px 18px rgba(17,24,245,.24); }
   .filter-pill-divider{ flex:none; width:1px; height:22px; background:var(--card-line); }
 
+  /* ---------- Price range slider ---------- */
+  .filter-price-group{ flex:0 0 auto; }
+  .price-slider{ display:flex; flex-direction:column; gap:9px; width:220px; padding:5px 2px 0; }
+  .price-slider-labels{ display:flex; align-items:center; justify-content:space-between; font-size:12px; font-weight:700; color:var(--ink-900); }
+  .price-slider-labels span{ color:var(--blue-700); }
+  .price-slider-track-wrap{ position:relative; height:20px; display:flex; align-items:center; }
+  .price-slider-track{ position:absolute; left:0; right:0; height:4px; border-radius:999px; background:var(--card-line); }
+  .price-slider-fill{ position:absolute; height:4px; border-radius:999px; background:var(--blue-700); left:0%; right:0%; }
+  .price-range{
+    position:absolute; top:0; left:0; width:100%; height:20px; margin:0;
+    background:transparent; -webkit-appearance:none; appearance:none; pointer-events:none;
+  }
+  .price-range::-webkit-slider-runnable-track{ background:transparent; height:4px; }
+  .price-range::-moz-range-track{ background:transparent; height:4px; border:none; }
+  .price-range::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; pointer-events:auto;
+    width:16px; height:16px; margin-top:-6px; border-radius:50%;
+    background:var(--blue-700); border:2px solid #fff;
+    box-shadow:0 2px 6px rgba(17,24,245,.4); cursor:pointer;
+  }
+  .price-range::-moz-range-thumb{
+    pointer-events:auto; width:16px; height:16px; border-radius:50%;
+    background:var(--blue-700); border:2px solid #fff;
+    box-shadow:0 2px 6px rgba(17,24,245,.4); cursor:pointer;
+  }
+  .price-range:focus{ outline:none; }
+  .price-range:focus::-webkit-slider-thumb{ box-shadow:0 0 0 4px rgba(59,76,255,.22); }
+  .price-range:focus::-moz-range-thumb{ box-shadow:0 0 0 4px rgba(59,76,255,.22); }
+
+  /* ---------- Sort select ---------- */
+  .filter-sort-group{ flex:0 0 auto; }
+  .sort-select-wrap{ display:flex; align-items:center; gap:9px; }
+  .sort-select-label{ font-size:12.5px; font-weight:700; color:var(--ink-400); text-transform:uppercase; letter-spacing:.04em; }
+  .sort-select{
+    font-family:inherit; font-size:12.5px; font-weight:700; color:var(--ink-600);
+    padding:9px 34px 9px 16px; border-radius:999px; border:1px solid var(--card-line);
+    background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238688A0' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center / 12px;
+    cursor:pointer; appearance:none; -webkit-appearance:none; -moz-appearance:none;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .sort-select:hover, .sort-select:focus{ border-color:var(--blue-accent); color:var(--blue-700); outline:none; }
+
   @media (max-width:900px){
     .filters-row{ flex-direction:column; gap:18px; }
     .filter-rail-group.filter-rail-extra{ justify-content:flex-start; }
+    .price-slider{ width:100%; }
   }
 
   /* ---------- Product grid ---------- */
@@ -382,13 +436,20 @@
   .product-cta:hover::before{ transform:translateX(130%); }
   .product-cta:active{ transform:translateY(-1px) scale(.96); }
   .product-cta svg{ width:13px; height:13px; flex:none; transition:transform .35s cubic-bezier(.34,1.56,.64,1); }
-  .product-cta.is-added{ background:#090B25; border-color:#090B25; animation:cta-pop .5s cubic-bezier(.34,1.56,.64,1); }
-  .product-cta.is-added svg{ transform:scale(1.2) rotate(-10deg); }
   @keyframes cta-pop{
     0%{ transform:scale(1); }
     35%{ transform:scale(1.1) translateY(-2px); }
     100%{ transform:scale(1); }
   }
+  .product-cta[hidden], .product-qty-stepper[hidden]{ display:none !important; }
+
+  /* Qty stepper shown on the card after Add to Cart — mirrors the cart drawer's qty control */
+  .product-qty-stepper{
+    margin-top:auto; align-self:flex-start; display:inline-flex; align-items:center; gap:10px;
+    padding:6px 8px; border-radius:999px; border:1px solid var(--card-line); background:var(--surface-alt);
+    animation:cta-pop .4s cubic-bezier(.34,1.56,.64,1);
+  }
+  .product-qty-stepper .qty-value{ font-size:13.5px; font-weight:700; color:var(--ink-900); min-width:16px; text-align:center; }
 
   /* ---------- Floating cart ---------- */
   .floating-cart-btn{
@@ -504,14 +565,14 @@
     :root{ --container:100%; }
     .wrap{ padding-inline:18px; }
     .navbar .wrap{ padding-block:14px; }
-    .logo-image{ height:44px; }
+    .logo-image{ height:62px; }
     .nav-links{ display:none; }
     .nav-toggle{ display:flex; }
     .utility-bar .wrap{ flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:10px;padding-block:10px; }
     .utility-left{ gap:14px;flex-wrap:nowrap; }
     .utility-item span{ display:none; }
     .utility-social{ align-self:center;gap:10px;flex-wrap:nowrap; }
-    .hero--store{ padding:24px 0 40px; }
+    .hero--store{ padding:24px 0 0; }
     .section{ padding-block:56px; }
     .section-head{ margin-bottom:28px; }
     .section-title{ font-size:clamp(26px,7vw,32px); }
@@ -599,28 +660,57 @@
 <!-- HERO — auto-scrolling ad carousel -->
 <section class="hero hero--store" id="store-hero">
   <div class="hero-inner">
-    <div class="ad-carousel reveal" id="adCarousel">
-      <div class="ad-track" id="adTrack">
-        <div class="ad-slide">
-          <a class="ad-card-link" href="contact.html" aria-label="Enquire about the MacBook Pro">
-            <img src="https://i.postimg.cc/jjm9pVkH/macbookpro.png" alt="MacBook Pro promotion" loading="lazy" />
-          </a>
+    <div class="ad-row reveal">
+      <!-- Ad card B — 30% width, its own carousel, now on the left -->
+      <div class="ad-carousel ad-carousel--narrow" id="adCarouselB" data-carousel-id="B">
+        <div class="ad-track" data-track>
+          <div class="ad-slide">
+            <a class="ad-card-link" href="#products" aria-label="Shop the current store lineup">
+              <img src="https://i.postimg.cc/x1H9xRdy/ads.png" alt="Rare Grade Tech Store promotion" loading="lazy" />
+            </a>
+          </div>
+          <div class="ad-slide">
+            <a class="ad-card-link" href="contact.html" aria-label="Enquire about the MacBook Pro">
+              <img src="https://i.postimg.cc/jjm9pVkH/macbookpro.png" alt="MacBook Pro promotion" loading="lazy" />
+            </a>
+          </div>
         </div>
-        <div class="ad-slide">
-          <a class="ad-card-link" href="#products" aria-label="Shop the current store lineup">
-            <img src="https://i.postimg.cc/x1H9xRdy/ads.png" alt="Rare Grade Tech Store promotion" loading="lazy" />
-          </a>
+        <button type="button" class="ad-arrow ad-prev" data-prev aria-label="Previous slide">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" class="ad-arrow ad-next" data-next aria-label="Next slide">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="ad-dots" data-dots>
+          <button type="button" class="ad-dot is-active" data-index="0" aria-label="Show slide 1"></button>
+          <button type="button" class="ad-dot" data-index="1" aria-label="Show slide 2"></button>
         </div>
       </div>
-      <button type="button" class="ad-arrow ad-prev" id="adPrev" aria-label="Previous slide">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <button type="button" class="ad-arrow ad-next" id="adNext" aria-label="Next slide">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-      </button>
-      <div class="ad-dots" id="adDots">
-        <button type="button" class="ad-dot is-active" data-index="0" aria-label="Show slide 1"></button>
-        <button type="button" class="ad-dot" data-index="1" aria-label="Show slide 2"></button>
+
+      <!-- Ad card A — 70% width, its own carousel, now on the right -->
+      <div class="ad-carousel ad-carousel--wide" id="adCarouselA" data-carousel-id="A">
+        <div class="ad-track" data-track>
+          <div class="ad-slide">
+            <a class="ad-card-link" href="contact.html" aria-label="Enquire about the MacBook Pro">
+              <img src="https://i.postimg.cc/jjm9pVkH/macbookpro.png" alt="MacBook Pro promotion" loading="lazy" />
+            </a>
+          </div>
+          <div class="ad-slide">
+            <a class="ad-card-link" href="#products" aria-label="Shop the current store lineup">
+              <img src="https://i.postimg.cc/x1H9xRdy/ads.png" alt="Rare Grade Tech Store promotion" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <button type="button" class="ad-arrow ad-prev" data-prev aria-label="Previous slide">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" class="ad-arrow ad-next" data-next aria-label="Next slide">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="ad-dots" data-dots>
+          <button type="button" class="ad-dot is-active" data-index="0" aria-label="Show slide 1"></button>
+          <button type="button" class="ad-dot" data-index="1" aria-label="Show slide 2"></button>
+        </div>
       </div>
     </div>
   </div>
@@ -680,14 +770,38 @@
               <span class="filter-pill-divider" aria-hidden="true"></span>
               <button type="button" class="filter-pill" data-group="condition" data-value="brand-new">Brand New</button>
               <button type="button" class="filter-pill" data-group="condition" data-value="pre-owned">Pre-Owned</button>
-              <span class="filter-pill-divider" aria-hidden="true"></span>
-              <button type="button" class="filter-pill" data-group="price" data-value="under-5000">Under R5,000</button>
-              <button type="button" class="filter-pill" data-group="price" data-value="5000-15000">R5,000–R15,000</button>
-              <button type="button" class="filter-pill" data-group="price" data-value="15000-plus">R15,000+</button>
             </div>
             <button type="button" class="rail-arrow rail-arrow-next" id="extraRailNext" aria-label="Scroll filters right" hidden>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
             </button>
+          </div>
+
+          <div class="filter-rail-group filter-price-group">
+            <div class="price-slider">
+              <div class="price-slider-labels">
+                <span id="priceMinLabel">R0</span>
+                <span id="priceMaxLabel">R30 000+</span>
+              </div>
+              <div class="price-slider-track-wrap">
+                <div class="price-slider-track"></div>
+                <div class="price-slider-fill" id="priceSliderFill"></div>
+                <input type="range" id="priceMin" class="price-range" min="0" max="30000" step="500" value="0" aria-label="Minimum price" />
+                <input type="range" id="priceMax" class="price-range" min="0" max="30000" step="500" value="30000" aria-label="Maximum price" />
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-rail-group filter-sort-group">
+            <label class="sort-select-wrap">
+              <span class="sort-select-label">Sort</span>
+              <select id="sortSelect" class="sort-select" aria-label="Sort products">
+                <option value="featured">Featured</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+              </select>
+            </label>
           </div>
         </div>
       </div>
@@ -697,7 +811,7 @@
     <div id="gadgetsPanel">
       <div class="product-grid" id="productGrid">
 
-        <div class="product-card reveal" data-brand="apple" data-category="phones" data-condition="brand-new" data-price="17499" data-search="iphone 16 apple">
+        <div class="product-card reveal" data-brand="apple" data-category="phones" data-condition="brand-new" data-price="17499" data-search="iphone 16 apple" data-order="1" data-added="1">
           <div class="product-media">
             <span class="condition-badge brand-new">Brand New</span>
             <div class="spec-badges"><span class="spec-badge">128GB</span><span class="spec-badge">A18 Chip</span><span class="spec-badge">6.1" OLED</span></div>
@@ -710,10 +824,15 @@
               <span class="cta-label">Add to Cart</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
             </button>
+            <div class="product-qty-stepper" data-id="iphone-16" hidden>
+              <button type="button" class="qty-btn" data-action="dec" aria-label="Decrease iPhone 16 quantity">−</button>
+              <span class="qty-value">0</span>
+              <button type="button" class="qty-btn" data-action="inc" aria-label="Increase iPhone 16 quantity">+</button>
+            </div>
           </div>
         </div>
 
-        <div class="product-card reveal" data-brand="apple" data-category="phones" data-condition="pre-owned" data-price="24999" data-search="iphone 17 pro apple">
+        <div class="product-card reveal" data-brand="apple" data-category="phones" data-condition="pre-owned" data-price="24999" data-search="iphone 17 pro apple" data-order="2" data-added="2">
           <div class="product-media">
             <span class="condition-badge pre-owned">Pre-Owned</span>
             <div class="spec-badges"><span class="spec-badge">512GB</span><span class="spec-badge">A19 Pro</span><span class="spec-badge">Titanium</span></div>
@@ -726,10 +845,15 @@
               <span class="cta-label">Add to Cart</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
             </button>
+            <div class="product-qty-stepper" data-id="iphone-17-pro" hidden>
+              <button type="button" class="qty-btn" data-action="dec" aria-label="Decrease iPhone 17 Pro quantity">−</button>
+              <span class="qty-value">0</span>
+              <button type="button" class="qty-btn" data-action="inc" aria-label="Increase iPhone 17 Pro quantity">+</button>
+            </div>
           </div>
         </div>
 
-        <div class="product-card reveal" data-brand="apple" data-category="phones" data-condition="brand-new" data-price="19999" data-search="iphone 17 apple">
+        <div class="product-card reveal" data-brand="apple" data-category="phones" data-condition="brand-new" data-price="19999" data-search="iphone 17 apple" data-order="3" data-added="3">
           <div class="product-media">
             <span class="condition-badge brand-new">Brand New</span>
             <div class="spec-badges"><span class="spec-badge">256GB</span><span class="spec-badge">A19 Chip</span><span class="spec-badge">120Hz</span></div>
@@ -742,6 +866,11 @@
               <span class="cta-label">Add to Cart</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
             </button>
+            <div class="product-qty-stepper" data-id="iphone-17" hidden>
+              <button type="button" class="qty-btn" data-action="dec" aria-label="Decrease iPhone 17 quantity">−</button>
+              <span class="qty-value">0</span>
+              <button type="button" class="qty-btn" data-action="inc" aria-label="Increase iPhone 17 quantity">+</button>
+            </div>
           </div>
         </div>
 
@@ -932,12 +1061,19 @@
   const productCards = Array.from(document.querySelectorAll('.product-card'));
   const noResults = document.getElementById('noResults');
   const searchInput = document.getElementById('storeSearchInput');
+  const priceMinInput = document.getElementById('priceMin');
+  const priceMaxInput = document.getElementById('priceMax');
+  const priceSliderFill = document.getElementById('priceSliderFill');
+  const priceMinLabel = document.getElementById('priceMinLabel');
+  const priceMaxLabel = document.getElementById('priceMaxLabel');
+  const sortSelect = document.getElementById('sortSelect');
 
   let activeTab = 'gadgets';
   let activeBrand = null;
   let activeCategory = null;
   let activeCondition = null;
-  let activePriceTier = null;
+  let activePriceMin = priceMinInput ? parseInt(priceMinInput.min, 10) : 0;
+  let activePriceMax = priceMaxInput ? parseInt(priceMaxInput.max, 10) : Infinity;
 
   function moveIndicator(btn){
     if (!indicator || !tabsWrap || !btn) return;
@@ -949,13 +1085,6 @@
       'translate(' + (btnRect.left - wrapRect.left) + 'px,' + (btnRect.top - wrapRect.top) + 'px)';
   }
 
-  function matchesPriceTier(price, tier){
-    if (tier === 'under-5000') return price < 5000;
-    if (tier === '5000-15000') return price >= 5000 && price < 15000;
-    if (tier === '15000-plus') return price >= 15000;
-    return true;
-  }
-
   function runFilter(){
     const query = searchInput.value.trim().toLowerCase();
     let anyVisible = false;
@@ -965,7 +1094,7 @@
       const matchesCategory = !activeCategory || card.dataset.category === activeCategory;
       const matchesCondition = !activeCondition || card.dataset.condition === activeCondition;
       const price = parseInt(card.dataset.price, 10) || 0;
-      const matchesPrice = !activePriceTier || matchesPriceTier(price, activePriceTier);
+      const matchesPrice = price >= activePriceMin && price <= activePriceMax;
       const show = matchesBrand && matchesQuery && matchesCategory && matchesCondition && matchesPrice;
       card.style.display = show ? '' : 'none';
       if (show) anyVisible = true;
@@ -1007,10 +1136,56 @@
     const groupPills = filterPills.filter(p => p.dataset.group === group);
     if (group === 'category') activeCategory = (activeCategory === value) ? null : value;
     else if (group === 'condition') activeCondition = (activeCondition === value) ? null : value;
-    else if (group === 'price') activePriceTier = (activePriceTier === value) ? null : value;
-    const activeVal = group === 'category' ? activeCategory : group === 'condition' ? activeCondition : activePriceTier;
+    const activeVal = group === 'category' ? activeCategory : activeCondition;
     groupPills.forEach(p => p.classList.toggle('is-active', p.dataset.value === activeVal));
     runFilter();
+  }
+
+  function formatPrice(n){
+    return 'R' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+
+  function initPriceSlider(){
+    if (!priceMinInput || !priceMaxInput) return;
+    const bounds = parseInt(priceMinInput.max, 10);
+    const gap = parseInt(priceMinInput.step, 10) || 500;
+
+    function update(source){
+      let minVal = parseInt(priceMinInput.value, 10);
+      let maxVal = parseInt(priceMaxInput.value, 10);
+      if (minVal > maxVal - gap){
+        if (source === priceMaxInput) minVal = maxVal - gap;
+        else maxVal = minVal + gap;
+        priceMinInput.value = minVal;
+        priceMaxInput.value = maxVal;
+      }
+      const minPct = (minVal / bounds) * 100;
+      const maxPct = (maxVal / bounds) * 100;
+      priceSliderFill.style.left = minPct + '%';
+      priceSliderFill.style.right = (100 - maxPct) + '%';
+      priceMinLabel.textContent = formatPrice(minVal);
+      priceMaxLabel.textContent = maxVal >= bounds ? formatPrice(maxVal) + '+' : formatPrice(maxVal);
+      activePriceMin = minVal;
+      activePriceMax = maxVal >= bounds ? Infinity : maxVal;
+      runFilter();
+    }
+
+    priceMinInput.addEventListener('input', () => update(priceMinInput));
+    priceMaxInput.addEventListener('input', () => update(priceMaxInput));
+    update(priceMinInput);
+  }
+
+  function applySort(){
+    if (!sortSelect) return;
+    const mode = sortSelect.value;
+    const sorted = productCards.slice().sort((a, b) => {
+      if (mode === 'price-asc') return (parseInt(a.dataset.price, 10) || 0) - (parseInt(b.dataset.price, 10) || 0);
+      if (mode === 'price-desc') return (parseInt(b.dataset.price, 10) || 0) - (parseInt(a.dataset.price, 10) || 0);
+      if (mode === 'newest') return (parseInt(b.dataset.added, 10) || 0) - (parseInt(a.dataset.added, 10) || 0);
+      if (mode === 'oldest') return (parseInt(a.dataset.added, 10) || 0) - (parseInt(b.dataset.added, 10) || 0);
+      return (parseInt(a.dataset.order, 10) || 0) - (parseInt(b.dataset.order, 10) || 0);
+    });
+    sorted.forEach(card => productGrid.appendChild(card));
   }
 
   function setupRail(railEl, prevBtn, nextBtn){
@@ -1035,6 +1210,7 @@
   brandTiles.forEach(t => t.addEventListener('click', () => applyBrand(t.dataset.brand)));
   filterPills.forEach(p => p.addEventListener('click', () => applyPill(p)));
   searchInput.addEventListener('input', runFilter);
+  if (sortSelect) sortSelect.addEventListener('change', applySort);
 
   setupRail(document.getElementById('brandRow'), document.getElementById('brandRailPrev'), document.getElementById('brandRailNext'));
   setupRail(document.getElementById('extraFilterRow'), document.getElementById('extraRailPrev'), document.getElementById('extraRailNext'));
@@ -1042,6 +1218,7 @@
   const initialTab = tabs.find(t => t.classList.contains('is-active')) || tabs[0];
   moveIndicator(initialTab);
   requestAnimationFrame(() => tabsWrap.classList.add('is-ready'));
+  initPriceSlider();
   runFilter();
 
   window.addEventListener('resize', () => {
@@ -1050,51 +1227,59 @@
   });
 })();
 
-// Ad carousel: auto-advance every 30s
+// Ad carousels: two independent cards (70% / 30%), each auto-advances every 30s
 (function(){
-  const carousel = document.getElementById('adCarousel');
-  const track = document.getElementById('adTrack');
-  const slides = Array.from(track.children);
-  const dots = Array.from(document.querySelectorAll('#adDots .ad-dot'));
-  const prevBtn = document.getElementById('adPrev');
-  const nextBtn = document.getElementById('adNext');
-  if (!slides.length) return;
+  const row = document.querySelector('.ad-row');
+  const carousels = Array.from(document.querySelectorAll('.ad-carousel'));
+  if (!row || !carousels.length) return;
 
-  // Both slides now share one rectangle shape: 20% wider, 10% shorter than 16:9.
-  const RATIO = (16 * 1.2) / (9 * 0.9);
+  // Row height is half of the original single-carousel height for the same width.
+  const RATIO = ((16 * 1.2) / (9 * 0.9)) * 2;
 
-  let current = 0;
-  let timer = null;
-
-  function setHeight(){
-    const w = carousel.getBoundingClientRect().width;
-    carousel.style.height = (w / RATIO) + 'px';
+  function setHeights(){
+    const w = row.getBoundingClientRect().width;
+    const h = w / RATIO;
+    carousels.forEach(c => { c.style.height = h + 'px'; });
   }
 
-  function goTo(index){
-    current = (index + slides.length) % slides.length;
-    track.style.transform = 'translateX(-' + (current * 100) + '%)';
-    dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
-  }
+  function initCarousel(root){
+    const track = root.querySelector('[data-track]');
+    const slides = Array.from(track.children);
+    const dots = Array.from(root.querySelectorAll('[data-dots] .ad-dot'));
+    const prevBtn = root.querySelector('[data-prev]');
+    const nextBtn = root.querySelector('[data-next]');
+    if (!slides.length) return;
 
-  function restartTimer(){
-    if (timer) clearInterval(timer);
-    timer = setInterval(() => goTo(current + 1), 30000);
-  }
+    let current = 0;
+    let timer = null;
 
-  dots.forEach(d => d.addEventListener('click', () => {
-    goTo(parseInt(d.dataset.index, 10));
+    function goTo(index){
+      current = (index + slides.length) % slides.length;
+      track.style.transform = 'translateX(-' + (current * 100) + '%)';
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
+    }
+
+    function restartTimer(){
+      if (timer) clearInterval(timer);
+      timer = setInterval(() => goTo(current + 1), 30000);
+    }
+
+    dots.forEach(d => d.addEventListener('click', () => {
+      goTo(parseInt(d.dataset.index, 10));
+      restartTimer();
+    }));
+
+    if (prevBtn) prevBtn.addEventListener('click', () => { goTo(current - 1); restartTimer(); });
+    if (nextBtn) nextBtn.addEventListener('click', () => { goTo(current + 1); restartTimer(); });
+
     restartTimer();
-  }));
+  }
 
-  if (prevBtn) prevBtn.addEventListener('click', () => { goTo(current - 1); restartTimer(); });
-  if (nextBtn) nextBtn.addEventListener('click', () => { goTo(current + 1); restartTimer(); });
+  carousels.forEach(initCarousel);
 
-  setHeight();
-  restartTimer();
-
-  window.addEventListener('resize', setHeight);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(setHeight);
+  setHeights();
+  window.addEventListener('resize', setHeights);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(setHeights);
 })();
 
 // Floating cart
@@ -1108,6 +1293,7 @@
   const itemsEl = document.getElementById('cartItems');
   const totalEl = document.getElementById('cartTotal');
   const addButtons = Array.from(document.querySelectorAll('.add-to-cart-btn'));
+  const qtySteppers = Array.from(document.querySelectorAll('.product-qty-stepper'));
 
   function loadCart(){
     try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
@@ -1122,7 +1308,27 @@
 
   let cart = loadCart();
 
+  // Swap each product card's "Add to Cart" button for a qty stepper (matches the cart drawer's qty control)
+  function syncProductButtons(){
+    addButtons.forEach(btn => {
+      const id = btn.dataset.id;
+      const item = cart.find(c => c.id === id);
+      const stepper = qtySteppers.find(s => s.dataset.id === id);
+      if (item && item.qty > 0){
+        btn.hidden = true;
+        if (stepper){
+          stepper.hidden = false;
+          stepper.querySelector('.qty-value').textContent = item.qty;
+        }
+      } else {
+        btn.hidden = false;
+        if (stepper) stepper.hidden = true;
+      }
+    });
+  }
+
   function render(){
+    syncProductButtons();
     const count = cart.reduce((s, c) => s + c.qty, 0);
     badge.textContent = count;
     floatingBtn.classList.toggle('is-visible', count > 0);
@@ -1200,14 +1406,16 @@
         price: parseInt(btn.dataset.price, 10),
         image: btn.dataset.image
       });
-      const label = btn.querySelector('.cta-label');
-      const original = label.textContent;
-      btn.classList.add('is-added');
-      label.textContent = 'Added ✓';
-      setTimeout(() => {
-        btn.classList.remove('is-added');
-        label.textContent = original;
-      }, 1300);
+    });
+  });
+
+  qtySteppers.forEach(stepper => {
+    stepper.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const id = stepper.dataset.id;
+      if (btn.dataset.action === 'inc') changeQty(id, 1);
+      else if (btn.dataset.action === 'dec') changeQty(id, -1);
     });
   });
 
