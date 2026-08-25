@@ -461,9 +461,27 @@
     box-shadow:0 2px 8px rgba(0,0,0,.12);
   }
 
+  /* Wishlist heart (top-right of product media) */
+  .wishlist-heart-btn{
+    position:absolute; top:10px; right:10px; z-index:3;
+    width:32px; height:32px; border-radius:50%; border:none; cursor:pointer;
+    background:rgba(255,255,255,.9); backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center;
+    color:#090B25; box-shadow:0 4px 12px rgba(0,0,0,.15);
+    transition:transform .25s cubic-bezier(.34,1.56,.64,1), background .2s ease, color .2s ease, box-shadow .2s ease;
+  }
+  .wishlist-heart-btn:hover{ transform:scale(1.1); box-shadow:0 6px 16px rgba(0,0,0,.2); }
+  .wishlist-heart-btn:active{ transform:scale(.92); }
+  .wishlist-heart-btn svg{ width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2.2; transition:fill .2s ease, stroke .2s ease; }
+  .wishlist-heart-btn.is-liked{ background:#fff; color:#e0433a; }
+  .wishlist-heart-btn.is-liked svg{ fill:#e0433a; stroke:#e0433a; }
+  .wishlist-heart-btn.pop svg{ animation:heartPop .4s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes heartPop{ 0%{ transform:scale(1); } 40%{ transform:scale(1.35); } 100%{ transform:scale(1); } }
+
   .product-body{ padding:16px 18px 20px; display:flex; flex-direction:column; gap:8px; flex:1; }
   .product-name{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:var(--ink-900); margin:0; }
   .product-price{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; color:var(--blue-700); margin:0 0 4px; }
+  .product-desc{ font-size:12.5px; line-height:1.5; color:var(--ink-600); margin:0 0 4px; }
   .product-cta{
     margin-top:auto; align-self:flex-start; display:inline-flex; align-items:center; gap:7px;
     font-size:12.5px; font-weight:700; color:#fff; cursor:pointer;
@@ -516,6 +534,28 @@
     display:flex; align-items:center; justify-content:center; padding:0 5px;
     box-shadow:0 2px 6px rgba(0,0,0,.2);
   }
+
+  /* ---------- Floating wishlist (stacked above the floating cart) ---------- */
+  .floating-wishlist-btn{
+    position:fixed; right:24px; bottom:92px; z-index:60;
+    width:56px; height:56px; border-radius:50%; border:1px solid var(--card-line); cursor:pointer;
+    background:#fff; color:#e0433a;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 14px 30px rgba(9,11,37,.18);
+    transform:scale(0); opacity:0; pointer-events:none;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1), opacity .25s ease, background .2s ease;
+  }
+  .floating-wishlist-btn.is-visible{ transform:scale(1); opacity:1; pointer-events:auto; }
+  .floating-wishlist-btn.bump{ animation:cartBump .45s ease; }
+  .floating-wishlist-btn svg{ width:22px; height:22px; fill:#e0433a; stroke:#e0433a; stroke-width:2; }
+  .floating-wishlist-badge{
+    position:absolute; top:-4px; right:-4px; min-width:20px; height:20px; border-radius:999px;
+    background:#e0433a; color:#fff; font-size:11px; font-weight:800;
+    display:flex; align-items:center; justify-content:center; padding:0 5px;
+    box-shadow:0 2px 6px rgba(0,0,0,.2);
+  }
+  .wishlist-item-move{ flex:none; color:var(--blue-700); cursor:pointer; background:none; border:none; padding:4px; display:flex; transition:color .2s ease; }
+  .wishlist-item-move:hover{ color:var(--blue-accent); }
 
   .cart-overlay{
     position:fixed; inset:0; z-index:65; background:rgba(5,6,20,.4);
@@ -979,7 +1019,7 @@
   #sortSelect.sort-select:active{ transform:scale(.97); }
 
   @media (prefers-reduced-motion:no-preference){
-    body{ animation:page-arrival .5s var(--ease-snappy) both; }
+    .page-anim{ animation:page-arrival .5s var(--ease-snappy) both; }
     .navbar{ transition:background .25s ease, box-shadow .25s ease, backdrop-filter .25s ease, transform .35s var(--ease-snappy); }
     .store-toolbar.is-visible,
     .brand-row-wrap.is-visible{ animation:control-settle .55s var(--ease-snappy) both; }
@@ -999,7 +1039,7 @@
   }
   @keyframes page-arrival{
     from{ opacity:0; transform:translateY(8px); }
-    to{ opacity:1; transform:translateY(0); }
+    to{ opacity:1; transform:none; }
   }
   @keyframes control-settle{
     from{ opacity:0; transform:translateY(12px); }
@@ -1021,6 +1061,7 @@
 </style>
 </head>
 <body>
+<div class="page-anim">
 
 <div class="utility-bar">
   <div class="wrap">
@@ -1275,11 +1316,15 @@
           <div class="product-media">
             <span class="condition-badge brand-new">Brand New</span>
             <div class="spec-badges"><span class="spec-badge">128GB</span><span class="spec-badge">A18 Chip</span><span class="spec-badge">6.1" OLED</span></div>
+            <button type="button" class="wishlist-heart-btn" data-id="iphone-16" data-name="iPhone 16" data-price="17499" data-image="https://i.postimg.cc/K8nRkFtF/iphone16.png" aria-label="Add iPhone 16 to wishlist" aria-pressed="false">
+              <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+            </button>
             <img src="https://i.postimg.cc/K8nRkFtF/iphone16.png" alt="iPhone 16" loading="lazy" />
           </div>
           <div class="product-body">
             <h3 class="product-name">iPhone 16</h3>
             <p class="product-price">R17 499</p>
+            <p class="product-desc">Comes with a free protective case.</p>
             <button type="button" class="product-cta add-to-cart-btn" data-id="iphone-16" data-name="iPhone 16" data-price="17499" data-image="https://i.postimg.cc/K8nRkFtF/iphone16.png">
               <span class="cta-label">Add to Cart</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
@@ -1296,11 +1341,15 @@
           <div class="product-media">
             <span class="condition-badge pre-owned">Pre-Owned</span>
             <div class="spec-badges"><span class="spec-badge">512GB</span><span class="spec-badge">A19 Pro</span><span class="spec-badge">Titanium</span></div>
+            <button type="button" class="wishlist-heart-btn" data-id="iphone-17-pro" data-name="iPhone 17 Pro" data-price="24999" data-image="https://i.postimg.cc/g29x2rXQ/iphone17pro.png" aria-label="Add iPhone 17 Pro to wishlist" aria-pressed="false">
+              <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+            </button>
             <img src="https://i.postimg.cc/g29x2rXQ/iphone17pro.png" alt="iPhone 17 Pro" loading="lazy" />
           </div>
           <div class="product-body">
             <h3 class="product-name">iPhone 17 Pro</h3>
             <p class="product-price">R24 999</p>
+            <p class="product-desc">Comes with a free protective case.</p>
             <button type="button" class="product-cta add-to-cart-btn" data-id="iphone-17-pro" data-name="iPhone 17 Pro" data-price="24999" data-image="https://i.postimg.cc/g29x2rXQ/iphone17pro.png">
               <span class="cta-label">Add to Cart</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
@@ -1317,11 +1366,15 @@
           <div class="product-media">
             <span class="condition-badge brand-new">Brand New</span>
             <div class="spec-badges"><span class="spec-badge">256GB</span><span class="spec-badge">A19 Chip</span><span class="spec-badge">120Hz</span></div>
+            <button type="button" class="wishlist-heart-btn" data-id="iphone-17" data-name="iPhone 17" data-price="19999" data-image="https://i.postimg.cc/P5GC5NpY/iphone17.png" aria-label="Add iPhone 17 to wishlist" aria-pressed="false">
+              <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+            </button>
             <img src="https://i.postimg.cc/P5GC5NpY/iphone17.png" alt="iPhone 17" loading="lazy" />
           </div>
           <div class="product-body">
             <h3 class="product-name">iPhone 17</h3>
             <p class="product-price">R19 999</p>
+            <p class="product-desc">Comes with a free protective case.</p>
             <button type="button" class="product-cta add-to-cart-btn" data-id="iphone-17" data-name="iPhone 17" data-price="19999" data-image="https://i.postimg.cc/P5GC5NpY/iphone17.png">
               <span class="cta-label">Add to Cart</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
@@ -1408,6 +1461,8 @@
   </div>
 </footer>
 
+</div>
+
 <!-- Floating cart -->
 <button type="button" class="floating-cart-btn" id="floatingCartBtn" aria-label="View cart">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
@@ -1429,6 +1484,23 @@
       <span>Enquire About This Order</span>
     </a>
   </div>
+</aside>
+
+<!-- Floating wishlist -->
+<button type="button" class="floating-wishlist-btn" id="floatingWishlistBtn" aria-label="View wishlist">
+  <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+  <span class="floating-wishlist-badge" id="wishlistBadge">0</span>
+</button>
+
+<div class="cart-overlay" id="wishlistOverlay"></div>
+<aside class="cart-drawer" id="wishlistDrawer">
+  <div class="cart-drawer-head">
+    <h3>Your Wishlist</h3>
+    <button type="button" class="cart-drawer-close" id="wishlistClose" aria-label="Close wishlist">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="cart-drawer-items" id="wishlistItems"></div>
 </aside>
 
 <script>
@@ -2027,6 +2099,135 @@
     if (btn.dataset.action === 'inc') changeQty(id, 1);
     else if (btn.dataset.action === 'dec') changeQty(id, -1);
     else if (btn.dataset.action === 'remove') removeItem(id);
+  });
+
+  render();
+})();
+
+// Floating wishlist
+(function(){
+  const WISHLIST_KEY = 'rgt_store_wishlist';
+  const floatingBtn = document.getElementById('floatingWishlistBtn');
+  const badge = document.getElementById('wishlistBadge');
+  const overlay = document.getElementById('wishlistOverlay');
+  const drawer = document.getElementById('wishlistDrawer');
+  const closeBtn = document.getElementById('wishlistClose');
+  const itemsEl = document.getElementById('wishlistItems');
+  const heartButtons = Array.from(document.querySelectorAll('.wishlist-heart-btn'));
+
+  function loadWishlist(){
+    try { return JSON.parse(localStorage.getItem(WISHLIST_KEY)) || []; }
+    catch (e) { return []; }
+  }
+  function saveWishlist(){
+    try { localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist)); } catch (e) {}
+  }
+  function formatPrice(n){
+    return 'R' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+
+  let wishlist = loadWishlist();
+
+  function syncHeartButtons(){
+    heartButtons.forEach(btn => {
+      const id = btn.dataset.id;
+      const liked = wishlist.some(w => w.id === id);
+      btn.classList.toggle('is-liked', liked);
+      btn.setAttribute('aria-pressed', liked ? 'true' : 'false');
+    });
+  }
+
+  function render(){
+    syncHeartButtons();
+    const count = wishlist.length;
+    badge.textContent = count;
+    floatingBtn.classList.toggle('is-visible', count > 0);
+
+    if (!wishlist.length) {
+      itemsEl.innerHTML = '<div class="cart-empty">Your wishlist is empty. Tap the heart on a product to save it here.</div>';
+      return;
+    }
+    itemsEl.innerHTML = wishlist.map(it => `
+      <div class="cart-item" data-id="${it.id}">
+        <div class="cart-item-thumb"><img src="${it.image}" alt="${it.name}" loading="lazy" /></div>
+        <div class="cart-item-info">
+          <p class="cart-item-name">${it.name}</p>
+          <p class="cart-item-price">${formatPrice(it.price)}</p>
+        </div>
+        <button type="button" class="wishlist-item-move" data-action="move" data-id="${it.id}" aria-label="Move ${it.name} to cart">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        </button>
+        <button type="button" class="cart-item-remove" data-action="remove" data-id="${it.id}" aria-label="Remove ${it.name} from wishlist">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    `).join('');
+  }
+
+  function bump(){
+    floatingBtn.classList.remove('bump');
+    void floatingBtn.offsetWidth;
+    floatingBtn.classList.add('bump');
+  }
+
+  function toggleWishlist(btn){
+    const id = btn.dataset.id;
+    const existing = wishlist.find(w => w.id === id);
+    if (existing) {
+      wishlist = wishlist.filter(w => w.id !== id);
+    } else {
+      wishlist.push({
+        id: id,
+        name: btn.dataset.name,
+        price: parseInt(btn.dataset.price, 10),
+        image: btn.dataset.image
+      });
+      btn.classList.remove('pop');
+      void btn.offsetWidth;
+      btn.classList.add('pop');
+      bump();
+    }
+    saveWishlist();
+    render();
+  }
+
+  function removeItem(id){
+    wishlist = wishlist.filter(w => w.id !== id);
+    saveWishlist();
+    render();
+  }
+
+  function moveToCart(id){
+    const item = wishlist.find(w => w.id === id);
+    if (!item) return;
+    const addBtn = document.querySelector(`.add-to-cart-btn[data-id="${id}"]`);
+    if (addBtn) addBtn.click();
+    removeItem(id);
+  }
+
+  function openDrawer(){
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+  }
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+  }
+
+  heartButtons.forEach(btn => {
+    btn.addEventListener('click', () => toggleWishlist(btn));
+  });
+
+  floatingBtn.addEventListener('click', openDrawer);
+  closeBtn.addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+
+  itemsEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const id = btn.dataset.id;
+    if (btn.dataset.action === 'remove') removeItem(id);
+    else if (btn.dataset.action === 'move') moveToCart(id);
   });
 
   render();
