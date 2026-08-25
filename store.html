@@ -282,7 +282,7 @@
   .filters-row{ display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:nowrap; padding-top:4px; padding-bottom:8px; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; -ms-overflow-style:none; }
   .filters-row::-webkit-scrollbar{ display:none; }
   .filter-rail-group{ position:relative; display:flex; align-items:center; gap:8px; flex:0 0 auto; min-width:0; }
-  .filter-rail-group.filter-rail-extra{ justify-content:center; flex:1 1 auto; min-width:220px; max-width:720px; margin:0 auto; }
+  .filter-rail-group.filter-rail-extra{ justify-content:flex-start; flex:1 1 auto; min-width:220px; max-width:720px; margin:0 auto; }
 
   .rail-arrow{
     flex:none; width:22px; height:22px; padding:0;
@@ -345,7 +345,7 @@
   }
 
   #extraFilterRow{
-    justify-content:center;
+    justify-content:flex-start;
     align-items:center;
   }
   #extraFilterRow .filter-pill.brand-icon{
@@ -646,6 +646,8 @@
 
   /* Blue pill-shaped tabs like Add to Cart */
   .filter-pill.blue-pill{
+    position:relative;
+    overflow:hidden;
     background:var(--blue-700);
     color:#fff;
     border:1px solid var(--blue-700);
@@ -653,30 +655,59 @@
     border-radius:999px;
     font-size:12.5px;
     font-weight:700;
-    box-shadow:0 6px 16px rgba(17,24,245,.28);
-    transition:background .25s ease, transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease, border-color .2s ease;
+    -webkit-tap-highlight-color:transparent;
+    transition:background .3s cubic-bezier(.22,1,.36,1), transform .35s cubic-bezier(.34,1.56,.64,1), border-color .25s ease, color .25s ease;
   }
   .filter-pill.blue-pill:hover{
     background:var(--blue-accent);
     border-color:var(--blue-accent);
     transform:translateY(-2px);
-    box-shadow:0 12px 26px rgba(17,24,245,.4);
   }
+  .filter-pill.blue-pill:active{
+    transform:translateY(0) scale(.94);
+  }
+  /* Clicked / selected state — flips to white with a soft pop */
   .filter-pill.blue-pill.is-active{
     background:#fff;
     border-color:#fff;
     color:var(--blue-700);
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
     transform:translateY(-1px);
   }
-  /* Keep center */
+  .filter-pill.blue-pill.is-active:hover{
+    background:#fff;
+    border-color:#fff;
+    color:var(--blue-700);
+    transform:translateY(-3px);
+  }
+  .filter-pill.blue-pill.just-activated{
+    animation:pillPop .5s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes pillPop{
+    0%{ transform:translateY(-1px) scale(1); }
+    35%{ transform:translateY(-4px) scale(1.09); }
+    65%{ transform:translateY(-1px) scale(.98); }
+    100%{ transform:translateY(-1px) scale(1); }
+  }
+  /* Ripple burst on click */
+  .pill-ripple{
+    position:absolute;
+    border-radius:50%;
+    transform:scale(0);
+    opacity:.65;
+    pointer-events:none;
+    animation:pillRippleOut .6s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  @keyframes pillRippleOut{
+    to{ transform:scale(2.6); opacity:0; }
+  }
+  /* Keep left-aligned so every tab remains reachable by scroll */
   #extraFilterRow{
-    justify-content:center;
+    justify-content:flex-start;
     align-items:center;
     gap:12px !important;
   }
   .filter-rail-group.filter-rail-extra{
-    justify-content:center;
+    justify-content:flex-start;
     margin:0 auto;
   }
   /* Arrows - no containers, just chevrons */
@@ -689,6 +720,303 @@
   .rail-arrow svg{ width:18px; height:18px; }
   .rail-arrow:hover{ color:var(--blue-800); transform:translateY(-1px); }
   .rail-arrow[hidden]{ display:none; }
+
+
+  /* ---------- NEW: Arrows for scrolling - enhanced ---------- */
+  .store-tabs-outer{
+    position:relative;
+    display:flex;align-items:center;
+    flex:0 0 auto;
+    gap:8px;
+    max-width:100%;
+  }
+  .store-tabs{
+    scroll-behavior:smooth;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+    overflow-x:auto;
+    flex-wrap:nowrap;
+  }
+  .store-tabs::-webkit-scrollbar{display:none}
+  .store-tabs-arrow{
+    flex:none; width:32px; height:32px;
+    border-radius:50%;
+    border:1px solid var(--card-line);
+    background:#fff;
+    color:var(--blue-700);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    box-shadow:0 4px 12px rgba(9,11,37,.08);
+    transition:all .2s ease;
+    z-index:2;
+  }
+  .store-tabs-arrow:hover{
+    background:var(--ink-900);
+    color:#fff;
+    border-color:var(--ink-900);
+    transform:translateY(-1px);
+  }
+  .store-tabs-arrow:disabled{opacity:.25;pointer-events:none}
+  .store-tabs-arrow[hidden]{display:none !important}
+
+  .extra-rail-wrap{
+    position:relative;
+    display:flex;align-items:center;gap:8px;
+    flex:1 1 auto; min-width:220px; max-width:720px;
+  }
+  #extraFilterRow{
+    flex:1;
+    min-width:0;
+  }
+
+  /* ---------- NEW: Sort by hover dropdown ---------- */
+  .sort-hover-wrap{
+    position:relative;
+    display:inline-block;
+  }
+  .sort-hover-trigger{
+    display:flex;align-items:center;gap:8px;
+    padding:9px 16px 9px 18px;
+    border-radius:999px;
+    border:1px solid var(--card-line);
+    background:#fff;
+    font-family:inherit;
+    font-size:12.5px;font-weight:700;
+    color:var(--ink-600);
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .2s ease;
+  }
+  .sort-hover-trigger .sort-chevron{
+    width:14px;height:14px;
+    transition:transform .22s cubic-bezier(.16,.84,.44,1);
+    color:var(--ink-400);
+  }
+  .sort-hover-wrap:hover .sort-hover-trigger{
+    border-color:var(--blue-accent);
+    color:var(--blue-700);
+    background:#fff;
+    box-shadow:0 4px 12px rgba(59,76,255,.12);
+  }
+  .sort-hover-wrap:hover .sort-chevron{
+    transform:rotate(180deg);
+  }
+  .sort-hover-options{
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    min-width:190px;
+    background:#fff;
+    border:1px solid var(--card-line);
+    border-radius:16px;
+    box-shadow:0 16px 40px rgba(9,11,37,.14);
+    padding:6px;
+    z-index:20;
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(8px) scale(.98);
+    transition:all .24s cubic-bezier(.16,.84,.44,1);
+    pointer-events:none;
+  }
+  .sort-hover-wrap:hover .sort-hover-options,
+  .sort-hover-wrap:focus-within .sort-hover-options{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0) scale(1);
+    pointer-events:auto;
+  }
+  .sort-hover-option{
+    width:100%;
+    text-align:left;
+    padding:10px 14px;
+    border-radius:10px;
+    border:0;
+    background:transparent;
+    font-family:inherit;
+    font-size:13px;font-weight:600;
+    color:var(--ink-600);
+    cursor:pointer;
+    transition:background .18s ease, color .18s ease;
+  }
+  .sort-hover-option:hover{
+    background:var(--surface);
+    color:var(--ink-900);
+  }
+  .sort-hover-option.is-active{
+    background:var(--ink-900);
+    color:#fff;
+  }
+  /* Hide original select but keep for logic */
+  #sortSelect{display:none !important}
+
+  /* Market Ledger refinement: compact and responsive product controls. */
+  .filter-sort-group{ min-width:194px; }
+  .sort-select-wrap{ display:flex; align-items:center; gap:9px; }
+  .sort-select-label{ flex:none; }
+  #sortSelect.sort-select{
+    display:block !important;
+    min-width:142px;
+    font-family:inherit;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--ink-900);
+    padding:10px 36px 10px 15px;
+    border:1px solid var(--card-line);
+    border-radius:999px;
+    background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238688A0' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 13px center / 12px;
+    cursor:pointer;
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    transition:border-color .18s ease, box-shadow .18s ease;
+  }
+  #sortSelect.sort-select:hover,
+  #sortSelect.sort-select:focus{
+    outline:none;
+    border-color:var(--blue-accent);
+    box-shadow:0 0 0 3px rgba(59,76,255,.12);
+  }
+  #sortHoverWrap{ display:none !important; }
+
+  /* Desktop cards retain the original catalogue dimensions; compact sizing is mobile-only. */
+
+  @media (max-width:1100px){
+    .filters-row{ flex-wrap:wrap; align-items:flex-end; overflow:visible; }
+    .filter-rail-brands{ flex:0 1 auto; }
+    .filter-rail-group.filter-rail-extra{ flex:1 1 100%; min-width:100%; max-width:none; margin:0; }
+    .filter-price-group{ flex:1 1 240px; }
+    .filter-sort-group{ margin-left:auto; }
+  }
+
+  @media (max-width:700px){
+    .hero-inner{ padding-inline:16px; }
+
+    /* Both ads remain in a single proportional row on mobile. */
+    .ad-row{ flex-direction:row; flex-wrap:nowrap; gap:8px; margin-bottom:8px; }
+    .ad-carousel--narrow{ flex:0 0 calc(32% - 4px); border-radius:12px; }
+    .ad-carousel--wide{ flex:0 0 calc(68% - 4px); border-radius:12px; }
+    .ad-arrow{ display:none; }
+    .ad-dots{ bottom:7px; gap:5px; }
+    .ad-dot{ width:6px; height:6px; }
+
+    /* Search remains left; Gadgets and Software remain right. */
+    .store-toolbar{ flex-direction:row; flex-wrap:nowrap; align-items:center; gap:8px; margin-bottom:14px; }
+    .store-search{ flex:1 1 0; min-width:0; max-width:none; }
+    .store-search svg{ left:14px; width:15px; height:15px; }
+    .store-search input{ min-width:0; padding:12px 12px 12px 40px; font-size:13px; }
+    .store-tabs-outer{ flex:0 1 auto; min-width:0; gap:0; }
+    .store-tabs{ max-width:204px; gap:4px; }
+    .store-tab{ flex:0 0 auto; padding:11px 10px; font-size:11.5px; white-space:nowrap; }
+    .store-tabs-arrow{ display:none !important; }
+
+    /* Filters form a clean two-column control shelf with full-width scroll rails. */
+    .filters-row{ display:grid; grid-template-columns:minmax(0,1fr) minmax(126px,.72fr); gap:12px; padding:4px 0 8px; overflow:visible; }
+    .filter-rail-group{ min-width:0; width:100%; }
+    .filter-rail-brands,
+    .filter-rail-group.filter-rail-extra{ grid-column:1 / -1; min-width:0; max-width:none; margin:0; }
+    .filter-rail-brands{ justify-content:center; }
+    #brandRow{ flex:0 1 auto; width:min(100%,230px); justify-content:center; }
+    .filter-price-group{ grid-column:1; min-width:0; }
+    .filter-sort-group{ grid-column:2; min-width:0; margin:0; align-self:end; }
+    .filter-rail{ gap:10px; padding:4px 1px 8px; }
+    .brand-tile{ width:44px; height:44px; }
+    .filter-pill.brand-icon{ width:43px; height:43px; }
+    .filter-pill.blue-pill{ padding:9px 13px; font-size:11.5px; }
+    .price-slider{ width:100%; min-width:0; padding-top:3px; }
+    .price-slider-labels{ font-size:11px; }
+    .sort-select-wrap{ width:100%; flex-direction:column; align-items:stretch; gap:5px; }
+    .sort-select-label{ font-size:10.5px; line-height:1; }
+    #sortSelect.sort-select{ width:100%; min-width:0; padding:9px 30px 9px 11px; font-size:11.5px; background-position:right 10px center; }
+
+    /* Keep a dense two-column mobile catalogue. */
+    .product-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:20px; }
+    .product-card{ border-radius:12px; }
+    .product-media{ padding:14px; }
+    .condition-badge{ top:7px; left:7px; padding:4px 6px; font-size:7px; }
+    .spec-badges{ right:6px; gap:4px; }
+    .spec-badge{ width:31px; height:31px; padding:2px; border-radius:6px; font-size:6px; }
+    .product-body{ padding:11px 11px 12px; gap:5px; }
+    .product-name{ font-size:11.5px; line-height:1.2; }
+    .product-price{ font-size:13px; margin-bottom:2px; }
+    .product-cta{ width:100%; justify-content:center; padding:8px 7px; font-size:10px; gap:5px; }
+    .product-cta svg{ width:11px; height:11px; }
+    .product-qty-stepper{ width:100%; justify-content:center; gap:12px; padding:5px 7px; }
+  }
+
+  @media (max-width:390px){
+    .store-toolbar{ gap:6px; }
+    .store-search input{ padding-left:36px; font-size:12px; }
+    .store-search svg{ left:12px; width:14px; height:14px; }
+    .store-tabs{ max-width:186px; }
+    .store-tab{ padding:10px 8px; font-size:10.5px; }
+    .filters-row{ grid-template-columns:minmax(0,1fr) 116px; gap:10px; }
+    .filter-pill.blue-pill{ padding-inline:11px; }
+  }
+
+  /* ---------- Refined motion and touch feedback ---------- */
+  :root{
+    --ease-snappy:cubic-bezier(.23,1,.32,1);
+    --ease-deliberate:cubic-bezier(.77,0,.175,1);
+  }
+  .ad-carousel{ touch-action:pan-y; }
+  .filter-rail,
+  .store-tabs{
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-inline:contain;
+    scroll-snap-type:x proximity;
+  }
+  .filter-rail > *,
+  .store-tabs > .store-tab{ scroll-snap-align:start; }
+  .product-media img,
+  .ad-slide img{ transition:transform .45s var(--ease-snappy), filter .45s ease; }
+  .product-card:active{ transform:translateY(-1px) scale(.985); }
+  .filter-pill:active,
+  .brand-tile:active,
+  .store-tab:active,
+  .ad-dot:active,
+  .rail-arrow:active,
+  .store-tabs-arrow:active,
+  #sortSelect.sort-select:active{ transform:scale(.97); }
+
+  @media (prefers-reduced-motion:no-preference){
+    body{ animation:page-arrival .5s var(--ease-snappy) both; }
+    .navbar{ transition:background .25s ease, box-shadow .25s ease, backdrop-filter .25s ease, transform .35s var(--ease-snappy); }
+    .store-toolbar.is-visible,
+    .brand-row-wrap.is-visible{ animation:control-settle .55s var(--ease-snappy) both; }
+    .product-card.reveal.is-visible{ animation:product-arrival .5s var(--ease-snappy) both; }
+    .product-card.reveal.is-visible:nth-child(2){ animation-delay:.06s; }
+    .product-card.reveal.is-visible:nth-child(3){ animation-delay:.12s; }
+    .product-card:hover .product-media img{ transform:scale(1.045) rotate(-.5deg); }
+    .ad-carousel:hover .ad-slide img{ transform:scale(1.025); filter:saturate(1.04); }
+    .btn,
+    .filter-pill,
+    .brand-tile,
+    .store-tab,
+    .rail-arrow,
+    .store-tabs-arrow,
+    .ad-dot,
+    #sortSelect.sort-select{ transition:transform .16s var(--ease-snappy), background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease; }
+  }
+  @keyframes page-arrival{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @keyframes control-settle{
+    from{ opacity:0; transform:translateY(12px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @keyframes product-arrival{
+    from{ opacity:0; transform:translateY(14px) scale(.985); }
+    to{ opacity:1; transform:translateY(0) scale(1); }
+  }
+  @media (prefers-reduced-motion:reduce){
+    *, *::before, *::after{
+      animation-duration:.01ms !important;
+      animation-iteration-count:1 !important;
+      scroll-behavior:auto !important;
+      transition-duration:.01ms !important;
+    }
+  }
 
 </style>
 </head>
@@ -826,10 +1154,18 @@
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         <input type="text" id="storeSearchInput" placeholder="Search products…" autocomplete="off" />
       </div>
-      <div class="store-tabs" id="storeTabs">
-        <span class="store-tab-indicator" id="storeTabIndicator" aria-hidden="true"></span>
-        <button type="button" class="store-tab is-active" data-tab="gadgets">Gadgets</button>
-        <button type="button" class="store-tab" data-tab="software">Software Products</button>
+      <div class="store-tabs-outer" id="storeTabsOuter">
+        <button type="button" class="store-tabs-arrow" id="storeTabsPrev" aria-label="Scroll tabs left" hidden>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <div class="store-tabs" id="storeTabs">
+          <span class="store-tab-indicator" id="storeTabIndicator" aria-hidden="true"></span>
+          <button type="button" class="store-tab is-active" data-tab="gadgets">Gadgets</button>
+          <button type="button" class="store-tab" data-tab="software">Software Products</button>
+        </div>
+        <button type="button" class="store-tabs-arrow" id="storeTabsNext" aria-label="Scroll tabs right" hidden>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
       </div>
     </div>
 
@@ -866,10 +1202,11 @@
           </div>
 
           <div class="filter-rail-group filter-rail-extra">
-            <button type="button" class="rail-arrow rail-arrow-prev" id="extraRailPrev" aria-label="Scroll filters left" hidden>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-            </button>
-                                                <div class="filter-rail" id="extraFilterRow">
+            <div class="extra-rail-wrap" id="extraRailWrap">
+              <button type="button" class="rail-arrow rail-arrow-prev" id="extraRailPrev" aria-label="Scroll categories left" hidden>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <div class="filter-rail" id="extraFilterRow">
               <button type="button" class="filter-pill blue-pill" data-group="category" data-value="laptops">Laptops</button>
               <button type="button" class="filter-pill blue-pill" data-group="category" data-value="macbook">MacBook</button>
               <button type="button" class="filter-pill blue-pill" data-group="category" data-value="iphone">iPhone</button>
@@ -879,9 +1216,10 @@
               <button type="button" class="filter-pill blue-pill" data-group="category" data-value="apple-watch">Apple Watch</button>
               <button type="button" class="filter-pill blue-pill" data-group="category" data-value="accessories">Accessories</button>
             </div>
-            <button type="button" class="rail-arrow rail-arrow-next" id="extraRailNext" aria-label="Scroll filters right" hidden>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
+              <button type="button" class="rail-arrow rail-arrow-next" id="extraRailNext" aria-label="Scroll categories right" hidden>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+            </div>
           </div>
 
           <div class="filter-rail-group filter-price-group">
@@ -900,16 +1238,30 @@
           </div>
 
           <div class="filter-rail-group filter-sort-group">
-            <label class="sort-select-wrap">
-              <span class="sort-select-label">Sort</span>
-              <select id="sortSelect" class="sort-select" aria-label="Sort products">
-                <option value="featured">Featured</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-              </select>
-            </label>
+            <div class="sort-select-wrap">
+            <label class="sort-select-label" for="sortSelect">Sort by</label>
+            <select id="sortSelect" class="sort-select" aria-label="Sort products">
+              <option value="featured">Featured</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+            </select>
+            </div>
+            <div class="sort-hover-wrap" id="sortHoverWrap" tabindex="0">
+              <button type="button" class="sort-hover-trigger" aria-haspopup="true" aria-expanded="false">
+                <span class="sort-select-label">Sort</span>
+                <span id="sortCurrentLabel" style="color:var(--ink-900)">Featured</span>
+                <svg class="sort-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <div class="sort-hover-options" id="sortHoverOptions" role="menu">
+                <button type="button" class="sort-hover-option is-active" data-value="featured" role="menuitem">Featured</button>
+                <button type="button" class="sort-hover-option" data-value="price-asc" role="menuitem">Price: Low to High</button>
+                <button type="button" class="sort-hover-option" data-value="price-desc" role="menuitem">Price: High to Low</button>
+                <button type="button" class="sort-hover-option" data-value="newest" role="menuitem">Newest First</button>
+                <button type="button" class="sort-hover-option" data-value="oldest" role="menuitem">Oldest First</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -919,7 +1271,7 @@
     <div id="gadgetsPanel">
       <div class="product-grid" id="productGrid">
 
-        <div class="product-card reveal" data-brand="apple" data-category="phones" data-condition="brand-new" data-price="17499" data-search="iphone 16 apple" data-order="1" data-added="1">
+        <div class="product-card reveal" data-brand="apple" data-category="iphone" data-condition="brand-new" data-price="17499" data-search="iphone 16 apple" data-order="1" data-added="1">
           <div class="product-media">
             <span class="condition-badge brand-new">Brand New</span>
             <div class="spec-badges"><span class="spec-badge">128GB</span><span class="spec-badge">A18 Chip</span><span class="spec-badge">6.1" OLED</span></div>
@@ -940,7 +1292,7 @@
           </div>
         </div>
 
-        <div class="product-card reveal" data-brand="apple" data-category="phones" data-condition="pre-owned" data-price="24999" data-search="iphone 17 pro apple" data-order="2" data-added="2">
+        <div class="product-card reveal" data-brand="apple" data-category="iphone" data-condition="pre-owned" data-price="24999" data-search="iphone 17 pro apple" data-order="2" data-added="2">
           <div class="product-media">
             <span class="condition-badge pre-owned">Pre-Owned</span>
             <div class="spec-badges"><span class="spec-badge">512GB</span><span class="spec-badge">A19 Pro</span><span class="spec-badge">Titanium</span></div>
@@ -961,7 +1313,7 @@
           </div>
         </div>
 
-        <div class="product-card reveal" data-brand="apple" data-category="phones" data-condition="brand-new" data-price="19999" data-search="iphone 17 apple" data-order="3" data-added="3">
+        <div class="product-card reveal" data-brand="apple" data-category="iphone" data-condition="brand-new" data-price="19999" data-search="iphone 17 apple" data-order="3" data-added="3">
           <div class="product-media">
             <span class="condition-badge brand-new">Brand New</span>
             <div class="spec-badges"><span class="spec-badge">256GB</span><span class="spec-badge">A19 Chip</span><span class="spec-badge">120Hz</span></div>
@@ -1193,6 +1545,32 @@
       'translate(' + (btnRect.left - wrapRect.left) + 'px,' + (btnRect.top - wrapRect.top) + 'px)';
   }
 
+  function bindSwipe(target, onSwipe){
+    if (!target || !window.PointerEvent) return;
+    let startX = 0;
+    let startY = 0;
+    let pointerId = null;
+
+    target.addEventListener('pointerdown', (event) => {
+      if (event.pointerType === 'mouse') return;
+      startX = event.clientX;
+      startY = event.clientY;
+      pointerId = event.pointerId;
+      target.setPointerCapture?.(pointerId);
+    });
+
+    target.addEventListener('pointerup', (event) => {
+      if (pointerId !== event.pointerId) return;
+      const deltaX = event.clientX - startX;
+      const deltaY = event.clientY - startY;
+      pointerId = null;
+      if (Math.abs(deltaX) < 42 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+      onSwipe(deltaX < 0 ? 'left' : 'right');
+    });
+
+    target.addEventListener('pointercancel', () => { pointerId = null; });
+  }
+
   function runFilter(){
     const query = searchInput.value.trim().toLowerCase();
     let anyVisible = false;
@@ -1238,7 +1616,44 @@
     runFilter();
   }
 
-  function applyPill(pill){
+  function spawnRipple(pill, evt){
+    const existing = pill.querySelector('.pill-ripple');
+    if (existing) existing.remove();
+
+    const rect = pill.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height) * 1.4;
+    const clientX = (evt && evt.clientX) ? evt.clientX : rect.left + rect.width / 2;
+    const clientY = (evt && evt.clientY) ? evt.clientY : rect.top + rect.height / 2;
+    const x = clientX - rect.left - size / 2;
+    const y = clientY - rect.top - size / 2;
+
+    // Ripple color reads as light-on-blue when the pill is about to turn blue→white,
+    // and blue-on-white once the pill is already the white/active state.
+    const wasActive = pill.classList.contains('is-active');
+    const rippleColor = wasActive ? 'rgba(17,24,245,.22)' : 'rgba(255,255,255,.55)';
+
+    const ripple = document.createElement('span');
+    ripple.className = 'pill-ripple';
+    ripple.style.width = size + 'px';
+    ripple.style.height = size + 'px';
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    ripple.style.background = rippleColor;
+    pill.appendChild(ripple);
+    ripple.addEventListener('animationend', () => ripple.remove());
+  }
+
+  function popPill(pill){
+    pill.classList.remove('just-activated');
+    // force reflow so the animation can retrigger on repeated clicks
+    void pill.offsetWidth;
+    pill.classList.add('just-activated');
+    pill.addEventListener('animationend', () => pill.classList.remove('just-activated'), { once: true });
+  }
+
+  function applyPill(pill, evt){
+    if (pill.classList.contains('blue-pill')) spawnRipple(pill, evt);
+
     const group = pill.dataset.group;
     const value = pill.dataset.value;
     const groupPills = filterPills.filter(p => p.dataset.group === group);
@@ -1246,6 +1661,9 @@
     else if (group === 'condition') activeCondition = (activeCondition === value) ? null : value;
     const activeVal = group === 'category' ? activeCategory : activeCondition;
     groupPills.forEach(p => p.classList.toggle('is-active', p.dataset.value === activeVal));
+
+    if (pill.classList.contains('blue-pill') && pill.dataset.value === activeVal) popPill(pill);
+
     runFilter();
   }
 
@@ -1315,13 +1733,60 @@
   }
 
   tabs.forEach(t => t.addEventListener('click', () => applyTab(t.dataset.tab)));
+  bindSwipe(tabsWrap, (direction) => {
+    const currentIndex = tabs.findIndex(tab => tab.dataset.tab === activeTab);
+    const nextIndex = direction === 'left'
+      ? Math.min(currentIndex + 1, tabs.length - 1)
+      : Math.max(currentIndex - 1, 0);
+    if (nextIndex !== currentIndex) applyTab(tabs[nextIndex].dataset.tab);
+  });
   brandTiles.forEach(t => t.addEventListener('click', () => applyBrand(t.dataset.brand)));
-  filterPills.forEach(p => p.addEventListener('click', () => applyPill(p)));
+  filterPills.forEach(p => p.addEventListener('click', (evt) => applyPill(p, evt)));
   searchInput.addEventListener('input', runFilter);
   if (sortSelect) sortSelect.addEventListener('change', applySort);
 
-  setupRail(document.getElementById('brandRow'), document.getElementById('brandRailPrev'), document.getElementById('brandRailNext'));
+  function enableWheelScroll(railEl){
+    if (!railEl) return;
+    railEl.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && railEl.scrollWidth > railEl.clientWidth) {
+        e.preventDefault();
+        railEl.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+  }
+
+
+  // --- NEW: setup rails for store tabs and extra filter ---
+  setupRail(document.getElementById('storeTabs'), document.getElementById('storeTabsPrev'), document.getElementById('storeTabsNext'));
   setupRail(document.getElementById('extraFilterRow'), document.getElementById('extraRailPrev'), document.getElementById('extraRailNext'));
+  enableWheelScroll(document.getElementById('storeTabs'));
+
+  // --- NEW: Sort hover dropdown (no click needed to open) ---
+  (function(){
+    const hoverWrap = document.getElementById('sortHoverWrap');
+    const options = hoverWrap ? hoverWrap.querySelectorAll('.sort-hover-option') : [];
+    const label = document.getElementById('sortCurrentLabel');
+    const nativeSelect = document.getElementById('sortSelect');
+    if(!hoverWrap || !nativeSelect) return;
+    options.forEach(opt => {
+      opt.addEventListener('click', () => {
+        const val = opt.dataset.value;
+        options.forEach(o => o.classList.toggle('is-active', o===opt));
+        if(label) label.textContent = opt.textContent.trim();
+        nativeSelect.value = val;
+        nativeSelect.dispatchEvent(new Event('change', {bubbles:true}));
+      });
+    });
+    // Sync label when select changes elsewhere
+    nativeSelect.addEventListener('change', () => {
+      const active = Array.from(options).find(o => o.dataset.value === nativeSelect.value);
+      if(active && label){ label.textContent = active.textContent.trim(); options.forEach(o=>o.classList.toggle('is-active', o===active)); }
+    });
+  })();
+
+  setupRail(document.getElementById('brandRow'), document.getElementById('brandRailPrev'), document.getElementById('brandRailNext'));
+  enableWheelScroll(document.getElementById('brandRow'));
+  enableWheelScroll(document.getElementById('extraFilterRow'));
 
   const initialTab = tabs.find(t => t.classList.contains('is-active')) || tabs[0];
   moveIndicator(initialTab);
@@ -1346,11 +1811,12 @@
 
   function setHeights(){
     const w = row.getBoundingClientRect().width;
-    const h = w / RATIO;
+    const compactLayout = window.matchMedia('(max-width:700px)').matches;
+    const h = compactLayout ? Math.max(112, Math.round(w * 0.39)) : w / RATIO;
     carousels.forEach(c => { c.style.height = h + 'px'; });
   }
 
-  function initCarousel(root){
+    function initCarousel(root){
     const track = root.querySelector('[data-track]');
     const slides = Array.from(track.children);
     const dots = Array.from(root.querySelectorAll('[data-dots] .ad-dot'));
@@ -1379,6 +1845,29 @@
 
     if (prevBtn) prevBtn.addEventListener('click', () => { goTo(current - 1); restartTimer(); });
     if (nextBtn) nextBtn.addEventListener('click', () => { goTo(current + 1); restartTimer(); });
+
+    if (window.PointerEvent) {
+      let startX = 0;
+      let startY = 0;
+      let pointerId = null;
+      root.addEventListener('pointerdown', (event) => {
+        if (event.pointerType === 'mouse') return;
+        startX = event.clientX;
+        startY = event.clientY;
+        pointerId = event.pointerId;
+        root.setPointerCapture?.(pointerId);
+      });
+      root.addEventListener('pointerup', (event) => {
+        if (pointerId !== event.pointerId) return;
+        const deltaX = event.clientX - startX;
+        const deltaY = event.clientY - startY;
+        pointerId = null;
+        if (Math.abs(deltaX) < 42 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+        goTo(deltaX < 0 ? current + 1 : current - 1);
+        restartTimer();
+      });
+      root.addEventListener('pointercancel', () => { pointerId = null; });
+    }
 
     restartTimer();
   }
