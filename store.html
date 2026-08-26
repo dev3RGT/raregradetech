@@ -305,16 +305,18 @@
   }
   .filter-rail::-webkit-scrollbar{ display:none; }
 
-  /* Logos sit directly on the page — no card/container */
+  /* Brand logos sit inside a card container so they read as buttons */
   .brand-tile{
     width:55.8px; height:55.8px; flex:none;
-    border:none; background:transparent; padding:0; margin:0;
+    border:1px solid var(--card-line); background:#fff; padding:0; margin:0;
+    border-radius:14px;
+    box-shadow:0 2px 8px rgba(9,11,37,.06);
     display:flex; align-items:center; justify-content:center;
     cursor:pointer; position:relative;
-    transition:transform .2s ease, opacity .2s ease;
+    transition:transform .2s ease, opacity .2s ease, border-color .2s ease, box-shadow .2s ease;
   }
   .brand-tile img, .brand-tile svg{
-    width:90%; height:90%; object-fit:contain; object-position:center;
+    width:62%; height:62%; object-fit:contain; object-position:center;
     display:block; background:transparent; border-radius:0;
   }
 
@@ -353,12 +355,8 @@
   }
 
 
-  .brand-tile:hover{ transform:translateY(-3px); }
-  .brand-tile.is-active{ transform:translateY(-2px); }
-  .brand-tile.is-active::after{
-    content:''; position:absolute; left:16%; right:16%; bottom:-8px; height:3px;
-    border-radius:999px; background:var(--blue-700);
-  }
+  .brand-tile:hover{ transform:translateY(-3px); border-color:var(--blue-accent); box-shadow:0 10px 22px rgba(17,24,245,.14); }
+  .brand-tile.is-active{ transform:translateY(-2px); border-color:#020084; box-shadow:0 10px 22px rgba(2,0,132,.16); }
   .brand-tile-label{ position:absolute; bottom:-20px; left:50%; transform:translateX(-50%); font-size:10.5px; font-weight:700; color:var(--ink-400); white-space:nowrap; letter-spacing:.02em; }
 
   /* Category / condition / price filter pills */
@@ -707,10 +705,16 @@
   }
   /* Clicked / selected state — flips to white with a soft pop */
   .filter-pill.blue-pill.is-active{
-    background:#fff;
-    border-color:#fff;
-    color:var(--blue-700);
+    background:#fff !important;
+    border-color:#020084 !important;
+    color:#020084 !important;
     transform:translateY(-1px);
+  }
+  .filter-pill.blue-pill.is-active img.filter-cat-icon{
+    filter: brightness(0) saturate(100%) invert(7%) sepia(98%) saturate(7500%) hue-rotate(246deg) brightness(60%) contrast(125%) !important;
+  }
+  .filter-pill.blue-pill.is-active svg.filter-cat-icon{
+    stroke:#020084 !important;
   }
   .filter-pill.blue-pill.is-active:hover{
     background:#fff;
@@ -958,7 +962,7 @@
     .filter-price-group{ grid-column:1; min-width:0; }
     .filter-sort-group{ grid-column:2; min-width:0; margin:0; align-self:end; }
     .filter-rail{ gap:10px; padding:4px 1px 8px; }
-    .brand-tile{ width:44px; height:44px; }
+    .brand-tile{ width:48.4px; height:48.4px; }
     .filter-pill.brand-icon{ width:43px; height:43px; }
     .filter-pill.blue-pill{ padding:9px 13px; font-size:11.5px; }
     .price-slider{ width:100%; min-width:0; padding-top:3px; }
@@ -1056,6 +1060,76 @@
       transition-duration:.01ms !important;
     }
   }
+
+
+/* --- Filter category icons white --- */
+.filter-cat-icon{
+  width:20px;
+  height:20px;
+  object-fit:contain;
+  display:inline-block;
+  vertical-align:middle;
+  flex:none;
+}
+img.filter-cat-icon{
+  filter: brightness(0) invert(1);
+}
+svg.filter-cat-icon{
+  stroke: currentColor;
+  fill: none;
+}
+.filter-pill.blue-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+
+
+/* --- FIX: Desktop/iMac icons + active blue #020084 --- */
+.filter-pill.blue-pill.is-active{
+  background:#fff !important;
+  border-color:#020084 !important;
+  color:#020084 !important;
+}
+.filter-pill.blue-pill.is-active img.filter-cat-icon{
+  filter: brightness(0) saturate(100%) invert(7%) sepia(98%) saturate(7500%) hue-rotate(246deg) brightness(60%) contrast(125%) !important;
+}
+.filter-pill.blue-pill.is-active svg.filter-cat-icon{
+  stroke:#020084 !important;
+}
+
+/* --- Mobile/touch parity: mirror desktop :hover animations onto :active (tap) --- */
+@media (hover:none){
+  .utility-social a:active{ background:var(--ink); transform:translateY(-1px); }
+  .nav-links a:active{ color:var(--white); }
+  .nav-toggle:active{ background:rgba(255,255,255,.14); }
+  .btn-primary:active{ transform:translateY(-2px); box-shadow:0 12px 24px rgba(0,0,0,.35); }
+  .btn-secondary:active{ transform:translateY(-2px); box-shadow:0 12px 24px rgba(0,0,0,.18); }
+  .btn-outline:active{ background:rgba(255,255,255,.1); transform:translateY(-2px); }
+  .btn-block-ink:active{ background:var(--blue-800); transform:translateY(-2px); box-shadow:0 12px 24px rgba(17,24,245,.35); }
+  .store-tab:active{ transform:translateY(-2px); border-color:var(--blue-accent); color:var(--blue-700); }
+  .rail-arrow:active{ color:var(--blue-800); transform:translateY(-1px) scale(.97); }
+  .store-tabs-arrow:active{ background:var(--ink-900); color:#fff; border-color:var(--ink-900); transform:translateY(-1px); }
+  .filter-pill.brand-icon:active{ transform:translateY(-3px); }
+  .brand-tile:active{ transform:translateY(-3px); border-color:var(--blue-accent); box-shadow:0 10px 22px rgba(17,24,245,.14); }
+  .filter-pill:active{ border-color:var(--blue-accent); color:var(--blue-700); transform:translateY(-2px); }
+  .filter-pill.blue-pill:active{ background:var(--blue-accent); border-color:var(--blue-accent); transform:translateY(-2px) scale(.96); }
+  .filter-pill.blue-pill.is-active:active{ background:#fff; border-color:#fff; color:var(--blue-700); transform:translateY(-3px); }
+  #sortSelect.sort-select:active{ border-color:var(--blue-accent); box-shadow:0 0 0 3px rgba(59,76,255,.12); }
+  .product-card:active{ transform:translateY(-5px) scale(.985); box-shadow:0 18px 36px rgba(9,11,37,.1); border-color:var(--blue-accent); }
+  .product-card:active .product-media img{ transform:scale(1.045) rotate(-.5deg); }
+  .ad-carousel:active .ad-slide img{ transform:scale(1.025); filter:saturate(1.04); }
+  .wishlist-heart-btn:active{ transform:scale(1.1); box-shadow:0 6px 16px rgba(0,0,0,.2); }
+  .product-cta:active{ background:var(--blue-accent); border-color:var(--blue-accent); transform:translateY(-3px) scale(1.03); box-shadow:0 12px 26px rgba(17,24,245,.4); }
+  .product-cta:active::before{ transform:translateX(130%); }
+  .wishlist-item-move:active{ color:var(--blue-accent); }
+  .cart-drawer-close:active{ border-color:var(--blue-accent); color:var(--blue-700); }
+  .qty-btn:active{ border-color:var(--blue-accent); color:var(--blue-700); }
+  .cart-item-remove:active{ color:#e0433a; }
+  .footer-social a:active{ background:var(--blue-700); transform:translateY(-2px); }
+  .footer-col a:active{ color:var(--white); }
+  .footer-bottom a:active{ color:var(--white); }
+}
 
 </style>
 </head>
@@ -1247,14 +1321,16 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
               </button>
               <div class="filter-rail" id="extraFilterRow">
-              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="laptops">Laptops</button>
-              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="macbook">MacBook</button>
-              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="iphone">iPhone</button>
-              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="ipad">iPad</button>
-              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="desktop">Desktop</button>
-              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="imac">iMac</button>
-              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="apple-watch">Apple Watch</button>
-              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="accessories">Accessories</button>
+              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="laptops">Laptops <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAzElEQVR4nO3YQQrCMBSE4elUvI5u9QR6qoIJVa/iMfQmFb1GJYKrUhUa2lHmg2xKaN5P6KaAmZlZNtW8QDwS4U7EVnTdCsR9mrU3o0A4CAzafrMKhLo3JNWmTUC9Gnq3RLx0Bwjnoe8Fwvp1M+8Ofx4Icfw0p0NGRoeIoUPE0CFi6BAxdIgYOkQMHSKGDhFDh4ihQ8TQIWL41yHM/k82noDdAqhm3RHSs7hMe3Kfi9wvnGqBiNeph8iwGpSI2x+PaUqEzXhfqJmZGXQ9AJycU2jDSBgdAAAAAElFTkSuQmCC" alt="mac-book-pro-m1" class="filter-cat-icon"></button>
+              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="macbook">MacBook <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABmklEQVR4nO3YoU8cQRTH8e+8TWnaVNRgEJjSXIJCtaYGi0EQFAmqqoqkIZUL9942Fa2oKwpBAoKEhH+BC4L0JKIJ4BEVILg2Kck2x24qroTlyB43084v+Zkzs599b8UNxMTExMTE1BDB9gXLA2vrOkgeYokQ/CoRgl8lQvCrRAj/NURPE2zOYdsBQ/QSbArWHgh6EjLkALJRh26Ftlrngr2B5nPQVw5dceh6gs2DPkvIpgX96jvkF6y+pDLZpGA/vIU4bLcacfWtHPk+kXfVEHtR4xrng4IsVUOaDe8hDvtSDYHuCnoNEewb5K6akj6uC8OAIHmCzd4CMiLYsdcQwQ7h06ObGA796Ptq5d06dKPAfH6Y0JwR7DW8n4BUhOxtnWcxSEhR/Slop+f3i7rPYfCQ+ykRgl8lQvCr/HMQCfMWPu9pK9hJSO9k/hrRHdN9K/0/gO7VcG5eQvSsgKRjBJf0aflCOn/+Gzh0Bz6ME0zSJ4ItlxNplxcBxVTCrS6UumbDYZuCfh/+Q1k/105twRaHvBoxMTHcY34DMeUHa2GumSsAAAAASUVORK5CYII=" alt="macbook" class="filter-cat-icon"></button>
+              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="iphone">iPhone <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABK0lEQVR4nO2ZTWrDMBCFn+Rb+EpJrlNnZ+hMcqMs25wpP5uuHCaOCRgHUtkjlfI+mJVh5I83ssACCPl7VNBNgB4j5BqhXVrJNUC+K3yui0gEyD795acrQDR7Eo/FfyLkA2jr9G5tHaFN30u7rMn043QXaZbq+ZDpAvRrqZ7vLHqxRYck+jGzWdfdzGS6CDkjF8NMj8VSXiJAD6/6ujNe0JIwmWGzpiYUS4tMPE9KKJYWGScwTii1rzv/cI+09ZwEpr9aml9k2XNEtiVF7DRuljzZYyERlwJFfglFQBEfKAKK+EARUMQHioAiPlAEFPGBIqCIDxQBRXygCCjiw/Pvu0udkAu7F/cSCTkvQ+0K2Uukgq6QE7sLcUhDUAJLxkZh5p65WI/sSRCCt7gBIksSJ2xI0F0AAAAASUVORK5CYII=" alt="iphone17-pro" class="filter-cat-icon"></button>
+              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="ipad">iPad <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA50lEQVR4nO3YzQnCQBCG4W/GLtQCtAXRm30JzuQQbEf0YGzJnwqUaAIiOSRx0U38HthDLpt5IYIMQERERH9hNRb4RuB7gR9+fPb5LICPGkaspwo/K/z2egaw5TePvr0/nwlIJrUzBLaruOSGL9OKGQS2bXLBNdYQhV0+vCCWEK8/B0MCU4YUGBKYMqTAkMC0byHy+ONoWesQwGaAzX8ZIrCsfBb4sW3IHEgWnQ/ReD6tYxnR6RDty49dGQKGBKUMKTAkMGVI39ZB0pcFHaJdmdqp0cr0yUcCTyNaYqfAatgwgoiIiNBFdz6NdiAFWchiAAAAAElFTkSuQmCC" alt="ipad" class="filter-cat-icon"></button>
+                            <button type="button" class="filter-pill blue-pill" data-group="category" data-value="desktop">Desktop <svg class="filter-cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></button>
+
+                            <button type="button" class="filter-pill blue-pill" data-group="category" data-value="imac">iMac <svg class="filter-cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="13" rx="2"/><path d="M9 21h6"/><path d="M12 16v5"/><g fill="currentColor" stroke="none" transform="translate(8.5,5.75) scale(.15)"><path d="M 44.527344 34.75 C 43.449219 37.144531 42.929688 38.214844 41.542969 40.328125 C 39.601563 43.28125 36.863281 46.96875 33.480469 46.992188 C 30.46875 47.019531 29.691406 45.027344 25.601563 45.0625 C 21.515625 45.082031 20.664063 47.03125 17.648438 47 C 14.261719 46.96875 11.671875 43.648438 9.730469 40.699219 C 4.300781 32.429688 3.726563 22.734375 7.082031 17.578125 C 9.457031 13.921875 13.210938 11.773438 16.738281 11.773438 C 20.332031 11.773438 22.589844 13.746094 25.558594 13.746094 C 28.441406 13.746094 30.195313 11.769531 34.351563 11.769531 C 37.492188 11.769531 40.8125 13.480469 43.1875 16.433594 C 35.421875 20.691406 36.683594 31.78125 44.527344 34.75 Z M 31.195313 8.46875 C 32.707031 6.527344 33.855469 3.789063 33.4375 1 C 30.972656 1.167969 28.089844 2.742188 26.40625 4.78125 C 24.878906 6.640625 23.613281 9.398438 24.105469 12.066406 C 26.796875 12.152344 29.582031 10.546875 31.195313 8.46875 Z"/></g></svg></button>
+
+              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="apple-watch">Apple Watch <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACfklEQVR4nO2aPWsVURCG3zNJdY2oYIyNxvyDkE4Lxd9gZ6P4gVdFOyuFI8ysifgHYiViYxFBC0mhjQmKiYWp/CpiQIUUokH7rIw711UQYdfdPfce9oVplnvOzrM75+xlzgtUohtbCHzagW8TZJHAHwn8hSDfCZJmwd/s2icCLzjwLQKfBHwH/SGeIMhannDR4PcAj4emgAPftKRWCHx+CMlhhQOmdwAz2/Jf+pHsGu8B+CBBugR+qWMdZBahRZBVTQaQyeKjZcreyluEld9tiWwAnkqMH7a1swkkYwilIcgRK42HZedwkHl7GMeqza5QEnzfkrhQdg5dV/YwHqF5pY4g3iA+/7moi+r6VgKv24bhdW40Iz+ipVR+u/13OPBcA98Wv4vAL+qCoDyWgWS0LohhvUEDEKmV7JLes3IMAp9tDkJ60a0D5FkAkKd1gGwEAPlaA0jjEKlGNCAEeQfwgRhAUgK/HmgQB7lrIJsDDULgK5WvlUBldTkKEAe+E0lpSS9exQDyBri2f+BBULVaELQgqcViLCBpC/I3tSBoQdIWpD9BeAFVKoq3ERkIx9IO4lgadNJtHoTPVA5ix2RLDYI8r6WJnSkZbagjvwz4nahXvuMg9+rsZaE5E0HqHPiq1fG6Hp+Vn8tv1+M7A7mEEHLgx5bAubJzEOSivYkH1WZXLInjlsR82Tny88jkKMIpGdPmmR76l9thPPU+tGo+QEip/SJLRKaKj5ZJK81VhJaDzNqiV4NMF0gOATN7MwPN75uAnsX/NNVMqPHGjAIrfWOqAXhcrUr/seWuAdP70B/yHYKcyMxk8iQ3nqlh5tffjZ7x7IO2eMykdqqqb8YPXGfSqH7CE4QAAAAASUVORK5CYII=" alt="apple-watch" class="filter-cat-icon"></button>
+              <button type="button" class="filter-pill blue-pill" data-group="category" data-value="accessories">Accessories <svg class="filter-cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></button>
             </div>
               <button type="button" class="rail-arrow rail-arrow-next" id="extraRailNext" aria-label="Scroll categories right" hidden>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
