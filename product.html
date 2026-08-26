@@ -214,7 +214,15 @@
     padding:8px 14px; border-radius:999px; background:var(--surface-alt); border:1px solid var(--card-line);
   }
 
-  .pd-info{ min-width:0; }
+  .pd-info{
+    min-width:0;
+    background:var(--surface-alt);
+    border:1px solid var(--card-line);
+    border-radius:var(--radius-l);
+    padding:calc(var(--gap)*5.5);
+    box-shadow:0 18px 40px rgba(9,11,37,.06);
+  }
+  @media (max-width:520px){ .pd-info{ padding:calc(var(--gap)*4); } }
   .pd-title{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(1.7rem,3.2vw,2.5rem); line-height:1.1; letter-spacing:-.01em; margin:0 0 10px; color:var(--ink-900); }
   .pd-tagline{ font-size:15.5px; line-height:1.65; color:var(--ink-600); margin:0 0 20px; max-width:520px; }
   .pd-price-row{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; flex-wrap:wrap; }
@@ -252,34 +260,47 @@
   .pd-trust-item a{ color:var(--ink-900); font-weight:600; }
   .pd-trust-item a:hover{ color:var(--blue-700); }
 
-  /* ---------- Overview / specs / box ---------- */
+  /* ---------- Specs / box ---------- */
   .pd-lower-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:calc(var(--gap)*8); align-items:start; margin-top:calc(var(--gap)*10); }
   @media (max-width:900px){ .pd-lower-grid{ grid-template-columns:1fr; gap:calc(var(--gap)*6); } }
   .pd-block-title{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem; margin:0 0 14px; color:var(--ink-900); }
-  .pd-description p{ font-size:15px; line-height:1.75; color:var(--ink-600); margin:0 0 14px; }
-  .pd-description p:last-child{ margin-bottom:0; }
 
-  .pd-condition-note{
-    display:flex; gap:12px; align-items:flex-start;
-    background:var(--surface); border:1px solid var(--card-line); border-radius:var(--radius-m);
-    padding:16px 18px; margin-top:18px;
+  .pd-specs-toggle{
+    width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px;
+    background:none; border:none; cursor:pointer; padding:0; margin:0 0 14px;
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem; color:var(--ink-900);
+    text-align:left;
   }
-  .pd-condition-note svg{ flex:none; width:20px; height:20px; color:var(--blue-700); margin-top:1px; }
-  .pd-condition-note p{ font-size:13.8px; line-height:1.6; color:var(--ink-600); margin:0; }
-  .pd-condition-note strong{ color:var(--ink-900); }
+  .pd-specs-toggle .pd-specs-chevron{ flex:none; width:20px; height:20px; color:var(--blue-700); transition:transform .25s ease; }
+  .pd-specs-toggle[aria-expanded="true"] .pd-specs-chevron{ transform:rotate(180deg); }
+  .pd-specs-panel{ overflow:hidden; max-height:0; transition:max-height .35s cubic-bezier(.22,1,.36,1); }
+  .pd-specs-panel.is-open{ max-height:2000px; }
+  .pd-specs-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; padding-top:2px; }
+  .pd-spec-tile{
+    display:flex; flex-direction:column; gap:6px;
+    background:var(--surface); border:1px solid var(--card-line); border-radius:var(--radius-m);
+    padding:14px 16px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .pd-spec-tile:hover{ border-color:var(--blue-accent); transform:translateY(-2px); }
+  .pd-spec-tile-icon{ width:22px; height:22px; color:var(--blue-700); margin-bottom:2px; }
+  .pd-spec-tile-icon svg{ width:100%; height:100%; }
+  .pd-spec-tile-label{ font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-400); }
+  .pd-spec-tile-value{ font-size:13.8px; font-weight:700; color:var(--ink-900); line-height:1.4; }
+  .pd-specs-note{ font-size:12.5px; color:var(--ink-400); margin:16px 0 0; }
 
-  .pd-specs-table{ width:100%; border-collapse:collapse; }
-  .pd-specs-table tr{ border-bottom:1px solid var(--card-line); }
-  .pd-specs-table tr:last-child{ border-bottom:none; }
-  .pd-specs-table th, .pd-specs-table td{ text-align:left; padding:12px 4px; font-size:13.8px; vertical-align:top; }
-  .pd-specs-table th{ font-weight:600; color:var(--ink-400); width:42%; }
-  .pd-specs-table td{ font-weight:600; color:var(--ink-900); }
-  .pd-specs-note{ font-size:12.5px; color:var(--ink-400); margin:14px 0 0; }
-
-  .pd-box-list{ margin-top:22px; }
-  .pd-box-list li{ display:flex; align-items:flex-start; gap:10px; font-size:14px; color:var(--ink-900); line-height:1.5; padding:8px 0; border-bottom:1px solid var(--card-line); }
-  .pd-box-list li:last-child{ border-bottom:none; }
-  .pd-box-list svg{ flex:none; width:16px; height:16px; color:var(--blue-700); margin-top:2px; }
+  .pd-box-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:14px; margin-top:20px; }
+  .pd-box-item{
+    display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px;
+    background:var(--surface); border:1px solid var(--card-line); border-radius:var(--radius-m);
+    padding:20px 12px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .pd-box-item:hover{ border-color:var(--blue-accent); transform:translateY(-2px); }
+  .pd-box-item-icon{ width:48px; height:48px; display:flex; align-items:center; justify-content:center; color:var(--blue-700); }
+  .pd-box-item-icon img{ width:44px; height:44px; object-fit:contain; }
+  .pd-box-item-icon svg{ width:40px; height:40px; }
+  .pd-box-item span{ font-size:12.5px; font-weight:600; color:var(--ink-900); line-height:1.4; }
 
   /* ---------- Product grid (reused for related products) ---------- */
   .product-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(253px,1fr)); gap:22px; margin-top:calc(var(--gap)*2); }
@@ -575,9 +596,6 @@
       <div class="pd-gallery reveal">
         <div class="pd-gallery-frame">
           <span class="pd-condition-badge" id="pdConditionBadge">Brand New</span>
-          <button type="button" class="pd-gallery-heart" id="pdWishlistHeart" aria-label="Add to wishlist" aria-pressed="false">
-            <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
-          </button>
           <img id="pdImage" src="" alt="" />
         </div>
         <div class="pd-spec-chips" id="pdSpecChips"></div>
@@ -611,11 +629,6 @@
           </button>
         </div>
 
-        <a class="btn btn-outline-ink btn-sm" href="contact.html" style="margin-bottom:26px;">
-          <span>Enquire About This Product</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
-
         <div class="pd-trust">
           <div class="pd-trust-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
@@ -637,24 +650,22 @@
       </div>
     </div>
 
-    <!-- Overview + specs + box contents -->
+    <!-- Box contents + specs -->
     <div class="pd-lower-grid">
       <div class="pd-description-wrap">
-        <h2 class="pd-block-title">Overview</h2>
-        <div class="pd-description" id="pdDescription"></div>
-        <div class="pd-condition-note" id="pdConditionNote" style="display:none;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
-          <p id="pdConditionNoteText"></p>
-        </div>
-
-        <h2 class="pd-block-title" style="margin-top:34px;">What's in the Box</h2>
-        <ul class="pd-box-list" id="pdBoxList"></ul>
+        <h2 class="pd-block-title">What's in the Box</h2>
+        <div class="pd-box-grid" id="pdBoxList"></div>
       </div>
 
       <div class="pd-specs-wrap">
-        <h2 class="pd-block-title">Specifications</h2>
-        <table class="pd-specs-table" id="pdSpecsTable"></table>
-        <p class="pd-specs-note">Specifications are provided as a general guide. Contact us to confirm exact details before you buy.</p>
+        <button type="button" class="pd-specs-toggle" id="pdSpecsToggle" aria-expanded="false" aria-controls="pdSpecsPanel">
+          <span>Specifications</span>
+          <svg class="pd-specs-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="pd-specs-panel" id="pdSpecsPanel">
+          <div class="pd-specs-grid" id="pdSpecsTable"></div>
+          <p class="pd-specs-note">Specifications are provided as a general guide. Contact us to confirm exact details before you buy.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -931,6 +942,50 @@ function formatPrice(n){
 
 const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
 
+// ---------- What's in the Box: icons ----------
+const BOX_ICON_PHONE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABAElEQVR4nO3ZQQ6CMBRF0TfCgS4HXYTWVQlsx4E4BNakOK8hKQlpICaU/6Hm3aQhJtV6rGUCwNgmuwJoAHwA2Jmje28NwKyFKAK+/NTI1tgJKzSMJqTxFn8AOALYu2sZAKk0Ia2HGOs+E/LWhAwXTgdnpju4uXt9CtgVtYaLJt4u9b/oLjZIX+4wwztPlJCx+jnnmCCFd0b8eZuHJP9yRtKJMxLdXaucmPOMDWIdptuBg7uGIOyakKWHWoSAEJkIASEyEQJCZCIEhMhECAiRiRAQIhMhIEQmQkCI/KO3pccLitWCkEoTYgQhFyiXCSBuWCnj/gohZ6Z1n6G+E4zhd18jOdH0a4Sa9QAAAABJRU5ErkJggg==';
+const BOX_ICON_USBC = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABhElEQVR4nO2YTUoDQRBGH3oCFwoJ6kkUFXGh5jia4Da40tNE8CdostC7BLJQYnBhEKeloYQQyASmerp7UR98DLPoqnp0T1NToFcLGABfgKtov3YInJFI14ril7kbG6Ilib+BC6ChiOXXXkosF3tnhpLUFxBKbYn5QkRNJen/TrwpjpNf69WU98+YIL+StBkA5HUBxKUA6QSM2UkJMpOzrfnYmwIxSwlSl6ODHAL3wFhR9Fhi7KcEWQsc1xlIRRlIapDzJV1uXSBuriv2fV0QdUtunDpB3Jx9p63S6YqrMxaI0+7Mc0YgA03gSUYgU03gnxXBd8MxsFNn67IK5EEK0Gpb2pTaQN4VPVRoTzQgjxkAOHFfA3IMFBlAFMAJSrUTwxTAlRZiXZ4HQA8YAR+RPALugKOFWirJ30pbpNcm8KS9fv55xhbYk3/zjUhuSM4bqcFpQVxGriwDwUAwkDIZCAaCgZTJQDAQDKRMBoKBYCBlsrkW4d3XgNhci8zmWohymGst1R/Zp76mUVIxIQAAAABJRU5ErkJggg==';
+const BOX_ICON_CASE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABQ0lEQVR4nO2ZQU7DMBBF/x7YFzgRKQtOA6WsqLhSd5R92sugtItmNcjSWIoirBHjyk7Qf9JIySJ//GQ7rWKAkEnyCGAH4ARAnHXUjGUtiY+MwadqU2MmQuMewDOAu4ys8OyLZgmABgX50qZhAFFsr0ts71wmIStkfqIgR216O5idcT39MXOhz3UoSBxs4KDXrwCuAKz1vs3MLcKwYVzb13p/o/fnzNwiDBvG67XKvGUMSKYg8ltFto7caiLjPTK7Gen/yx45JPbI7N5ay8T+aOYmEmVa/aFsM/5mSG2RqecmoYiBUMQJRQyEIk4oYiAUcUIRA6GIE4oYCEWcUMRAKOKEIgZCEScUMRCKOOm0Yc4h6Jh7zfxGQXajw9BLsKpxGBo/XPcqc8nj6QcUZpP4Cp9T76hEo0sh7hlPdZpRfCYIgc0PIEUlrgF527UAAAAASUVORK5CYII=';
+const BOX_ICON_DOC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6M9 9h1"/></svg>';
+
+function getBoxIcon(label){
+  const l = label.toLowerCase();
+  if (l.includes('usb') || l.includes('cable')) return `<img src="${BOX_ICON_USBC}" alt="" />`;
+  if (l.includes('case')) return `<img src="${BOX_ICON_CASE}" alt="" />`;
+  if (l.includes('iphone') || l.includes('phone')) return `<img src="${BOX_ICON_PHONE}" alt="" />`;
+  return BOX_ICON_DOC;
+}
+
+// ---------- Specifications: icons ----------
+const SPEC_ICONS = {
+  display: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg>',
+  chip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>',
+  storage: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>',
+  camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+  build: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg>',
+  charging: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg>',
+  face: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4M15 3h4a2 2 0 0 1 2 2v4M9 21H5a2 2 0 0 1-2-2v-4M15 21h4a2 2 0 0 0 2-2v-4"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/><path d="M9 15c.83.67 1.87 1 3 1s2.17-.33 3-1"/></svg>',
+  sim: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6z"/><path d="M9 10h6M9 14h4"/></svg>',
+  condition: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="m9 12 2 2 4-4"/></svg>',
+  support: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+  generic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m20.59 13.41-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1"/></svg>'
+};
+
+function getSpecIcon(key){
+  const k = key.toLowerCase();
+  if (k.includes('display')) return SPEC_ICONS.display;
+  if (k.includes('chip')) return SPEC_ICONS.chip;
+  if (k.includes('storage')) return SPEC_ICONS.storage;
+  if (k.includes('camera')) return SPEC_ICONS.camera;
+  if (k.includes('build')) return SPEC_ICONS.build;
+  if (k.includes('charg')) return SPEC_ICONS.charging;
+  if (k.includes('face')) return SPEC_ICONS.face;
+  if (k.includes('sim')) return SPEC_ICONS.sim;
+  if (k.includes('condition')) return SPEC_ICONS.condition;
+  if (k.includes('support')) return SPEC_ICONS.support;
+  return SPEC_ICONS.generic;
+}
+
 function getRequestedId(){
   const params = new URLSearchParams(window.location.search);
   return params.get('id');
@@ -963,22 +1018,11 @@ function renderProduct(product){
   document.getElementById('pdHighlights').innerHTML = product.highlights
     .map(h => `<li>${CHECK_SVG}<span>${h}</span></li>`).join('');
 
-  document.getElementById('pdDescription').innerHTML = product.description
-    .map(p => `<p>${p}</p>`).join('');
-
-  const noteWrap = document.getElementById('pdConditionNote');
-  if (product.conditionNote){
-    noteWrap.style.display = 'flex';
-    document.getElementById('pdConditionNoteText').innerHTML = '<strong>Pre-Owned, checked before dispatch.</strong> ' + product.conditionNote;
-  } else {
-    noteWrap.style.display = 'none';
-  }
-
   document.getElementById('pdBoxList').innerHTML = product.whatsInBox
-    .map(item => `<li>${CHECK_SVG}<span>${item}</span></li>`).join('');
+    .map(item => `<div class="pd-box-item"><span class="pd-box-item-icon">${getBoxIcon(item)}</span><span>${item}</span></div>`).join('');
 
   document.getElementById('pdSpecsTable').innerHTML = product.specs
-    .map(([k, v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join('');
+    .map(([k, v]) => `<div class="pd-spec-tile"><span class="pd-spec-tile-icon">${getSpecIcon(k)}</span><span class="pd-spec-tile-label">${k}</span><span class="pd-spec-tile-value">${v}</span></div>`).join('');
 
   // Add to cart button + qty stepper
   const addBtn = document.getElementById('pdAddToCartBtn');
@@ -992,8 +1036,8 @@ function renderProduct(product){
   stepper.dataset.id = product.id;
   stepper.classList.add('product-qty-stepper');
 
-  // Wishlist controls (heart on gallery + labelled button)
-  [document.getElementById('pdWishlistHeart'), document.getElementById('pdWishlistBtn')].forEach(btn => {
+  // Wishlist controls (labelled button)
+  [document.getElementById('pdWishlistBtn')].filter(Boolean).forEach(btn => {
     btn.dataset.id = product.id;
     btn.dataset.name = product.name;
     btn.dataset.price = product.price;
@@ -1049,6 +1093,17 @@ if (activeProduct){
 } else {
   showNotFound();
 }
+
+// ---------- Specifications accordion ----------
+(function () {
+  const toggle = document.getElementById('pdSpecsToggle');
+  const panel = document.getElementById('pdSpecsPanel');
+  if (!toggle || !panel) return;
+  toggle.addEventListener('click', () => {
+    const isOpen = panel.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+})();
 
 // ---------- Reveal on scroll ----------
 (function () {
