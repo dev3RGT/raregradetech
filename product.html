@@ -228,13 +228,13 @@
   .pd-highlight-tile{
     position:relative;
     flex:1 1 0; min-width:130px;
-    display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px;
-    background:transparent; border:none; border-radius:0;
-    padding:8px 6px 12px;
+    display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px;
+    background:var(--surface); border:1px solid var(--card-line); border-radius:var(--radius-m);
+    padding:18px 10px 16px;
     box-shadow:none;
-    transition:transform .22s cubic-bezier(.22,1,.36,1);
+    transition:transform .22s cubic-bezier(.22,1,.36,1), border-color .22s ease, box-shadow .22s ease;
   }
-  .pd-highlight-tile:hover{ transform:translateY(-4px); }
+  .pd-highlight-tile:hover{ transform:translateY(-4px); border-color:var(--blue-accent); box-shadow:0 12px 24px rgba(17,24,245,.08); }
   .pd-highlight-tile-icon{
     position:relative;
     width:52px; height:52px; flex:none;
@@ -286,6 +286,36 @@
   .pd-specs-row .pd-specs-label{ color:var(--ink-400); font-weight:600; }
   .pd-specs-row .pd-specs-value{ color:var(--ink-900); font-weight:700; text-align:right; }
   .pd-specs-note{ font-size:12.5px; color:var(--ink-400); margin:16px 0 0; }
+
+  /* ---------- Payment gateways ---------- */
+  .pd-payments-wrap{ margin-top:calc(var(--gap)*7); }
+  .pd-payments-toggle{
+    width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px;
+    background:none; border:none; cursor:pointer; padding:0; margin:0 0 14px;
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem; color:var(--ink-900);
+    text-align:left;
+  }
+  .pd-payments-toggle .pd-specs-chevron{ flex:none; width:20px; height:20px; color:var(--blue-700); transition:transform .25s ease; }
+  .pd-payments-toggle[aria-expanded="true"] .pd-specs-chevron{ transform:rotate(180deg); }
+  .pd-payments-panel{ overflow:hidden; max-height:0; transition:max-height .4s cubic-bezier(.22,1,.36,1); }
+  .pd-payments-panel.is-open{ max-height:1000px; }
+  .pd-payments-note{ font-size:12.5px; color:var(--ink-400); margin:14px 0 0; }
+  .pd-payments-list{ display:flex; flex-direction:column; gap:10px; padding-top:2px; }
+  .pd-payment-item{
+    border:1px solid var(--card-line); border-radius:var(--radius-m); background:var(--surface); overflow:hidden;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .pd-payment-item:hover{ border-color:var(--blue-accent); box-shadow:0 8px 20px rgba(17,24,245,.06); }
+  .pd-payment-toggle{
+    width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px;
+    background:none; border:none; cursor:pointer; padding:14px 16px; text-align:left;
+  }
+  .pd-payment-toggle img{ height:22px; width:auto; max-width:130px; object-fit:contain; }
+  .pd-payment-chevron{ flex:none; width:16px; height:16px; color:var(--ink-400); transition:transform .25s ease; }
+  .pd-payment-toggle[aria-expanded="true"] .pd-payment-chevron{ transform:rotate(180deg); color:var(--blue-700); }
+  .pd-payment-body{ overflow:hidden; max-height:0; transition:max-height .3s cubic-bezier(.22,1,.36,1); }
+  .pd-payment-body.is-open{ max-height:200px; }
+  .pd-payment-body p{ margin:0; padding:0 16px 16px; font-size:13.2px; line-height:1.65; color:var(--ink-600); border-top:1px solid var(--card-line); padding-top:12px; }
 
   .pd-box-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:14px; margin-top:20px; }
   .pd-box-item{
@@ -649,14 +679,59 @@
         <div class="pd-box-grid" id="pdBoxList"></div>
       </div>
 
-      <div class="pd-specs-wrap">
-        <button type="button" class="pd-specs-toggle" id="pdSpecsToggle" aria-expanded="false" aria-controls="pdSpecsPanel">
-          <span>Specifications</span>
-          <svg class="pd-specs-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div class="pd-specs-panel" id="pdSpecsPanel">
-          <div class="pd-specs-list" id="pdSpecsTable"></div>
-          <p class="pd-specs-note">Specifications are provided as a general guide. Contact us to confirm exact details before you buy.</p>
+      <div class="pd-specs-col">
+        <div class="pd-specs-wrap">
+          <button type="button" class="pd-specs-toggle" id="pdSpecsToggle" aria-expanded="false" aria-controls="pdSpecsPanel">
+            <span>Specifications</span>
+            <svg class="pd-specs-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="pd-specs-panel" id="pdSpecsPanel">
+            <div class="pd-specs-list" id="pdSpecsTable"></div>
+            <p class="pd-specs-note">Specifications are provided as a general guide. Contact us to confirm exact details before you buy.</p>
+          </div>
+        </div>
+
+        <div class="pd-payments-wrap">
+          <button type="button" class="pd-payments-toggle" id="pdPaymentsToggle" aria-expanded="false" aria-controls="pdPaymentsPanel">
+            <span>Payment Options</span>
+            <svg class="pd-specs-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="pd-payments-panel" id="pdPaymentsPanel">
+            <div class="pd-payments-list">
+
+              <div class="pd-payment-item">
+                <button type="button" class="pd-payment-toggle" aria-expanded="false">
+                  <img src="https://i.postimg.cc/fRqN8syq/floattrans.png" alt="Float" loading="lazy" />
+                  <svg class="pd-payment-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="pd-payment-body">
+                  <p>Float lets you pay straight from your bank account by approving the transaction securely inside your own banking app, with no card details entered.</p>
+                </div>
+              </div>
+
+              <div class="pd-payment-item">
+                <button type="button" class="pd-payment-toggle" aria-expanded="false">
+                  <img src="https://i.postimg.cc/PxYnf8yT/payfast-trans.png" alt="PayFast" loading="lazy" />
+                  <svg class="pd-payment-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="pd-payment-body">
+                  <p>PayFast routes your card or EFT payment through an encrypted gateway that verifies and settles the transaction with your bank in real time.</p>
+                </div>
+              </div>
+
+              <div class="pd-payment-item">
+                <button type="button" class="pd-payment-toggle" aria-expanded="false">
+                  <img src="https://i.postimg.cc/XYzRwg1P/yoco-trans.png" alt="Yoco" loading="lazy" />
+                  <svg class="pd-payment-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="pd-payment-body">
+                  <p>Yoco encrypts your card details on entry and processes the payment directly with your card provider before instantly confirming the sale.</p>
+                </div>
+              </div>
+
+            </div>
+            <p class="pd-payments-note">All payments are processed securely by our payment partners — we never store your card details.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -1084,6 +1159,26 @@ if (activeProduct){
   toggle.addEventListener('click', () => {
     const isOpen = panel.classList.toggle('is-open');
     toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+})();
+
+// ---------- Payment options accordion ----------
+(function () {
+  const toggle = document.getElementById('pdPaymentsToggle');
+  const panel = document.getElementById('pdPaymentsPanel');
+  if (!toggle || !panel) return;
+  toggle.addEventListener('click', () => {
+    const isOpen = panel.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  document.querySelectorAll('.pd-payment-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const body = btn.nextElementSibling;
+      if (!body) return;
+      const isOpen = body.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
   });
 })();
 
