@@ -208,12 +208,6 @@
   .pd-gallery-heart.pop svg{ animation:heartPop .4s cubic-bezier(.34,1.56,.64,1); }
   @keyframes heartPop{ 0%{ transform:scale(1); } 40%{ transform:scale(1.35); } 100%{ transform:scale(1); } }
 
-  .pd-spec-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
-  .pd-spec-chip{
-    font-size:12.5px; font-weight:700; color:var(--ink-900);
-    padding:8px 14px; border-radius:999px; background:var(--surface-alt); border:1px solid var(--card-line);
-  }
-
   .pd-info{
     min-width:0;
     background:var(--surface-alt);
@@ -229,10 +223,17 @@
   .pd-price{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(1.6rem,2.6vw,2.1rem); color:var(--blue-700); }
   .pd-price-note{ font-size:13px; color:var(--ink-400); margin:0 0 24px; }
 
-  .pd-highlights{ display:grid; grid-template-columns:1fr 1fr; gap:10px 20px; margin-bottom:26px; }
-  @media (max-width:520px){ .pd-highlights{ grid-template-columns:1fr; } }
-  .pd-highlights li{ display:flex; align-items:flex-start; gap:10px; font-size:14px; color:var(--ink-900); line-height:1.5; }
-  .pd-highlights svg{ flex:none; width:18px; height:18px; color:var(--blue-700); margin-top:1px; }
+  .pd-highlights-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:14px; margin-bottom:26px; }
+  .pd-highlight-tile{
+    display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px;
+    background:var(--surface); border:1px solid var(--card-line); border-radius:var(--radius-m);
+    padding:20px 12px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .pd-highlight-tile:hover{ border-color:var(--blue-accent); transform:translateY(-2px); }
+  .pd-highlight-tile-icon{ width:40px; height:40px; display:flex; align-items:center; justify-content:center; color:var(--blue-700); }
+  .pd-highlight-tile-icon svg{ width:100%; height:100%; }
+  .pd-highlight-tile span:last-child{ font-size:12.5px; font-weight:600; color:var(--ink-900); line-height:1.4; }
 
   .pd-actions{ display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-bottom:24px; }
 
@@ -244,24 +245,15 @@
   .pd-qty-stepper .qty-btn{ width:28px; height:28px; border-radius:50%; border:1px solid var(--card-line); background:var(--surface-alt); color:var(--ink-600); font-size:16px; font-weight:700; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color .2s ease, color .2s ease; }
   .pd-qty-stepper .qty-btn:hover{ border-color:var(--blue-accent); color:var(--blue-700); }
 
-  .pd-wishlist-btn{
-    display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:14.5px;
-    border-radius:999px; padding:14px 22px; border:1px solid var(--card-line); background:var(--surface-alt);
-    color:var(--ink-900); cursor:pointer; transition:border-color .18s ease, color .18s ease, transform .18s ease;
-  }
-  .pd-wishlist-btn:hover{ transform:translateY(-2px); }
-  .pd-wishlist-btn svg{ width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2.2; transition:fill .2s ease, stroke .2s ease; }
-  .pd-wishlist-btn.is-liked{ border-color:#e0433a; color:#e0433a; }
-  .pd-wishlist-btn.is-liked svg{ fill:#e0433a; stroke:#e0433a; }
-
-  .pd-trust{ display:flex; flex-direction:column; gap:12px; padding-top:22px; border-top:1px solid var(--card-line); }
-  .pd-trust-item{ display:flex; align-items:center; gap:12px; font-size:13.8px; color:var(--ink-600); }
+  .pd-trust{ display:flex; flex-wrap:wrap; gap:16px 28px; padding-top:22px; border-top:1px solid var(--card-line); }
+  .pd-trust-item{ display:flex; align-items:center; gap:12px; font-size:13.8px; color:var(--ink-600); flex:1 1 220px; }
   .pd-trust-item svg{ flex:none; width:18px; height:18px; color:var(--blue-700); }
   .pd-trust-item a{ color:var(--ink-900); font-weight:600; }
   .pd-trust-item a:hover{ color:var(--blue-700); }
+  @media (max-width:640px){ .pd-trust{ flex-direction:column; } .pd-trust-item{ flex:none; } }
 
   /* ---------- Specs / box ---------- */
-  .pd-lower-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:calc(var(--gap)*8); align-items:start; margin-top:calc(var(--gap)*10); }
+  .pd-lower-grid{ display:grid; grid-template-columns:minmax(0,480px) minmax(0,1fr); gap:calc(var(--gap)*8); align-items:start; margin-top:calc(var(--gap)*10); }
   @media (max-width:900px){ .pd-lower-grid{ grid-template-columns:1fr; gap:calc(var(--gap)*6); } }
   .pd-block-title{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem; margin:0 0 14px; color:var(--ink-900); }
 
@@ -275,18 +267,11 @@
   .pd-specs-toggle[aria-expanded="true"] .pd-specs-chevron{ transform:rotate(180deg); }
   .pd-specs-panel{ overflow:hidden; max-height:0; transition:max-height .35s cubic-bezier(.22,1,.36,1); }
   .pd-specs-panel.is-open{ max-height:2000px; }
-  .pd-specs-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; padding-top:2px; }
-  .pd-spec-tile{
-    display:flex; flex-direction:column; gap:6px;
-    background:var(--surface); border:1px solid var(--card-line); border-radius:var(--radius-m);
-    padding:14px 16px;
-    transition:border-color .2s ease, transform .2s ease;
-  }
-  .pd-spec-tile:hover{ border-color:var(--blue-accent); transform:translateY(-2px); }
-  .pd-spec-tile-icon{ width:22px; height:22px; color:var(--blue-700); margin-bottom:2px; }
-  .pd-spec-tile-icon svg{ width:100%; height:100%; }
-  .pd-spec-tile-label{ font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-400); }
-  .pd-spec-tile-value{ font-size:13.8px; font-weight:700; color:var(--ink-900); line-height:1.4; }
+  .pd-specs-list{ display:flex; flex-direction:column; padding-top:2px; }
+  .pd-specs-row{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:12px 0; border-bottom:1px solid var(--card-line); font-size:13.8px; }
+  .pd-specs-row:last-child{ border-bottom:none; }
+  .pd-specs-row .pd-specs-label{ color:var(--ink-400); font-weight:600; }
+  .pd-specs-row .pd-specs-value{ color:var(--ink-900); font-weight:700; text-align:right; }
   .pd-specs-note{ font-size:12.5px; color:var(--ink-400); margin:16px 0 0; }
 
   .pd-box-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:14px; margin-top:20px; }
@@ -596,9 +581,11 @@
       <div class="pd-gallery reveal">
         <div class="pd-gallery-frame">
           <span class="pd-condition-badge" id="pdConditionBadge">Brand New</span>
+          <button type="button" class="pd-gallery-heart" id="pdWishlistHeart" aria-label="Add to wishlist" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+          </button>
           <img id="pdImage" src="" alt="" />
         </div>
-        <div class="pd-spec-chips" id="pdSpecChips"></div>
       </div>
 
       <div class="pd-info reveal">
@@ -611,7 +598,7 @@
         </div>
         <p class="pd-price-note" id="pdPriceNote">Price includes a free protective case.</p>
 
-        <ul class="pd-highlights" id="pdHighlights"></ul>
+        <div class="pd-highlights-grid" id="pdHighlights"></div>
 
         <div class="pd-actions">
           <button type="button" class="btn btn-block-ink" id="pdAddToCartBtn">
@@ -623,10 +610,6 @@
             <span class="qty-value">0</span>
             <button type="button" class="qty-btn" data-action="inc" aria-label="Increase quantity">+</button>
           </div>
-          <button type="button" class="pd-wishlist-btn" id="pdWishlistBtn" aria-pressed="false">
-            <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
-            <span id="pdWishlistLabel">Add to Wishlist</span>
-          </button>
         </div>
 
         <div class="pd-trust">
@@ -663,7 +646,7 @@
           <svg class="pd-specs-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </button>
         <div class="pd-specs-panel" id="pdSpecsPanel">
-          <div class="pd-specs-grid" id="pdSpecsTable"></div>
+          <div class="pd-specs-list" id="pdSpecsTable"></div>
           <p class="pd-specs-note">Specifications are provided as a general guide. Contact us to confirm exact details before you buy.</p>
         </div>
       </div>
@@ -680,20 +663,6 @@
       <p class="section-sub">More genuine devices from the current Rare Grade Tech lineup.</p>
     </div>
     <div class="product-grid" id="relatedGrid"></div>
-  </div>
-</section>
-
-<!-- CTA banner -->
-<section class="section" id="ctaSection">
-  <div class="wrap">
-    <div class="store-cta-banner reveal">
-      <h2>Looking For Something Else?</h2>
-      <p>Tell us what device, spec or budget you have in mind and we'll help you find or source it.</p>
-      <div class="store-cta-actions">
-        <a class="btn btn-primary" href="store.html">Back to Shop</a>
-        <a class="btn btn-outline" href="contact.html" style="color:#fff;border-color:rgba(255,255,255,.4);">Contact Us</a>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -956,36 +925,6 @@ function getBoxIcon(label){
   return BOX_ICON_DOC;
 }
 
-// ---------- Specifications: icons ----------
-const SPEC_ICONS = {
-  display: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg>',
-  chip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>',
-  storage: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>',
-  camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
-  build: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg>',
-  charging: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg>',
-  face: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4M15 3h4a2 2 0 0 1 2 2v4M9 21H5a2 2 0 0 1-2-2v-4M15 21h4a2 2 0 0 0 2-2v-4"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/><path d="M9 15c.83.67 1.87 1 3 1s2.17-.33 3-1"/></svg>',
-  sim: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6z"/><path d="M9 10h6M9 14h4"/></svg>',
-  condition: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="m9 12 2 2 4-4"/></svg>',
-  support: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
-  generic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m20.59 13.41-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1"/></svg>'
-};
-
-function getSpecIcon(key){
-  const k = key.toLowerCase();
-  if (k.includes('display')) return SPEC_ICONS.display;
-  if (k.includes('chip')) return SPEC_ICONS.chip;
-  if (k.includes('storage')) return SPEC_ICONS.storage;
-  if (k.includes('camera')) return SPEC_ICONS.camera;
-  if (k.includes('build')) return SPEC_ICONS.build;
-  if (k.includes('charg')) return SPEC_ICONS.charging;
-  if (k.includes('face')) return SPEC_ICONS.face;
-  if (k.includes('sim')) return SPEC_ICONS.sim;
-  if (k.includes('condition')) return SPEC_ICONS.condition;
-  if (k.includes('support')) return SPEC_ICONS.support;
-  return SPEC_ICONS.generic;
-}
-
 function getRequestedId(){
   const params = new URLSearchParams(window.location.search);
   return params.get('id');
@@ -1007,22 +946,19 @@ function renderProduct(product){
   img.src = product.image;
   img.alt = product.name;
 
-  document.getElementById('pdSpecChips').innerHTML = product.specChips
-    .map(chip => `<span class="pd-spec-chip">${chip}</span>`).join('');
-
   document.getElementById('pdEyebrow').textContent = product.brand + ' · ' + product.category;
   document.getElementById('pdTitle').textContent = product.name;
   document.getElementById('pdTagline').textContent = product.tagline;
   document.getElementById('pdPrice').textContent = formatPrice(product.price);
 
   document.getElementById('pdHighlights').innerHTML = product.highlights
-    .map(h => `<li>${CHECK_SVG}<span>${h}</span></li>`).join('');
+    .map(h => `<div class="pd-highlight-tile"><span class="pd-highlight-tile-icon">${CHECK_SVG}</span><span>${h}</span></div>`).join('');
 
   document.getElementById('pdBoxList').innerHTML = product.whatsInBox
     .map(item => `<div class="pd-box-item"><span class="pd-box-item-icon">${getBoxIcon(item)}</span><span>${item}</span></div>`).join('');
 
   document.getElementById('pdSpecsTable').innerHTML = product.specs
-    .map(([k, v]) => `<div class="pd-spec-tile"><span class="pd-spec-tile-icon">${getSpecIcon(k)}</span><span class="pd-spec-tile-label">${k}</span><span class="pd-spec-tile-value">${v}</span></div>`).join('');
+    .map(([k, v]) => `<div class="pd-specs-row"><span class="pd-specs-label">${k}</span><span class="pd-specs-value">${v}</span></div>`).join('');
 
   // Add to cart button + qty stepper
   const addBtn = document.getElementById('pdAddToCartBtn');
@@ -1036,8 +972,8 @@ function renderProduct(product){
   stepper.dataset.id = product.id;
   stepper.classList.add('product-qty-stepper');
 
-  // Wishlist controls (labelled button)
-  [document.getElementById('pdWishlistBtn')].filter(Boolean).forEach(btn => {
+  // Wishlist controls (heart on gallery image)
+  [document.getElementById('pdWishlistHeart')].filter(Boolean).forEach(btn => {
     btn.dataset.id = product.id;
     btn.dataset.name = product.name;
     btn.dataset.price = product.price;
@@ -1364,7 +1300,7 @@ if (activeProduct){
 
   let wishlist = loadWishlist();
 
-  function getHeartButtons(){ return Array.from(document.querySelectorAll('.wishlist-heart-btn, .pd-wishlist-btn')); }
+  function getHeartButtons(){ return Array.from(document.querySelectorAll('.wishlist-heart-btn')); }
 
   function syncHeartButtons(){
     getHeartButtons().forEach(btn => {
@@ -1372,10 +1308,6 @@ if (activeProduct){
       const liked = wishlist.some(w => w.id === id);
       btn.classList.toggle('is-liked', liked);
       btn.setAttribute('aria-pressed', liked ? 'true' : 'false');
-      if (btn.id === 'pdWishlistBtn'){
-        const label = document.getElementById('pdWishlistLabel');
-        if (label) label.textContent = liked ? 'In Wishlist' : 'Add to Wishlist';
-      }
     });
   }
 
@@ -1459,7 +1391,7 @@ if (activeProduct){
   }
 
   document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.wishlist-heart-btn, .pd-wishlist-btn');
+    const btn = e.target.closest('.wishlist-heart-btn');
     if (!btn) return;
     toggleWishlist(btn);
   });
