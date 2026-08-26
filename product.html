@@ -289,16 +289,12 @@
 
   /* ---------- Payment gateways ---------- */
   .pd-payments-wrap{ margin-top:calc(var(--gap)*7); }
-  .pd-payments-toggle{
-    width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px;
-    background:none; border:none; cursor:pointer; padding:0; margin:0 0 14px;
+  .pd-payments-title{
+    width:100%; display:flex; align-items:center; gap:12px;
+    margin:0 0 14px;
     font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem; color:var(--ink-900);
-    text-align:left;
   }
-  .pd-payments-toggle .pd-specs-chevron{ flex:none; width:20px; height:20px; color:var(--blue-700); transition:transform .25s ease; }
-  .pd-payments-toggle[aria-expanded="true"] .pd-specs-chevron{ transform:rotate(180deg); }
-  .pd-payments-panel{ overflow:hidden; max-height:0; transition:max-height .4s cubic-bezier(.22,1,.36,1); }
-  .pd-payments-panel.is-open{ max-height:1000px; }
+  .pd-payments-panel{ padding-top:2px; }
   .pd-payments-note{ font-size:12.5px; color:var(--ink-400); margin:14px 0 0; }
   .pd-payments-list{ display:flex; flex-direction:column; gap:10px; padding-top:2px; }
   .pd-payment-item{
@@ -692,10 +688,7 @@
         </div>
 
         <div class="pd-payments-wrap">
-          <button type="button" class="pd-payments-toggle" id="pdPaymentsToggle" aria-expanded="false" aria-controls="pdPaymentsPanel">
-            <span>Payment Options</span>
-            <svg class="pd-specs-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-          </button>
+          <h3 class="pd-payments-title">Payment Options</h3>
           <div class="pd-payments-panel" id="pdPaymentsPanel">
             <div class="pd-payments-list">
 
@@ -1164,14 +1157,6 @@ if (activeProduct){
 
 // ---------- Payment options accordion ----------
 (function () {
-  const toggle = document.getElementById('pdPaymentsToggle');
-  const panel = document.getElementById('pdPaymentsPanel');
-  if (!toggle || !panel) return;
-  toggle.addEventListener('click', () => {
-    const isOpen = panel.classList.toggle('is-open');
-    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-  });
-
   document.querySelectorAll('.pd-payment-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
       const body = btn.nextElementSibling;
