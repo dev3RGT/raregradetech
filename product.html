@@ -223,16 +223,42 @@
   .pd-price{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(1.6rem,2.6vw,2.1rem); color:var(--blue-700); }
   .pd-price-note{ font-size:13px; color:var(--ink-400); margin:0 0 24px; }
 
-  .pd-highlights-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:14px; margin-bottom:26px; }
+  .pd-highlights-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:16px; margin-bottom:26px; }
   .pd-highlight-tile{
-    display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px;
-    background:var(--surface); border:1px solid var(--card-line); border-radius:var(--radius-m);
-    padding:20px 12px;
-    transition:border-color .2s ease, transform .2s ease;
+    position:relative;
+    display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px;
+    background:linear-gradient(180deg, #FFFFFF 0%, var(--surface) 100%);
+    border:1px solid var(--card-line);
+    border-radius:var(--radius-m);
+    padding:22px 12px 18px;
+    box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 14px 24px -16px rgba(9,11,37,.28), 0 2px 6px rgba(9,11,37,.06);
+    transition:transform .22s cubic-bezier(.22,1,.36,1), box-shadow .22s ease, border-color .22s ease;
   }
-  .pd-highlight-tile:hover{ border-color:var(--blue-accent); transform:translateY(-2px); }
-  .pd-highlight-tile-icon{ width:40px; height:40px; display:flex; align-items:center; justify-content:center; color:var(--blue-700); }
-  .pd-highlight-tile-icon svg{ width:100%; height:100%; }
+  .pd-highlight-tile:hover{
+    border-color:var(--blue-accent);
+    transform:translateY(-4px);
+    box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 22px 32px -16px rgba(17,24,245,.28), 0 4px 10px rgba(9,11,37,.08);
+  }
+  .pd-highlight-tile-icon{
+    position:relative;
+    width:52px; height:52px; border-radius:50%; flex:none;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(160deg, var(--blue-accent) 0%, var(--blue-700) 55%, var(--blue-800) 100%);
+    box-shadow:
+      0 10px 18px -6px rgba(17,24,245,.55),
+      inset 0 2px 2px rgba(255,255,255,.55),
+      inset 0 -6px 10px rgba(0,0,0,.28);
+    color:var(--white);
+  }
+  .pd-highlight-tile-icon::after{
+    content:"";
+    position:absolute; inset:2px;
+    border-radius:50%;
+    background:linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0) 45%);
+    pointer-events:none;
+  }
+  .pd-highlight-tile-icon svg{ width:24px; height:24px; position:relative; z-index:1; }
+  .pd-highlight-tile-icon img{ width:26px; height:26px; object-fit:contain; position:relative; z-index:1; filter:brightness(0) invert(1) drop-shadow(0 1px 1px rgba(0,0,0,.25)); }
   .pd-highlight-tile span:last-child{ font-size:12.5px; font-weight:600; color:var(--ink-900); line-height:1.4; }
 
   .pd-actions{ display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-bottom:24px; }
@@ -596,7 +622,7 @@
         <div class="pd-price-row">
           <span class="pd-price" id="pdPrice">R0</span>
         </div>
-        <p class="pd-price-note" id="pdPriceNote">Price includes a free protective case.</p>
+        <p class="pd-price-note" id="pdPriceNote">Price shown is per unit.</p>
 
         <div class="pd-highlights-grid" id="pdHighlights"></div>
 
@@ -616,10 +642,6 @@
           <div class="pd-trust-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
             <span>Genuine device, sourced &amp; supported end-to-end</span>
-          </div>
-          <div class="pd-trust-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-            <span>Free protective case included with this order</span>
           </div>
           <div class="pd-trust-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -788,19 +810,18 @@ const PRODUCTS = {
     conditionLabel: 'Brand New',
     price: 17499,
     image: 'https://i.postimg.cc/K8nRkFtF/iphone16.png',
-    tagline: "Apple's dependable all-rounder — brand new and sealed, with a free case in the box.",
+    tagline: "Apple's dependable all-rounder — brand new and sealed, ready to go.",
     specChips: ['128GB', 'A18 Chip', '6.1" OLED', 'USB-C'],
     highlights: [
       '128GB of on-device storage',
       'A18 chip for fast, everyday performance',
       '6.1" Super Retina XDR OLED display',
       'Dynamic Island and an advanced dual-camera system',
-      'USB-C charging port',
-      'Free protective case included'
+      'USB-C charging port'
     ],
     description: [
       "The iPhone 16 is Apple's latest mainstream model, built for everything from messaging and browsing to photography and gaming. It pairs a bright, colour-accurate OLED display with the A18 chip, so everyday apps open quickly and stay smooth.",
-      "Every unit we sell is brand new and sealed in its original Apple packaging. Rare Grade Tech includes a free protective case with this order, so your new phone is covered from the moment you unbox it."
+      "Every unit we sell is brand new and sealed in its original Apple packaging."
     ],
     conditionNote: null,
     specs: [
@@ -817,8 +838,7 @@ const PRODUCTS = {
     whatsInBox: [
       'iPhone 16',
       'USB-C to USB-C cable',
-      'Quick start documentation',
-      'Rare Grade Tech protective case (free gift)'
+      'Quick start documentation'
     ]
   },
   'iphone-17-pro': {
@@ -830,19 +850,18 @@ const PRODUCTS = {
     conditionLabel: 'Pre-Owned',
     price: 24999,
     image: 'https://i.postimg.cc/g29x2rXQ/iphone17pro.png',
-    tagline: "Apple's flagship Pro model, pre-owned and inspected before it reaches you — with a free case included.",
+    tagline: "Apple's flagship Pro model, pre-owned and inspected before it reaches you.",
     specChips: ['512GB', 'A19 Pro', 'Titanium', 'Pro Camera'],
     highlights: [
       'Spacious 512GB storage',
       'A19 Pro chip for pro-level performance',
       'Aerospace-grade titanium design',
       'Pro camera system built for creators',
-      'ProMotion display technology',
-      'Free protective case included'
+      'ProMotion display technology'
     ],
     description: [
       "The iPhone 17 Pro is Apple's top-tier model, built around a titanium frame, a pro-grade camera system and the A19 Pro chip. It's a strong choice if you shoot a lot of photo or video, edit on the go, or just want the fastest iPhone available.",
-      "This unit is listed as pre-owned, which is how we're able to offer Apple's flagship at a lower price than brand new. Rare Grade Tech includes a free protective case with this order."
+      "This unit is listed as pre-owned, which is how we're able to offer Apple's flagship at a lower price than brand new."
     ],
     conditionNote: "This device is pre-owned. We check that it powers on, charges and functions correctly before it's listed, but light cosmetic wear consistent with previous use should be expected. Contact us before purchase if you'd like more detail on the specific unit's condition.",
     specs: [
@@ -857,8 +876,7 @@ const PRODUCTS = {
     ],
     whatsInBox: [
       'iPhone 17 Pro (pre-owned unit)',
-      'USB-C to USB-C cable',
-      'Rare Grade Tech protective case (free gift)'
+      'USB-C to USB-C cable'
     ]
   },
   'iphone-17': {
@@ -870,19 +888,18 @@ const PRODUCTS = {
     conditionLabel: 'Brand New',
     price: 19999,
     image: 'https://i.postimg.cc/P5GC5NpY/iphone17.png',
-    tagline: "Brand new and sealed, with a smoother 120Hz display and a free case included.",
+    tagline: "Brand new and sealed, with a smoother 120Hz display.",
     specChips: ['256GB', 'A19 Chip', '120Hz', 'USB-C'],
     highlights: [
       '256GB of on-device storage',
       'A19 chip for fast, efficient performance',
       '120Hz ProMotion display for smoother scrolling',
       'Dynamic Island and an advanced camera system',
-      'USB-C charging port',
-      'Free protective case included'
+      'USB-C charging port'
     ],
     description: [
       "The iPhone 17 steps up from the previous generation with a faster A19 chip and a 120Hz ProMotion display, so everything from scrolling to gaming feels noticeably smoother. With 256GB of storage, it has plenty of room for photos, apps and video.",
-      "Every unit we sell is brand new and sealed in its original Apple packaging. Rare Grade Tech includes a free protective case with this order, so your new phone is covered from the moment you unbox it."
+      "Every unit we sell is brand new and sealed in its original Apple packaging."
     ],
     conditionNote: null,
     specs: [
@@ -899,8 +916,7 @@ const PRODUCTS = {
     whatsInBox: [
       'iPhone 17',
       'USB-C to USB-C cable',
-      'Quick start documentation',
-      'Rare Grade Tech protective case (free gift)'
+      'Quick start documentation'
     ]
   }
 };
@@ -910,6 +926,25 @@ function formatPrice(n){
 }
 
 const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+// ---------- Highlight tile icons ----------
+const HL_ICON_CHIP = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABEUlEQVR4nO2aTQqDQAyF36qXqD1v7X2K3bfOTWp7jFcKLoYgjGOVJDYfvIVkkHz+EBgF/pgE4KFYXw2O0aqvRohYE3HHAcAFwCu7SloZALRjT9W0BgQo8u2pGgt3giLvJSI0mmrkCa4AjgAaAJ1nkSarnayKpInFlkWYpc9FHjNEulHmK3EzJHKvfbSspBrthhkiAu2GGSIClyJpYrFlEf4yR6wE4jjmCEMEIcIQgVORNLHYsgizxByhAZEqtBtmiAi0G2aICFyKpInFWo1eCzuabuZIU9gIdDNHmhkiVWiJdIUdTTciLKSawUDTFHnu5dPbeYnIYZQZvH8M3T0svHRb11cjRKyJ9IXfkLauY9d8AIgf9eX1j2jeAAAAAElFTkSuQmCC';
+const HL_ICON_STORAGE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>';
+const HL_ICON_TITANIUM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7.5v9L12 22l9-5.5v-9L12 2z"/><path d="M12 2v20M3 7.5 12 13l9-5.5M3 16.5 12 13l9 3.5"/></svg>';
+const HL_ICON_CAMERA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg>';
+const HL_ICON_DISPLAY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 19h2"/></svg>';
+const HL_ICON_USBC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="8" rx="2"/><path d="M12 10v6"/><path d="M8 20h8"/><path d="M12 16v4"/></svg>';
+
+function getHighlightIcon(label){
+  const l = label.toLowerCase();
+  if (l.includes('chip')) return `<img src="${HL_ICON_CHIP}" alt="" />`;
+  if (l.includes('titanium')) return HL_ICON_TITANIUM;
+  if (l.includes('storage')) return HL_ICON_STORAGE;
+  if (l.includes('camera')) return HL_ICON_CAMERA;
+  if (l.includes('display') || l.includes('promotion')) return HL_ICON_DISPLAY;
+  if (l.includes('usb') || l.includes('charging')) return HL_ICON_USBC;
+  return CHECK_SVG;
+}
 
 // ---------- What's in the Box: icons ----------
 const BOX_ICON_PHONE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABAElEQVR4nO3ZQQ6CMBRF0TfCgS4HXYTWVQlsx4E4BNakOK8hKQlpICaU/6Hm3aQhJtV6rGUCwNgmuwJoAHwA2Jmje28NwKyFKAK+/NTI1tgJKzSMJqTxFn8AOALYu2sZAKk0Ia2HGOs+E/LWhAwXTgdnpju4uXt9CtgVtYaLJt4u9b/oLjZIX+4wwztPlJCx+jnnmCCFd0b8eZuHJP9yRtKJMxLdXaucmPOMDWIdptuBg7uGIOyakKWHWoSAEJkIASEyEQJCZCIEhMhECAiRiRAQIhMhIEQmQkCI/KO3pccLitWCkEoTYgQhFyiXCSBuWCnj/gohZ6Z1n6G+E4zhd18jOdH0a4Sa9QAAAABJRU5ErkJggg==';
@@ -952,7 +987,7 @@ function renderProduct(product){
   document.getElementById('pdPrice').textContent = formatPrice(product.price);
 
   document.getElementById('pdHighlights').innerHTML = product.highlights
-    .map(h => `<div class="pd-highlight-tile"><span class="pd-highlight-tile-icon">${CHECK_SVG}</span><span>${h}</span></div>`).join('');
+    .map(h => `<div class="pd-highlight-tile"><span class="pd-highlight-tile-icon">${getHighlightIcon(h)}</span><span>${h}</span></div>`).join('');
 
   document.getElementById('pdBoxList').innerHTML = product.whatsInBox
     .map(item => `<div class="pd-box-item"><span class="pd-box-item-icon">${getBoxIcon(item)}</span><span>${item}</span></div>`).join('');
