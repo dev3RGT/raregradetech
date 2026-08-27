@@ -165,6 +165,94 @@
   .delivery-option .do-info span{ font-size:12.5px; color:var(--ink-600); }
   .delivery-option .do-price{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:14px; color:var(--green); flex:none; }
 
+  /* ---------- Fulfilment toggle (Delivery / Pickup) ---------- */
+  .fulfil-toggle{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:18px; }
+  .fulfil-btn{
+    display:flex; align-items:center; justify-content:center; gap:9px;
+    border:1.5px solid var(--card-line); border-radius:var(--radius-m); background:var(--surface-alt);
+    padding:14px 12px; font-size:13.8px; font-weight:700; color:var(--ink-600); cursor:pointer;
+    transition:border-color .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
+  }
+  .fulfil-btn svg{ width:18px;height:18px;flex:none; }
+  .fulfil-btn:hover{ border-color:var(--blue-accent); }
+  .fulfil-btn.is-active{ border-color:var(--blue-700); background:rgba(17,24,245,.05); color:var(--blue-700); box-shadow:0 8px 18px rgba(17,24,245,.1); }
+  .fulfil-panel{ display:none; }
+  .fulfil-panel.is-active{ display:block; }
+
+  /* ---------- Geolocation status / actions ---------- */
+  .geo-action{
+    display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+    background:var(--surface); border:1px solid var(--card-line); border-radius:var(--radius-m);
+    padding:13px 16px; margin-bottom:16px;
+  }
+  .geo-action .geo-text{ display:flex; align-items:center; gap:10px; font-size:12.8px; color:var(--ink-600); }
+  .geo-action .geo-text svg{ flex:none; width:17px;height:17px; color:var(--blue-700); }
+  .geo-action .geo-text strong{ color:var(--ink-900); }
+  .btn-geo{
+    display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700;
+    color:var(--blue-700); background:var(--white); border:1px solid var(--blue-accent);
+    border-radius:999px; padding:9px 16px; cursor:pointer; white-space:nowrap; flex:none;
+    transition:background .18s ease, color .18s ease;
+  }
+  .btn-geo:hover{ background:var(--blue-700); color:#fff; }
+  .btn-geo svg{ width:14px;height:14px; }
+  .btn-geo.is-loading{ opacity:.65; pointer-events:none; }
+  .geo-spin{ animation:geoSpin .8s linear infinite; }
+  @keyframes geoSpin{ to{ transform:rotate(360deg); } }
+  .geo-inline-msg{ font-size:12px; margin-top:-6px; margin-bottom:14px; display:none; }
+  .geo-inline-msg.is-error{ color:#c0392b; display:block; }
+  .geo-inline-msg.is-ok{ color:var(--green); display:block; }
+
+  /* ---------- Address autocomplete ---------- */
+  .autocomplete-wrap{ position:relative; }
+  .autocomplete-list{
+    position:absolute; left:0; right:0; top:calc(100% + 4px); z-index:20;
+    background:var(--surface-alt); border:1px solid var(--card-line); border-radius:var(--radius-s);
+    box-shadow:0 16px 34px rgba(9,11,37,.14); max-height:230px; overflow-y:auto; display:none;
+  }
+  .autocomplete-list.is-open{ display:block; }
+  .autocomplete-item{ padding:10px 14px; font-size:13px; color:var(--ink-900); cursor:pointer; border-bottom:1px solid var(--card-line); line-height:1.4; }
+  .autocomplete-item:last-child{ border-bottom:none; }
+  .autocomplete-item:hover, .autocomplete-item.is-hi{ background:var(--surface); color:var(--blue-700); }
+  .autocomplete-item small{ display:block; color:var(--ink-400); font-weight:500; }
+
+  /* ---------- Pickup: store choice ---------- */
+  .store-choice{ display:flex; flex-direction:column; gap:12px; margin-bottom:16px; }
+  .store-option{
+    display:flex; align-items:flex-start; gap:14px; cursor:pointer;
+    border:1.5px solid var(--card-line); border-radius:var(--radius-m);
+    padding:14px 16px; transition:border-color .2s ease, background .2s ease, box-shadow .2s ease;
+  }
+  .store-option:hover{ border-color:var(--blue-accent); }
+  .store-option.is-selected{ border-color:var(--blue-700); background:rgba(17,24,245,.04); box-shadow:0 8px 20px rgba(17,24,245,.1); }
+  .store-option input[type="radio"]{ width:19px; height:19px; accent-color:var(--blue-700); flex:none; cursor:pointer; margin-top:2px; }
+  .store-option .store-icon{ width:38px;height:38px;border-radius:50%;background:rgba(17,24,245,.08);color:var(--blue-700);display:flex;align-items:center;justify-content:center;flex:none; }
+  .store-option .store-icon svg{ width:19px;height:19px; }
+  .store-option .store-info{ flex:1; min-width:0; }
+  .store-option .store-info strong{ display:block; font-size:14px; color:var(--ink-900); margin-bottom:2px; }
+  .store-option .store-info span{ font-size:12.5px; color:var(--ink-600); line-height:1.5; }
+
+  .nearest-store-block{ display:none; margin-top:4px; }
+  .nearest-store-block.is-active{ display:block; }
+  .nearby-store-list{ display:flex; flex-direction:column; gap:10px; margin-top:14px; max-height:320px; overflow-y:auto; }
+  .nearby-store-item{
+    display:flex; align-items:flex-start; gap:12px; cursor:pointer;
+    border:1.5px solid var(--card-line); border-radius:var(--radius-m); padding:12px 14px;
+    transition:border-color .18s ease, background .18s ease;
+  }
+  .nearby-store-item:hover{ border-color:var(--blue-accent); }
+  .nearby-store-item.is-selected{ border-color:var(--blue-700); background:rgba(17,24,245,.04); }
+  .nearby-store-item input[type="radio"]{ width:18px;height:18px; accent-color:var(--blue-700); flex:none; margin-top:2px; cursor:pointer; }
+  .nearby-store-item .nsi-info{ flex:1; min-width:0; }
+  .nearby-store-item .nsi-info strong{ display:block; font-size:13.3px; color:var(--ink-900); }
+  .nearby-store-item .nsi-info span{ display:block; font-size:12px; color:var(--ink-600); margin-top:2px; line-height:1.45; }
+  .nearby-store-item .nsi-badge{
+    flex:none; font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:999px;
+    background:rgba(17,24,245,.08); color:var(--blue-700); text-transform:uppercase; letter-spacing:.02em;
+  }
+  .nearby-store-item .nsi-dist{ display:block; font-size:11.5px; font-weight:700; color:var(--green); margin-top:5px; }
+  .nearby-empty{ font-size:12.8px; color:var(--ink-400); padding:10px 2px; }
+
   /* ---------- Payment methods ---------- */
   .pay-methods{ display:flex; flex-direction:column; gap:12px; }
   .pay-option{
@@ -177,11 +265,33 @@
   .pay-option input[type="radio"]{ width:19px; height:19px; accent-color:var(--blue-700); flex:none; cursor:pointer; }
   .pay-option .pay-logo{ flex:none; height:26px; display:flex; align-items:center; }
   .pay-option .pay-logo img{ height:100%; width:auto; max-width:110px; object-fit:contain; }
+  .pay-option .pay-logo.pay-logo-cards{ gap:6px; }
+  .pay-option .pay-logo.pay-logo-cards img{ height:22px; max-width:34px; }
   .pay-option .pay-info{ flex:1; min-width:0; }
   .pay-option .pay-info strong{ display:block; font-size:13.5px; color:var(--ink-900); margin-bottom:2px; }
   .pay-option .pay-info span{ font-size:12px; color:var(--ink-600); line-height:1.5; }
   .pay-note{ display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink-400); margin-top:16px; }
   .pay-note svg{ flex:none; width:15px;height:15px; color:var(--ink-400); }
+
+  .pay-detail{
+    display:none; margin-top:-2px; margin-left:35px; padding:14px 16px; margin-bottom:2px;
+    background:var(--surface); border:1px solid var(--card-line); border-top:none;
+    border-radius:0 0 var(--radius-m) var(--radius-m);
+  }
+  .pay-detail.is-open{ display:block; }
+  .pay-detail .pd-amount{ display:flex; align-items:center; justify-content:space-between; font-size:13px; color:var(--ink-600); padding-bottom:10px; margin-bottom:10px; border-bottom:1px dashed var(--card-line); }
+  .pay-detail .pd-amount strong{ font-family:'Space Grotesk',sans-serif; font-size:16px; color:var(--ink-900); }
+  .pay-detail .pd-steps{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:5px; }
+  .pay-detail .pd-steps li{ font-size:12.3px; color:var(--ink-600); line-height:1.5; }
+  .pay-detail .card-fields{ margin-top:14px; padding-top:14px; border-top:1px dashed var(--card-line); }
+  .pay-detail .card-fields .field{ margin-bottom:12px; }
+  .card-schemes{ display:flex; gap:6px; margin-bottom:10px; }
+  .card-schemes svg{ height:20px; width:auto; border-radius:4px; opacity:.35; transition:opacity .18s ease; }
+  .card-schemes svg.is-active{ opacity:1; }
+  .card-number-wrap{ position:relative; }
+  .card-number-wrap input{ padding-right:52px; letter-spacing:.03em; }
+  .card-number-wrap .cnw-icon{ position:absolute; right:12px; top:50%; transform:translateY(-50%); height:18px; width:auto; border-radius:3px; opacity:0; transition:opacity .18s ease; pointer-events:none; }
+  .card-number-wrap .cnw-icon.is-visible{ opacity:1; }
 
   /* ---------- Order summary ---------- */
   .order-summary{ position:sticky; top:calc(var(--nav-h) + 20px); }
@@ -370,72 +480,153 @@
           </div>
         </div>
 
-        <!-- Delivery address -->
+        <!-- Fulfilment: Delivery or Pickup -->
         <div class="co-card">
-          <h2 class="co-card-title"><span class="co-card-num">2</span>Delivery Address</h2>
+          <h2 class="co-card-title"><span class="co-card-num">2</span>Delivery or Pickup</h2>
 
           <div class="free-delivery-banner">
             <span class="fd-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v6h-7z"/><circle cx="5.5" cy="19.5" r="1.8"/><circle cx="18.5" cy="19.5" r="1.8"/></svg>
             </span>
             <div>
-              <strong>Delivery is free on this order</strong>
-              <span>No shipping charges — the full cost of delivery is on us.</span>
+              <strong id="fdBannerTitle">Delivery is free on this order</strong>
+              <span id="fdBannerSub">No shipping charges — the full cost of delivery is on us.</span>
             </div>
           </div>
 
-          <div class="form-grid">
-            <div class="field full">
-              <label for="addr1">Street address</label>
-              <input type="text" id="addr1" name="addr1" required autocomplete="address-line1" placeholder="Street number and name" />
-              <p class="field-error">Please enter your street address.</p>
+          <div class="fulfil-toggle" role="radiogroup" aria-label="Choose delivery or pickup">
+            <button type="button" class="fulfil-btn is-active" id="fulfilDeliveryBtn" data-fulfil="delivery" aria-pressed="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v6h-7z"/><circle cx="5.5" cy="19.5" r="1.8"/><circle cx="18.5" cy="19.5" r="1.8"/></svg>
+              <span>Delivery</span>
+            </button>
+            <button type="button" class="fulfil-btn" id="fulfilPickupBtn" data-fulfil="pickup" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+              <span>Pickup</span>
+            </button>
+          </div>
+          <input type="hidden" id="fulfilMethod" name="fulfilMethod" value="delivery" />
+
+          <!-- DELIVERY PANEL -->
+          <div class="fulfil-panel is-active" id="deliveryPanel">
+
+            <div class="geo-action">
+              <div class="geo-text">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>We can fill your address in automatically using <strong>your current location</strong>.</span>
+              </div>
+              <button type="button" class="btn-geo" id="useMyLocationBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+                <span>Use my location</span>
+              </button>
             </div>
-            <div class="field full">
-              <label for="addr2">Apartment / complex / unit <span class="opt">(optional)</span></label>
-              <input type="text" id="addr2" name="addr2" autocomplete="address-line2" placeholder="Unit, floor, complex name" />
+            <p class="geo-inline-msg" id="deliveryGeoMsg"></p>
+
+            <div class="form-grid">
+              <div class="field full autocomplete-wrap">
+                <label for="addr1">Street address <span class="opt">(edit anytime — suggestions will appear as you type)</span></label>
+                <input type="text" id="addr1" name="addr1" required autocomplete="off" placeholder="Start typing your address..." />
+                <div class="autocomplete-list" id="addr1Suggestions"></div>
+                <p class="field-error">Please enter your street address.</p>
+              </div>
+              <div class="field full">
+                <label for="addr2">Apartment / complex / unit <span class="opt">(optional)</span></label>
+                <input type="text" id="addr2" name="addr2" autocomplete="address-line2" placeholder="Unit, floor, complex name" />
+              </div>
+              <div class="field">
+                <label for="city">City / Town</label>
+                <input type="text" id="city" name="city" required autocomplete="address-level2" placeholder="e.g. Mokopane" />
+                <p class="field-error">Please enter your city or town.</p>
+              </div>
+              <div class="field">
+                <label for="province">Province</label>
+                <select id="province" name="province" required autocomplete="address-level1">
+                  <option value="" disabled selected>Select province</option>
+                  <option>Limpopo</option>
+                  <option>Gauteng</option>
+                  <option>Western Cape</option>
+                  <option>Eastern Cape</option>
+                  <option>KwaZulu-Natal</option>
+                  <option>Free State</option>
+                  <option>Mpumalanga</option>
+                  <option>North West</option>
+                  <option>Northern Cape</option>
+                </select>
+                <p class="field-error">Please select a province.</p>
+              </div>
+              <div class="field">
+                <label for="postalCode">Postal code</label>
+                <input type="text" id="postalCode" name="postalCode" required inputmode="numeric" autocomplete="postal-code" placeholder="e.g. 0600" />
+                <p class="field-error">Please enter a postal code.</p>
+              </div>
+              <div class="field full">
+                <label for="deliveryNotes">Delivery instructions <span class="opt">(optional)</span></label>
+                <textarea id="deliveryNotes" name="deliveryNotes" placeholder="e.g. gate code, best time to deliver, landmark..."></textarea>
+              </div>
             </div>
-            <div class="field">
-              <label for="city">City / Town</label>
-              <input type="text" id="city" name="city" required autocomplete="address-level2" placeholder="e.g. Mokopane" />
-              <p class="field-error">Please enter your city or town.</p>
-            </div>
-            <div class="field">
-              <label for="province">Province</label>
-              <select id="province" name="province" required autocomplete="address-level1">
-                <option value="" disabled selected>Select province</option>
-                <option>Limpopo</option>
-                <option>Gauteng</option>
-                <option>Western Cape</option>
-                <option>Eastern Cape</option>
-                <option>KwaZulu-Natal</option>
-                <option>Free State</option>
-                <option>Mpumalanga</option>
-                <option>North West</option>
-                <option>Northern Cape</option>
-              </select>
-              <p class="field-error">Please select a province.</p>
-            </div>
-            <div class="field">
-              <label for="postalCode">Postal code</label>
-              <input type="text" id="postalCode" name="postalCode" required inputmode="numeric" autocomplete="postal-code" placeholder="e.g. 0600" />
-              <p class="field-error">Please enter a postal code.</p>
-            </div>
-            <div class="field full">
-              <label for="deliveryNotes">Delivery instructions <span class="opt">(optional)</span></label>
-              <textarea id="deliveryNotes" name="deliveryNotes" placeholder="e.g. gate code, best time to deliver, landmark..."></textarea>
+            <input type="hidden" id="deliveryLat" name="deliveryLat" />
+            <input type="hidden" id="deliveryLng" name="deliveryLng" />
+
+            <p class="co-card-title" style="font-size:.95rem;margin:22px 0 14px;">
+              <span class="co-card-num" style="background:var(--green);">✓</span>Delivery Method
+            </p>
+            <div class="delivery-option">
+              <span class="do-radio" aria-hidden="true"></span>
+              <div class="do-info">
+                <strong>Standard Free Delivery</strong>
+                <span>Estimated 2–5 business days once your order is confirmed</span>
+              </div>
+              <span class="do-price">FREE</span>
             </div>
           </div>
 
-          <p class="co-card-title" style="font-size:.95rem;margin:22px 0 14px;">
-            <span class="co-card-num" style="background:var(--green);">✓</span>Delivery Method
-          </p>
-          <div class="delivery-option">
-            <span class="do-radio" aria-hidden="true"></span>
-            <div class="do-info">
-              <strong>Standard Free Delivery</strong>
-              <span>Estimated 2–5 business days • Collection in Mokopane also available on request</span>
+          <!-- PICKUP PANEL -->
+          <div class="fulfil-panel" id="pickupPanel">
+            <div class="store-choice" id="storeChoice" role="radiogroup" aria-label="Choose a pickup point">
+              <label class="store-option is-selected" id="rgtStoreOption">
+                <input type="radio" name="pickupChoice" value="rgt" checked />
+                <span class="store-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+                </span>
+                <span class="store-info">
+                  <strong>Rare Grade Tech Store</strong>
+                  <span>69 Hooge Str, Mokopane, Limpopo — collect directly from us, free of charge.</span>
+                </span>
+              </label>
+              <label class="store-option" id="nearestStoreOption">
+                <input type="radio" name="pickupChoice" value="nearest" />
+                <span class="store-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <span class="store-info">
+                  <strong>Nearest PostNet or PepStore</strong>
+                  <span>We'll find PostNet and PepStore branches closest to you for easy, free collection.</span>
+                </span>
+              </label>
             </div>
-            <span class="do-price">FREE</span>
+
+            <div class="nearest-store-block" id="nearestStoreBlock">
+              <div class="geo-action">
+                <div class="geo-text">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Share your location to find nearby branches.</span>
+                </div>
+                <button type="button" class="btn-geo" id="findNearestBtn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+                  <span>Find nearest</span>
+                </button>
+              </div>
+              <p class="geo-inline-msg" id="pickupGeoMsg"></p>
+
+              <div class="field autocomplete-wrap" style="margin-bottom:0;">
+                <label for="pickupSearch">Or search a suburb / address to search near</label>
+                <input type="text" id="pickupSearch" placeholder="e.g. Sandton, Johannesburg" autocomplete="off" />
+                <div class="autocomplete-list" id="pickupSearchSuggestions"></div>
+              </div>
+
+              <div class="nearby-store-list" id="nearbyStoreList"></div>
+              <input type="hidden" id="pickupStoreName" name="pickupStoreName" />
+              <input type="hidden" id="pickupStoreAddress" name="pickupStoreAddress" />
+            </div>
           </div>
         </div>
 
@@ -444,7 +635,7 @@
           <h2 class="co-card-title"><span class="co-card-num">3</span>Payment Method</h2>
           <div class="pay-methods" id="payMethods" role="radiogroup" aria-label="Choose a payment method">
 
-            <label class="pay-option is-selected">
+            <label class="pay-option is-selected" data-pay="Float">
               <input type="radio" name="paymentMethod" value="Float" checked />
               <span class="pay-logo"><img src="https://i.postimg.cc/fRqN8syq/floattrans.png" alt="Float" /></span>
               <span class="pay-info">
@@ -452,8 +643,16 @@
                 <span>Pay straight from your bank account by approving the transaction securely inside your own banking app — no card details entered.</span>
               </span>
             </label>
+            <div class="pay-detail is-open" id="payDetail-Float">
+              <div class="pd-amount"><span>You'll pay with Float</span><strong id="pdAmount-Float">R0</strong></div>
+              <ol class="pd-steps">
+                <li>Select Float and place your order.</li>
+                <li>You're redirected to your own banking app to approve the payment.</li>
+                <li>Once approved, the funds move straight from your bank account — no card numbers are shared with us.</li>
+              </ol>
+            </div>
 
-            <label class="pay-option">
+            <label class="pay-option" data-pay="PayFast">
               <input type="radio" name="paymentMethod" value="PayFast" />
               <span class="pay-logo"><img src="https://i.postimg.cc/PxYnf8yT/payfast-trans.png" alt="PayFast" /></span>
               <span class="pay-info">
@@ -461,8 +660,16 @@
                 <span>Pay by card or EFT through an encrypted gateway that verifies and settles the transaction with your bank in real time.</span>
               </span>
             </label>
+            <div class="pay-detail" id="payDetail-PayFast">
+              <div class="pd-amount"><span>You'll pay with PayFast</span><strong id="pdAmount-PayFast">R0</strong></div>
+              <ol class="pd-steps">
+                <li>Select PayFast and place your order.</li>
+                <li>You're redirected to PayFast's secure page to pay by card or instant EFT.</li>
+                <li>PayFast confirms the payment with your bank in real time and returns you to us.</li>
+              </ol>
+            </div>
 
-            <label class="pay-option">
+            <label class="pay-option" data-pay="Yoco">
               <input type="radio" name="paymentMethod" value="Yoco" />
               <span class="pay-logo"><img src="https://i.postimg.cc/XYzRwg1P/yoco-trans.png" alt="Yoco" /></span>
               <span class="pay-info">
@@ -470,6 +677,61 @@
                 <span>Your card details are encrypted on entry and processed directly with your card provider before instantly confirming the sale.</span>
               </span>
             </label>
+            <div class="pay-detail" id="payDetail-Yoco">
+              <div class="pd-amount"><span>You'll pay with Yoco</span><strong id="pdAmount-Yoco">R0</strong></div>
+              <ol class="pd-steps">
+                <li>Select Yoco and place your order.</li>
+                <li>Enter your card details on Yoco's encrypted payment page.</li>
+                <li>Your card provider confirms the charge and the sale is approved instantly.</li>
+              </ol>
+            </div>
+
+            <label class="pay-option" data-pay="Card">
+              <input type="radio" name="paymentMethod" value="Card" />
+              <span class="pay-logo pay-logo-cards">
+                <svg width="34" height="22" viewBox="0 0 34 22" aria-label="Visa"><rect width="34" height="22" rx="4" fill="#1A1F71"/><text x="17" y="15" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-style="italic" font-size="9.5" fill="#fff">VISA</text></svg>
+                <svg width="34" height="22" viewBox="0 0 34 22" aria-label="Mastercard"><rect width="34" height="22" rx="4" fill="#F2F2F2"/><circle cx="14" cy="11" r="6.4" fill="#EB001B"/><circle cx="20" cy="11" r="6.4" fill="#F79E1B" opacity=".9"/></svg>
+              </span>
+              <span class="pay-info">
+                <strong>Visa / Mastercard</strong>
+                <span>Enter your card details directly for an EFT card payment — processed securely, we never store your full card number.</span>
+              </span>
+            </label>
+            <div class="pay-detail" id="payDetail-Card">
+              <div class="pd-amount"><span>You'll pay by card</span><strong id="pdAmount-Card">R0</strong></div>
+              <ol class="pd-steps">
+                <li>Enter your card details below.</li>
+                <li>We run an encrypted EFT card charge with your bank for the amount shown.</li>
+                <li>You'll get a confirmation once your bank approves the payment.</li>
+              </ol>
+              <div class="card-fields">
+                <div class="card-schemes">
+                  <svg width="34" height="22" viewBox="0 0 34 22" id="schemeVisa" aria-label="Visa"><rect width="34" height="22" rx="4" fill="#1A1F71"/><text x="17" y="15" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-style="italic" font-size="9.5" fill="#fff">VISA</text></svg>
+                  <svg width="34" height="22" viewBox="0 0 34 22" id="schemeMastercard" aria-label="Mastercard"><rect width="34" height="22" rx="4" fill="#F2F2F2"/><circle cx="14" cy="11" r="6.4" fill="#EB001B"/><circle cx="20" cy="11" r="6.4" fill="#F79E1B" opacity=".9"/></svg>
+                </div>
+                <div class="field">
+                  <label for="cardName">Name on card</label>
+                  <input type="text" id="cardName" name="cardName" autocomplete="cc-name" placeholder="e.g. Thabo Mokoena" />
+                </div>
+                <div class="field card-number-wrap">
+                  <label for="cardNumber">Card number</label>
+                  <input type="text" id="cardNumber" name="cardNumber" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456" maxlength="19" />
+                  <svg class="cnw-icon" id="cnwIconVisa" width="30" height="19" viewBox="0 0 34 22" aria-hidden="true"><rect width="34" height="22" rx="4" fill="#1A1F71"/><text x="17" y="15" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-style="italic" font-size="9.5" fill="#fff">VISA</text></svg>
+                  <svg class="cnw-icon" id="cnwIconMastercard" width="30" height="19" viewBox="0 0 34 22" aria-hidden="true"><rect width="34" height="22" rx="4" fill="#F2F2F2"/><circle cx="14" cy="11" r="6.4" fill="#EB001B"/><circle cx="20" cy="11" r="6.4" fill="#F79E1B" opacity=".9"/></svg>
+                </div>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="cardExpiry">Expiry (MM/YY)</label>
+                    <input type="text" id="cardExpiry" name="cardExpiry" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" maxlength="5" />
+                  </div>
+                  <div class="field">
+                    <label for="cardCvv">CVV</label>
+                    <input type="text" id="cardCvv" name="cardCvv" inputmode="numeric" autocomplete="cc-csc" placeholder="123" maxlength="4" />
+                  </div>
+                </div>
+                <p class="field-error" id="cardError" style="display:none;">Please complete your card details to pay by card.</p>
+              </div>
+            </div>
 
           </div>
           <p class="pay-note">
@@ -496,7 +758,7 @@
         <div class="os-items" id="osItems"></div>
         <hr class="os-divider" />
         <div class="os-row"><span>Subtotal</span><span id="osSubtotal">R0</span></div>
-        <div class="os-row"><span>Delivery</span><span class="free-tag">FREE</span></div>
+        <div class="os-row"><span id="osFulfilLabel">Delivery</span><span class="free-tag">FREE</span></div>
         <div class="os-row total"><span>Total</span><span id="osTotal">R0</span></div>
 
         <button type="submit" class="btn btn-block-ink" id="placeOrderBtn">
@@ -568,8 +830,84 @@
   const CART_KEY = 'rgt_store_cart';
   const NOTES_KEY = 'rgt_store_cart_notes';
 
+  // Mapbox access token — used for reverse/forward geocoding (address autocomplete)
+  // and finding the nearest PostNet / PepStore branches. Get your own free token
+  // at https://account.mapbox.com/access-tokens/ and swap it in if this one stops working.
+  const MAPBOX_TOKEN = 'pk.eyJ1Ijoia2F0bGVnb3BoYXNoYSIsImEiOiJjbTlpOTdzbmYwMGNsMmpzYWJtZzN4d3pqIn0.Zt-aSMEoahrV3zkiVVHbOw';
+
   function formatPrice(n){
     return 'R' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+
+  function haversineKm(lat1, lng1, lat2, lng2){
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) ** 2 + Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) * Math.sin(dLng/2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  function debounce(fn, wait){
+    let t;
+    return function(...args){ clearTimeout(t); t = setTimeout(() => fn.apply(this, args), wait); };
+  }
+
+  async function mbReverseGeocode(lat, lng){
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?types=address&country=za&access_token=${MAPBOX_TOKEN}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('reverse geocode failed');
+    const json = await res.json();
+    return json.features && json.features[0] ? json.features[0] : null;
+  }
+
+  async function mbForwardGeocode(query, proximity){
+    let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?autocomplete=true&country=za&limit=5&access_token=${MAPBOX_TOKEN}`;
+    if (proximity) url += `&proximity=${proximity.lng},${proximity.lat}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('forward geocode failed');
+    const json = await res.json();
+    return json.features || [];
+  }
+
+  function mbAddressComponents(feature){
+    const out = { addr1: feature.text || '', city: '', province: '', postalCode: '' };
+    if (feature.address) out.addr1 = `${feature.address} ${feature.text}`;
+    (feature.context || []).forEach(c => {
+      if (c.id.startsWith('place')) out.city = c.text;
+      else if (c.id.startsWith('locality') && !out.city) out.city = c.text;
+      else if (c.id.startsWith('region')) out.province = c.text;
+      else if (c.id.startsWith('postcode')) out.postalCode = c.text;
+    });
+    return out;
+  }
+
+  async function findNearbyChainStores(lat, lng){
+    const brands = ['PostNet', 'PepStore'];
+    const results = [];
+    for (const brand of brands) {
+      try {
+        const feats = await mbForwardGeocode(brand, { lat, lng });
+        feats.forEach(f => {
+          results.push({
+            brand,
+            name: f.text && f.text.toLowerCase().includes(brand.toLowerCase()) ? f.place_name.split(',')[0] : `${brand} — ${f.text}`,
+            address: f.place_name,
+            lat: f.center[1],
+            lng: f.center[0]
+          });
+        });
+      } catch (e) { /* ignore individual brand failure */ }
+    }
+    results.forEach(r => { r.distance = haversineKm(lat, lng, r.lat, r.lng); });
+    results.sort((a, b) => a.distance - b.distance);
+    // de-dupe near-identical entries
+    const seen = new Set();
+    return results.filter(r => {
+      const key = r.address;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(0, 8);
   }
 
   function loadCart(){
@@ -614,17 +952,300 @@
     </div>
   `).join('');
 
-  // ---------- Payment method selection ----------
-  const payOptions = Array.from(document.querySelectorAll('.pay-option'));
-  payOptions.forEach(opt => {
-    opt.addEventListener('click', () => {
-      payOptions.forEach(o => o.classList.remove('is-selected'));
-      opt.classList.add('is-selected');
-      opt.querySelector('input[type="radio"]').checked = true;
+  const orderTotal = subtotal; // delivery and pickup are both free
+
+  // ================= Fulfilment: Delivery vs Pickup =================
+  const fulfilMethodInput = document.getElementById('fulfilMethod');
+  const fulfilDeliveryBtn = document.getElementById('fulfilDeliveryBtn');
+  const fulfilPickupBtn = document.getElementById('fulfilPickupBtn');
+  const deliveryPanel = document.getElementById('deliveryPanel');
+  const pickupPanel = document.getElementById('pickupPanel');
+  const fdBannerTitle = document.getElementById('fdBannerTitle');
+  const fdBannerSub = document.getElementById('fdBannerSub');
+  const osFulfilLabel = document.getElementById('osFulfilLabel');
+  const deliveryRequiredIds = ['addr1','city','province','postalCode'];
+
+  function setFulfilMethod(method){
+    fulfilMethodInput.value = method;
+    const isDelivery = method === 'delivery';
+    fulfilDeliveryBtn.classList.toggle('is-active', isDelivery);
+    fulfilPickupBtn.classList.toggle('is-active', !isDelivery);
+    fulfilDeliveryBtn.setAttribute('aria-pressed', isDelivery);
+    fulfilPickupBtn.setAttribute('aria-pressed', !isDelivery);
+    deliveryPanel.classList.toggle('is-active', isDelivery);
+    pickupPanel.classList.toggle('is-active', !isDelivery);
+    osFulfilLabel.textContent = isDelivery ? 'Delivery' : 'Pickup';
+    fdBannerTitle.textContent = isDelivery ? 'Delivery is free on this order' : 'Pickup is free on this order';
+    fdBannerSub.textContent = isDelivery
+      ? 'No shipping charges — the full cost of delivery is on us.'
+      : 'No collection charges — pick up whenever suits you at no extra cost.';
+    deliveryRequiredIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (isDelivery) el.setAttribute('required', 'required'); else el.removeAttribute('required');
+      setError(el, false);
+    });
+  }
+  fulfilDeliveryBtn.addEventListener('click', () => setFulfilMethod('delivery'));
+  fulfilPickupBtn.addEventListener('click', () => setFulfilMethod('pickup'));
+
+  // ================= Delivery: geolocation + autocomplete =================
+  const useMyLocationBtn = document.getElementById('useMyLocationBtn');
+  const deliveryGeoMsg = document.getElementById('deliveryGeoMsg');
+  const addr1Input = document.getElementById('addr1');
+  const addr1Suggestions = document.getElementById('addr1Suggestions');
+
+  function showGeoMsg(el, text, isError){
+    el.textContent = text;
+    el.classList.toggle('is-error', !!isError);
+    el.classList.toggle('is-ok', !isError);
+  }
+
+  function fillDeliveryAddress(feature){
+    const parts = mbAddressComponents(feature);
+    if (parts.addr1) addr1Input.value = parts.addr1;
+    if (parts.city) document.getElementById('city').value = parts.city;
+    if (parts.province) {
+      const provSelect = document.getElementById('province');
+      const match = Array.from(provSelect.options).find(o => o.value && parts.province.toLowerCase().includes(o.value.toLowerCase()));
+      if (match) provSelect.value = match.value;
+    }
+    if (parts.postalCode) document.getElementById('postalCode').value = parts.postalCode;
+    deliveryRequiredIds.forEach(id => setError(document.getElementById(id), false));
+  }
+
+  useMyLocationBtn.addEventListener('click', () => {
+    if (!navigator.geolocation) {
+      showGeoMsg(deliveryGeoMsg, 'Your browser does not support location detection — please enter your address manually.', true);
+      return;
+    }
+    useMyLocationBtn.classList.add('is-loading');
+    showGeoMsg(deliveryGeoMsg, 'Finding your location...', false);
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      const { latitude, longitude } = pos.coords;
+      document.getElementById('deliveryLat').value = latitude;
+      document.getElementById('deliveryLng').value = longitude;
+      try {
+        const feature = await mbReverseGeocode(latitude, longitude);
+        if (feature) {
+          fillDeliveryAddress(feature);
+          showGeoMsg(deliveryGeoMsg, 'Address filled from your current location — feel free to edit it.', false);
+        } else {
+          showGeoMsg(deliveryGeoMsg, "Couldn't match an exact address — please fill in the details manually.", true);
+        }
+      } catch (e) {
+        showGeoMsg(deliveryGeoMsg, "Couldn't look up your address right now — please enter it manually.", true);
+      } finally {
+        useMyLocationBtn.classList.remove('is-loading');
+      }
+    }, () => {
+      useMyLocationBtn.classList.remove('is-loading');
+      showGeoMsg(deliveryGeoMsg, 'Location access was denied — please enter your address manually.', true);
     });
   });
 
-  // ---------- Validation + submit ----------
+  function wireAutocomplete(inputEl, listEl, onSelect, proximityGetter){
+    let currentFeatures = [];
+    const runSearch = debounce(async () => {
+      const q = inputEl.value.trim();
+      if (q.length < 3) { listEl.classList.remove('is-open'); listEl.innerHTML = ''; return; }
+      try {
+        const proximity = proximityGetter ? proximityGetter() : null;
+        currentFeatures = await mbForwardGeocode(q, proximity);
+        if (!currentFeatures.length) { listEl.classList.remove('is-open'); listEl.innerHTML = ''; return; }
+        listEl.innerHTML = currentFeatures.map((f, i) =>
+          `<div class="autocomplete-item" data-idx="${i}"><span>${f.text}</span><small>${f.place_name}</small></div>`
+        ).join('');
+        listEl.classList.add('is-open');
+      } catch (e) { /* fail silently, user can keep typing manually */ }
+    }, 350);
+
+    inputEl.addEventListener('input', runSearch);
+    inputEl.addEventListener('focus', () => { if (listEl.innerHTML) listEl.classList.add('is-open'); });
+    document.addEventListener('click', (e) => {
+      if (!listEl.contains(e.target) && e.target !== inputEl) listEl.classList.remove('is-open');
+    });
+    listEl.addEventListener('click', (e) => {
+      const item = e.target.closest('.autocomplete-item');
+      if (!item) return;
+      const feature = currentFeatures[Number(item.dataset.idx)];
+      listEl.classList.remove('is-open');
+      onSelect(feature);
+    });
+  }
+
+  wireAutocomplete(addr1Input, addr1Suggestions, (feature) => {
+    fillDeliveryAddress(feature);
+    document.getElementById('deliveryLat').value = feature.center[1];
+    document.getElementById('deliveryLng').value = feature.center[0];
+    showGeoMsg(deliveryGeoMsg, 'Address selected — double-check the details below.', false);
+  });
+
+  // ================= Pickup: store choice + nearest finder =================
+  const rgtStoreOption = document.getElementById('rgtStoreOption');
+  const nearestStoreOption = document.getElementById('nearestStoreOption');
+  const nearestStoreBlock = document.getElementById('nearestStoreBlock');
+  const findNearestBtn = document.getElementById('findNearestBtn');
+  const pickupGeoMsg = document.getElementById('pickupGeoMsg');
+  const nearbyStoreList = document.getElementById('nearbyStoreList');
+  const pickupSearchInput = document.getElementById('pickupSearch');
+  const pickupSearchSuggestions = document.getElementById('pickupSearchSuggestions');
+  const pickupStoreNameInput = document.getElementById('pickupStoreName');
+  const pickupStoreAddressInput = document.getElementById('pickupStoreAddress');
+  let pickupSearchPoint = null;
+
+  function setStoreChoice(choice){
+    [rgtStoreOption, nearestStoreOption].forEach(o => o.classList.remove('is-selected'));
+    if (choice === 'rgt') {
+      rgtStoreOption.classList.add('is-selected');
+      rgtStoreOption.querySelector('input').checked = true;
+      nearestStoreBlock.classList.remove('is-active');
+      pickupStoreNameInput.value = 'Rare Grade Tech Store';
+      pickupStoreAddressInput.value = '69 Hooge Str, Mokopane, Limpopo, South Africa';
+    } else {
+      nearestStoreOption.classList.add('is-selected');
+      nearestStoreOption.querySelector('input').checked = true;
+      nearestStoreBlock.classList.add('is-active');
+      if (!pickupStoreAddressInput.value || pickupStoreNameInput.value === 'Rare Grade Tech Store') {
+        pickupStoreNameInput.value = '';
+        pickupStoreAddressInput.value = '';
+      }
+    }
+  }
+  rgtStoreOption.addEventListener('click', () => setStoreChoice('rgt'));
+  nearestStoreOption.addEventListener('click', () => setStoreChoice('nearest'));
+
+  function renderNearbyStores(stores, originLabel){
+    if (!stores.length) {
+      nearbyStoreList.innerHTML = `<p class="nearby-empty">No PostNet or PepStore branches were found near ${originLabel || 'that location'}. Try searching a nearby suburb instead.</p>`;
+      return;
+    }
+    nearbyStoreList.innerHTML = stores.map((s, i) => `
+      <label class="nearby-store-item" data-idx="${i}">
+        <input type="radio" name="nearbyStoreChoice" ${i === 0 ? 'checked' : ''} />
+        <span class="nsi-info">
+          <strong>${s.name}</strong>
+          <span>${s.address}</span>
+          <span class="nsi-dist">${s.distance.toFixed(1)} km away</span>
+        </span>
+        <span class="nsi-badge">${s.brand}</span>
+      </label>
+    `).join('');
+    if (stores[0]) {
+      pickupStoreNameInput.value = stores[0].name;
+      pickupStoreAddressInput.value = stores[0].address;
+      nearbyStoreList.querySelector('.nearby-store-item').classList.add('is-selected');
+    }
+    nearbyStoreList.querySelectorAll('.nearby-store-item').forEach(item => {
+      item.addEventListener('click', () => {
+        nearbyStoreList.querySelectorAll('.nearby-store-item').forEach(o => o.classList.remove('is-selected'));
+        item.classList.add('is-selected');
+        item.querySelector('input').checked = true;
+        const s = stores[Number(item.dataset.idx)];
+        pickupStoreNameInput.value = s.name;
+        pickupStoreAddressInput.value = s.address;
+      });
+    });
+  }
+
+  findNearestBtn.addEventListener('click', () => {
+    if (!navigator.geolocation) {
+      showGeoMsg(pickupGeoMsg, 'Your browser does not support location detection — try searching a suburb below instead.', true);
+      return;
+    }
+    findNearestBtn.classList.add('is-loading');
+    showGeoMsg(pickupGeoMsg, 'Finding your location...', false);
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      const { latitude, longitude } = pos.coords;
+      pickupSearchPoint = { lat: latitude, lng: longitude };
+      try {
+        showGeoMsg(pickupGeoMsg, 'Searching for nearby PostNet and PepStore branches...', false);
+        const stores = await findNearbyChainStores(latitude, longitude);
+        renderNearbyStores(stores, 'your location');
+        showGeoMsg(pickupGeoMsg, `Showing branches closest to your current location.`, false);
+      } catch (e) {
+        showGeoMsg(pickupGeoMsg, "Couldn't search for nearby branches right now — try again shortly.", true);
+      } finally {
+        findNearestBtn.classList.remove('is-loading');
+      }
+    }, () => {
+      findNearestBtn.classList.remove('is-loading');
+      showGeoMsg(pickupGeoMsg, 'Location access was denied — try searching a suburb below instead.', true);
+    });
+  });
+
+  wireAutocomplete(pickupSearchInput, pickupSearchSuggestions, async (feature) => {
+    pickupSearchInput.value = feature.place_name;
+    pickupSearchPoint = { lat: feature.center[1], lng: feature.center[0] };
+    showGeoMsg(pickupGeoMsg, 'Searching for nearby PostNet and PepStore branches...', false);
+    try {
+      const stores = await findNearbyChainStores(pickupSearchPoint.lat, pickupSearchPoint.lng);
+      renderNearbyStores(stores, feature.text);
+      showGeoMsg(pickupGeoMsg, `Showing branches closest to ${feature.text}.`, false);
+    } catch (e) {
+      showGeoMsg(pickupGeoMsg, "Couldn't search for nearby branches right now — try again shortly.", true);
+    }
+  });
+
+  // ================= Payment method selection + live amount =================
+  const payOptions = Array.from(document.querySelectorAll('.pay-option'));
+  const payDetails = Array.from(document.querySelectorAll('.pay-detail'));
+
+  function updatePayAmounts(){
+    ['Float','PayFast','Yoco','Card'].forEach(key => {
+      const el = document.getElementById('pdAmount-' + key);
+      if (el) el.textContent = formatPrice(orderTotal);
+    });
+  }
+  updatePayAmounts();
+
+  payOptions.forEach(opt => {
+    opt.addEventListener('click', () => {
+      payOptions.forEach(o => o.classList.remove('is-selected'));
+      payDetails.forEach(d => d.classList.remove('is-open'));
+      opt.classList.add('is-selected');
+      opt.querySelector('input[type="radio"]').checked = true;
+      const key = opt.getAttribute('data-pay');
+      const detail = document.getElementById('payDetail-' + key);
+      if (detail) detail.classList.add('is-open');
+    });
+  });
+
+  // ---- Card number formatting + Visa/Mastercard detection ----
+  const cardNumberInput = document.getElementById('cardNumber');
+  const cardExpiryInput = document.getElementById('cardExpiry');
+  const cardCvvInput = document.getElementById('cardCvv');
+  const schemeVisa = document.getElementById('schemeVisa');
+  const schemeMastercard = document.getElementById('schemeMastercard');
+  const cnwIconVisa = document.getElementById('cnwIconVisa');
+  const cnwIconMastercard = document.getElementById('cnwIconMastercard');
+
+  function detectScheme(digits){
+    if (/^4/.test(digits)) return 'visa';
+    if (/^(5[1-5]|2[2-7])/.test(digits)) return 'mastercard';
+    return null;
+  }
+
+  cardNumberInput.addEventListener('input', function(){
+    const digits = this.value.replace(/\D/g, '').slice(0, 16);
+    this.value = digits.replace(/(.{4})/g, '$1 ').trim();
+    const scheme = detectScheme(digits);
+    schemeVisa.classList.toggle('is-active', scheme === 'visa');
+    schemeMastercard.classList.toggle('is-active', scheme === 'mastercard');
+    cnwIconVisa.classList.toggle('is-visible', scheme === 'visa');
+    cnwIconMastercard.classList.toggle('is-visible', scheme === 'mastercard');
+  });
+
+  cardExpiryInput.addEventListener('input', function(){
+    let digits = this.value.replace(/\D/g, '').slice(0, 4);
+    if (digits.length > 2) digits = digits.slice(0, 2) + '/' + digits.slice(2);
+    this.value = digits;
+  });
+
+  cardCvvInput.addEventListener('input', function(){
+    this.value = this.value.replace(/\D/g, '').slice(0, 4);
+  });
+
+  // ================= Validation + submit =================
   const form = document.getElementById('checkoutForm');
   const termsError = document.getElementById('termsError');
   const confirmState = document.getElementById('coConfirm');
@@ -638,13 +1259,39 @@
   form.addEventListener('submit', function(e){
     e.preventDefault();
     let valid = true;
+    const isDelivery = fulfilMethodInput.value === 'delivery';
+    const paymentMethod = new FormData(form).get('paymentMethod');
 
-    ['fullName','email','phone','addr1','city','province','postalCode'].forEach(id => {
+    ['fullName','email','phone'].forEach(id => {
       const field = document.getElementById(id);
       const ok = field.value.trim().length > 0 && field.checkValidity();
       setError(field, !ok);
       if (!ok) valid = false;
     });
+
+    if (isDelivery) {
+      deliveryRequiredIds.forEach(id => {
+        const field = document.getElementById(id);
+        const ok = field.value.trim().length > 0 && field.checkValidity();
+        setError(field, !ok);
+        if (!ok) valid = false;
+      });
+    } else {
+      const choice = form.querySelector('input[name="pickupChoice"]:checked').value;
+      if (choice === 'nearest' && !pickupStoreAddressInput.value) {
+        showGeoMsg(pickupGeoMsg, 'Please find and select a nearby PostNet or PepStore branch to continue.', true);
+        valid = false;
+      }
+    }
+
+    if (paymentMethod === 'Card') {
+      const cardOk = cardNumberInput.value.replace(/\D/g, '').length >= 13
+        && /^\d{2}\/\d{2}$/.test(cardExpiryInput.value)
+        && cardCvvInput.value.length >= 3
+        && document.getElementById('cardName').value.trim().length > 0;
+      document.getElementById('cardError').style.display = cardOk ? 'none' : 'block';
+      if (!cardOk) valid = false;
+    }
 
     const agree = document.getElementById('agreeTerms');
     if (!agree.checked) {
@@ -655,35 +1302,38 @@
     }
 
     if (!valid) {
-      const firstError = form.querySelector('.has-error, #termsError[style*="block"]');
+      const firstError = form.querySelector('.has-error, #termsError[style*="block"], #cardError[style*="block"]');
       if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
     const data = new FormData(form);
-    const paymentMethod = data.get('paymentMethod');
     const orderNum = 'RGT-' + Math.floor(10000 + Math.random() * 89999);
 
-    const addressLines = [
-      data.get('addr1'),
-      data.get('addr2'),
-      [data.get('city'), data.get('province'), data.get('postalCode')].filter(Boolean).join(', ')
-    ].filter(Boolean).join('\r\n');
+    const fulfilLines = isDelivery
+      ? `Fulfilment: Delivery\r\nDelivery Address:\r\n` +
+        [data.get('addr1'), data.get('addr2'), [data.get('city'), data.get('province'), data.get('postalCode')].filter(Boolean).join(', ')]
+          .filter(Boolean).join('\r\n') + '\r\n' +
+        (data.get('deliveryNotes') ? `Delivery Notes: ${data.get('deliveryNotes')}\r\n` : '')
+      : `Fulfilment: Pickup\r\nPickup Point: ${data.get('pickupStoreName')}\r\nPickup Address: ${data.get('pickupStoreAddress')}\r\n`;
 
     const itemLines = cart.map(it => `${it.name} — Qty ${it.qty} — ${formatPrice(it.price)} each`).join('\r\n');
+
+    const paymentLine = paymentMethod === 'Card'
+      ? `Preferred Payment Method: Visa/Mastercard (card ending ${cardNumberInput.value.replace(/\D/g,'').slice(-4)})`
+      : `Preferred Payment Method: ${paymentMethod}`;
 
     const body =
       `Order Reference: ${orderNum}\r\n\r\n` +
       `Customer: ${data.get('fullName')}\r\n` +
       `Email: ${data.get('email')}\r\n` +
       `Phone: ${data.get('phone')}\r\n\r\n` +
-      `Delivery Address:\r\n${addressLines}\r\n` +
-      (data.get('deliveryNotes') ? `Delivery Notes: ${data.get('deliveryNotes')}\r\n` : '') +
+      fulfilLines +
       `\r\nItems:\r\n${itemLines}\r\n\r\n` +
       `Subtotal: ${formatPrice(subtotal)}\r\n` +
-      `Delivery: FREE\r\n` +
+      `${isDelivery ? 'Delivery' : 'Pickup'}: FREE\r\n` +
       `Total: ${formatPrice(subtotal)}\r\n\r\n` +
-      `Preferred Payment Method: ${paymentMethod}`;
+      paymentLine;
 
     const mailHref = 'mailto:info@raregradetech.com?subject=' +
       encodeURIComponent('New Order — ' + orderNum) + '&body=' + encodeURIComponent(body);
