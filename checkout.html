@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title id="pageTitle">Checkout — Rare Grade Tech</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Secure checkout — review your order, add your delivery address and choose how you'd like to pay." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Montserrat:ital,wght@1,800&display=swap" rel="stylesheet" />
+<style>
+
+  :root{
+    --blue-900:#0A0E5A;
+    --blue-800:#0D12A0;
+    --blue-700:#1118F5;
+    --blue-accent:#3B4CFF;
+    --ink:#05060B;
+    --white:#FFFFFF;
+    --line:rgba(255,255,255,.16);
+    --glass:rgba(255,255,255,.07);
+
+    --surface:#F5F6FC;
+    --surface-alt:#FFFFFF;
+    --card-line:#E5E7F6;
+    --ink-900:#090B25;
+    --ink-600:#54566F;
+    --ink-400:#8688A0;
+
+    --radius-s:10px;
+    --radius-m:16px;
+    --radius-l:28px;
+    --container:1360px;
+    --gap:8px;
+    --nav-h:107px;
+    --green:#128A3E;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;overflow-x:hidden;}
+  body{
+    margin:0;
+    max-width:100vw;
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
+    background:var(--surface);
+    color:var(--ink-900);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  img{max-width:100%;display:block;height:auto;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;}
+  ul{margin:0;padding:0;list-style:none;}
+  .wrap{max-width:var(--container);margin:0 auto;padding-inline:calc(var(--gap)*5);}
+
+  /* ---------- Utility bar ---------- */
+  .utility-bar{ background:var(--white); color:var(--ink); font-size:13.5px; font-weight:600; position:relative; z-index:41; }
+  .utility-bar .wrap{ display:flex; align-items:center; justify-content:space-between; gap:calc(var(--gap)*4); padding-block:calc(var(--gap)*1.75); }
+  .utility-left{display:flex;align-items:center;gap:calc(var(--gap)*4);flex-wrap:wrap;}
+  .utility-item{display:flex;align-items:center;gap:calc(var(--gap)*1.25);color:var(--ink);}
+  .utility-item svg{color:var(--blue-700);flex:none;}
+
+  /* ---------- Nav ---------- */
+  .navbar{ position:sticky; top:0; z-index:40; background:#0404d8; box-shadow:0 4px 18px rgba(2,4,30,.12); }
+  .navbar .wrap{ display:flex; align-items:center; justify-content:space-between; padding-block:calc(var(--gap)*0.1); gap:calc(var(--gap)*4); min-height:var(--nav-h); }
+  .logo{display:flex;align-items:center;gap:calc(var(--gap)*1.5);}
+  .logo-image{ height:62px; width:auto; max-width:220px; object-fit:contain; flex:none; }
+  .nav-links{display:none;align-items:center;gap:calc(var(--gap)*4.5);}
+  .nav-links a{ font-size:14.5px;font-weight:600;color:rgba(255,255,255,.88); }
+  .nav-links a:hover{color:var(--white);}
+  @media(min-width:900px){ .nav-links{display:flex;} }
+  .nav-cta{display:none;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-weight:700;font-size:14.5px;
+    border-radius:999px;
+    padding:14px 26px;
+    border:1px solid transparent;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease, border-color .18s ease;
+  }
+  .btn-primary{background:var(--ink);color:var(--white);}
+  .btn-block-ink{background:var(--blue-700);color:var(--white);width:100%;}
+  .btn-block-ink:hover{background:var(--blue-800);transform:translateY(-2px);box-shadow:0 12px 24px rgba(17,24,245,.35);}
+  .btn-block-ink[disabled]{opacity:.5;cursor:not-allowed;transform:none !important;box-shadow:none !important;}
+  .btn-outline-ink{background:transparent;color:var(--ink-900);border-color:var(--card-line);}
+  .btn-outline-ink:hover{border-color:var(--blue-accent);color:var(--blue-700);}
+
+  /* ---------- Breadcrumb ---------- */
+  .breadcrumb-bar{ padding-block:18px; border-bottom:1px solid var(--card-line); background:var(--surface-alt); }
+  .breadcrumb{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:13px; font-weight:600; color:var(--ink-400); }
+  .breadcrumb a{ color:var(--ink-600); transition:color .18s ease; }
+  .breadcrumb a:hover{ color:var(--blue-700); }
+  .breadcrumb .crumb-current{ color:var(--ink-900); }
+  .breadcrumb .sep{ color:var(--ink-400); }
+
+  /* ---------- Page head ---------- */
+  .checkout-head{ padding-block:calc(var(--gap)*6) calc(var(--gap)*2); }
+  .checkout-head h1{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(1.6rem,2.6vw,2.1rem); margin:0 0 6px; letter-spacing:-.01em; }
+  .checkout-head p{ font-size:14.5px; color:var(--ink-600); margin:0; }
+
+  .checkout-steps{ display:flex; align-items:center; gap:10px; margin-top:18px; font-size:12.5px; font-weight:700; color:var(--ink-400); flex-wrap:wrap; }
+  .checkout-steps .step{ display:flex; align-items:center; gap:8px; }
+  .checkout-steps .step-num{ width:22px;height:22px;border-radius:50%;background:var(--card-line);color:var(--ink-600);display:flex;align-items:center;justify-content:center;font-size:11.5px; }
+  .checkout-steps .step.is-active{ color:var(--blue-700); }
+  .checkout-steps .step.is-active .step-num{ background:var(--blue-700); color:#fff; }
+  .checkout-steps .step-sep{ width:24px;height:1px;background:var(--card-line); }
+
+  /* ---------- Layout ---------- */
+  #checkoutSection{ padding-block:calc(var(--gap)*6) calc(var(--gap)*10); }
+  .checkout-grid{ display:grid; grid-template-columns:minmax(0,1fr) 400px; gap:calc(var(--gap)*6); align-items:start; }
+  @media (max-width:960px){ .checkout-grid{ grid-template-columns:1fr; } }
+
+  .co-card{ background:var(--surface-alt); border:1px solid var(--card-line); border-radius:var(--radius-l); padding:calc(var(--gap)*4.5); margin-bottom:calc(var(--gap)*4); box-shadow:0 18px 40px rgba(9,11,37,.05); }
+  @media (max-width:520px){ .co-card{ padding:calc(var(--gap)*3.5); } }
+  .co-card-title{ display:flex; align-items:center; gap:10px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.05rem; margin:0 0 18px; color:var(--ink-900); }
+  .co-card-title .co-card-num{ width:26px;height:26px;border-radius:50%;background:var(--blue-700);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;flex:none; }
+
+  /* ---------- Form ---------- */
+  .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .form-grid .full{ grid-column:1 / -1; }
+  @media (max-width:560px){ .form-grid{ grid-template-columns:1fr; } .form-grid .full{ grid-column:auto; } }
+  .field label{ display:block; font-size:12.5px; font-weight:700; color:var(--ink-900); margin-bottom:7px; }
+  .field label .opt{ font-weight:600; color:var(--ink-400); text-transform:none; }
+  .field input, .field select, .field textarea{
+    width:100%; font-family:inherit; font-size:14px; color:var(--ink-900);
+    background:var(--surface); border:1px solid var(--card-line); border-radius:var(--radius-s);
+    padding:12px 14px; transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:none; border-color:var(--blue-accent); box-shadow:0 0 0 3px rgba(59,76,255,.14);
+  }
+  .field textarea{ resize:vertical; min-height:80px; }
+  .field{ margin-bottom:16px; }
+  .field-error{ font-size:12px; color:#c0392b; margin-top:6px; display:none; }
+  .field.has-error input, .field.has-error select{ border-color:#c0392b; }
+  .field.has-error .field-error{ display:block; }
+
+  .co-checkbox{ display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--ink-600); line-height:1.55; }
+  .co-checkbox input{ margin-top:3px; flex:none; width:16px; height:16px; accent-color:var(--blue-700); cursor:pointer; }
+  .co-checkbox a{ color:var(--blue-700); font-weight:600; }
+
+  /* ---------- Free delivery banner ---------- */
+  .free-delivery-banner{
+    display:flex; align-items:center; gap:14px;
+    background:rgba(18,138,62,.07); border:1px solid rgba(18,138,62,.22); border-radius:var(--radius-m);
+    padding:14px 18px; margin-bottom:18px;
+  }
+  .free-delivery-banner .fd-icon{ width:38px;height:38px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;flex:none; }
+  .free-delivery-banner .fd-icon svg{ width:20px;height:20px; }
+  .free-delivery-banner strong{ display:block; font-size:14px; color:var(--green); }
+  .free-delivery-banner span{ font-size:12.8px; color:var(--ink-600); }
+
+  /* ---------- Delivery method (fixed to free) ---------- */
+  .delivery-option{
+    display:flex; align-items:center; gap:14px;
+    border:1.5px solid var(--blue-700); background:rgba(17,24,245,.04);
+    border-radius:var(--radius-m); padding:16px 18px;
+  }
+  .delivery-option .do-radio{ width:20px;height:20px;border-radius:50%;border:2px solid var(--blue-700);flex:none;display:flex;align-items:center;justify-content:center; }
+  .delivery-option .do-radio::after{ content:"";width:10px;height:10px;border-radius:50%;background:var(--blue-700); }
+  .delivery-option .do-info{ flex:1; min-width:0; }
+  .delivery-option .do-info strong{ display:block; font-size:14px; color:var(--ink-900); }
+  .delivery-option .do-info span{ font-size:12.5px; color:var(--ink-600); }
+  .delivery-option .do-price{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:14px; color:var(--green); flex:none; }
+
+  /* ---------- Payment methods ---------- */
+  .pay-methods{ display:flex; flex-direction:column; gap:12px; }
+  .pay-option{
+    display:flex; align-items:center; gap:16px; cursor:pointer;
+    border:1.5px solid var(--card-line); border-radius:var(--radius-m);
+    padding:14px 16px; transition:border-color .2s ease, background .2s ease, box-shadow .2s ease;
+  }
+  .pay-option:hover{ border-color:var(--blue-accent); }
+  .pay-option.is-selected{ border-color:var(--blue-700); background:rgba(17,24,245,.04); box-shadow:0 8px 20px rgba(17,24,245,.1); }
+  .pay-option input[type="radio"]{ width:19px; height:19px; accent-color:var(--blue-700); flex:none; cursor:pointer; }
+  .pay-option .pay-logo{ flex:none; height:26px; display:flex; align-items:center; }
+  .pay-option .pay-logo img{ height:100%; width:auto; max-width:110px; object-fit:contain; }
+  .pay-option .pay-info{ flex:1; min-width:0; }
+  .pay-option .pay-info strong{ display:block; font-size:13.5px; color:var(--ink-900); margin-bottom:2px; }
+  .pay-option .pay-info span{ font-size:12px; color:var(--ink-600); line-height:1.5; }
+  .pay-note{ display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink-400); margin-top:16px; }
+  .pay-note svg{ flex:none; width:15px;height:15px; color:var(--ink-400); }
+
+  /* ---------- Order summary ---------- */
+  .order-summary{ position:sticky; top:calc(var(--nav-h) + 20px); }
+  @media (max-width:960px){ .order-summary{ position:static; } }
+  .os-items{ display:flex; flex-direction:column; gap:14px; margin-bottom:18px; max-height:340px; overflow-y:auto; padding-right:2px; }
+  .os-item{ display:flex; gap:12px; align-items:center; }
+  .os-item-thumb{ width:56px;height:56px;border-radius:12px;background:var(--surface);border:1px solid var(--card-line);display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden;position:relative; }
+  .os-item-thumb img{ max-width:78%; max-height:78%; object-fit:contain; }
+  .os-item-thumb .os-item-qty{ position:absolute; top:-6px; right:-6px; background:var(--blue-700); color:#fff; font-size:10.5px; font-weight:700; width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center; }
+  .os-item-info{ flex:1; min-width:0; }
+  .os-item-name{ font-size:13.2px; font-weight:700; color:var(--ink-900); margin:0 0 2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .os-item-meta{ font-size:11.8px; color:var(--ink-400); margin:0; }
+  .os-item-price{ font-size:13px; font-weight:700; color:var(--ink-900); flex:none; }
+
+  .os-row{ display:flex; align-items:center; justify-content:space-between; font-size:13.5px; color:var(--ink-600); padding:9px 0; }
+  .os-row.total{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; color:var(--ink-900); border-top:1px solid var(--card-line); margin-top:6px; padding-top:16px; }
+  .os-row .free-tag{ color:var(--green); font-weight:700; }
+  .os-divider{ border:none; border-top:1px solid var(--card-line); margin:6px 0; }
+
+  .os-promo{ display:flex; gap:8px; margin:16px 0; }
+  .os-promo input{ flex:1; font-size:13px; padding:10px 12px; border-radius:var(--radius-s); border:1px solid var(--card-line); background:var(--surface); }
+  .os-promo button{ flex:none; padding:10px 16px; border-radius:var(--radius-s); border:1px solid var(--card-line); background:var(--surface-alt); font-size:12.8px; font-weight:700; color:var(--ink-900); cursor:pointer; }
+  .os-promo button:hover{ border-color:var(--blue-accent); color:var(--blue-700); }
+
+  .os-trust{ display:flex; flex-direction:column; gap:10px; margin-top:18px; padding-top:18px; border-top:1px solid var(--card-line); }
+  .os-trust-item{ display:flex; align-items:center; gap:10px; font-size:12.3px; color:var(--ink-600); }
+  .os-trust-item svg{ flex:none; width:16px; height:16px; color:var(--blue-700); }
+
+  .co-empty{ text-align:center; padding:calc(var(--gap)*10) calc(var(--gap)*4); }
+  .co-empty h3{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.4rem; margin:0 0 10px; }
+  .co-empty p{ font-size:14.5px; color:var(--ink-600); max-width:420px; margin:0 auto 22px; line-height:1.6; }
+
+  /* ---------- Confirmation ---------- */
+  .co-confirm{ display:none; text-align:center; padding:calc(var(--gap)*10) calc(var(--gap)*4); }
+  .co-confirm.is-visible{ display:block; }
+  .co-confirm .check-circle{ width:70px;height:70px;border-radius:50%;background:rgba(18,138,62,.1);color:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 20px; }
+  .co-confirm .check-circle svg{ width:34px;height:34px; }
+  .co-confirm h2{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.6rem; margin:0 0 10px; }
+  .co-confirm p{ font-size:14.5px; color:var(--ink-600); max-width:460px; margin:0 auto 6px; line-height:1.6; }
+  .co-confirm .order-ref{ display:inline-block; margin:14px 0 24px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; background:var(--surface); border:1px solid var(--card-line); border-radius:999px; padding:10px 22px; }
+
+  /* ---------- Footer ---------- */
+  .site-footer{
+    background:
+      linear-gradient(155deg, rgba(5,7,45,.85) 0%, rgba(10,14,90,.80) 45%, rgba(17,24,245,.55) 100%),
+      url('https://i.postimg.cc/W4rjp5x0/footer.png');
+    background-size:cover; background-position:center; background-repeat:no-repeat;
+    color:rgba(255,255,255,.7); padding-top:calc(var(--gap)*9);
+  }
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:calc(var(--gap)*5);padding-bottom:calc(var(--gap)*7);}
+  .footer-brand .logo{margin-bottom:calc(var(--gap)*2.5);}
+  .footer-brand p{font-size:13.8px;line-height:1.7;color:rgba(255,255,255,.55);max-width:280px;margin:0 0 calc(var(--gap)*2.5);}
+  .footer-social{display:flex;gap:18px;}
+  .footer-social a{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;color:var(--white);transition:background .2s ease, transform .2s ease;}
+  .footer-social a:hover{background:var(--blue-700);transform:translateY(-2px);}
+  .footer-col h5{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--white);margin:0 0 calc(var(--gap)*2.5);}
+  .footer-col li{margin-bottom:calc(var(--gap)*1.5);}
+  .footer-col a{font-size:14px;color:rgba(255,255,255,.6);transition:color .18s ease;}
+  .footer-col a:hover{color:var(--white);}
+  .footer-contact li{display:flex;gap:18px;align-items:flex-start;font-size:13.8px;color:rgba(255,255,255,.65);line-height:1.5;}
+  .footer-contact svg{width:16px;height:16px;flex:none;margin-top:2px;color:#FFFFFF;}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-block:calc(var(--gap)*3);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:calc(var(--gap)*2);font-size:12.8px;color:rgba(255,255,255,.45);}
+
+  @media (max-width:768px){
+    :root{ --container:100%; }
+    .wrap{ padding-inline:18px; }
+    .footer-grid{ grid-template-columns:1fr; gap:28px; }
+    .footer-bottom{ flex-direction:column; gap:18px; text-align:center; }
+    .utility-item span{ display:none; }
+  }
+  @media (max-width:600px){
+    .footer-grid{ grid-template-columns:1fr 1fr; }
+    .footer-brand{ grid-column:1 / -1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="utility-bar">
+  <div class="wrap">
+    <div class="utility-left">
+      <a class="utility-item" href="tel:+27615270749" aria-label="Call +27 61 527 0749">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>+27 61 527 0749</span>
+      </a>
+      <a class="utility-item" href="mailto:info@raregradetech.com" aria-label="Email info@raregradetech.com">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6c0-1.1-.9-2-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6z"/><path d="m22 6-10 7L2 6"/></svg>
+        <span>info@raregradetech.com</span>
+      </a>
+    </div>
+    <div class="utility-left">
+      <span class="utility-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="4" rx="1"/><path d="M2 8v11a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V8"/></svg>
+        <span>Secure checkout</span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar" id="navbar">
+  <div class="wrap">
+    <a class="logo" href="index.html">
+      <img class="logo-image" src="https://i.postimg.cc/jSdtxk2y/1.png" alt="Rare Grade Tech" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="store.html">Shop</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="breadcrumb-bar">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="store.html">Shop</a>
+      <span class="sep">/</span>
+      <span class="crumb-current">Checkout</span>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap checkout-head">
+  <h1>Checkout</h1>
+  <p>Review your order, add your delivery details and choose how you'd like to pay.</p>
+  <div class="checkout-steps">
+    <div class="step"><span class="step-num">1</span><span>Cart</span></div>
+    <div class="step-sep"></div>
+    <div class="step is-active"><span class="step-num">2</span><span>Details &amp; Payment</span></div>
+    <div class="step-sep"></div>
+    <div class="step"><span class="step-num">3</span><span>Confirmation</span></div>
+  </div>
+</div>
+
+<section id="checkoutSection">
+  <div class="wrap">
+
+    <!-- Empty cart state -->
+    <div class="co-empty" id="coEmpty" style="display:none;">
+      <h3>Your cart is empty</h3>
+      <p>Add a product to your cart before heading to checkout — everything you add will show up here automatically.</p>
+      <a class="btn btn-block-ink" style="width:auto;display:inline-flex;" href="store.html">
+        <span>Back to Shop</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <!-- Order confirmed state -->
+    <div class="co-confirm" id="coConfirm">
+      <div class="check-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h2>Order received!</h2>
+      <p>Thanks for your order. We've opened your email app with your order summary — please send it to confirm, and our team will be in touch shortly to finalise payment and free delivery.</p>
+      <span class="order-ref" id="orderRef">Order #RGT-00000</span>
+      <div>
+        <a class="btn btn-outline-ink" href="store.html">Continue Shopping</a>
+      </div>
+    </div>
+
+    <!-- Checkout form -->
+    <form class="checkout-grid" id="checkoutForm" novalidate>
+      <div class="co-main">
+
+        <!-- Contact -->
+        <div class="co-card">
+          <h2 class="co-card-title"><span class="co-card-num">1</span>Contact Details</h2>
+          <div class="form-grid">
+            <div class="field full">
+              <label for="fullName">Full name</label>
+              <input type="text" id="fullName" name="fullName" required autocomplete="name" placeholder="e.g. Thabo Mokoena" />
+              <p class="field-error">Please enter your full name.</p>
+            </div>
+            <div class="field">
+              <label for="email">Email address</label>
+              <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com" />
+              <p class="field-error">Please enter a valid email address.</p>
+            </div>
+            <div class="field">
+              <label for="phone">Phone number</label>
+              <input type="tel" id="phone" name="phone" required autocomplete="tel" placeholder="e.g. 061 527 0749" />
+              <p class="field-error">Please enter a contact number.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delivery address -->
+        <div class="co-card">
+          <h2 class="co-card-title"><span class="co-card-num">2</span>Delivery Address</h2>
+
+          <div class="free-delivery-banner">
+            <span class="fd-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v6h-7z"/><circle cx="5.5" cy="19.5" r="1.8"/><circle cx="18.5" cy="19.5" r="1.8"/></svg>
+            </span>
+            <div>
+              <strong>Delivery is free on this order</strong>
+              <span>No shipping charges — the full cost of delivery is on us.</span>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field full">
+              <label for="addr1">Street address</label>
+              <input type="text" id="addr1" name="addr1" required autocomplete="address-line1" placeholder="Street number and name" />
+              <p class="field-error">Please enter your street address.</p>
+            </div>
+            <div class="field full">
+              <label for="addr2">Apartment / complex / unit <span class="opt">(optional)</span></label>
+              <input type="text" id="addr2" name="addr2" autocomplete="address-line2" placeholder="Unit, floor, complex name" />
+            </div>
+            <div class="field">
+              <label for="city">City / Town</label>
+              <input type="text" id="city" name="city" required autocomplete="address-level2" placeholder="e.g. Mokopane" />
+              <p class="field-error">Please enter your city or town.</p>
+            </div>
+            <div class="field">
+              <label for="province">Province</label>
+              <select id="province" name="province" required autocomplete="address-level1">
+                <option value="" disabled selected>Select province</option>
+                <option>Limpopo</option>
+                <option>Gauteng</option>
+                <option>Western Cape</option>
+                <option>Eastern Cape</option>
+                <option>KwaZulu-Natal</option>
+                <option>Free State</option>
+                <option>Mpumalanga</option>
+                <option>North West</option>
+                <option>Northern Cape</option>
+              </select>
+              <p class="field-error">Please select a province.</p>
+            </div>
+            <div class="field">
+              <label for="postalCode">Postal code</label>
+              <input type="text" id="postalCode" name="postalCode" required inputmode="numeric" autocomplete="postal-code" placeholder="e.g. 0600" />
+              <p class="field-error">Please enter a postal code.</p>
+            </div>
+            <div class="field full">
+              <label for="deliveryNotes">Delivery instructions <span class="opt">(optional)</span></label>
+              <textarea id="deliveryNotes" name="deliveryNotes" placeholder="e.g. gate code, best time to deliver, landmark..."></textarea>
+            </div>
+          </div>
+
+          <p class="co-card-title" style="font-size:.95rem;margin:22px 0 14px;">
+            <span class="co-card-num" style="background:var(--green);">✓</span>Delivery Method
+          </p>
+          <div class="delivery-option">
+            <span class="do-radio" aria-hidden="true"></span>
+            <div class="do-info">
+              <strong>Standard Free Delivery</strong>
+              <span>Estimated 2–5 business days • Collection in Mokopane also available on request</span>
+            </div>
+            <span class="do-price">FREE</span>
+          </div>
+        </div>
+
+        <!-- Payment -->
+        <div class="co-card">
+          <h2 class="co-card-title"><span class="co-card-num">3</span>Payment Method</h2>
+          <div class="pay-methods" id="payMethods" role="radiogroup" aria-label="Choose a payment method">
+
+            <label class="pay-option is-selected">
+              <input type="radio" name="paymentMethod" value="Float" checked />
+              <span class="pay-logo"><img src="https://i.postimg.cc/fRqN8syq/floattrans.png" alt="Float" /></span>
+              <span class="pay-info">
+                <strong>Float</strong>
+                <span>Pay straight from your bank account by approving the transaction securely inside your own banking app — no card details entered.</span>
+              </span>
+            </label>
+
+            <label class="pay-option">
+              <input type="radio" name="paymentMethod" value="PayFast" />
+              <span class="pay-logo"><img src="https://i.postimg.cc/PxYnf8yT/payfast-trans.png" alt="PayFast" /></span>
+              <span class="pay-info">
+                <strong>PayFast</strong>
+                <span>Pay by card or EFT through an encrypted gateway that verifies and settles the transaction with your bank in real time.</span>
+              </span>
+            </label>
+
+            <label class="pay-option">
+              <input type="radio" name="paymentMethod" value="Yoco" />
+              <span class="pay-logo"><img src="https://i.postimg.cc/XYzRwg1P/yoco-trans.png" alt="Yoco" /></span>
+              <span class="pay-info">
+                <strong>Yoco</strong>
+                <span>Your card details are encrypted on entry and processed directly with your card provider before instantly confirming the sale.</span>
+              </span>
+            </label>
+
+          </div>
+          <p class="pay-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            All payments are processed securely by our payment partners — we never store your card details.
+          </p>
+        </div>
+
+        <div class="co-card" style="margin-bottom:0;">
+          <div class="field" style="margin-bottom:14px;">
+            <label class="co-checkbox">
+              <input type="checkbox" id="agreeTerms" name="agreeTerms" required />
+              <span>I confirm the details above are correct and I agree to the <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.</span>
+            </label>
+            <p class="field-error" id="termsError" style="margin-top:8px;">Please accept the Terms &amp; Conditions to continue.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Order summary -->
+      <aside class="co-card order-summary">
+        <h2 class="co-card-title">Order Summary</h2>
+        <div class="os-items" id="osItems"></div>
+        <hr class="os-divider" />
+        <div class="os-row"><span>Subtotal</span><span id="osSubtotal">R0</span></div>
+        <div class="os-row"><span>Delivery</span><span class="free-tag">FREE</span></div>
+        <div class="os-row total"><span>Total</span><span id="osTotal">R0</span></div>
+
+        <button type="submit" class="btn btn-block-ink" id="placeOrderBtn">
+          <span>Place Order</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+
+        <div class="os-trust">
+          <div class="os-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span>Genuine devices, sourced &amp; supported end-to-end</span>
+          </div>
+          <div class="os-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v6h-7z"/><circle cx="5.5" cy="19.5" r="1.8"/><circle cx="18.5" cy="19.5" r="1.8"/></svg>
+            <span>Free delivery on every order</span>
+          </div>
+          <div class="os-trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>Questions? Call <a href="tel:+27615270749" style="color:var(--ink-900);font-weight:600;">+27 61 527 0749</a></span>
+          </div>
+        </div>
+      </aside>
+    </form>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="index.html">
+        <img class="logo-image" src="https://i.postimg.cc/jSdtxk2y/1.png" alt="Rare Grade Tech" />
+      </a>
+      <p>Software, web &amp; mobile apps, design and IT services for start-ups, businesses and individuals across South Africa.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="store.html">Shop</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Help</h5>
+      <ul>
+        <li><a href="#">Delivery Info</a></li>
+        <li><a href="#">Returns Policy</a></li>
+        <li><a href="#">Terms &amp; Conditions</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact Info</h5>
+      <ul class="footer-contact">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>69 Hooge Str, Mokopane, Limpopo, South Africa</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+27 61 527 0749</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6c0-1.1-.9-2-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6z"/><path d="m22 6-10 7L2 6"/></svg>info@raregradetech.com</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© <span id="year"></span> Rare Grade Tech. All Rights Reserved.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const CART_KEY = 'rgt_store_cart';
+
+  function formatPrice(n){
+    return 'R' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+
+  function loadCart(){
+    try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
+    catch(e){ return []; }
+  }
+
+  const cart = loadCart();
+  const checkoutSection = document.getElementById('checkoutForm');
+  const emptyState = document.getElementById('coEmpty');
+  const osItems = document.getElementById('osItems');
+  const osSubtotal = document.getElementById('osSubtotal');
+  const osTotal = document.getElementById('osTotal');
+
+  if (!cart.length) {
+    checkoutSection.style.display = 'none';
+    emptyState.style.display = 'block';
+    return;
+  }
+
+  const subtotal = cart.reduce((s, c) => s + c.price * c.qty, 0);
+  osSubtotal.textContent = formatPrice(subtotal);
+  osTotal.textContent = formatPrice(subtotal);
+
+  osItems.innerHTML = cart.map(it => `
+    <div class="os-item">
+      <div class="os-item-thumb">
+        <img src="${it.image}" alt="${it.name}" loading="lazy" />
+        <span class="os-item-qty">${it.qty}</span>
+      </div>
+      <div class="os-item-info">
+        <p class="os-item-name">${it.name}</p>
+        <p class="os-item-meta">${formatPrice(it.price)} each</p>
+      </div>
+      <span class="os-item-price">${formatPrice(it.price * it.qty)}</span>
+    </div>
+  `).join('');
+
+  // ---------- Payment method selection ----------
+  const payOptions = Array.from(document.querySelectorAll('.pay-option'));
+  payOptions.forEach(opt => {
+    opt.addEventListener('click', () => {
+      payOptions.forEach(o => o.classList.remove('is-selected'));
+      opt.classList.add('is-selected');
+      opt.querySelector('input[type="radio"]').checked = true;
+    });
+  });
+
+  // ---------- Validation + submit ----------
+  const form = document.getElementById('checkoutForm');
+  const termsError = document.getElementById('termsError');
+  const confirmState = document.getElementById('coConfirm');
+
+  function setError(field, hasError){
+    const wrap = field.closest('.field');
+    if (!wrap) return;
+    wrap.classList.toggle('has-error', hasError);
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    let valid = true;
+
+    ['fullName','email','phone','addr1','city','province','postalCode'].forEach(id => {
+      const field = document.getElementById(id);
+      const ok = field.value.trim().length > 0 && field.checkValidity();
+      setError(field, !ok);
+      if (!ok) valid = false;
+    });
+
+    const agree = document.getElementById('agreeTerms');
+    if (!agree.checked) {
+      termsError.style.display = 'block';
+      valid = false;
+    } else {
+      termsError.style.display = 'none';
+    }
+
+    if (!valid) {
+      const firstError = form.querySelector('.has-error, #termsError[style*="block"]');
+      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const data = new FormData(form);
+    const paymentMethod = data.get('paymentMethod');
+    const orderNum = 'RGT-' + Math.floor(10000 + Math.random() * 89999);
+
+    const addressLines = [
+      data.get('addr1'),
+      data.get('addr2'),
+      [data.get('city'), data.get('province'), data.get('postalCode')].filter(Boolean).join(', ')
+    ].filter(Boolean).join('\r\n');
+
+    const itemLines = cart.map(it => `${it.name} — Qty ${it.qty} — ${formatPrice(it.price)} each`).join('\r\n');
+
+    const body =
+      `Order Reference: ${orderNum}\r\n\r\n` +
+      `Customer: ${data.get('fullName')}\r\n` +
+      `Email: ${data.get('email')}\r\n` +
+      `Phone: ${data.get('phone')}\r\n\r\n` +
+      `Delivery Address:\r\n${addressLines}\r\n` +
+      (data.get('deliveryNotes') ? `Delivery Notes: ${data.get('deliveryNotes')}\r\n` : '') +
+      `\r\nItems:\r\n${itemLines}\r\n\r\n` +
+      `Subtotal: ${formatPrice(subtotal)}\r\n` +
+      `Delivery: FREE\r\n` +
+      `Total: ${formatPrice(subtotal)}\r\n\r\n` +
+      `Preferred Payment Method: ${paymentMethod}`;
+
+    const mailHref = 'mailto:info@raregradetech.com?subject=' +
+      encodeURIComponent('New Order — ' + orderNum) + '&body=' + encodeURIComponent(body);
+
+    window.location.href = mailHref;
+
+    document.getElementById('orderRef').textContent = 'Order #' + orderNum;
+    form.style.display = 'none';
+    confirmState.classList.add('is-visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  ['fullName','email','phone','addr1','city','province','postalCode'].forEach(id => {
+    document.getElementById(id).addEventListener('input', function(){ setError(this, false); });
+    document.getElementById(id).addEventListener('change', function(){ setError(this, false); });
+  });
+  document.getElementById('agreeTerms').addEventListener('change', function(){
+    if (this.checked) termsError.style.display = 'none';
+  });
+})();
+
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
