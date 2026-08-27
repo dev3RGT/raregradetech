@@ -239,7 +239,7 @@
     gap:20px; flex-wrap:wrap;
     margin-bottom:18px;
   }
-  .store-search{ position:relative; flex:1 1 300px; max-width:420px; }
+  .store-search{ position:relative; flex:1 1 300px; max-width:420px; margin-right:auto; }
   .store-search svg{ position:absolute; left:18px; top:50%; transform:translateY(-50%); color:var(--ink-400); pointer-events:none; }
   .store-search input{
     width:100%; font-family:inherit; font-size:14.5px; color:var(--ink-900);
@@ -586,9 +586,33 @@
   .cart-drawer.open{ transform:translateX(0); }
   .cart-drawer-head{ display:flex; align-items:center; justify-content:space-between; padding:22px 22px 16px; border-bottom:1px solid var(--card-line); }
   .cart-drawer-head h3{ font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; margin:0; color:var(--ink-900); }
+  .cart-drawer-head-actions{ display:flex; align-items:center; gap:10px; }
+  .cart-clear-btn{ background:none; border:none; font-size:12.5px; font-weight:700; color:var(--ink-400); cursor:pointer; padding:6px 10px; border-radius:999px; transition:color .2s ease, background .2s ease; }
+  .cart-clear-btn:hover{ color:#e0433a; background:rgba(224,67,58,.08); }
   .cart-drawer-close{ width:32px; height:32px; border-radius:50%; border:1px solid var(--card-line); background:var(--surface-alt); color:var(--ink-600); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color .2s ease, color .2s ease; }
   .cart-drawer-close:hover{ border-color:var(--blue-accent); color:var(--blue-700); }
   .cart-drawer-items{ flex:1; overflow-y:auto; }
+  .cart-undo-bar{ display:flex; align-items:center; justify-content:space-between; gap:14px; max-height:0; overflow:hidden; padding-inline:22px; background:var(--ink-900); color:#fff; font-size:12.8px; flex:none; transition:max-height .3s ease, padding-block .3s ease; }
+  .cart-undo-bar.is-visible{ max-height:60px; padding-block:12px; }
+  .cart-undo-bar span{ flex:1; min-width:0; }
+  .cart-undo-bar button{ background:none; border:none; color:#8fa0ff; font-weight:700; font-size:12.8px; cursor:pointer; flex:none; }
+  .cart-undo-bar button:hover{ color:#fff; text-decoration:underline; }
+  .cart-upsell{ flex:none; padding:16px 22px 4px; border-top:1px solid var(--card-line); }
+  .cart-upsell-title{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-400); margin:0 0 12px; }
+  .cart-upsell-row{ display:flex; gap:12px; overflow-x:auto; scrollbar-width:none; padding-bottom:4px; }
+  .cart-upsell-row::-webkit-scrollbar{ display:none; }
+  .cart-upsell-card{ flex:0 0 106px; display:flex; flex-direction:column; gap:6px; }
+  .cart-upsell-thumb{ width:106px; height:106px; border-radius:var(--radius-m); background:var(--surface); border:1px solid var(--card-line); display:flex; align-items:center; justify-content:center; padding:10px; cursor:pointer; transition:border-color .2s ease; }
+  .cart-upsell-thumb:hover{ border-color:var(--blue-accent); }
+  .cart-upsell-thumb img{ max-width:100%; max-height:100%; object-fit:contain; }
+  .cart-upsell-name{ font-size:11.5px; font-weight:700; color:var(--ink-900); line-height:1.3; }
+  .cart-upsell-price{ font-size:11.5px; font-weight:700; color:var(--blue-700); margin:0; }
+  .cart-upsell-add{ margin-top:2px; align-self:flex-start; font-size:10.5px; font-weight:700; color:#fff; background:var(--blue-700); border:none; border-radius:999px; padding:5px 11px; cursor:pointer; transition:background .2s ease; }
+  .cart-upsell-add:hover{ background:var(--blue-accent); }
+  .cart-drawer-notes{ flex:none; padding:16px 22px 4px; }
+  .cart-notes-label{ display:block; font-size:11px; font-weight:700; color:var(--ink-400); text-transform:uppercase; letter-spacing:.06em; margin:0 0 8px; }
+  .cart-notes-textarea{ width:100%; min-height:60px; resize:vertical; padding:10px 12px; border-radius:var(--radius-s); border:1px solid var(--card-line); font-family:inherit; font-size:13px; line-height:1.5; color:var(--ink-900); background:var(--surface); transition:border-color .2s ease; }
+  .cart-notes-textarea:focus{ outline:none; border-color:var(--blue-accent); }
   .cart-empty{ padding:48px 22px; text-align:center; color:var(--ink-400); font-size:14px; }
   .cart-item{ display:flex; align-items:center; gap:12px; padding:14px 22px; border-bottom:1px solid var(--card-line); }
   .cart-item-thumb{ width:48px; height:48px; border-radius:10px; background:var(--surface); display:flex; align-items:center; justify-content:center; flex:none; overflow:hidden; }
@@ -1640,15 +1664,30 @@ svg.filter-cat-icon{
 <aside class="cart-drawer" id="cartDrawer">
   <div class="cart-drawer-head">
     <h3>Your Cart</h3>
-    <button type="button" class="cart-drawer-close" id="cartClose" aria-label="Close cart">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
+    <div class="cart-drawer-head-actions">
+      <button type="button" class="cart-clear-btn" id="cartClearBtn" hidden>Clear</button>
+      <button type="button" class="cart-drawer-close" id="cartClose" aria-label="Close cart">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
   </div>
   <div class="cart-drawer-items" id="cartItems"></div>
+  <div class="cart-undo-bar" id="cartUndoBar">
+    <span id="cartUndoMessage">Item removed</span>
+    <button type="button" id="cartUndoBtn">Undo</button>
+  </div>
+  <div class="cart-upsell" id="cartUpsell" hidden>
+    <p class="cart-upsell-title">You Might Also Like</p>
+    <div class="cart-upsell-row" id="cartUpsellRow"></div>
+  </div>
+  <div class="cart-drawer-notes" id="cartNotesWrap" hidden>
+    <label class="cart-notes-label" for="cartNotesInput">Notes for your order (optional)</label>
+    <textarea id="cartNotesInput" class="cart-notes-textarea" placeholder="e.g. preferred collection day, delivery address, questions..."></textarea>
+  </div>
   <div class="cart-drawer-footer">
     <div class="cart-total-row"><span>Total</span><span id="cartTotal">R0</span></div>
-    <a class="btn btn-block-ink" href="contact.html" style="width:100%;justify-content:center;">
-      <span>Enquire About This Order</span>
+    <a class="btn btn-block-ink" href="checkout.html" id="cartEnquireLink" style="width:100%;justify-content:center;">
+      <span>Proceed to Checkout</span>
     </a>
   </div>
 </aside>
@@ -2173,13 +2212,22 @@ svg.filter-cat-icon{
 // Floating cart
 (function(){
   const CART_KEY = 'rgt_store_cart';
+  const NOTES_KEY = 'rgt_store_cart_notes';
   const floatingBtn = document.getElementById('floatingCartBtn');
   const badge = document.getElementById('cartBadge');
   const overlay = document.getElementById('cartOverlay');
   const drawer = document.getElementById('cartDrawer');
   const closeBtn = document.getElementById('cartClose');
+  const clearBtn = document.getElementById('cartClearBtn');
   const itemsEl = document.getElementById('cartItems');
   const totalEl = document.getElementById('cartTotal');
+  const notesWrap = document.getElementById('cartNotesWrap');
+  const notesInput = document.getElementById('cartNotesInput');
+  const undoBar = document.getElementById('cartUndoBar');
+  const undoMessageEl = document.getElementById('cartUndoMessage');
+  const undoBtn = document.getElementById('cartUndoBtn');
+  const upsellWrap = document.getElementById('cartUpsell');
+  const upsellRow = document.getElementById('cartUpsellRow');
   const addButtons = Array.from(document.querySelectorAll('.add-to-cart-btn'));
   const qtySteppers = Array.from(document.querySelectorAll('.product-qty-stepper'));
 
@@ -2190,11 +2238,22 @@ svg.filter-cat-icon{
   function saveCart(){
     try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) {}
   }
+  function loadNotes(){
+    try { return localStorage.getItem(NOTES_KEY) || ''; }
+    catch (e) { return ''; }
+  }
+  function saveNotes(value){
+    try { localStorage.setItem(NOTES_KEY, value); } catch (e) {}
+  }
   function formatPrice(n){
     return 'R' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   }
 
   let cart = loadCart();
+  let undoSnapshot = null;
+  let undoTimer = null;
+
+  if (notesInput) notesInput.value = loadNotes();
 
   // Swap each product card's "Add to Cart" button for a qty stepper (matches the cart drawer's qty control)
   function syncProductButtons(){
@@ -2215,6 +2274,27 @@ svg.filter-cat-icon{
     });
   }
 
+  function renderUpsell(){
+    if (!upsellWrap || !upsellRow) return;
+    if (!cart.length) { upsellWrap.hidden = true; return; }
+    const inCartIds = new Set(cart.map(c => c.id.split('::')[0]));
+    const candidates = addButtons.filter(btn => !inCartIds.has(btn.dataset.id)).slice(0, 4);
+    if (!candidates.length) { upsellWrap.hidden = true; return; }
+    upsellWrap.hidden = false;
+    upsellRow.innerHTML = candidates.map(btn => {
+      const card = btn.closest('.product-card[data-href]');
+      const href = card ? card.dataset.href : 'store.html';
+      return `
+      <div class="cart-upsell-card">
+        <div class="cart-upsell-thumb" data-href="${href}"><img src="${btn.dataset.image}" alt="${btn.dataset.name}" loading="lazy" /></div>
+        <p class="cart-upsell-name">${btn.dataset.name}</p>
+        <p class="cart-upsell-price">${formatPrice(parseInt(btn.dataset.price, 10))}</p>
+        <button type="button" class="cart-upsell-add" data-id="${btn.dataset.id}" data-name="${btn.dataset.name}" data-price="${btn.dataset.price}" data-image="${btn.dataset.image}">Add</button>
+      </div>
+    `;
+    }).join('');
+  }
+
   function render(){
     syncProductButtons();
     const count = cart.reduce((s, c) => s + c.qty, 0);
@@ -2223,6 +2303,10 @@ svg.filter-cat-icon{
 
     const total = cart.reduce((s, c) => s + c.price * c.qty, 0);
     totalEl.textContent = formatPrice(total);
+
+    if (clearBtn) clearBtn.hidden = !cart.length;
+    if (notesWrap) notesWrap.hidden = !cart.length;
+    renderUpsell();
 
     if (!cart.length) {
       itemsEl.innerHTML = '<div class="cart-empty">Your cart is empty.</div>';
@@ -2253,6 +2337,21 @@ svg.filter-cat-icon{
     floatingBtn.classList.add('bump');
   }
 
+  function showUndo(message, snapshot){
+    if (!undoBar) return;
+    undoSnapshot = snapshot;
+    if (undoMessageEl) undoMessageEl.textContent = message;
+    undoBar.classList.add('is-visible');
+    clearTimeout(undoTimer);
+    undoTimer = setTimeout(hideUndo, 6000);
+  }
+  function hideUndo(){
+    if (!undoBar) return;
+    undoBar.classList.remove('is-visible');
+    undoSnapshot = null;
+    clearTimeout(undoTimer);
+  }
+
   function addToCart(item){
     const existing = cart.find(c => c.id === item.id);
     if (existing) existing.qty += 1;
@@ -2265,16 +2364,39 @@ svg.filter-cat-icon{
   function changeQty(id, delta){
     const it = cart.find(c => c.id === id);
     if (!it) return;
+    if (delta < 0 && it.qty + delta <= 0) {
+      removeItem(id);
+      return;
+    }
     it.qty += delta;
-    if (it.qty <= 0) cart = cart.filter(c => c.id !== id);
     saveCart();
     render();
   }
 
   function removeItem(id){
+    const removed = cart.find(c => c.id === id);
+    const snapshot = cart.slice();
     cart = cart.filter(c => c.id !== id);
     saveCart();
     render();
+    if (removed) showUndo(`${removed.name} removed.`, snapshot);
+  }
+
+  function clearCart(){
+    if (!cart.length) return;
+    const snapshot = cart.slice();
+    cart = [];
+    saveCart();
+    render();
+    showUndo('Cart cleared.', snapshot);
+  }
+
+  function undoLastAction(){
+    if (!undoSnapshot) return;
+    cart = undoSnapshot;
+    saveCart();
+    render();
+    hideUndo();
   }
 
   function openDrawer(){
@@ -2284,6 +2406,7 @@ svg.filter-cat-icon{
   function closeDrawer(){
     drawer.classList.remove('open');
     overlay.classList.remove('open');
+    hideUndo();
   }
 
   addButtons.forEach(btn => {
@@ -2310,6 +2433,31 @@ svg.filter-cat-icon{
   floatingBtn.addEventListener('click', openDrawer);
   closeBtn.addEventListener('click', closeDrawer);
   overlay.addEventListener('click', closeDrawer);
+  if (clearBtn) clearBtn.addEventListener('click', clearCart);
+  if (undoBtn) undoBtn.addEventListener('click', undoLastAction);
+
+  if (notesInput) {
+    notesInput.addEventListener('input', () => {
+      saveNotes(notesInput.value);
+    });
+  }
+
+  if (upsellRow) {
+    upsellRow.addEventListener('click', (e) => {
+      const addBtn = e.target.closest('.cart-upsell-add');
+      if (addBtn) {
+        addToCart({
+          id: addBtn.dataset.id,
+          name: addBtn.dataset.name,
+          price: parseInt(addBtn.dataset.price, 10),
+          image: addBtn.dataset.image
+        });
+        return;
+      }
+      const thumb = e.target.closest('.cart-upsell-thumb[data-href]');
+      if (thumb) window.location.href = thumb.dataset.href;
+    });
+  }
 
   itemsEl.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-action]');
