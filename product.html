@@ -1027,8 +1027,8 @@
   </div>
   <div class="cart-drawer-footer">
     <div class="cart-total-row"><span>Total</span><span id="cartTotal">R0</span></div>
-    <a class="btn btn-block-ink" href="contact.html" id="cartEnquireLink" style="width:100%;justify-content:center;">
-      <span>Enquire About This Order</span>
+    <a class="btn btn-block-ink" href="checkout.html" id="cartEnquireLink" style="width:100%;justify-content:center;">
+      <span>Proceed to Checkout</span>
     </a>
   </div>
 </aside>
@@ -1794,17 +1794,6 @@ if (activeProduct){
     });
   }
 
-  function buildEnquiryHref(){
-    if (!cart.length) return 'contact.html';
-    const lines = cart.map(it => `${it.name} — Qty ${it.qty} — ${formatPrice(it.price)} each`);
-    const total = cart.reduce((s, c) => s + c.price * c.qty, 0);
-    let body = "Hi, I'd like to enquire about the following order:\r\n\r\n" + lines.join('\r\n') + '\r\n\r\nTotal: ' + formatPrice(total);
-    const notes = notesInput ? notesInput.value.trim() : '';
-    if (notes) body += '\r\n\r\nNotes: ' + notes;
-    const subject = 'Order Enquiry — Rare Grade Tech';
-    return 'mailto:info@raregradetech.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-  }
-
   function renderUpsell(){
     if (!upsellWrap || !upsellRow) return;
     if (!cart.length) { upsellWrap.hidden = true; return; }
@@ -1833,7 +1822,6 @@ if (activeProduct){
 
     if (clearBtn) clearBtn.hidden = !cart.length;
     if (notesWrap) notesWrap.hidden = !cart.length;
-    if (enquireLink) enquireLink.href = buildEnquiryHref();
     renderUpsell();
 
     if (!cart.length) {
@@ -1967,7 +1955,6 @@ if (activeProduct){
   if (notesInput) {
     notesInput.addEventListener('input', () => {
       saveNotes(notesInput.value);
-      if (enquireLink) enquireLink.href = buildEnquiryHref();
     });
   }
 
