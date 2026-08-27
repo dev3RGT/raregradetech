@@ -270,6 +270,22 @@
   .store-tab.is-active{ background:transparent; border-color:transparent; color:#fff; }
   @media (max-width:600px){ .store-toolbar{ flex-direction:column; align-items:stretch; } .store-search{ max-width:none; } .store-tabs{ justify-content:stretch; } .store-tab{ flex:1; padding:12px 14px; } }
 
+  /* ---------- Profile / order tracking trigger ---------- */
+  .profile-icon-btn{
+    position:relative; flex:none; display:flex; align-items:center; justify-content:center;
+    width:48px; height:48px; border-radius:50%;
+    border:1px solid var(--card-line); background:var(--surface-alt); color:var(--ink-600);
+    cursor:pointer; transition:border-color .2s ease, color .2s ease, transform .2s ease;
+  }
+  .profile-icon-btn:hover{ border-color:var(--blue-accent); color:var(--blue-700); transform:translateY(-2px); }
+  .profile-icon-btn svg{ width:20px; height:20px; }
+  .profile-icon-dot{
+    position:absolute; top:2px; right:2px; width:10px; height:10px; border-radius:50%;
+    background:var(--blue-700); border:2px solid var(--surface-alt); display:none;
+  }
+  .profile-icon-btn.has-order .profile-icon-dot{ display:block; }
+  @media (max-width:600px){ .profile-icon-btn{ width:44px; height:44px; flex:none; } }
+
   /* ---------- Brand filter row (slides down) ---------- */
   .brand-row-wrap{
     display:grid; grid-template-rows:0fr; opacity:0;
@@ -588,6 +604,76 @@
   .cart-item-remove:hover{ color:#e0433a; }
   .cart-drawer-footer{ padding:18px 22px 22px; border-top:1px solid var(--card-line); }
   .cart-total-row{ display:flex; align-items:center; justify-content:space-between; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15.5px; color:var(--ink-900); margin-bottom:16px; }
+
+  /* ---------- Order tracking drawer ---------- */
+  .order-drawer-body{ padding:20px 22px 24px; }
+  .order-lookup-copy{ font-size:13.5px; line-height:1.65; color:var(--ink-600); margin:0 0 18px; }
+  .order-field{ display:block; margin-bottom:14px; }
+  .order-field span{ display:block; font-size:12px; font-weight:700; color:var(--ink-900); margin-bottom:6px; }
+  .order-field input{
+    width:100%; font-family:inherit; font-size:14px; color:var(--ink-900);
+    padding:12px 14px; border-radius:var(--radius-s); border:1px solid var(--card-line); background:var(--surface);
+    transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .order-field input:focus{ outline:none; border-color:var(--blue-accent); background:var(--surface-alt); box-shadow:0 0 0 4px rgba(59,76,255,.12); }
+  .order-lookup-error{ display:none; font-size:12.5px; color:#e0433a; margin:-6px 0 14px; }
+  .order-lookup-error.is-visible{ display:block; }
+
+  .order-back-btn{
+    display:inline-flex; align-items:center; gap:6px; background:none; border:none; cursor:pointer;
+    font-size:12.5px; font-weight:700; color:var(--blue-700); padding:0 0 18px; transition:color .2s ease;
+  }
+  .order-back-btn:hover{ color:var(--blue-accent); }
+  .order-back-btn svg{ width:14px; height:14px; }
+
+  .order-head-row{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:18px; }
+  .order-head-num{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:16px; color:var(--ink-900); margin:0 0 3px; }
+  .order-head-date{ font-size:12px; color:var(--ink-400); margin:0; }
+  .order-status-pill{
+    flex:none; display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px;
+    font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em;
+    background:rgba(17,24,245,.1); color:var(--blue-700);
+  }
+  .order-status-pill.is-delivered{ background:rgba(22,163,74,.12); color:#15803d; }
+  .order-status-pill::before{ content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
+
+  .order-progress{ display:flex; align-items:flex-start; margin-bottom:22px; }
+  .order-progress-step{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; }
+  .order-progress-dot{
+    width:26px; height:26px; border-radius:50%; border:2px solid var(--card-line); background:var(--surface-alt);
+    display:flex; align-items:center; justify-content:center; color:var(--ink-400); flex:none; z-index:1;
+    transition:background .3s ease, border-color .3s ease, color .3s ease;
+  }
+  .order-progress-dot svg{ width:12px; height:12px; }
+  .order-progress-line{
+    position:absolute; top:13px; left:calc(-50% + 13px); width:calc(100% - 26px); height:2px; background:var(--card-line); z-index:0;
+    transition:background .3s ease;
+  }
+  .order-progress-step:first-child .order-progress-line{ display:none; }
+  .order-progress-step.is-complete .order-progress-dot{ background:var(--blue-700); border-color:var(--blue-700); color:#fff; }
+  .order-progress-step.is-complete .order-progress-line{ background:var(--blue-700); }
+  .order-progress-step.is-current .order-progress-dot{ background:var(--blue-700); border-color:var(--blue-700); color:#fff; box-shadow:0 0 0 4px rgba(17,24,245,.15); }
+  .order-progress-label{ font-size:9.5px; font-weight:700; color:var(--ink-400); margin-top:7px; line-height:1.3; }
+  .order-progress-step.is-complete .order-progress-label, .order-progress-step.is-current .order-progress-label{ color:var(--ink-900); }
+
+  .order-block{ padding:16px 0; border-top:1px solid var(--card-line); }
+  .order-block-title{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-400); margin:0 0 10px; }
+  .order-detail-row{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; font-size:13px; padding:4px 0; }
+  .order-detail-row span:first-child{ color:var(--ink-600); }
+  .order-detail-row span:last-child{ color:var(--ink-900); font-weight:600; text-align:right; }
+  .order-address{ font-size:13px; line-height:1.6; color:var(--ink-900); margin:0; }
+  .order-items{ display:flex; flex-direction:column; gap:12px; }
+  .order-item{ display:flex; align-items:center; gap:12px; }
+  .order-item-thumb{ width:44px; height:44px; border-radius:10px; background:var(--surface); display:flex; align-items:center; justify-content:center; flex:none; overflow:hidden; }
+  .order-item-thumb img{ max-width:78%; max-height:78%; object-fit:contain; }
+  .order-item-info{ flex:1; min-width:0; }
+  .order-item-name{ font-size:13px; font-weight:700; color:var(--ink-900); margin:0 0 2px; }
+  .order-item-qty{ font-size:11.5px; color:var(--ink-400); margin:0; }
+  .order-item-price{ font-size:13px; font-weight:700; color:var(--ink-900); flex:none; }
+  .order-totals{ margin-top:14px; padding-top:14px; border-top:1px dashed var(--card-line); }
+  .order-drawer-footer{ padding:18px 22px 22px; border-top:1px solid var(--card-line); display:flex; flex-direction:column; gap:10px; }
+  .order-track-another{ text-align:center; font-size:12.5px; font-weight:700; color:var(--blue-700); background:none; border:none; cursor:pointer; padding:4px; transition:color .2s ease; }
+  .order-track-another:hover{ color:var(--blue-accent); }
 
   /* ---------- Empty states ---------- */
   .store-empty{ display:none; text-align:center; padding:calc(var(--gap)*10) calc(var(--gap)*5); }
@@ -943,15 +1029,17 @@
     .ad-dots{ bottom:7px; gap:5px; }
     .ad-dot{ width:6px; height:6px; }
 
-    /* Search remains left; Gadgets and Software remain right. */
-    .store-toolbar{ flex-direction:row; flex-wrap:nowrap; align-items:center; gap:8px; margin-bottom:14px; }
+    /* Search remains left; Gadgets, Software and profile remain right. */
+    .store-toolbar{ flex-direction:row; flex-wrap:nowrap; align-items:center; gap:6px; margin-bottom:14px; }
     .store-search{ flex:1 1 0; min-width:0; max-width:none; }
     .store-search svg{ left:14px; width:15px; height:15px; }
     .store-search input{ min-width:0; padding:12px 12px 12px 40px; font-size:13px; }
     .store-tabs-outer{ flex:0 1 auto; min-width:0; gap:0; }
-    .store-tabs{ max-width:204px; gap:4px; }
+    .store-tabs{ max-width:188px; gap:4px; }
     .store-tab{ flex:0 0 auto; padding:11px 10px; font-size:11.5px; white-space:nowrap; }
     .store-tabs-arrow{ display:none !important; }
+    .profile-icon-btn{ width:40px; height:40px; }
+    .profile-icon-btn svg{ width:18px; height:18px; }
 
     /* Filters form a clean two-column control shelf with full-width scroll rails. */
     .filters-row{ display:grid; grid-template-columns:minmax(0,1fr) minmax(126px,.72fr); gap:12px; padding:4px 0 8px; overflow:visible; }
@@ -988,10 +1076,12 @@
   }
 
   @media (max-width:390px){
-    .store-toolbar{ gap:6px; }
+    .store-toolbar{ gap:5px; }
     .store-search input{ padding-left:36px; font-size:12px; }
     .store-search svg{ left:12px; width:14px; height:14px; }
-    .store-tabs{ max-width:186px; }
+    .store-tabs{ max-width:166px; }
+    .profile-icon-btn{ width:36px; height:36px; }
+    .profile-icon-btn svg{ width:16px; height:16px; }
     .store-tab{ padding:10px 8px; font-size:10.5px; }
     .filters-row{ grid-template-columns:minmax(0,1fr) 116px; gap:10px; }
     .filter-pill.blue-pill{ padding-inline:11px; }
@@ -1282,6 +1372,10 @@ svg.filter-cat-icon{
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </button>
       </div>
+      <button type="button" class="profile-icon-btn" id="profileTrigger" aria-label="Track your order" aria-haspopup="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+        <span class="profile-icon-dot" id="profileIconDot"></span>
+      </button>
     </div>
 
     <div class="brand-row-wrap open reveal" id="brandRowWrap">
@@ -1574,6 +1668,40 @@ svg.filter-cat-icon{
     </button>
   </div>
   <div class="cart-drawer-items" id="wishlistItems"></div>
+</aside>
+
+<!-- Order tracking (profile) -->
+<div class="cart-overlay" id="profileOverlay"></div>
+<aside class="cart-drawer" id="profileDrawer">
+  <div class="cart-drawer-head">
+    <h3 id="orderDrawerTitle">Track Your Order</h3>
+    <button type="button" class="cart-drawer-close" id="profileClose" aria-label="Close order tracking">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="order-drawer-body" id="orderDrawerBody">
+
+    <!-- Lookup form -->
+    <form id="orderLookupForm">
+      <p class="order-lookup-copy">Enter your order number and the email or phone number used at checkout to view its status.</p>
+      <label class="order-field">
+        <span>Order Number</span>
+        <input type="text" id="orderNumberInput" placeholder="e.g. RGT-10234" autocomplete="off" required />
+      </label>
+      <label class="order-field">
+        <span>Email or Phone</span>
+        <input type="text" id="orderContactInput" placeholder="you@email.com" autocomplete="off" required />
+      </label>
+      <p class="order-lookup-error" id="orderLookupError">We couldn't find a matching order. Double-check the details and try again.</p>
+      <button type="submit" class="btn btn-block-ink" style="width:100%;justify-content:center;">
+        <span>Track Order</span>
+      </button>
+    </form>
+
+    <!-- Order detail view -->
+    <div id="orderDetailView" style="display:none;"></div>
+
+  </div>
 </aside>
 
 <script>
@@ -2322,6 +2450,224 @@ svg.filter-cat-icon{
   });
 
   render();
+})();
+
+// Order tracking (profile) drawer
+(function(){
+  const ORDER_KEY = 'rgt_store_tracked_order';
+  const trigger = document.getElementById('profileTrigger');
+  const overlay = document.getElementById('profileOverlay');
+  const drawer = document.getElementById('profileDrawer');
+  const closeBtn = document.getElementById('profileClose');
+  const title = document.getElementById('orderDrawerTitle');
+  const lookupForm = document.getElementById('orderLookupForm');
+  const numberInput = document.getElementById('orderNumberInput');
+  const contactInput = document.getElementById('orderContactInput');
+  const lookupError = document.getElementById('orderLookupError');
+  const detailView = document.getElementById('orderDetailView');
+
+  const STEPS = [
+    { key: 'placed', label: 'Order Placed' },
+    { key: 'processing', label: 'Processing' },
+    { key: 'shipped', label: 'Shipped' },
+    { key: 'out-for-delivery', label: 'Out for Delivery' },
+    { key: 'delivered', label: 'Delivered' }
+  ];
+
+  const ITEM_SETS = [
+    [{ name: 'iPhone 16', price: 17499, qty: 1, image: 'https://i.postimg.cc/K8nRkFtF/iphone16.png' }],
+    [{ name: 'iPhone 17 Pro', price: 24999, qty: 1, image: 'https://i.postimg.cc/g29x2rXQ/iphone17pro.png' }],
+    [
+      { name: 'iPhone 16', price: 17499, qty: 1, image: 'https://i.postimg.cc/K8nRkFtF/iphone16.png' },
+      { name: 'iPhone 17', price: 19999, qty: 1, image: 'https://i.postimg.cc/P5GC5NpY/iphone17.png' }
+    ]
+  ];
+
+  const ADDRESSES = [
+    '12 Baobab Street, Mokopane, Limpopo, 0600',
+    '45 Voortrekker Road, Polokwane, Limpopo, 0700',
+    '8 Church Street, Mokopane, Limpopo, 0600'
+  ];
+  const COURIERS = ['Courier Guy', 'DSV Same-Day', 'Fastway Couriers'];
+  const PAYMENT_METHODS = ['Float (EFT)', 'PayFast', 'Yoco Card'];
+
+  function formatPrice(n){
+    return 'R' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+  function formatDate(d){
+    return d.toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function seedFrom(str){
+    let seed = 0;
+    for (let i = 0; i < str.length; i++) seed += str.charCodeAt(i) * (i + 1);
+    return seed;
+  }
+
+  // NOTE: no backend is wired up yet — this deterministically generates a
+  // plausible order from the entered order number + contact so the tracking
+  // UI is fully demoable. Swap generateOrder() for a real API/Firebase
+  // lookup once orders are stored server-side.
+  function generateOrder(orderNumber, contact){
+    const seed = seedFrom(orderNumber.trim().toUpperCase() + contact.trim().toLowerCase());
+    const stepIndex = seed % STEPS.length;
+    const items = ITEM_SETS[seed % ITEM_SETS.length];
+    const address = ADDRESSES[seed % ADDRESSES.length];
+    const courier = COURIERS[seed % COURIERS.length];
+    const paymentMethod = PAYMENT_METHODS[seed % PAYMENT_METHODS.length];
+    const trackingNumber = 'RGT' + (100000 + (seed % 899999));
+
+    const placedDate = new Date();
+    placedDate.setDate(placedDate.getDate() - (2 + (seed % 6)));
+    const estimatedDelivery = new Date(placedDate);
+    estimatedDelivery.setDate(estimatedDelivery.getDate() + 7);
+
+    const subtotal = items.reduce((sum, it) => sum + it.price * it.qty, 0);
+    const shippingFee = subtotal >= 15000 ? 0 : 150;
+
+    return {
+      orderNumber: orderNumber.trim().toUpperCase(),
+      status: STEPS[stepIndex].key,
+      stepIndex,
+      placedDate, estimatedDelivery,
+      address, courier, trackingNumber, paymentMethod,
+      items, subtotal, shippingFee, total: subtotal + shippingFee
+    };
+  }
+
+  function loadTrackedOrder(){
+    try { return JSON.parse(localStorage.getItem(ORDER_KEY)); } catch (e) { return null; }
+  }
+  function saveTrackedOrder(orderNumber, contact){
+    try { localStorage.setItem(ORDER_KEY, JSON.stringify({ orderNumber, contact })); } catch (e) {}
+  }
+  function clearTrackedOrder(){
+    try { localStorage.removeItem(ORDER_KEY); } catch (e) {}
+  }
+
+  function renderProgress(order){
+    return STEPS.map((step, i) => {
+      const state = i < order.stepIndex ? 'is-complete' : (i === order.stepIndex ? 'is-current' : '');
+      const icon = i < order.stepIndex
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
+        : '<span>' + (i + 1) + '</span>';
+      return `
+        <div class="order-progress-step ${state}">
+          <div class="order-progress-line"></div>
+          <div class="order-progress-dot">${icon}</div>
+          <div class="order-progress-label">${step.label}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderOrder(order){
+    const isDelivered = order.status === 'delivered';
+    const statusLabel = STEPS[order.stepIndex].label;
+
+    detailView.innerHTML = `
+      <button type="button" class="order-back-btn" id="orderTrackAnotherTop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        Track a different order
+      </button>
+
+      <div class="order-head-row">
+        <div>
+          <p class="order-head-num">${order.orderNumber}</p>
+          <p class="order-head-date">Placed ${formatDate(order.placedDate)}</p>
+        </div>
+        <span class="order-status-pill ${isDelivered ? 'is-delivered' : ''}">${statusLabel}</span>
+      </div>
+
+      <div class="order-progress">${renderProgress(order)}</div>
+
+      <div class="order-block">
+        <p class="order-block-title">Delivery</p>
+        <div class="order-detail-row"><span>Estimated delivery</span><span>${formatDate(order.estimatedDelivery)}</span></div>
+        <div class="order-detail-row"><span>Courier</span><span>${order.courier}</span></div>
+        <div class="order-detail-row"><span>Tracking number</span><span>${order.trackingNumber}</span></div>
+        <p class="order-address" style="margin-top:8px;">${order.address}</p>
+      </div>
+
+      <div class="order-block">
+        <p class="order-block-title">Items</p>
+        <div class="order-items">
+          ${order.items.map(it => `
+            <div class="order-item">
+              <div class="order-item-thumb"><img src="${it.image}" alt="${it.name}" loading="lazy" /></div>
+              <div class="order-item-info">
+                <p class="order-item-name">${it.name}</p>
+                <p class="order-item-qty">Qty ${it.qty}</p>
+              </div>
+              <span class="order-item-price">${formatPrice(it.price * it.qty)}</span>
+            </div>
+          `).join('')}
+        </div>
+        <div class="order-totals">
+          <div class="order-detail-row"><span>Subtotal</span><span>${formatPrice(order.subtotal)}</span></div>
+          <div class="order-detail-row"><span>Shipping</span><span>${order.shippingFee === 0 ? 'Free' : formatPrice(order.shippingFee)}</span></div>
+          <div class="order-detail-row" style="font-weight:800;"><span>Total</span><span>${formatPrice(order.total)}</span></div>
+        </div>
+      </div>
+
+      <div class="order-block">
+        <p class="order-block-title">Payment</p>
+        <div class="order-detail-row"><span>Method</span><span>${order.paymentMethod}</span></div>
+      </div>
+    `;
+
+    document.getElementById('orderTrackAnotherTop').addEventListener('click', showLookupForm);
+
+    lookupForm.style.display = 'none';
+    detailView.style.display = 'block';
+    title.textContent = 'Your Order';
+    trigger.classList.add('has-order');
+  }
+
+  function showLookupForm(){
+    clearTrackedOrder();
+    lookupForm.style.display = '';
+    detailView.style.display = 'none';
+    detailView.innerHTML = '';
+    title.textContent = 'Track Your Order';
+    lookupError.classList.remove('is-visible');
+    trigger.classList.remove('has-order');
+    lookupForm.reset();
+  }
+
+  function openDrawer(){
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+  }
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+  }
+
+  lookupForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const orderNumber = numberInput.value.trim();
+    const contact = contactInput.value.trim();
+    if (!orderNumber || !contact) {
+      lookupError.classList.add('is-visible');
+      return;
+    }
+    lookupError.classList.remove('is-visible');
+    const order = generateOrder(orderNumber, contact);
+    saveTrackedOrder(orderNumber, contact);
+    renderOrder(order);
+  });
+
+  trigger.addEventListener('click', () => {
+    const saved = loadTrackedOrder();
+    if (saved && detailView.style.display !== 'block') {
+      renderOrder(generateOrder(saved.orderNumber, saved.contact));
+    }
+    openDrawer();
+  });
+  closeBtn.addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+
+  // Pre-flag the icon on load if a tracked order already exists
+  if (loadTrackedOrder()) trigger.classList.add('has-order');
 })();
 </script>
 
