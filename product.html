@@ -257,10 +257,15 @@
   .pd-variant-group{ margin-bottom:20px; }
   .pd-variant-label{ font-size:12px; font-weight:700; color:var(--ink-900); margin:0 0 10px; text-transform:uppercase; letter-spacing:.04em; }
   .pd-variant-label span{ font-weight:600; color:var(--ink-600); text-transform:none; letter-spacing:normal; }
-  .pd-variant-options{ display:flex; flex-wrap:wrap; gap:10px; }
+  .pd-variant-options{
+    display:flex; flex-wrap:nowrap; gap:8px;
+    overflow-x:auto; scrollbar-width:none; padding-bottom:2px;
+  }
+  .pd-variant-options::-webkit-scrollbar{ display:none; }
   .pd-storage-btn{
-    padding:10px 18px; border-radius:999px; border:1px solid var(--card-line); background:var(--surface-alt);
-    font-size:13.5px; font-weight:700; color:var(--ink-600); cursor:pointer;
+    flex:none; white-space:nowrap;
+    padding:9px 14px; border-radius:999px; border:1px solid var(--card-line); background:var(--surface-alt);
+    font-size:12.5px; font-weight:700; color:var(--ink-600); cursor:pointer;
     transition:border-color .2s ease, color .2s ease, background .3s cubic-bezier(.34,1.56,.64,1), transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease;
   }
   .pd-storage-btn:hover{ border-color:var(--blue-accent); color:var(--blue-700); transform:translateY(-2px); }
@@ -277,7 +282,7 @@
     .pd-variant-row .pd-variant-sep{ display:none; }
   }
   .pd-color-btn{
-    position:relative; width:34px; height:34px; border-radius:50%;
+    position:relative; width:34px; height:34px; border-radius:50%; flex:none;
     border:2px solid transparent; padding:2px; background:none; cursor:pointer;
     transition:border-color .2s ease, transform .2s ease;
   }
