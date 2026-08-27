@@ -1344,6 +1344,21 @@ svg.filter-cat-icon{
   .stars{ display:flex; gap:2px; color:#f59e0b; }
   .stars svg{ width:14px; height:14px; fill:currentColor; }
 
+
+  /* ---------- Enhanced Account Info ---------- */
+  .profile-stats-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; padding:14px 22px; background:var(--surface); border-bottom:1px solid var(--card-line); }
+  .profile-stat{ text-align:center; padding:10px 6px; border-radius:12px; background:#fff; border:1px solid var(--card-line); }
+  .profile-stat-num{ font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:18px; color:var(--ink-900); margin:0; }
+  .profile-stat-label{ font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-400); margin:4px 0 0; }
+  .profile-info-row{ display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px solid var(--card-line); font-size:13px; }
+  .profile-info-row:last-child{ border-bottom:none; }
+  .profile-info-label{ color:var(--ink-600); }
+  .profile-info-value{ font-weight:600; color:var(--ink-900); text-align:right; }
+  .profile-demo-btn{ width:100%; margin-top:12px; background:#fff; border:1px dashed var(--blue-700); color:var(--blue-700); font-weight:700; padding:11px; border-radius:12px; cursor:pointer; transition:all .2s ease; }
+  .profile-demo-btn:hover{ background:var(--blue-700); color:#fff; border-style:solid; }
+  .profile-progress-mini{ height:4px; background:var(--card-line); border-radius:999px; overflow:hidden; margin-top:8px; }
+  .profile-progress-mini-fill{ height:100%; background:var(--blue-700); border-radius:999px; transition:width .4s ease; }
+
 </style>
 </head>
 <body>
@@ -1826,18 +1841,20 @@ svg.filter-cat-icon{
         </div>
 
         <div id="authLoginView">
-          <p class="auth-copy">Log in to track orders, view history, manage returns and more. New here? Create an account in seconds.</p>
+          <p class="auth-copy">Log in to access pending orders, history, wishlist, reviews, returns, payment methods and personal details.</p>
           <div class="auth-error" id="loginError"></div>
           <form id="loginForm">
-            <label class="auth-label"><span>Email</span><input type="email" id="loginEmail" placeholder="you@email.com" required /></label>
-            <label class="auth-label"><span>Password</span><input type="password" id="loginPassword" placeholder="••••••••" required /></label>
-            <button type="submit" class="btn btn-block-ink" style="width:100%;justify-content:center;margin-top:4px;">Log In</button>
+            <label class="auth-label"><span>Email Address *</span><input type="email" id="loginEmail" placeholder="you@email.com" required /></label>
+            <label class="auth-label"><span>Password *</span><input type="password" id="loginPassword" placeholder="••••••••" required /></label>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin:6px 0 12px;"><label style="display:flex;gap:6px;align-items:center;font-size:12px;color:var(--ink-600);"><input type="checkbox" id="rememberMe" /> Remember me</label><button type="button" style="background:none;border:none;color:var(--blue-700);font-size:12px;font-weight:700;cursor:pointer;">Forgot password?</button></div>
+            <button type="submit" class="btn btn-block-ink" style="width:100%;justify-content:center;">Log In Securely</button>
           </form>
-          <div class="auth-divider">or continue as guest</div>
+          <button type="button" class="profile-demo-btn" id="demoLoginBtn">⚡ Continue as Demo User (Full Data)</button>
+          <div class="auth-divider">or track as guest</div>
           <form id="orderLookupForm">
-            <p class="order-lookup-copy">Enter your order number and the email or phone used at checkout to view its status.</p>
-            <label class="order-field"><span>Order Number</span><input type="text" id="orderNumberInput" placeholder="e.g. RGT-10234" autocomplete="off" required /></label>
-            <label class="order-field"><span>Email or Phone</span><input type="text" id="orderContactInput" placeholder="you@email.com" autocomplete="off" required /></label>
+            <p class="order-lookup-copy">Enter your order number and the email or phone used at checkout.</p>
+            <label class="order-field"><span>Order Number *</span><input type="text" id="orderNumberInput" placeholder="e.g. RGT-10234" autocomplete="off" required /></label>
+            <label class="order-field"><span>Email or Phone *</span><input type="text" id="orderContactInput" placeholder="you@email.com" autocomplete="off" required /></label>
             <p class="order-lookup-error" id="orderLookupError">We couldn't find a matching order. Double-check and try again.</p>
             <button type="submit" class="btn btn-block-ink" style="width:100%;justify-content:center;background:#090B25;">Track Order</button>
           </form>
@@ -1845,14 +1862,16 @@ svg.filter-cat-icon{
         </div>
 
         <div id="authSignupView" hidden>
-          <p class="auth-copy">Create your Rare Grade Tech account to get order tracking, history, wishlist sync and faster checkout.</p>
+          <p class="auth-copy">Create your Rare Grade Tech account — get order tracking, 14-day returns, saved payments and faster checkout.</p>
           <div class="auth-error" id="signupError"></div>
           <form id="signupForm">
-            <label class="auth-label"><span>Full Name</span><input type="text" id="signupName" placeholder="e.g. Thabo Molefe" required /></label>
-            <label class="auth-label"><span>Email</span><input type="email" id="signupEmail" placeholder="you@email.com" required /></label>
-            <label class="auth-label"><span>Phone</span><input type="tel" id="signupPhone" placeholder="+27 61 000 0000" required /></label>
-            <label class="auth-label"><span>Password</span><input type="password" id="signupPassword" placeholder="Min 6 characters" required /></label>
-            <label class="auth-label"><span>Confirm Password</span><input type="password" id="signupConfirm" placeholder="Repeat password" required /></label>
+            <label class="auth-label"><span>Full Name *</span><input type="text" id="signupName" placeholder="e.g. Thabo Molefe" required /></label>
+            <label class="auth-label"><span>Email Address *</span><input type="email" id="signupEmail" placeholder="you@email.com" required /></label>
+            <label class="auth-label"><span>Phone Number *</span><input type="tel" id="signupPhone" placeholder="+27 61 000 0000" required /></label>
+            <label class="auth-label"><span>ID / Passport (optional)</span><input type="text" id="signupId" placeholder="e.g. 900101..." /></label>
+            <label class="auth-label"><span>Password *</span><input type="password" id="signupPassword" placeholder="Min 6 characters" required /></label>
+            <label class="auth-label"><span>Confirm Password *</span><input type="password" id="signupConfirm" placeholder="Repeat password" required /></label>
+            <label style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--ink-600);margin:12px 0;"><input type="checkbox" required style="margin-top:2px;" /> I agree to the <a href="#" style="color:var(--blue-700);font-weight:700;">Terms</a> & <a href="#" style="color:var(--blue-700);font-weight:700;">Privacy Policy</a></label>
             <button type="submit" class="btn btn-block-ink" style="width:100%;justify-content:center;">Create Account</button>
           </form>
         </div>
@@ -1861,10 +1880,14 @@ svg.filter-cat-icon{
       <!-- LOGGED IN -->
       <div id="profileAccountView" class="profile-account-view" hidden>
         <div id="profileAccountHeaderWrap"></div>
+        <div class="profile-stats-grid" id="profileStatsGrid">
+          <div class="profile-stat"><p class="profile-stat-num" id="statOrders">0</p><p class="profile-stat-label">Orders</p></div>
+          <div class="profile-stat"><p class="profile-stat-num" id="statSpent">R0</p><p class="profile-stat-label">Spent</p></div>
+          <div class="profile-stat"><p class="profile-stat-num" id="statWishlist">0</p><p class="profile-stat-label">Wishlist</p></div>
+        </div>
 
         <div class="profile-accordion" id="profileAccordion">
 
-          <!-- Track Order -->
           <div class="profile-section is-open" data-section="track">
             <button type="button" class="profile-section-header">
               <span class="profile-section-left"><span class="profile-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 16l4-4-4-4"/><path d="M12 8H3"/><path d="M8 16H3"/><path d="M12 12H3"/></svg></span> Track Order</span>
@@ -1872,25 +1895,24 @@ svg.filter-cat-icon{
             </button>
             <div class="profile-section-content"><div class="profile-section-inner"><div class="profile-section-body">
               <form id="accountOrderLookupForm">
-                <label class="order-field"><span>Order Number</span><input type="text" id="accountOrderNumberInput" placeholder="e.g. RGT-10234" required /></label>
-                <label class="order-field"><span>Email or Phone</span><input type="text" id="accountOrderContactInput" placeholder="you@email.com" required /></label>
+                <label class="order-field"><span>Order Number *</span><input type="text" id="accountOrderNumberInput" placeholder="e.g. RGT-10234" required /></label>
+                <label class="order-field"><span>Email or Phone *</span><input type="text" id="accountOrderContactInput" placeholder="you@email.com" required /></label>
                 <p class="order-lookup-error" id="accountOrderLookupError">We couldn't find a matching order.</p>
-                <button type="submit" class="btn btn-block-ink" style="width:100%;justify-content:center;">Track</button>
+                <button type="submit" class="btn btn-block-ink" style="width:100%;justify-content:center;">Track Order</button>
               </form>
               <div id="accountOrderDetailView" style="display:none;margin-top:14px;"></div>
+              <div style="margin-top:14px;padding:10px 12px;border-radius:10px;background:var(--surface);border:1px solid var(--card-line);font-size:11px;color:var(--ink-600);line-height:1.5;">💡 Tip: Use your demo orders like <b>RGT-10123</b> or your email to test tracking. Orders update every 24h via Courier Guy / DSV.</div>
             </div></div></div>
           </div>
 
-          <!-- Pending Orders -->
           <div class="profile-section" data-section="pending">
             <button type="button" class="profile-section-header">
-              <span class="profile-section-left"><span class="profile-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span> Pending Orders <span class="profile-section-badge" id="pendingBadge">0</span></span>
+              <span class="profile-section-left"><span class="profile-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span> Pending & Active Orders <span class="profile-section-badge" id="pendingBadge">0</span></span>
               <svg class="profile-section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
             </button>
             <div class="profile-section-content"><div class="profile-section-inner"><div class="profile-section-body" id="pendingOrdersBody"></div></div></div>
           </div>
 
-          <!-- Order History -->
           <div class="profile-section" data-section="history">
             <button type="button" class="profile-section-header">
               <span class="profile-section-left"><span class="profile-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></span> Order History</span>
@@ -1899,7 +1921,6 @@ svg.filter-cat-icon{
             <div class="profile-section-content"><div class="profile-section-inner"><div class="profile-section-body" id="orderHistoryBody"></div></div></div>
           </div>
 
-          <!-- Wishlist -->
           <div class="profile-section" data-section="wishlist">
             <button type="button" class="profile-section-header">
               <span class="profile-section-left"><span class="profile-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span> Wishlist <span class="profile-section-badge is-muted" id="wishlistCountBadge">0</span></span>
@@ -1908,25 +1929,22 @@ svg.filter-cat-icon{
             <div class="profile-section-content"><div class="profile-section-inner"><div class="profile-section-body" id="profileWishlistBody"></div></div></div>
           </div>
 
-          <!-- Reviews -->
           <div class="profile-section" data-section="reviews">
             <button type="button" class="profile-section-header">
-              <span class="profile-section-left"><span class="profile-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 2 3 6 6 .9-4.5 4.3 1 6-5.5-3-5.5 3 1-6L3 8.9 9 8z"/></svg></span> My Reviews</span>
+              <span class="profile-section-left"><span class="profile-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 2 3 6 6 .9-4.5 4.3 1 6-5.5-3-5.5 3 1-6L3 8.9 9 8z"/></svg></span> My Reviews & Ratings</span>
               <svg class="profile-section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
             </button>
             <div class="profile-section-content"><div class="profile-section-inner"><div class="profile-section-body" id="reviewsBody"></div></div></div>
           </div>
 
-          <!-- Returns -->
           <div class="profile-section" data-section="returns">
             <button type="button" class="profile-section-header">
-              <span class="profile-section-left"><span class="profile-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a4 4 0 1 1 0 8H8"/></svg></span> Returns</span>
+              <span class="profile-section-left"><span class="profile-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a4 4 0 1 1 0 8H8"/></svg></span> Returns & Refunds</span>
               <svg class="profile-section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
             </button>
             <div class="profile-section-content"><div class="profile-section-inner"><div class="profile-section-body" id="returnsBody"></div></div></div>
           </div>
 
-          <!-- Payment Methods -->
           <div class="profile-section" data-section="payments">
             <button type="button" class="profile-section-header">
               <span class="profile-section-left"><span class="profile-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span> Payment Methods</span>
@@ -1935,10 +1953,9 @@ svg.filter-cat-icon{
             <div class="profile-section-content"><div class="profile-section-inner"><div class="profile-section-body" id="paymentsBody"></div></div></div>
           </div>
 
-          <!-- My Details -->
           <div class="profile-section" data-section="details">
             <button type="button" class="profile-section-header">
-              <span class="profile-section-left"><span class="profile-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></span> My Details</span>
+              <span class="profile-section-left"><span class="profile-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></span> My Details & Addresses</span>
               <svg class="profile-section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
             </button>
             <div class="profile-section-content"><div class="profile-section-inner"><div class="profile-section-body" id="detailsBody"></div></div></div>
@@ -2807,7 +2824,7 @@ svg.filter-cat-icon{
   render();
 })();
 
-// Profile / Account Drawer — BLUE ICON + collapsible account center
+// Profile / Account Drawer — BLUE ICON + full info + always-reopens
 (function(){
   const ORDER_KEY = 'rgt_store_tracked_order';
   const ACCOUNTS_KEY = 'rgt_accounts';
@@ -2819,7 +2836,6 @@ svg.filter-cat-icon{
   const closeBtn = document.getElementById('profileClose');
   const title = document.getElementById('orderDrawerTitle');
 
-  // Auth views
   const authView = document.getElementById('profileAuthView');
   const accountView = document.getElementById('profileAccountView');
   const authLoginView = document.getElementById('authLoginView');
@@ -2828,15 +2844,14 @@ svg.filter-cat-icon{
   const signupForm = document.getElementById('signupForm');
   const loginError = document.getElementById('loginError');
   const signupError = document.getElementById('signupError');
+  const demoLoginBtn = document.getElementById('demoLoginBtn');
 
-  // Guest tracking (auth view)
   const lookupForm = document.getElementById('orderLookupForm');
   const numberInput = document.getElementById('orderNumberInput');
   const contactInput = document.getElementById('orderContactInput');
   const lookupError = document.getElementById('orderLookupError');
   const detailView = document.getElementById('orderDetailView');
 
-  // Account tracking
   const accountLookupForm = document.getElementById('accountOrderLookupForm');
   const accountNumberInput = document.getElementById('accountOrderNumberInput');
   const accountContactInput = document.getElementById('accountOrderContactInput');
@@ -2888,390 +2903,340 @@ svg.filter-cat-icon{
   }
 
   function loadTrackedOrder(){ try{ return JSON.parse(localStorage.getItem(ORDER_KEY)); }catch(e){ return null; } }
-  function saveTrackedOrder(orderNumber, contact){ try{ localStorage.setItem(ORDER_KEY, JSON.stringify({ orderNumber, contact })); }catch(e){} }
-  function clearTrackedOrder(){ try{ localStorage.removeItem(ORDER_KEY); }catch(e){} }
+  function saveTrackedOrder(o,c){ try{ localStorage.setItem(ORDER_KEY, JSON.stringify({orderNumber:o, contact:c})); }catch(e){} }
 
   function loadAccounts(){ try{ return JSON.parse(localStorage.getItem(ACCOUNTS_KEY))||[]; }catch(e){ return []; } }
-  function saveAccounts(acc){ try{ localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(acc)); }catch(e){} }
+  function saveAccounts(a){ try{ localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(a)); }catch(e){} }
   function loadCurrentUser(){ try{ return JSON.parse(localStorage.getItem(CURRENT_USER_KEY)); }catch(e){ return null; } }
-  function saveCurrentUser(user){ try{ localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user)); }catch(e){} }
+  function saveCurrentUser(u){ try{ localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(u)); }catch(e){} }
   function clearCurrentUser(){ try{ localStorage.removeItem(CURRENT_USER_KEY); }catch(e){} }
 
-  function userDataKey(email, suffix){ return 'rgt_user_' + email.toLowerCase() + '_' + suffix; }
-  function loadUserData(email, suffix, fallback){
-    try{ const v = localStorage.getItem(userDataKey(email,suffix)); return v ? JSON.parse(v) : fallback; }catch(e){ return fallback; }
+  function userDataKey(email,s){ return 'rgt_user_'+email.toLowerCase()+'_'+s; }
+  function loadUserData(email,s,fb){ try{ const v=localStorage.getItem(userDataKey(email,s)); return v?JSON.parse(v):fb; }catch(e){ return fb; } }
+  function saveUserData(email,s,d){ try{ localStorage.setItem(userDataKey(email,s), JSON.stringify(d)); }catch(e){} }
+
+  function ensureDemoAccount(){
+    let acc = loadAccounts();
+    if(!acc.some(a=>a.email==='demo@raregrade.co.za')){
+      acc.push({ name:'Dee TheMessiah (Demo)', email:'demo@raregrade.co.za', phone:'+27 61 527 0749', password:'demo123', address:'69 Hooge Street, Mokopane, Limpopo, 0601', city:'Mokopane', province:'Limpopo', postal:'0601', createdAt:new Date(Date.now()-86400000*45).toISOString(), idNumber:'900101 1234 089', dob:'1990-01-01', newsletter:true });
+      saveAccounts(acc);
+    }
   }
-  function saveUserData(email, suffix, data){ try{ localStorage.setItem(userDataKey(email,suffix), JSON.stringify(data)); }catch(e){} }
 
   function ensureMockDataForUser(user){
-    const email = user.email;
+    ensureDemoAccount();
+    const email=user.email;
     if(!loadUserData(email,'orders',null)){
-      const baseSeed = seedFrom(email);
-      const mock = [];
-      for(let i=0;i<4;i++){
-        const ordNum = 'RGT-' + (10000 + (baseSeed + i*333) % 90000);
-        const o = generateOrder(ordNum, email);
-        if(i<2){ o.stepIndex = i % 3; o.status = STEPS[o.stepIndex].key; }
-        else { o.stepIndex = 4; o.status = 'delivered'; }
+      const base=seedFrom(email);
+      const mock=[];
+      for(let i=0;i<5;i++){
+        const num='RGT-'+(10000+(base+i*333)%90000);
+        const o=generateOrder(num,email);
+        if(i<2){ o.stepIndex=i%3; o.status=STEPS[o.stepIndex].key; }
+        else if(i<3){ o.stepIndex=3; o.status='out-for-delivery'; }
+        else { o.stepIndex=4; o.status='delivered'; }
+        // add richer fields
+        o.invoiceUrl='#';
+        o.canReturn = o.status==='delivered';
         mock.push(o);
       }
       saveUserData(email,'orders',mock);
     }
     if(!loadUserData(email,'payments',null)){
       saveUserData(email,'payments',[
-        { id:'pm1', type:'EFT', label:'Float (EFT) - Capitec ** 4582', isDefault:true, details:'Capitec Global One' },
-        { id:'pm2', type:'CARD', label:'Visa ending 4242', isDefault:false, details:'Exp 12/27' }
+        { id:'pm1', type:'EFT', label:'Float (EFT) - Capitec ** 4582', isDefault:true, details:'Capitec Global One • 1052 458 236 • Branch 470010', billing:'69 Hooge Street, Mokopane' },
+        { id:'pm2', type:'CARD', label:'Visa ending 4242', isDefault:false, details:'Exp 12/27 • Thabo Molefe • 3D Secure', billing:'69 Hooge Street, Mokopane' },
+        { id:'pm3', type:'CARD', label:'Mastercard ending 8888', isDefault:false, details:'Exp 08/26 • Business', billing:'45 Voortrekker Rd, Polokwane' }
       ]);
     }
     if(!loadUserData(email,'reviews',null)){
       saveUserData(email,'reviews',[
-        { id:'rv1', product:'iPhone 16', rating:5, text:'Battery life is incredible and the build quality is top tier. Rare Grade delivered in 2 days!', date:new Date(Date.now()-86400000*5).toISOString() },
-        { id:'rv2', product:'iPhone 17 Pro', rating:4, text:'Love the camera system, wish the price was a bit lower but worth it.', date:new Date(Date.now()-86400000*12).toISOString() }
+        { id:'rv1', product:'iPhone 16', rating:5, text:'Battery life is incredible and the build quality is top tier. Rare Grade delivered in 2 days to Mokopane!', date:new Date(Date.now()-86400000*5).toISOString(), helpful:12, verified:true },
+        { id:'rv2', product:'iPhone 17 Pro', rating:4, text:'Love the camera system, wish the price was a bit lower but worth it. Support team was amazing.', date:new Date(Date.now()-86400000*12).toISOString(), helpful:4, verified:true },
+        { id:'rv3', product:'iPhone 17', rating:5, text:'Best unboxing experience ever. Device was sealed and licensed.', date:new Date(Date.now()-86400000*22).toISOString(), helpful:8, verified:true }
       ]);
     }
     if(!loadUserData(email,'returns',null)){
       saveUserData(email,'returns',[
-        { id:'ret1', orderNumber:'RGT-10234', product:'iPhone 16 Case', reason:'Wrong color', status:'Approved - Awaiting Collection', date:new Date(Date.now()-86400000*2).toISOString() }
+        { id:'ret1', orderNumber:'RGT-10234', product:'iPhone 16 Case - Black', reason:'Wrong color', status:'Approved - Awaiting Collection', date:new Date(Date.now()-86400000*2).toISOString(), refund:'R499', courier:'Courier Guy - Return #RTR-88421' },
+        { id:'ret2', orderNumber:'RGT-10456', product:'AirPods Pro 2nd Gen', reason:'Defective - Left bud not charging', status:'Refunded - R4,299 credited', date:new Date(Date.now()-86400000*9).toISOString(), refund:'R4299', courier:'Collected 12 May' }
       ]);
     }
   }
 
   function renderProgress(order){
-    return STEPS.map((step,i)=>{
-      const state = i < order.stepIndex ? 'is-complete' : (i === order.stepIndex ? 'is-current' : '');
-      const icon = i < order.stepIndex ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : '<span>'+(i+1)+'</span>';
-      return '<div class="order-progress-step '+state+'"><div class="order-progress-line"></div><div class="order-progress-dot">'+icon+'</div><div class="order-progress-label">'+step.label+'</div></div>';
+    return STEPS.map((s,i)=>{
+      const state=i<order.stepIndex?'is-complete':(i===order.stepIndex?'is-current':'');
+      const icon=i<order.stepIndex?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>':'<span>'+(i+1)+'</span>';
+      return '<div class="order-progress-step '+state+'"><div class="order-progress-line"></div><div class="order-progress-dot">'+icon+'</div><div class="order-progress-label">'+s.label+'</div></div>';
     }).join('');
   }
-
   function renderOrderBlock(order, backId){
-    const isDelivered = order.status === 'delivered';
-    const statusLabel = STEPS[order.stepIndex].label;
+    const isDel=order.status==='delivered';
+    const label=STEPS[order.stepIndex].label;
     return `
-      <button type="button" class="order-back-btn" id="${backId}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-        Track a different order
-      </button>
-      <div class="order-head-row">
-        <div><p class="order-head-num">${order.orderNumber}</p><p class="order-head-date">Placed ${formatDate(order.placedDate)}</p></div>
-        <span class="order-status-pill ${isDelivered ? 'is-delivered' : ''}">${statusLabel}</span>
-      </div>
+      <button type="button" class="order-back-btn" id="${backId}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>Back</button>
+      <div class="order-head-row"><div><p class="order-head-num">${order.orderNumber}</p><p class="order-head-date">Placed ${formatDate(order.placedDate)} • ${order.trackingNumber}</p></div><span class="order-status-pill ${isDel?'is-delivered':''}">${label}</span></div>
       <div class="order-progress">${renderProgress(order)}</div>
-      <div class="order-block"><p class="order-block-title">Delivery</p><div class="order-detail-row"><span>Estimated delivery</span><span>${formatDate(order.estimatedDelivery)}</span></div><div class="order-detail-row"><span>Courier</span><span>${order.courier}</span></div><div class="order-detail-row"><span>Tracking number</span><span>${order.trackingNumber}</span></div><p class="order-address" style="margin-top:8px;">${order.address}</p></div>
-      <div class="order-block"><p class="order-block-title">Items</p><div class="order-items">
-        ${order.items.map(it=>`<div class="order-item"><div class="order-item-thumb"><img src="${it.image}" alt="${it.name}" loading="lazy" /></div><div class="order-item-info"><p class="order-item-name">${it.name}</p><p class="order-item-qty">Qty ${it.qty}</p></div><span class="order-item-price">${formatPrice(it.price*it.qty)}</span></div>`).join('')}
-      </div><div class="order-totals"><div class="order-detail-row"><span>Subtotal</span><span>${formatPrice(order.subtotal)}</span></div><div class="order-detail-row"><span>Shipping</span><span>${order.shippingFee===0?'Free':formatPrice(order.shippingFee)}</span></div><div class="order-detail-row" style="font-weight:800;"><span>Total</span><span>${formatPrice(order.total)}</span></div></div></div>
-      <div class="order-block"><p class="order-block-title">Payment</p><div class="order-detail-row"><span>Method</span><span>${order.paymentMethod}</span></div></div>
+      <div class="order-block"><p class="order-block-title">Delivery & Courier</p>
+        <div class="profile-info-row"><span class="profile-info-label">Estimated delivery</span><span class="profile-info-value">${formatDate(order.estimatedDelivery)}</span></div>
+        <div class="profile-info-row"><span class="profile-info-label">Courier</span><span class="profile-info-value">${order.courier}</span></div>
+        <div class="profile-info-row"><span class="profile-info-label">Tracking number</span><span class="profile-info-value">${order.trackingNumber}</span></div>
+        <div class="profile-info-row"><span class="profile-info-label">Shipping address</span><span class="profile-info-value" style="max-width:60%;">${order.address}</span></div>
+      </div>
+      <div class="order-block"><p class="order-block-title">Items (${order.items.length})</p><div class="order-items">
+        ${order.items.map(it=>`<div class="order-item"><div class="order-item-thumb"><img src="${it.image}" alt="${it.name}" loading="lazy" /></div><div class="order-item-info"><p class="order-item-name">${it.name}</p><p class="order-item-qty">Qty ${it.qty} • ${formatPrice(it.price)} each</p></div><span class="order-item-price">${formatPrice(it.price*it.qty)}</span></div>`).join('')}
+      </div><div class="order-totals"><div class="order-detail-row"><span>Subtotal</span><span>${formatPrice(order.subtotal)}</span></div><div class="order-detail-row"><span>Shipping</span><span>${order.shippingFee===0?'Free':formatPrice(order.shippingFee)}</span></div><div class="order-detail-row" style="font-weight:800;"><span>Total paid</span><span>${formatPrice(order.total)}</span></div></div></div>
+      <div class="order-block"><p class="order-block-title">Payment & Invoice</p><div class="profile-info-row"><span class="profile-info-label">Method</span><span class="profile-info-value">${order.paymentMethod}</span></div><div class="profile-info-row"><span class="profile-info-label">Invoice</span><span class="profile-info-value"><button class="profile-mini-btn" style="padding:4px 10px;">Download PDF</button></span></div></div>
     `;
   }
 
-  function showGuestLookup(){
-    if(detailView){ detailView.style.display='none'; detailView.innerHTML=''; }
-    if(lookupForm){ lookupForm.style.display=''; }
-    if(lookupError) lookupError.classList.remove('is-visible');
-    if(lookupForm) lookupForm.reset();
-  }
-  function showAccountLookup(){
-    if(accountDetailView){ accountDetailView.style.display='none'; accountDetailView.innerHTML=''; }
-    if(accountLookupForm){ accountLookupForm.style.display=''; }
-    if(accountLookupError) accountLookupError.classList.remove('is-visible');
-    if(accountLookupForm) accountLookupForm.reset();
-  }
-
-  function renderOrderInto(targetEl, order, backId, onBack){
-    targetEl.innerHTML = renderOrderBlock(order, backId);
-    const backBtn = document.getElementById(backId);
-    if(backBtn) backBtn.addEventListener('click', onBack);
-    targetEl.style.display='block';
-  }
+  function showGuestLookup(){ if(detailView){detailView.style.display='none';detailView.innerHTML='';} if(lookupForm) lookupForm.style.display=''; if(lookupError) lookupError.classList.remove('is-visible'); if(lookupForm) lookupForm.reset(); }
+  function showAccountLookup(){ if(accountDetailView){accountDetailView.style.display='none';accountDetailView.innerHTML='';} if(accountLookupForm) accountLookupForm.style.display=''; if(accountLookupError) accountLookupError.classList.remove('is-visible'); if(accountLookupForm) accountLookupForm.reset(); }
+  function renderOrderInto(target, order, backId, onBack){ target.innerHTML=renderOrderBlock(order,backId); const b=document.getElementById(backId); if(b) b.addEventListener('click',onBack); target.style.display='block'; }
 
   function getWishlist(){ try{ return JSON.parse(localStorage.getItem('rgt_store_wishlist'))||[]; }catch(e){ return []; } }
 
-  function renderProfileWishlist(){
-    const body = document.getElementById('profileWishlistBody');
-    const countBadge = document.getElementById('wishlistCountBadge');
-    const wishlist = getWishlist();
-    if(countBadge) countBadge.textContent = wishlist.length;
-    if(!body) return;
-    if(!wishlist.length){
-      body.innerHTML = '<div class="profile-empty">Your wishlist is empty. Tap the heart on a product to save it here.</div>';
-      return;
-    }
-    body.innerHTML = '<div class="profile-wishlist-grid">' + wishlist.map(it=>`
-      <div class="profile-card" style="display:flex;gap:12px;align-items:center;">
-        <div style="width:48px;height:48px;border-radius:10px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden;"><img src="${it.image}" alt="${it.name}" style="max-width:80%;max-height:80%;object-fit:contain;" /></div>
-        <div style="flex:1;min-width:0;"><p class="profile-card-title" style="margin:0 0 2px;">${it.name}</p><p class="profile-card-sub">${formatPrice(it.price)}</p></div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="profile-mini-btn primary" data-wish-move="${it.id}">Cart</button><button class="profile-mini-btn danger" data-wish-remove="${it.id}">Remove</button></div>
-      </div>
-    `).join('') + '</div>';
+  function renderStats(user){
+    const orders=loadUserData(user.email,'orders',[]);
+    const spent=orders.reduce((s,o)=>s+o.total,0);
+    const wish=getWishlist();
+    const elO=document.getElementById('statOrders'), elS=document.getElementById('statSpent'), elW=document.getElementById('statWishlist');
+    if(elO) elO.textContent=orders.length;
+    if(elS) elS.textContent=formatPrice(spent);
+    if(elW) elW.textContent=wish.length;
+  }
 
-    body.querySelectorAll('[data-wish-move]').forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        const item = wishlist.find(w=>w.id===btn.dataset.wishMove);
-        if(item && window.RGT_CART && window.RGT_CART.add){ window.RGT_CART.add(item); }
-      });
-    });
-    body.querySelectorAll('[data-wish-remove]').forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        let wl = getWishlist(); wl = wl.filter(w=>w.id!==btn.dataset.wishRemove);
-        try{ localStorage.setItem('rgt_store_wishlist', JSON.stringify(wl)); }catch(e){}
-        if(window.RGT_WISHLIST && window.RGT_WISHLIST.refresh) window.RGT_WISHLIST.refresh();
-        renderProfileWishlist();
-      });
-    });
+  function renderProfileWishlist(){
+    const body=document.getElementById('profileWishlistBody');
+    const badge=document.getElementById('wishlistCountBadge');
+    const wish=getWishlist();
+    if(badge) badge.textContent=wish.length;
+    if(!body) return;
+    if(!wish.length){ body.innerHTML='<div class="profile-empty">Your wishlist is empty. Tap the heart on a product to save it here. It syncs across this drawer and the floating heart button.</div>'; return; }
+    body.innerHTML='<div class="profile-wishlist-grid">'+wish.map(it=>`
+      <div class="profile-card" style="display:flex;gap:12px;align-items:center;">
+        <div style="width:52px;height:52px;border-radius:10px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden;"><img src="${it.image}" alt="${it.name}" style="max-width:85%;max-height:85%;object-fit:contain;" /></div>
+        <div style="flex:1;min-width:0;"><p class="profile-card-title" style="margin:0 0 2px;">${it.name}</p><p class="profile-card-sub">${formatPrice(it.price)} • In stock • Free delivery over R15k</p></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="profile-mini-btn primary" data-wish-move="${it.id}">Add to Cart</button><button class="profile-mini-btn danger" data-wish-remove="${it.id}">Remove</button></div>
+      </div>
+    `).join('')+'</div>';
+    body.querySelectorAll('[data-wish-move]').forEach(btn=>{ btn.addEventListener('click',()=>{ const item=wish.find(w=>w.id===btn.dataset.wishMove); if(item&&window.RGT_CART&&window.RGT_CART.add) window.RGT_CART.add(item); }); });
+    body.querySelectorAll('[data-wish-remove]').forEach(btn=>{ btn.addEventListener('click',()=>{ let wl=getWishlist(); wl=wl.filter(w=>w.id!==btn.dataset.wishRemove); try{ localStorage.setItem('rgt_store_wishlist', JSON.stringify(wl)); }catch(e){} if(window.RGT_WISHLIST&&window.RGT_WISHLIST.refresh) window.RGT_WISHLIST.refresh(); renderProfileWishlist(); renderStats(loadCurrentUser()); }); });
   }
 
   function renderPendingOrders(user){
-    const body = document.getElementById('pendingOrdersBody');
-    const badge = document.getElementById('pendingBadge');
-    if(!body) return;
-    const orders = loadUserData(user.email,'orders',[]);
-    const pending = orders.filter(o=>o.status!=='delivered');
-    if(badge) badge.textContent = pending.length;
-    if(!pending.length){ body.innerHTML='<div class="profile-empty">No pending orders. Your active orders will appear here.</div>'; return; }
-    body.innerHTML = pending.map(o=>`
+    const body=document.getElementById('pendingOrdersBody'); const badge=document.getElementById('pendingBadge'); if(!body) return;
+    const orders=loadUserData(user.email,'orders',[]); const pending=orders.filter(o=>o.status!=='delivered');
+    if(badge) badge.textContent=pending.length;
+    if(!pending.length){ body.innerHTML='<div class="profile-empty">No pending orders — active shipments, processing and out-for-delivery will appear here with live tracking.</div>'; return; }
+    body.innerHTML=pending.map(o=>`
       <div class="profile-card pending-order-card">
         <div class="profile-card-row"><span class="profile-card-title">${o.orderNumber}</span><span class="order-status-pill">${STEPS[o.stepIndex].label}</span></div>
-        <p class="profile-card-sub">Placed ${formatDate(o.placedDate)} • ${o.items.map(i=>i.name).join(', ')} • ${formatPrice(o.total)}</p>
-        <div class="order-progress" style="margin-top:10px;">${renderProgress(o)}</div>
-        <div style="display:flex;gap:8px;margin-top:12px;"><button class="profile-mini-btn primary" data-track="${o.orderNumber}">Track</button><button class="profile-mini-btn danger" data-cancel="${o.orderNumber}">Cancel</button></div>
+        <p class="profile-card-sub">Placed ${formatDate(o.placedDate)} • ${o.courier} • ${o.trackingNumber}</p>
+        <div style="display:flex;gap:8px;margin:8px 0;flex-wrap:wrap;">${o.items.map(it=>`<div style="width:44px;height:44px;border-radius:8px;background:var(--surface);border:1px solid var(--card-line);display:flex;align-items:center;justify-content:center;"><img src="${it.image}" alt="${it.name}" style="max-width:80%;max-height:80%;object-fit:contain;"/></div>`).join('')}</div>
+        <div class="profile-info-row"><span class="profile-info-label">Items</span><span class="profile-info-value">${o.items.map(i=>i.name).join(', ')}</span></div>
+        <div class="profile-info-row"><span class="profile-info-label">Total</span><span class="profile-info-value">${formatPrice(o.total)}</span></div>
+        <div class="profile-info-row"><span class="profile-info-label">Delivery</span><span class="profile-info-value">${o.address}</span></div>
+        <div class="order-progress" style="margin-top:12px;">${renderProgress(o)}</div>
+        <div class="profile-progress-mini"><div class="profile-progress-mini-fill" style="width:${(o.stepIndex+1)*20}%"></div></div>
+        <div style="display:flex;gap:8px;margin-top:12px;"><button class="profile-mini-btn primary" data-track="${o.orderNumber}">Track Details</button><button class="profile-mini-btn" data-invoice="${o.orderNumber}">Invoice</button><button class="profile-mini-btn danger" data-cancel="${o.orderNumber}">Cancel</button></div>
       </div>
     `).join('');
-    body.querySelectorAll('[data-track]').forEach(b=>{
-      b.addEventListener('click',()=>{
-        const ord = orders.find(x=>x.orderNumber===b.dataset.track);
-        if(ord){ renderOrderInto(accountDetailView, ord, 'accBackFromPending', showAccountLookup); if(accountLookupForm) accountLookupForm.style.display='none'; openSection('track'); }
-      });
-    });
-    body.querySelectorAll('[data-cancel]').forEach(b=>{
-      b.addEventListener('click',()=>{
-        if(!confirm('Cancel order '+b.dataset.cancel+'?')) return;
-        let all = loadUserData(user.email,'orders',[]); all = all.filter(o=>o.orderNumber!==b.dataset.cancel); saveUserData(user.email,'orders',all); renderPendingOrders(user); renderOrderHistory(user);
-      });
-    });
+    body.querySelectorAll('[data-track]').forEach(b=>{ b.addEventListener('click',()=>{ const ord=orders.find(x=>x.orderNumber===b.dataset.track); if(ord){ renderOrderInto(accountDetailView, ord, 'accBackFromPending', showAccountLookup); if(accountLookupForm) accountLookupForm.style.display='none'; openSection('track'); }}); });
+    body.querySelectorAll('[data-cancel]').forEach(b=>{ b.addEventListener('click',()=>{ if(!confirm('Cancel order '+b.dataset.cancel+'? This cannot be undone.')) return; let all=loadUserData(user.email,'orders',[]); all=all.filter(o=>o.orderNumber!==b.dataset.cancel); saveUserData(user.email,'orders',all); renderPendingOrders(user); renderOrderHistory(user); renderStats(user); }); });
   }
 
   function renderOrderHistory(user){
-    const body = document.getElementById('orderHistoryBody');
-    if(!body) return;
-    const orders = loadUserData(user.email,'orders',[]);
-    const history = orders.filter(o=>o.status==='delivered');
-    if(!history.length){ body.innerHTML='<div class="profile-empty">No completed orders yet. Delivered orders will show here for re-order and invoicing.</div>'; return; }
-    body.innerHTML = history.map(o=>`
+    const body=document.getElementById('orderHistoryBody'); if(!body) return;
+    const orders=loadUserData(user.email,'orders',[]); const history=orders.filter(o=>o.status==='delivered');
+    if(!history.length){ body.innerHTML='<div class="profile-empty">No completed orders yet. After delivery you can download invoices, re-order and leave reviews.</div>'; return; }
+    body.innerHTML=history.map(o=>`
       <div class="profile-card">
-        <div class="profile-card-row"><span class="profile-card-title">${o.orderNumber}</span><span class="order-status-pill is-delivered">Delivered</span></div>
-        <p class="profile-card-sub">Delivered ${formatDate(o.estimatedDelivery)} • ${o.items.map(i=>i.name).join(', ')}</p>
-        <div class="profile-card-row" style="margin-top:10px;"><span style="font-weight:700;">${formatPrice(o.total)}</span><div style="display:flex;gap:6px;"><button class="profile-mini-btn" data-reorder="${o.orderNumber}">Re-order</button><button class="profile-mini-btn primary" data-view="${o.orderNumber}">View</button></div></div>
+        <div class="profile-card-row"><span class="profile-card-title">${o.orderNumber}</span><span class="order-status-pill is-delivered">Delivered • ${formatDate(o.estimatedDelivery)}</span></div>
+        <p class="profile-card-sub">${o.items.map(i=>i.name).join(', ')} • ${o.courier} • ${formatPrice(o.total)}</p>
+        <div class="profile-info-row"><span class="profile-info-label">Delivered to</span><span class="profile-info-value" style="max-width:55%;">${o.address}</span></div>
+        <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;"><button class="profile-mini-btn" data-reorder="${o.orderNumber}">Re-order</button><button class="profile-mini-btn primary" data-view="${o.orderNumber}">View & Invoice</button><button class="profile-mini-btn" data-return="${o.orderNumber}">Return</button></div>
       </div>
     `).join('');
-    body.querySelectorAll('[data-view]').forEach(b=>{
-      b.addEventListener('click',()=>{
-        const ord = orders.find(x=>x.orderNumber===b.dataset.view);
-        if(ord){ renderOrderInto(accountDetailView, ord, 'accBackFromHistory', showAccountLookup); if(accountLookupForm) accountLookupForm.style.display='none'; openSection('track'); }
-      });
-    });
-    body.querySelectorAll('[data-reorder]').forEach(b=>{
-      b.addEventListener('click',()=>{
-        const ord = orders.find(x=>x.orderNumber===b.dataset.reorder);
-        if(ord && window.RGT_CART){ ord.items.forEach(it=>{ window.RGT_CART.add({ id:it.name.toLowerCase().replace(/\s+/g,'-'), name:it.name, price:it.price, image:it.image }); }); alert('Items added to cart'); }
-      });
-    });
+    body.querySelectorAll('[data-view]').forEach(b=>{ b.addEventListener('click',()=>{ const ord=orders.find(x=>x.orderNumber===b.dataset.view); if(ord){ renderOrderInto(accountDetailView, ord, 'accBackFromHistory', showAccountLookup); if(accountLookupForm) accountLookupForm.style.display='none'; openSection('track'); }}); });
+    body.querySelectorAll('[data-reorder]').forEach(b=>{ b.addEventListener('click',()=>{ const ord=orders.find(x=>x.orderNumber===b.dataset.reorder); if(ord&&window.RGT_CART){ ord.items.forEach(it=>{ window.RGT_CART.add({ id:it.name.toLowerCase().replace(/\s+/g,'-'), name:it.name, price:it.price, image:it.image }); }); alert('Items added to cart'); }}); });
+    body.querySelectorAll('[data-return]').forEach(b=>{ b.addEventListener('click',()=>{ openSection('returns'); document.getElementById('returnOrderNo').value=b.dataset.return; }); });
   }
 
   function renderReviews(user){
-    const body = document.getElementById('reviewsBody');
-    if(!body) return;
-    const reviews = loadUserData(user.email,'reviews',[]);
-    if(!reviews.length){ body.innerHTML='<div class="profile-empty">No reviews yet. After delivery you can rate products here.</div>'; }
-    else {
-      body.innerHTML = reviews.map(r=>`
-        <div class="profile-card">
-          <div class="profile-card-row"><span class="profile-card-title">${r.product}</span><span class="stars">${'★'.repeat(r.rating)}<span style="color:var(--card-line)">${'★'.repeat(5-r.rating)}</span></span></div>
-          <p class="profile-card-sub">${new Date(r.date).toLocaleDateString('en-ZA')} • ${r.text}</p>
-          <div style="display:flex;gap:6px;margin-top:10px;"><button class="profile-mini-btn danger" data-del-review="${r.id}">Delete</button></div>
-        </div>
-      `).join('');
-    }
-    body.innerHTML += `
+    const body=document.getElementById('reviewsBody'); if(!body) return;
+    const reviews=loadUserData(user.email,'reviews',[]);
+    const avg = reviews.length? (reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1): '0.0';
+    let html = `<div style="display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:var(--surface);border:1px solid var(--card-line);margin-bottom:12px;"><div style="text-align:center;"><p style="font-size:28px;font-weight:800;margin:0;">${avg}</p><p style="margin:2px 0 0;font-size:12px;color:var(--ink-600);">${'★'.repeat(Math.round(avg))} • ${reviews.length} reviews</p></div><div style="flex:1;"><p style="font-size:12px;margin:0;color:var(--ink-600);">Your feedback helps other buyers. Verified purchases show a badge.</p></div></div>`;
+    if(!reviews.length) html+='<div class="profile-empty">No reviews yet.</div>';
+    else html+=reviews.map(r=>`
+      <div class="profile-card">
+        <div class="profile-card-row"><span class="profile-card-title">${r.product} ${r.verified?'<span style="font-size:10px;background:#22c55e;color:#fff;padding:2px 6px;border-radius:999px;margin-left:6px;">VERIFIED</span>':''}</span><span class="stars">${'★'.repeat(r.rating)}<span style="color:var(--card-line)">${'★'.repeat(5-r.rating)}</span></span></div>
+        <p class="profile-card-sub">${new Date(r.date).toLocaleDateString('en-ZA')} • ${r.helpful||0} helpful • ${r.text}</p>
+        <div style="display:flex;gap:6px;margin-top:10px;"><button class="profile-mini-btn danger" data-del-review="${r.id}">Delete</button></div>
+      </div>
+    `).join('');
+    html+=`
       <div style="margin-top:14px;border-top:1px solid var(--card-line);padding-top:14px;">
         <p style="font-weight:700;font-size:13px;margin:0 0 10px;">Write a review</p>
-        <label class="auth-label"><span>Product</span><input type="text" id="reviewProduct" placeholder="e.g. iPhone 16" /></label>
-        <label class="auth-label"><span>Rating</span><select id="reviewRating"><option value="5">★★★★★ 5 - Excellent</option><option value="4">★★★★ 4 - Good</option><option value="3">★★★ 3 - Okay</option><option value="2">★★ 2 - Poor</option><option value="1">★ 1 - Bad</option></select></label>
-        <label class="auth-label"><span>Review</span><textarea id="reviewText" rows="3" placeholder="Share your experience..."></textarea></label>
+        <label class="auth-label"><span>Product *</span><input type="text" id="reviewProduct" placeholder="e.g. iPhone 16" /></label>
+        <label class="auth-label"><span>Rating *</span><select id="reviewRating"><option value="5">★★★★★ 5 - Excellent</option><option value="4">★★★★ 4 - Good</option><option value="3">★★★ 3 - Okay</option><option value="2">★★ 2 - Poor</option><option value="1">★ 1 - Bad</option></select></label>
+        <label class="auth-label"><span>Review *</span><textarea id="reviewText" rows="3" placeholder="Share your experience, delivery, battery, camera..."></textarea></label>
         <button type="button" class="btn btn-block-ink" id="submitReviewBtn" style="width:100%;justify-content:center;">Submit Review</button>
       </div>
     `;
-    body.querySelectorAll('[data-del-review]').forEach(b=>{
-      b.addEventListener('click',()=>{
-        let rv = loadUserData(user.email,'reviews',[]); rv = rv.filter(x=>x.id!==b.dataset.delReview); saveUserData(user.email,'reviews',rv); renderReviews(user);
-      });
-    });
-    const submitBtn = document.getElementById('submitReviewBtn');
-    if(submitBtn) submitBtn.addEventListener('click',()=>{
-      const product = document.getElementById('reviewProduct').value.trim();
-      const rating = parseInt(document.getElementById('reviewRating').value,10);
-      const text = document.getElementById('reviewText').value.trim();
-      if(!product || !text){ alert('Please enter product and review'); return; }
-      const rv = loadUserData(user.email,'reviews',[]);
-      rv.unshift({ id:'rv'+Date.now(), product, rating, text, date:new Date().toISOString() });
-      saveUserData(user.email,'reviews',rv); renderReviews(user);
-    });
+    body.innerHTML=html;
+    body.querySelectorAll('[data-del-review]').forEach(b=>{ b.addEventListener('click',()=>{ let rv=loadUserData(user.email,'reviews',[]); rv=rv.filter(x=>x.id!==b.dataset.delReview); saveUserData(user.email,'reviews',rv); renderReviews(user); }); });
+    const sb=document.getElementById('submitReviewBtn'); if(sb) sb.addEventListener('click',()=>{ const p=document.getElementById('reviewProduct').value.trim(); const ra=parseInt(document.getElementById('reviewRating').value,10); const tx=document.getElementById('reviewText').value.trim(); if(!p||!tx){ alert('Enter product and review'); return; } const rv=loadUserData(user.email,'reviews',[]); rv.unshift({ id:'rv'+Date.now(), product:p, rating:ra, text:tx, date:new Date().toISOString(), helpful:0, verified:true }); saveUserData(user.email,'reviews',rv); renderReviews(user); });
   }
 
   function renderReturns(user){
-    const body = document.getElementById('returnsBody');
-    if(!body) return;
-    const returns = loadUserData(user.email,'returns',[]);
-    if(!returns.length){ body.innerHTML='<div class="profile-empty">No returns requested. You can request a return within 14 days of delivery.</div>'; }
-    else {
-      body.innerHTML = returns.map(r=>`
-        <div class="profile-card">
-          <div class="profile-card-row"><span class="profile-card-title">${r.orderNumber} - ${r.product}</span><span class="order-status-pill" style="background:rgba(224,67,58,.1);color:#e0433a;">${r.status}</span></div>
-          <p class="profile-card-sub">Reason: ${r.reason} • ${new Date(r.date).toLocaleDateString('en-ZA')}</p>
-        </div>
-      `).join('');
-    }
-    body.innerHTML += `
+    const body=document.getElementById('returnsBody'); if(!body) return;
+    const returns=loadUserData(user.email,'returns',[]);
+    let html='';
+    if(!returns.length) html='<div class="profile-empty">No returns requested. You have 14 days from delivery to request a return. Items must be unused in original box.</div>';
+    else html=returns.map(r=>`
+      <div class="profile-card">
+        <div class="profile-card-row"><span class="profile-card-title">${r.orderNumber} - ${r.product}</span><span class="order-status-pill" style="background:rgba(17,24,245,.1);color:var(--blue-700);">${r.status}</span></div>
+        <div class="profile-info-row"><span class="profile-info-label">Reason</span><span class="profile-info-value">${r.reason}</span></div>
+        <div class="profile-info-row"><span class="profile-info-label">Refund</span><span class="profile-info-value">${r.refund}</span></div>
+        <div class="profile-info-row"><span class="profile-info-label">Courier</span><span class="profile-info-value">${r.courier}</span></div>
+        <div class="profile-info-row"><span class="profile-info-label">Requested</span><span class="profile-info-value">${new Date(r.date).toLocaleDateString('en-ZA')}</span></div>
+      </div>
+    `).join('');
+    html+=`
       <div style="margin-top:14px;border-top:1px solid var(--card-line);padding-top:14px;">
-        <p style="font-weight:700;font-size:13px;margin:0 0 10px;">Request a return</p>
-        <label class="auth-label"><span>Order Number</span><input type="text" id="returnOrderNo" placeholder="RGT-..." /></label>
-        <label class="auth-label"><span>Product</span><input type="text" id="returnProduct" placeholder="e.g. iPhone 16" /></label>
-        <label class="auth-label"><span>Reason</span><select id="returnReason"><option>Wrong item</option><option>Defective</option><option>Changed mind</option><option>Wrong color/size</option></select></label>
+        <p style="font-weight:700;font-size:13px;margin:0 0 6px;">Return Policy</p><p style="font-size:11px;color:var(--ink-600);line-height:1.5;margin:0 0 10px;">14-day returns, 6-month warranty on devices. Return shipping free for defective items. Refunds within 3-5 business days after collection.</p>
+        <p style="font-weight:700;font-size:13px;margin:10px 0;">Request a return</p>
+        <label class="auth-label"><span>Order Number *</span><input type="text" id="returnOrderNo" placeholder="RGT-..." /></label>
+        <label class="auth-label"><span>Product *</span><input type="text" id="returnProduct" placeholder="e.g. iPhone 16" /></label>
+        <label class="auth-label"><span>Reason *</span><select id="returnReason"><option>Wrong item</option><option>Defective / Not working</option><option>Changed mind</option><option>Wrong color/size</option><option>Damaged in transit</option></select></label>
         <button type="button" class="btn btn-block-ink" id="submitReturnBtn" style="width:100%;justify-content:center;">Submit Return Request</button>
       </div>
     `;
-    const btn = document.getElementById('submitReturnBtn');
-    if(btn) btn.addEventListener('click',()=>{
-      const orderNumber = document.getElementById('returnOrderNo').value.trim();
-      const product = document.getElementById('returnProduct').value.trim();
-      const reason = document.getElementById('returnReason').value;
-      if(!orderNumber || !product){ alert('Fill order and product'); return; }
-      const ret = loadUserData(user.email,'returns',[]);
-      ret.unshift({ id:'ret'+Date.now(), orderNumber:orderNumber.toUpperCase(), product, reason, status:'Pending Review', date:new Date().toISOString() });
-      saveUserData(user.email,'returns',ret); renderReturns(user);
-    });
+    body.innerHTML=html;
+    const btn=document.getElementById('submitReturnBtn'); if(btn) btn.addEventListener('click',()=>{ const on=document.getElementById('returnOrderNo').value.trim(); const pr=document.getElementById('returnProduct').value.trim(); const re=document.getElementById('returnReason').value; if(!on||!pr){ alert('Fill order and product'); return; } const ret=loadUserData(user.email,'returns',[]); ret.unshift({ id:'ret'+Date.now(), orderNumber:on.toUpperCase(), product:pr, reason:re, status:'Pending Review - We will email you label', date:new Date().toISOString(), refund:'To be assessed', courier:'Awaiting label' }); saveUserData(user.email,'returns',ret); renderReturns(user); });
   }
 
   function renderPayments(user){
-    const body = document.getElementById('paymentsBody');
-    if(!body) return;
-    const payments = loadUserData(user.email,'payments',[]);
-    body.innerHTML = (payments.length? payments.map(p=>`
+    const body=document.getElementById('paymentsBody'); if(!body) return;
+    const payments=loadUserData(user.email,'payments',[]);
+    body.innerHTML=(payments.length?payments.map(p=>`
       <div class="profile-card pm-card">
         <div class="pm-icon ${p.type==='CARD'?'is-card':''}">${p.type==='CARD'?'VISA':'EFT'}</div>
-        <div style="flex:1;min-width:0;"><p class="profile-card-title" style="margin:0 0 2px;">${p.label} ${p.isDefault?'<span style="font-size:10px;background:var(--blue-700);color:#fff;padding:2px 6px;border-radius:999px;margin-left:6px;">DEFAULT</span>':''}</p><p class="profile-card-sub">${p.details}</p></div>
+        <div style="flex:1;min-width:0;"><p class="profile-card-title" style="margin:0 0 2px;">${p.label} ${p.isDefault?'<span style="font-size:10px;background:var(--blue-700);color:#fff;padding:2px 6px;border-radius:999px;margin-left:6px;">DEFAULT</span>':''}</p><p class="profile-card-sub">${p.details}</p><p class="profile-card-sub" style="font-size:11px;">Billing: ${p.billing||'—'}</p></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="profile-mini-btn" data-default-pm="${p.id}">Default</button><button class="profile-mini-btn danger" data-del-pm="${p.id}">Delete</button></div>
       </div>
-    `).join('') : '<div class="profile-empty">No payment methods saved.</div>') + `
+    `).join(''):'<div class="profile-empty">No payment methods saved. Add a card or EFT for faster checkout. All data stored securely locally for demo.</div>')+`
       <div style="margin-top:14px;border-top:1px solid var(--card-line);padding-top:14px;">
         <p style="font-weight:700;font-size:13px;margin:0 0 10px;">Add payment method</p>
-        <label class="auth-label"><span>Type</span><select id="pmType"><option value="CARD">Card (Visa / Mastercard)</option><option value="EFT">EFT / Bank</option></select></label>
-        <label class="auth-label"><span>Label</span><input type="text" id="pmLabel" placeholder="e.g. Visa ending 4242 or Capitec ** 4582" /></label>
-        <label class="auth-label"><span>Details</span><input type="text" id="pmDetails" placeholder="Exp date or bank name" /></label>
+        <label class="auth-label"><span>Type *</span><select id="pmType"><option value="CARD">Card (Visa / Mastercard)</option><option value="EFT">EFT / Bank Account</option></select></label>
+        <label class="auth-label"><span>Display Label *</span><input type="text" id="pmLabel" placeholder="e.g. Visa ending 4242 or Capitec ** 4582" /></label>
+        <label class="auth-label"><span>Details (exp, bank name) *</span><input type="text" id="pmDetails" placeholder="Exp 12/27 or Capitec Global One 1052..." /></label>
+        <label class="auth-label"><span>Billing Address</span><input type="text" id="pmBilling" placeholder="69 Hooge Street, Mokopane" /></label>
         <button type="button" class="btn btn-block-ink" id="addPmBtn" style="width:100%;justify-content:center;">Save Payment Method</button>
+        <p style="font-size:10px;color:var(--ink-400);margin:8px 0 0;text-align:center;">🔒 256-bit encryption • We never store CVV • Demo only</p>
       </div>
     `;
-    body.querySelectorAll('[data-del-pm]').forEach(b=>{
-      b.addEventListener('click',()=>{
-        let pm = loadUserData(user.email,'payments',[]); pm = pm.filter(x=>x.id!==b.dataset.delPm); if(pm.length && !pm.some(x=>x.isDefault)) pm[0].isDefault=true; saveUserData(user.email,'payments',pm); renderPayments(user);
-      });
-    });
-    body.querySelectorAll('[data-default-pm]').forEach(b=>{
-      b.addEventListener('click',()=>{
-        let pm = loadUserData(user.email,'payments',[]); pm = pm.map(x=>({ ...x, isDefault: x.id===b.dataset.defaultPm })); saveUserData(user.email,'payments',pm); renderPayments(user);
-      });
-    });
-    const addBtn = document.getElementById('addPmBtn');
-    if(addBtn) addBtn.addEventListener('click',()=>{
-      const type = document.getElementById('pmType').value;
-      const label = document.getElementById('pmLabel').value.trim();
-      const details = document.getElementById('pmDetails').value.trim();
-      if(!label){ alert('Enter label'); return; }
-      const pm = loadUserData(user.email,'payments',[]);
-      pm.push({ id:'pm'+Date.now(), type, label, details: details|| (type==='CARD'?'Card':'Bank account'), isDefault: pm.length===0 });
-      saveUserData(user.email,'payments',pm); renderPayments(user);
-    });
+    body.querySelectorAll('[data-del-pm]').forEach(b=>{ b.addEventListener('click',()=>{ let pm=loadUserData(user.email,'payments',[]); pm=pm.filter(x=>x.id!==b.dataset.delPm); if(pm.length&&!pm.some(x=>x.isDefault)) pm[0].isDefault=true; saveUserData(user.email,'payments',pm); renderPayments(user); }); });
+    body.querySelectorAll('[data-default-pm]').forEach(b=>{ b.addEventListener('click',()=>{ let pm=loadUserData(user.email,'payments',[]); pm=pm.map(x=>({...x,isDefault:x.id===b.dataset.defaultPm})); saveUserData(user.email,'payments',pm); renderPayments(user); }); });
+    const addBtn=document.getElementById('addPmBtn'); if(addBtn) addBtn.addEventListener('click',()=>{ const t=document.getElementById('pmType').value; const l=document.getElementById('pmLabel').value.trim(); const d=document.getElementById('pmDetails').value.trim(); const bil=document.getElementById('pmBilling').value.trim(); if(!l||!d){ alert('Enter label and details'); return; } const pm=loadUserData(user.email,'payments',[]); pm.push({ id:'pm'+Date.now(), type:t, label:l, details:d, billing:bil||user.address||'', isDefault:pm.length===0 }); saveUserData(user.email,'payments',pm); renderPayments(user); });
   }
 
   function renderDetails(user){
-    const body = document.getElementById('detailsBody');
-    if(!body) return;
-    body.innerHTML = `
+    const body=document.getElementById('detailsBody'); if(!body) return;
+    body.innerHTML=`
       <div class="auth-error" id="detailsError"></div>
       <form id="detailsForm">
-        <label class="auth-label"><span>Full Name</span><input type="text" id="detailName" value="${(user.name||'').replace(/"/g,'&quot;')}" required /></label>
-        <label class="auth-label"><span>Email</span><input type="email" id="detailEmail" value="${(user.email||'').replace(/"/g,'&quot;')}" required /></label>
-        <label class="auth-label"><span>Phone</span><input type="tel" id="detailPhone" value="${(user.phone||'').replace(/"/g,'&quot;')}" required /></label>
-        <label class="auth-label"><span>Shipping Address</span><textarea id="detailAddress" rows="3" required>${user.address||''}</textarea></label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <label class="auth-label"><span>First Name *</span><input type="text" id="detailFirst" value="${(user.name||'').split(' ')[0]||''}" required /></label>
+          <label class="auth-label"><span>Last Name *</span><input type="text" id="detailLast" value="${(user.name||'').split(' ').slice(1).join(' ')||''}" required /></label>
+        </div>
+        <label class="auth-label"><span>Full Name *</span><input type="text" id="detailName" value="${(user.name||'').replace(/"/g,'&quot;')}" required /></label>
+        <label class="auth-label"><span>Email Address *</span><input type="email" id="detailEmail" value="${(user.email||'').replace(/"/g,'&quot;')}" required /></label>
+        <label class="auth-label"><span>Phone Number *</span><input type="tel" id="detailPhone" value="${(user.phone||'').replace(/"/g,'&quot;')}" required /></label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <label class="auth-label"><span>ID Number</span><input type="text" id="detailId" value="${(user.idNumber||'').replace(/"/g,'&quot;')}" /></label>
+          <label class="auth-label"><span>Date of Birth</span><input type="date" id="detailDob" value="${user.dob||''}" /></label>
+        </div>
+        <label class="auth-label"><span>Shipping Address *</span><textarea id="detailAddress" rows="2" required>${user.address||''}</textarea></label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <label class="auth-label"><span>City *</span><input type="text" id="detailCity" value="${(user.city||'Mokopane').replace(/"/g,'&quot;')}" required /></label>
+          <label class="auth-label"><span>Province *</span><select id="detailProvince"><option ${user.province==='Limpopo'?'selected':''}>Limpopo</option><option ${user.province==='Gauteng'?'selected':''}>Gauteng</option><option ${user.province==='Western Cape'?'selected':''}>Western Cape</option><option ${user.province==='KZN'?'selected':''}>KZN</option><option>Other</option></select></label>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <label class="auth-label"><span>Postal Code *</span><input type="text" id="detailPostal" value="${(user.postal||'0601').replace(/"/g,'&quot;')}" required /></label>
+          <label class="auth-label"><span>Country</span><input type="text" value="South Africa" disabled /></label>
+        </div>
+        <label style="display:flex;gap:8px;align-items:center;font-size:12px;color:var(--ink-600);margin:8px 0;"><input type="checkbox" id="detailNewsletter" ${user.newsletter?'checked':''} /> Subscribe to deals & new drops</label>
         <button type="submit" class="btn btn-block-ink" style="width:100%;justify-content:center;">Save Changes</button>
       </form>
-      <div style="margin-top:16px;padding:12px;border-radius:12px;background:var(--surface);border:1px solid var(--card-line);font-size:12px;color:var(--ink-600);">Member since ${new Date(user.createdAt||Date.now()).toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'})} • Securely stored locally (demo)</div>
+      <div style="margin-top:16px;padding:12px;border-radius:12px;background:var(--surface);border:1px solid var(--card-line);font-size:11px;color:var(--ink-600);line-height:1.5;">
+        <b>Account security:</b> Member since ${new Date(user.createdAt||Date.now()).toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'})} • Email verified • 2FA not enabled • Data stored locally (demo).<br/>
+        <span style="color:var(--ink-400);">Support: info@raregradetech.com • +27 61 527 0749 • 69 Hooge Street, Mokopane</span>
+      </div>
     `;
-    const form = document.getElementById('detailsForm');
-    const err = document.getElementById('detailsError');
+    const form=document.getElementById('detailsForm'); const err=document.getElementById('detailsError');
     form.addEventListener('submit',(e)=>{
       e.preventDefault();
-      const newName = document.getElementById('detailName').value.trim();
-      const newEmail = document.getElementById('detailEmail').value.trim().toLowerCase();
-      const newPhone = document.getElementById('detailPhone').value.trim();
-      const newAddress = document.getElementById('detailAddress').value.trim();
-      if(!newName || !newEmail || !newPhone || !newAddress){ err.textContent='Fill all fields'; err.classList.add('is-visible'); return; }
+      const first=document.getElementById('detailFirst').value.trim();
+      const last=document.getElementById('detailLast').value.trim();
+      const fullName=document.getElementById('detailName').value.trim() || (first+' '+last).trim();
+      const newEmail=document.getElementById('detailEmail').value.trim().toLowerCase();
+      const newPhone=document.getElementById('detailPhone').value.trim();
+      const newAddress=document.getElementById('detailAddress').value.trim();
+      const city=document.getElementById('detailCity').value.trim();
+      const province=document.getElementById('detailProvince').value;
+      const postal=document.getElementById('detailPostal').value.trim();
+      const idNum=document.getElementById('detailId').value.trim();
+      const dob=document.getElementById('detailDob').value;
+      const newsletter=document.getElementById('detailNewsletter').checked;
+      if(!fullName||!newEmail||!newPhone||!newAddress){ err.textContent='Fill required fields'; err.classList.add('is-visible'); return; }
       err.classList.remove('is-visible');
-      let accounts = loadAccounts();
-      const idx = accounts.findIndex(a=>a.email.toLowerCase()===user.email.toLowerCase());
+      let accounts=loadAccounts(); const idx=accounts.findIndex(a=>a.email.toLowerCase()===user.email.toLowerCase());
       if(idx>=0){
-        if(newEmail!==user.email.toLowerCase() && accounts.some(a=>a.email.toLowerCase()===newEmail)){ err.textContent='Email already taken'; err.classList.add('is-visible'); return; }
-        accounts[idx].name = newName; accounts[idx].email = newEmail; accounts[idx].phone = newPhone; accounts[idx].address = newAddress;
+        if(newEmail!==user.email.toLowerCase()&&accounts.some(a=>a.email.toLowerCase()===newEmail)){ err.textContent='Email already taken'; err.classList.add('is-visible'); return; }
+        accounts[idx].name=fullName; accounts[idx].email=newEmail; accounts[idx].phone=newPhone; accounts[idx].address=newAddress; accounts[idx].city=city; accounts[idx].province=province; accounts[idx].postal=postal; accounts[idx].idNumber=idNum; accounts[idx].dob=dob; accounts[idx].newsletter=newsletter;
         saveAccounts(accounts);
         if(newEmail!==user.email.toLowerCase()){
-          ['orders','payments','reviews','returns'].forEach(suffix=>{
-            const data = loadUserData(user.email,suffix,null);
-            if(data){ saveUserData(newEmail,suffix,data); try{ localStorage.removeItem(userDataKey(user.email,suffix)); }catch(e){} }
-          });
+          ['orders','payments','reviews','returns'].forEach(s=>{ const d=loadUserData(user.email,s,null); if(d){ saveUserData(newEmail,s,d); try{ localStorage.removeItem(userDataKey(user.email,s)); }catch(e){} } });
         }
       }
-      const updated = { ...user, name:newName, email:newEmail, phone:newPhone, address:newAddress };
-      saveCurrentUser(updated);
-      renderAccountHeader(updated);
-      renderPendingOrders(updated); renderOrderHistory(updated); renderReviews(updated); renderReturns(updated); renderPayments(updated);
-      trigger.classList.add('is-logged-in');
-      alert('Details saved');
+      const updated={ ...user, name:fullName, email:newEmail, phone:newPhone, address:newAddress, city, province, postal, idNumber:idNum, dob, newsletter };
+      saveCurrentUser(updated); renderAccountHeader(updated); renderPendingOrders(updated); renderOrderHistory(updated); renderReviews(updated); renderReturns(updated); renderPayments(updated); renderStats(updated);
+      trigger.classList.add('is-logged-in'); alert('Details saved successfully');
     });
   }
 
   function renderAccountHeader(user){
-    const initial = (user.name||user.email||'U').trim().charAt(0).toUpperCase();
     if(!headerWrap) return;
-    headerWrap.innerHTML = `
+    const initial=(user.name||user.email||'U').trim().charAt(0).toUpperCase();
+    headerWrap.innerHTML=`
       <div class="profile-account-header">
         <div class="profile-avatar">${initial}</div>
-        <div class="profile-account-meta"><p class="profile-name">${user.name||'User'}</p><p class="profile-email">${user.email}</p></div>
+        <div class="profile-account-meta"><p class="profile-name">${user.name||'User'}</p><p class="profile-email">${user.email} • ${user.phone||''}</p></div>
         <button type="button" class="profile-logout" id="logoutBtn">Log out</button>
       </div>
     `;
-    const lb = document.getElementById('logoutBtn');
-    if(lb) lb.addEventListener('click', handleLogout);
+    const lb=document.getElementById('logoutBtn'); if(lb) lb.addEventListener('click', handleLogout);
   }
 
-  function openSection(key){
-    document.querySelectorAll('.profile-section').forEach(sec=>{
-      if(sec.dataset.section===key) sec.classList.add('is-open');
-    });
-  }
+  function openSection(key){ document.querySelectorAll('.profile-section').forEach(sec=>{ if(sec.dataset.section===key) sec.classList.add('is-open'); }); const el=document.querySelector(`.profile-section[data-section="${key}"]`); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); }
 
   function bindAccordion(){
     document.querySelectorAll('.profile-section-header').forEach(h=>{
       h.addEventListener('click',()=>{
-        const sec = h.closest('.profile-section');
-        const isOpen = sec.classList.contains('is-open');
+        const sec=h.closest('.profile-section'); const isOpen=sec.classList.contains('is-open');
         if(isOpen) sec.classList.remove('is-open'); else sec.classList.add('is-open');
       });
     });
   }
 
-  function refreshAllAccountSections(user){
+  function refreshAll(user){
     ensureMockDataForUser(user);
     renderAccountHeader(user);
+    renderStats(user);
     renderPendingOrders(user);
     renderOrderHistory(user);
     renderProfileWishlist();
@@ -3282,140 +3247,108 @@ svg.filter-cat-icon{
   }
 
   function showAuthView(){
-    if(authView) authView.hidden = false;
-    if(accountView) accountView.hidden = true;
-    if(title) title.textContent = 'My Account';
-    if(trigger){ trigger.classList.remove('is-logged-in'); trigger.classList.remove('has-order'); const saved = loadTrackedOrder(); if(saved) trigger.classList.add('has-order'); }
+    if(authView) authView.hidden=false; if(accountView) accountView.hidden=true; if(title) title.textContent='My Account';
+    if(trigger){ trigger.classList.remove('is-logged-in'); const saved=loadTrackedOrder(); if(saved) trigger.classList.add('has-order'); else trigger.classList.remove('has-order'); }
   }
   function showAccountView(user){
-    if(authView) authView.hidden = true;
-    if(accountView) accountView.hidden = false;
-    if(title) title.textContent = 'My Account';
+    if(authView) authView.hidden=true; if(accountView) accountView.hidden=false; if(title) title.textContent='My Account';
     if(trigger){ trigger.classList.add('is-logged-in'); trigger.classList.add('has-order'); }
-    refreshAllAccountSections(user);
-    showAccountLookup();
+    refreshAll(user); showAccountLookup();
   }
 
-  function handleLogin(email, password){
-    const accounts = loadAccounts();
-    const acc = accounts.find(a=>a.email.toLowerCase()===email.toLowerCase() && a.password===password);
-    return acc||null;
-  }
+  function handleLogin(email,pass){ const acc=loadAccounts(); return acc.find(a=>a.email.toLowerCase()===email.toLowerCase()&&a.password===pass)||null; }
 
   document.querySelectorAll('[data-auth-tab]').forEach(btn=>{
     btn.addEventListener('click',()=>{
-      document.querySelectorAll('[data-auth-tab]').forEach(b=>b.classList.remove('is-active'));
-      btn.classList.add('is-active');
-      const tab = btn.dataset.authTab;
-      if(tab==='login'){ if(authLoginView) authLoginView.hidden=false; if(authSignupView) authSignupView.hidden=true; } else { if(authLoginView) authLoginView.hidden=true; if(authSignupView) authSignupView.hidden=false; }
+      document.querySelectorAll('[data-auth-tab]').forEach(b=>b.classList.remove('is-active')); btn.classList.add('is-active');
+      const tab=btn.dataset.authTab; if(tab==='login'){ if(authLoginView) authLoginView.hidden=false; if(authSignupView) authSignupView.hidden=true; } else { if(authLoginView) authLoginView.hidden=true; if(authSignupView) authSignupView.hidden=false; }
     });
   });
 
   if(loginForm) loginForm.addEventListener('submit',(e)=>{
-    e.preventDefault();
-    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-    const password = document.getElementById('loginPassword').value;
-    const user = handleLogin(email,password);
-    if(!user){ if(loginError){ loginError.textContent='Invalid email or password'; loginError.classList.add('is-visible'); } return; }
-    if(loginError) loginError.classList.remove('is-visible');
-    saveCurrentUser({ name:user.name, email:user.email, phone:user.phone, address:user.address, createdAt:user.createdAt });
-    showAccountView({ name:user.name, email:user.email, phone:user.phone, address:user.address, createdAt:user.createdAt });
+    e.preventDefault(); const email=document.getElementById('loginEmail').value.trim().toLowerCase(); const pass=document.getElementById('loginPassword').value; const u=handleLogin(email,pass);
+    if(!u){ if(loginError){ loginError.textContent='Invalid email or password. Try demo@raregrade.co.za / demo123'; loginError.classList.add('is-visible'); } return; }
+    if(loginError) loginError.classList.remove('is-visible'); saveCurrentUser({ name:u.name, email:u.email, phone:u.phone, address:u.address, city:u.city, province:u.province, postal:u.postal, idNumber:u.idNumber, dob:u.dob, newsletter:u.newsletter, createdAt:u.createdAt }); showAccountView({ name:u.name, email:u.email, phone:u.phone, address:u.address, city:u.city, province:u.province, postal:u.postal, idNumber:u.idNumber, dob:u.dob, newsletter:u.newsletter, createdAt:u.createdAt });
+  });
+
+  if(demoLoginBtn) demoLoginBtn.addEventListener('click',()=>{
+    ensureDemoAccount(); const demoAcc=loadAccounts().find(a=>a.email==='demo@raregrade.co.za'); if(demoAcc){ saveCurrentUser({ name:demoAcc.name, email:demoAcc.email, phone:demoAcc.phone, address:demoAcc.address, city:demoAcc.city, province:demoAcc.province, postal:demoAcc.postal, idNumber:demoAcc.idNumber, dob:demoAcc.dob, newsletter:demoAcc.newsletter, createdAt:demoAcc.createdAt }); showAccountView({ name:demoAcc.name, email:demoAcc.email, phone:demoAcc.phone, address:demoAcc.address, city:demoAcc.city, province:demoAcc.province, postal:demoAcc.postal, idNumber:demoAcc.idNumber, dob:demoAcc.dob, newsletter:demoAcc.newsletter, createdAt:demoAcc.createdAt }); openDrawer(); }
   });
 
   if(signupForm) signupForm.addEventListener('submit',(e)=>{
-    e.preventDefault();
-    const name = document.getElementById('signupName').value.trim();
-    const email = document.getElementById('signupEmail').value.trim().toLowerCase();
-    const phone = document.getElementById('signupPhone').value.trim();
-    const password = document.getElementById('signupPassword').value;
-    const confirm = document.getElementById('signupConfirm').value;
-    if(password.length<6){ if(signupError){ signupError.textContent='Password must be at least 6 characters'; signupError.classList.add('is-visible'); } return; }
-    if(password!==confirm){ if(signupError){ signupError.textContent='Passwords do not match'; signupError.classList.add('is-visible'); } return; }
-    const accounts = loadAccounts();
-    if(accounts.some(a=>a.email.toLowerCase()===email)){ if(signupError){ signupError.textContent='An account with this email already exists'; signupError.classList.add('is-visible'); } return; }
+    e.preventDefault(); const name=document.getElementById('signupName').value.trim(); const email=document.getElementById('signupEmail').value.trim().toLowerCase(); const phone=document.getElementById('signupPhone').value.trim(); const idVal=document.getElementById('signupId').value.trim(); const pass=document.getElementById('signupPassword').value; const conf=document.getElementById('signupConfirm').value;
+    if(pass.length<6){ if(signupError){ signupError.textContent='Password must be at least 6 characters'; signupError.classList.add('is-visible'); } return; }
+    if(pass!==conf){ if(signupError){ signupError.textContent='Passwords do not match'; signupError.classList.add('is-visible'); } return; }
+    const acc=loadAccounts(); if(acc.some(a=>a.email.toLowerCase()===email)){ if(signupError){ signupError.textContent='An account with this email already exists'; signupError.classList.add('is-visible'); } return; }
     if(signupError) signupError.classList.remove('is-visible');
-    const newAcc = { name, email, phone, password, address: ADDRESSES[0], createdAt:new Date().toISOString() };
-    accounts.push(newAcc); saveAccounts(accounts);
-    const userObj = { name, email, phone, address:newAcc.address, createdAt:newAcc.createdAt };
-    saveCurrentUser(userObj);
-    ensureMockDataForUser(userObj);
-    showAccountView(userObj);
+    const newAcc={ name, email, phone, password:pass, address:ADDRESSES[0], city:'Mokopane', province:'Limpopo', postal:'0601', idNumber:idVal, dob:'', newsletter:true, createdAt:new Date().toISOString() }; acc.push(newAcc); saveAccounts(acc);
+    const uObj={ name, email, phone, address:newAcc.address, city:newAcc.city, province:newAcc.province, postal:newAcc.postal, idNumber:idVal, dob:'', newsletter:true, createdAt:newAcc.createdAt }; saveCurrentUser(uObj); ensureMockDataForUser(uObj); showAccountView(uObj);
   });
 
-  function handleLogout(){
-    clearCurrentUser();
-    showAuthView();
-    showGuestLookup();
-  }
+  function handleLogout(){ clearCurrentUser(); showAuthView(); showGuestLookup(); }
 
   if(lookupForm) lookupForm.addEventListener('submit',(e)=>{
-    e.preventDefault();
-    const orderNumber = numberInput.value.trim();
-    const contact = contactInput.value.trim();
-    if(!orderNumber || !contact){ if(lookupError) lookupError.classList.add('is-visible'); return; }
-    if(lookupError) lookupError.classList.remove('is-visible');
-    const order = generateOrder(orderNumber, contact);
-    saveTrackedOrder(orderNumber, contact);
-    renderOrderInto(detailView, order, 'orderTrackAnotherTop', showGuestLookup);
-    if(lookupForm) lookupForm.style.display='none';
-    if(title) title.textContent='Your Order';
-    if(trigger) trigger.classList.add('has-order');
+    e.preventDefault(); const o=numberInput.value.trim(); const c=contactInput.value.trim(); if(!o||!c){ if(lookupError) lookupError.classList.add('is-visible'); return; } if(lookupError) lookupError.classList.remove('is-visible'); const order=generateOrder(o,c); saveTrackedOrder(o,c); renderOrderInto(detailView, order, 'orderTrackAnotherTop', showGuestLookup); if(lookupForm) lookupForm.style.display='none'; if(title) title.textContent='Your Order'; if(trigger) trigger.classList.add('has-order');
   });
 
   if(accountLookupForm) accountLookupForm.addEventListener('submit',(e)=>{
-    e.preventDefault();
-    const orderNumber = accountNumberInput.value.trim();
-    const contact = accountContactInput.value.trim();
-    if(!orderNumber || !contact){ if(accountLookupError) accountLookupError.classList.add('is-visible'); return; }
-    if(accountLookupError) accountLookupError.classList.remove('is-visible');
-    const order = generateOrder(orderNumber, contact);
-    renderOrderInto(accountDetailView, order, 'accountTrackAnotherTop', showAccountLookup);
-    if(accountLookupForm) accountLookupForm.style.display='none';
+    e.preventDefault(); const o=accountNumberInput.value.trim(); const c=accountContactInput.value.trim(); if(!o||!c){ if(accountLookupError) accountLookupError.classList.add('is-visible'); return; } if(accountLookupError) accountLookupError.classList.remove('is-visible'); const order=generateOrder(o,c); renderOrderInto(accountDetailView, order, 'accountTrackAnotherTop', showAccountLookup); if(accountLookupForm) accountLookupForm.style.display='none';
   });
 
+  // ROBUST OPEN/CLOSE - always opens after closing
   function openDrawer(){
-    if(drawer) drawer.classList.add('open');
-    if(overlay) overlay.classList.add('open');
-    const current = loadCurrentUser();
+    if(!drawer||!overlay) return;
+    // Force reflow to ensure transition plays even after rapid close
+    drawer.classList.remove('open'); overlay.classList.remove('open');
+    void drawer.offsetWidth;
+    drawer.classList.add('open'); overlay.classList.add('open');
+    document.body.style.overflow='hidden';
+    const current=loadCurrentUser();
     if(current){ showAccountView(current); } else { showAuthView(); }
+    // Ensure focus for accessibility
+    setTimeout(()=>{ if(closeBtn) closeBtn.focus(); }, 100);
   }
-  function closeDrawer(){ if(drawer) drawer.classList.remove('open'); if(overlay) overlay.classList.remove('open'); }
+  function closeDrawer(){
+    if(drawer) drawer.classList.remove('open');
+    if(overlay) overlay.classList.remove('open');
+    document.body.style.overflow='';
+    // Reset guest view to allow fresh open next time but keep account sections open state
+    setTimeout(()=>{
+      const cur=loadCurrentUser();
+      if(!cur) showGuestLookup(); else showAccountLookup();
+    }, 300);
+  }
 
-  if(trigger) trigger.addEventListener('click', ()=>{
-    const saved = loadTrackedOrder();
-    const current = loadCurrentUser();
-    if(current){
-      showAccountView(current);
-    } else if(saved && detailView && detailView.style.display!=='block'){
-      const order = generateOrder(saved.orderNumber, saved.contact);
-      renderOrderInto(detailView, order, 'orderTrackAnotherTop', showGuestLookup);
-      if(lookupForm) lookupForm.style.display='none';
-      if(title) title.textContent='Your Order';
-    } else {
-      showGuestLookup();
-    }
-    openDrawer();
-  });
+  if(trigger){
+    // Remove any old listeners by cloning
+    const newTrigger=trigger.cloneNode(true);
+    trigger.parentNode.replaceChild(newTrigger, trigger);
+    const freshTrigger=document.getElementById('profileTrigger');
+    freshTrigger.addEventListener('click', (e)=>{
+      e.preventDefault(); e.stopPropagation();
+      const saved=loadTrackedOrder(); const cur=loadCurrentUser();
+      if(cur){ showAccountView(cur); }
+      else if(saved && detailView && detailView.style.display!=='block'){
+        const order=generateOrder(saved.orderNumber, saved.contact);
+        renderOrderInto(detailView, order, 'orderTrackAnotherTop', showGuestLookup);
+        if(lookupForm) lookupForm.style.display='none';
+        if(title) title.textContent='Your Order';
+      } else { showGuestLookup(); }
+      openDrawer();
+    });
+  }
   if(closeBtn) closeBtn.addEventListener('click', closeDrawer);
   if(overlay) overlay.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ const d=document.getElementById('profileDrawer'); if(d&&d.classList.contains('open')) closeDrawer(); } });
 
   bindAccordion();
-  const currentUser = loadCurrentUser();
-  if(currentUser){
-    if(trigger){ trigger.classList.add('is-logged-in'); trigger.classList.add('has-order'); }
-  } else if(loadTrackedOrder()){
-    if(trigger) trigger.classList.add('has-order');
-  }
+  ensureDemoAccount();
+  const curUser=loadCurrentUser();
+  if(curUser){ if(trigger) { const t=document.getElementById('profileTrigger'); if(t){ t.classList.add('is-logged-in'); t.classList.add('has-order'); } } } else if(loadTrackedOrder()){ const t=document.getElementById('profileTrigger'); if(t) t.classList.add('has-order'); }
 
-  window.RGT_ACCOUNT = {
-    getCurrentUser: loadCurrentUser,
-    refreshWishlist: renderProfileWishlist
-  };
-
-  window.addEventListener('storage', (e)=>{
-    if(e.key==='rgt_store_wishlist'){ renderProfileWishlist(); }
-  });
-  window.addEventListener('rgt_wishlist_updated', renderProfileWishlist);
+  window.RGT_ACCOUNT={ getCurrentUser:loadCurrentUser, refreshWishlist:renderProfileWishlist, openDrawer, closeDrawer };
+  window.addEventListener('storage', (e)=>{ if(e.key==='rgt_store_wishlist'){ renderProfileWishlist(); const cu=loadCurrentUser(); if(cu) renderStats(cu); } });
+  window.addEventListener('rgt_wishlist_updated', ()=>{ renderProfileWishlist(); const cu=loadCurrentUser(); if(cu) renderStats(cu); });
 
 })();
 </script>
