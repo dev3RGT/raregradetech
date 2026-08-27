@@ -686,6 +686,30 @@
     .btn{ padding:13px 20px;font-size:14px; }
   }
 </style>
+<!-- Rare Grade Tech Firebase integration: Google-only auth + Realtime Database persistence -->
+<script>/* Rare Grade Tech standalone Firebase bridge.
+   Google-only auth; user-owned shop state lives under users/{uid} in Realtime Database.
+   Never stores card numbers or CVV. */
+(function(){
+  const cfg={apiKey:'AIzaSyCIQzfyMvrUKJtqqGn3jPqFt2C805CEHs',authDomain:'raregrade.firebaseapp.com',projectId:'raregrade',storageBucket:'raregrade.firebasestorage.app',messagingSenderId:'794018278876',appId:'1:794018278876:web:cc503804a7ef8f05287319'};
+  const load=(src)=>new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=reject;document.head.appendChild(s)});
+  const boot=async()=>{await load('https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js');await load('https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js');await load('https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js');const app=firebase.initializeApp(cfg);const auth=firebase.auth(app);const db=firebase.database(app);const provider=new firebase.auth.GoogleAuthProvider();
+    const state={user:null}; window.rgFirebase={auth,db,state,signIn:()=>auth.signInWithPopup(provider),requireAuth:async()=>{if(auth.currentUser)return auth.currentUser;const r=await auth.signInWithPopup(provider);return r.user},path:(p)=>db.ref(p)};
+    auth.onAuthStateChanged(async u=>{state.user=u;document.documentElement.dataset.rgUser=u?'signed-in':'signed-out';if(u){await db.ref('users/'+u.uid).update({displayName:u.displayName||'',email:u.email||'',photoURL:u.photoURL||'',lastSeen:Date.now()});await syncFromFirebase(u.uid)};window.dispatchEvent(new CustomEvent('rg-auth',{detail:u}))});
+    const originalSet=Storage.prototype.setItem,originalRemove=Storage.prototype.removeItem;
+    Storage.prototype.setItem=function(k,v){originalSet.call(this,k,v);if(k==='rgt_store_cart'||k==='rgt_store_cart_notes')pushLocalToFirebase()};
+    Storage.prototype.removeItem=function(k){originalRemove.call(this,k);if(k==='rgt_store_cart'||k==='rgt_store_cart_notes')pushLocalToFirebase()};
+    async function pushLocalToFirebase(){const u=state.user;if(!u)return;let cart=[];try{cart=JSON.parse(localStorage.getItem('rgt_store_cart')||'[]')}catch(e){};await db.ref('users/'+u.uid+'/cart').set(cart.reduce((a,x,i)=>{a[x.key||x.id||String(i)]={...x};return a},{}));await db.ref('users/'+u.uid+'/cartNotes').set(localStorage.getItem('rgt_store_cart_notes')||'')}
+    async function syncFromFirebase(uid){const s=await db.ref('users/'+uid+'/cart').once('value');if(s.exists()){const v=s.val()||{};originalSet.call(localStorage,'rgt_store_cart',JSON.stringify(Object.values(v)))}const n=await db.ref('users/'+uid+'/cartNotes').once('value');if(n.exists())originalSet.call(localStorage,'rgt_store_cart_notes',n.val()||'');}
+    function toast(msg){const el=document.createElement('div');el.textContent=msg;Object.assign(el.style,{position:'fixed',left:'50%',bottom:'24px',transform:'translateX(-50%)',background:'#090b25',color:'#fff',padding:'12px 18px',borderRadius:'999px',zIndex:9999,font:'600 13px Inter, sans-serif',boxShadow:'0 12px 30px #0004'});document.body.appendChild(el);setTimeout(()=>el.remove(),3200)}
+    function gate(e){if(state.user)return true;e.preventDefault();e.stopImmediatePropagation();window.rgFirebase.requireAuth().then(()=>toast('Signed in with Google — you can continue.')).catch(()=>toast('Google sign-in was cancelled.'));return false}
+    document.addEventListener('click',e=>{const el=e.target.closest('a,button');if(!el)return;const label=(el.textContent||'').toLowerCase();const href=el.getAttribute('href')||'';if(label.includes('checkout')||label.includes('place order')||href.includes('checkout'))gate(e);if(label.includes('review')||label.includes('submit review'))gate(e)},true);
+    document.addEventListener('submit',async e=>{const form=e.target;if(!(form instanceof HTMLFormElement))return;const text=(form.innerText||'').toLowerCase();const isCheckout=text.includes('checkout')||form.id.toLowerCase().includes('checkout');const isReview=text.includes('review');if((isCheckout||isReview)&&!gate(e))return;if(!state.user)return;const values=Object.fromEntries(new FormData(form).entries());if(isCheckout){const cart=JSON.parse(localStorage.getItem('rgt_store_cart')||'[]');const total=cart.reduce((sum,item)=>sum+Number(item.price||0)*Number(item.qty||1),0);const orderRef=db.ref('users/'+state.user.uid+'/orders').push();await orderRef.set({id:orderRef.key,items:cart,total,fulfillment:values.fulfillment||'delivery',address:values.address||values.deliveryAddress||'',paymentMethod:values.paymentMethod||'selected',status:'Order received',createdAt:Date.now()});toast('Order saved to your Google account.')}if(isReview){const productId=form.dataset.productId||document.body.dataset.productId||location.search.replace('?product=','')||'unknown';const reviewRef=db.ref('reviews/'+productId).push();await reviewRef.set({id:reviewRef.key,productId,rating:Number(values.rating||values.stars||5),text:String(values.review||values.comment||values.body||''),authorUid:state.user.uid,authorName:state.user.displayName||'Google customer',createdAt:Date.now(),status:'published'});}} ,true);
+    window.addEventListener('rg-auth',e=>{if(e.detail)toast('Google account connected — cart and profile data are syncing to Firebase.');});
+  };
+  boot().catch(err=>console.error('Rare Grade Firebase bridge failed',err));
+})();
+</script>
 </head>
 <body>
 <div class="page-anim">
