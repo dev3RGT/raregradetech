@@ -261,10 +261,21 @@
   .pd-storage-btn{
     padding:10px 18px; border-radius:999px; border:1px solid var(--card-line); background:var(--surface-alt);
     font-size:13.5px; font-weight:700; color:var(--ink-600); cursor:pointer;
-    transition:border-color .2s ease, color .2s ease, background .2s ease, transform .2s ease;
+    transition:border-color .2s ease, color .2s ease, background .3s cubic-bezier(.34,1.56,.64,1), transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease;
   }
   .pd-storage-btn:hover{ border-color:var(--blue-accent); color:var(--blue-700); transform:translateY(-2px); }
-  .pd-storage-btn.is-active{ border-color:var(--blue-700); background:var(--blue-700); color:#fff; }
+  .pd-storage-btn.is-active{ border-color:var(--blue-700); background:var(--blue-700); color:#fff; box-shadow:0 8px 18px rgba(17,24,245,.28); }
+  .pd-storage-btn.is-active:hover{ transform:translateY(-2px) scale(1.03); }
+
+  /* Storage + Condition sit side by side, separated by a thin divider */
+  .pd-variant-row{ display:flex; align-items:flex-start; gap:22px; margin-bottom:20px; }
+  .pd-variant-row .pd-variant-group{ margin-bottom:0; flex:1 1 0; min-width:0; }
+  .pd-variant-sep{ width:1px; align-self:stretch; background:var(--card-line); flex:none; margin-top:2px; }
+  .pd-variant-sep[hidden]{ display:none; }
+  @media (max-width:420px){
+    .pd-variant-row{ flex-direction:column; gap:20px; }
+    .pd-variant-row .pd-variant-sep{ display:none; }
+  }
   .pd-color-btn{
     position:relative; width:34px; height:34px; border-radius:50%;
     border:2px solid transparent; padding:2px; background:none; cursor:pointer;
@@ -305,16 +316,37 @@
     font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem; color:var(--ink-900);
     text-align:left;
   }
-  .pd-specs-toggle .pd-specs-chevron{ flex:none; width:20px; height:20px; color:var(--blue-700); transition:transform .25s ease; }
+  .pd-specs-toggle{ transition:color .2s ease; }
+  .pd-specs-toggle:hover{ color:var(--blue-700); }
+  .pd-specs-toggle .pd-specs-chevron{ flex:none; width:20px; height:20px; color:var(--blue-700); transition:transform .45s cubic-bezier(.34,1.56,.64,1); }
   .pd-specs-toggle[aria-expanded="true"] .pd-specs-chevron{ transform:rotate(180deg); }
-  .pd-specs-panel{ overflow:hidden; max-height:0; transition:max-height .35s cubic-bezier(.22,1,.36,1); }
-  .pd-specs-panel.is-open{ max-height:2000px; }
+  .pd-specs-panel{
+    display:grid; grid-template-rows:0fr; opacity:0;
+    transition:grid-template-rows .5s cubic-bezier(.22,1,.36,1), opacity .4s ease;
+  }
+  .pd-specs-panel.is-open{ grid-template-rows:1fr; opacity:1; }
+  .pd-specs-panel-inner{ min-height:0; overflow:hidden; }
   .pd-specs-list{ display:flex; flex-direction:column; padding-top:2px; }
-  .pd-specs-row{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:12px 0; border-bottom:1px solid var(--card-line); font-size:13.8px; }
+  .pd-specs-row{
+    display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:12px 0; border-bottom:1px solid var(--card-line); font-size:13.8px;
+    opacity:0; transform:translateY(-6px);
+    transition:opacity .4s ease, transform .45s cubic-bezier(.22,1,.36,1);
+  }
+  .pd-specs-panel.is-open .pd-specs-row{ opacity:1; transform:translateY(0); }
+  .pd-specs-panel.is-open .pd-specs-row:nth-child(1){ transition-delay:.04s; }
+  .pd-specs-panel.is-open .pd-specs-row:nth-child(2){ transition-delay:.08s; }
+  .pd-specs-panel.is-open .pd-specs-row:nth-child(3){ transition-delay:.12s; }
+  .pd-specs-panel.is-open .pd-specs-row:nth-child(4){ transition-delay:.16s; }
+  .pd-specs-panel.is-open .pd-specs-row:nth-child(5){ transition-delay:.2s; }
+  .pd-specs-panel.is-open .pd-specs-row:nth-child(6){ transition-delay:.24s; }
+  .pd-specs-panel.is-open .pd-specs-row:nth-child(7){ transition-delay:.28s; }
+  .pd-specs-panel.is-open .pd-specs-row:nth-child(8){ transition-delay:.32s; }
+  .pd-specs-panel.is-open .pd-specs-row:nth-child(9){ transition-delay:.36s; }
   .pd-specs-row:last-child{ border-bottom:none; }
   .pd-specs-row .pd-specs-label{ color:var(--ink-400); font-weight:600; }
   .pd-specs-row .pd-specs-value{ color:var(--ink-900); font-weight:700; text-align:right; }
-  .pd-specs-note{ font-size:12.5px; color:var(--ink-400); margin:16px 0 0; }
+  .pd-specs-note{ font-size:12.5px; color:var(--ink-400); margin:16px 0 0; opacity:0; transition:opacity .4s ease .2s; }
+  .pd-specs-panel.is-open .pd-specs-note{ opacity:1; }
 
   /* ---------- Payment gateways ---------- */
   .pd-payments-wrap{ margin-top:calc(var(--gap)*7); }
@@ -329,13 +361,69 @@
   .pd-payment-logo{
     background:none; border:none; padding:0 0 8px; cursor:pointer;
     border-bottom:2px solid transparent; opacity:.5; line-height:0;
-    transition:opacity .2s ease, border-color .2s ease, transform .2s ease;
+    transition:opacity .25s ease, border-color .3s ease, transform .35s cubic-bezier(.34,1.56,.64,1);
   }
   .pd-payment-logo img{ height:24px; width:auto; max-width:130px; object-fit:contain; }
-  .pd-payment-logo:hover{ opacity:.85; transform:translateY(-1px); }
-  .pd-payment-logo.is-active{ opacity:1; border-color:var(--blue-700); }
-  .pd-payments-desc{ margin:16px 0 0; padding-top:14px; border-top:1px solid var(--card-line); font-size:13.2px; line-height:1.65; color:var(--ink-600); }
+  .pd-payment-logo:hover{ opacity:.85; transform:translateY(-2px); }
+  .pd-payment-logo.is-active{ opacity:1; border-color:var(--blue-700); transform:translateY(-2px); }
+  .pd-payment-logo.is-active:hover{ transform:translateY(-2px); }
+  .pd-payment-logo.pop{ animation:paymentPop .4s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes paymentPop{ 0%{ transform:translateY(-2px) scale(1); } 45%{ transform:translateY(-4px) scale(1.12); } 100%{ transform:translateY(-2px) scale(1); } }
+  .pd-payments-desc{
+    margin:16px 0 0; padding-top:14px; border-top:1px solid var(--card-line); font-size:13.2px; line-height:1.65; color:var(--ink-600);
+    opacity:1; transform:translateY(0);
+    transition:opacity .2s ease, transform .25s cubic-bezier(.22,1,.36,1);
+  }
+  .pd-payments-desc.is-switching{ opacity:0; transform:translateY(5px); }
   @media(max-width:600px){ .pd-payments-row{ gap:calc(var(--gap)*3.5); } }
+
+  /* ---------- Reviews ---------- */
+  .stars{ position:relative; display:inline-block; font-size:16px; line-height:1; letter-spacing:3px; color:var(--card-line); }
+  .stars::before{ content:"\2605\2605\2605\2605\2605"; }
+  .stars::after{
+    content:"\2605\2605\2605\2605\2605"; position:absolute; inset:0; overflow:hidden; white-space:nowrap;
+    width:calc(var(--rating,0) / 5 * 100%); color:#F5B400;
+  }
+  .stars-lg{ font-size:22px; letter-spacing:4px; }
+
+  .reviews-summary{
+    display:flex; align-items:center; gap:28px; flex-wrap:wrap;
+    padding:26px 28px; margin-bottom:28px;
+    background:var(--surface); border:1px solid var(--card-line); border-radius:var(--radius-l);
+  }
+  .reviews-summary-score{ display:flex; flex-direction:column; align-items:flex-start; gap:7px; }
+  .reviews-summary-value{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:2.4rem; line-height:1; color:var(--ink-900); }
+  .reviews-summary-count{ font-size:12.5px; font-weight:600; color:var(--ink-400); }
+  .reviews-summary-divider{ width:1px; align-self:stretch; background:var(--card-line); }
+  .reviews-summary-text{ font-size:14px; line-height:1.65; color:var(--ink-600); max-width:440px; margin:0; }
+  @media (max-width:560px){ .reviews-summary-divider{ display:none; } }
+
+  .reviews-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:18px; }
+  .review-card{
+    background:var(--surface-alt); border:1px solid var(--card-line); border-radius:var(--radius-m);
+    padding:20px; display:flex; flex-direction:column; gap:12px;
+    opacity:0; transform:translateY(16px);
+    animation:reviewIn .6s cubic-bezier(.22,1,.36,1) forwards;
+    transition:transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s ease, border-color .25s ease;
+  }
+  .review-card:hover{ transform:translateY(-4px); box-shadow:0 16px 32px rgba(9,11,37,.08); border-color:var(--blue-accent); }
+  @keyframes reviewIn{ to{ opacity:1; transform:translateY(0); } }
+  .review-card:nth-child(1){ animation-delay:.05s; }
+  .review-card:nth-child(2){ animation-delay:.12s; }
+  .review-card:nth-child(3){ animation-delay:.19s; }
+  .review-card:nth-child(4){ animation-delay:.26s; }
+  .review-card:nth-child(5){ animation-delay:.33s; }
+  .review-card:nth-child(6){ animation-delay:.4s; }
+  .review-head{ display:flex; align-items:center; gap:12px; }
+  .review-avatar{
+    width:42px; height:42px; border-radius:50%; flex:none;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13.5px; color:#fff;
+  }
+  .review-name-col{ display:flex; flex-direction:column; gap:4px; min-width:0; }
+  .review-name{ font-size:13.8px; font-weight:700; color:var(--ink-900); }
+  .review-date{ font-size:11.5px; color:var(--ink-400); margin-left:auto; white-space:nowrap; }
+  .review-comment{ font-size:13.5px; line-height:1.65; color:var(--ink-600); margin:0; }
 
   .pd-box-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:14px; margin-top:20px; }
   .pd-box-item{
@@ -405,6 +493,21 @@
   }
   .product-qty-stepper .qty-value{ font-size:13.5px; font-weight:700; color:var(--ink-900); min-width:16px; text-align:center; }
 
+  /* Related products are shown ~30% smaller than the standard product card */
+  #relatedGrid.product-grid{ grid-template-columns:repeat(auto-fill,minmax(177px,1fr)); gap:15px; }
+  #relatedGrid .product-card{ border-radius:var(--radius-s); }
+  #relatedGrid .product-media{ padding:15px; }
+  #relatedGrid .condition-badge{ font-size:8px; padding:4px 7px; top:7px; left:7px; }
+  #relatedGrid .wishlist-heart-btn{ width:24px; height:24px; top:7px; right:7px; }
+  #relatedGrid .wishlist-heart-btn svg{ width:12px; height:12px; }
+  #relatedGrid .product-body{ padding:11px 13px 14px; gap:6px; }
+  #relatedGrid .product-name{ font-size:10.5px; }
+  #relatedGrid .product-price{ font-size:12px; margin:0 0 3px; }
+  #relatedGrid .product-cta{ font-size:9px; padding:7px 13px; gap:5px; }
+  #relatedGrid .product-cta svg{ width:9px; height:9px; }
+  #relatedGrid .product-qty-stepper{ padding:4px 6px; gap:13px; }
+  #relatedGrid .product-qty-stepper .qty-value{ font-size:9.5px; }
+
   /* ---------- Floating cart ---------- */
   .floating-cart-btn{
     position:fixed; right:24px; bottom:24px; z-index:60;
@@ -459,9 +562,34 @@
   .cart-drawer.open{ transform:translateX(0); }
   .cart-drawer-head{ display:flex; align-items:center; justify-content:space-between; padding:22px 22px 16px; border-bottom:1px solid var(--card-line); }
   .cart-drawer-head h3{ font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; margin:0; color:var(--ink-900); }
+  .cart-drawer-head-actions{ display:flex; align-items:center; gap:10px; }
+  .cart-clear-btn{ background:none; border:none; font-size:12.5px; font-weight:700; color:var(--ink-400); cursor:pointer; padding:6px 10px; border-radius:999px; transition:color .2s ease, background .2s ease; }
+  .cart-clear-btn:hover{ color:#e0433a; background:rgba(224,67,58,.08); }
   .cart-drawer-close{ width:32px; height:32px; border-radius:50%; border:1px solid var(--card-line); background:var(--surface-alt); color:var(--ink-600); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color .2s ease, color .2s ease; }
   .cart-drawer-close:hover{ border-color:var(--blue-accent); color:var(--blue-700); }
   .cart-drawer-items{ flex:1; overflow-y:auto; }
+  .cart-undo-bar{ display:flex; align-items:center; justify-content:space-between; gap:14px; max-height:0; overflow:hidden; padding-inline:22px; background:var(--ink-900); color:#fff; font-size:12.8px; flex:none; transition:max-height .3s ease, padding-block .3s ease; }
+  .cart-undo-bar.is-visible{ max-height:60px; padding-block:12px; }
+  .cart-undo-bar span{ flex:1; min-width:0; }
+  .cart-undo-bar button{ background:none; border:none; color:#8fa0ff; font-weight:700; font-size:12.8px; cursor:pointer; flex:none; }
+  .cart-undo-bar button:hover{ color:#fff; text-decoration:underline; }
+  .cart-upsell{ flex:none; padding:16px 22px 4px; border-top:1px solid var(--card-line); }
+  .cart-upsell-title{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-400); margin:0 0 12px; }
+  .cart-upsell-row{ display:flex; gap:12px; overflow-x:auto; scrollbar-width:none; padding-bottom:4px; }
+  .cart-upsell-row::-webkit-scrollbar{ display:none; }
+  .cart-upsell-card{ flex:0 0 106px; display:flex; flex-direction:column; gap:6px; }
+  .cart-upsell-thumb{ width:106px; height:106px; border-radius:var(--radius-m); background:var(--surface); border:1px solid var(--card-line); display:flex; align-items:center; justify-content:center; padding:10px; cursor:pointer; transition:border-color .2s ease; }
+  .cart-upsell-thumb:hover{ border-color:var(--blue-accent); }
+  .cart-upsell-thumb img{ max-width:100%; max-height:100%; object-fit:contain; }
+  .cart-upsell-name{ font-size:11.5px; font-weight:700; color:var(--ink-900); line-height:1.3; }
+  .cart-upsell-price{ font-size:11.5px; font-weight:700; color:var(--blue-700); margin:0; }
+  .cart-upsell-add{ margin-top:2px; align-self:flex-start; font-size:10.5px; font-weight:700; color:#fff; background:var(--blue-700); border:none; border-radius:999px; padding:5px 11px; cursor:pointer; transition:background .2s ease; }
+  .cart-upsell-add:hover{ background:var(--blue-accent); }
+  .cart-drawer-notes{ flex:none; padding:16px 22px 4px; }
+  .cart-notes-label{ display:block; font-size:11px; font-weight:700; color:var(--ink-400); text-transform:uppercase; letter-spacing:.06em; margin:0 0 8px; }
+  .cart-notes-textarea{ width:100%; min-height:60px; resize:vertical; padding:10px 12px; border-radius:var(--radius-s); border:1px solid var(--card-line); font-family:inherit; font-size:13px; line-height:1.5; color:var(--ink-900); background:var(--surface); transition:border-color .2s ease; }
+  .cart-notes-textarea:focus{ outline:none; border-color:var(--blue-accent); }
+  .cart-drawer-footer{ padding:18px 22px 22px; border-top:1px solid var(--card-line); flex:none; }
   .cart-empty{ padding:48px 22px; text-align:center; color:var(--ink-400); font-size:14px; }
   .cart-item{ display:flex; align-items:center; gap:12px; padding:14px 22px; border-bottom:1px solid var(--card-line); }
   .cart-item-thumb{ width:48px; height:48px; border-radius:10px; background:var(--surface); display:flex; align-items:center; justify-content:center; flex:none; overflow:hidden; }
@@ -475,7 +603,6 @@
   .cart-item-qty span{ font-size:13px; font-weight:700; min-width:14px; text-align:center; }
   .cart-item-remove{ flex:none; color:var(--ink-400); cursor:pointer; background:none; border:none; padding:4px; display:flex; transition:color .2s ease; }
   .cart-item-remove:hover{ color:#e0433a; }
-  .cart-drawer-footer{ padding:18px 22px 22px; border-top:1px solid var(--card-line); }
   .cart-total-row{ display:flex; align-items:center; justify-content:space-between; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15.5px; color:var(--ink-900); margin-bottom:16px; }
 
   /* ---------- Empty / not found state ---------- */
@@ -664,14 +791,18 @@
 
         <div class="pd-highlights-grid" id="pdHighlights"></div>
 
-        <div class="pd-variant-group" id="pdStorageGroup" hidden>
-          <p class="pd-variant-label">Storage</p>
-          <div class="pd-variant-options" id="pdStorageOptions"></div>
-        </div>
+        <div class="pd-variant-row" id="pdVariantRow">
+          <div class="pd-variant-group pd-variant-group--inline" id="pdStorageGroup" hidden>
+            <p class="pd-variant-label">Storage</p>
+            <div class="pd-variant-options" id="pdStorageOptions"></div>
+          </div>
 
-        <div class="pd-variant-group" id="pdConditionGroup" hidden>
-          <p class="pd-variant-label">Condition</p>
-          <div class="pd-variant-options" id="pdConditionOptions"></div>
+          <div class="pd-variant-sep" id="pdVariantSep" aria-hidden="true"></div>
+
+          <div class="pd-variant-group pd-variant-group--inline" id="pdConditionGroup" hidden>
+            <p class="pd-variant-label">Condition</p>
+            <div class="pd-variant-options" id="pdConditionOptions"></div>
+          </div>
         </div>
 
         <div class="pd-variant-group" id="pdColorGroup" hidden>
@@ -722,8 +853,10 @@
             <svg class="pd-specs-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </button>
           <div class="pd-specs-panel" id="pdSpecsPanel">
-            <div class="pd-specs-list" id="pdSpecsTable"></div>
-            <p class="pd-specs-note">Specifications are provided as a general guide. Contact us to confirm exact details before you buy.</p>
+            <div class="pd-specs-panel-inner">
+              <div class="pd-specs-list" id="pdSpecsTable"></div>
+              <p class="pd-specs-note">Specifications are provided as a general guide. Contact us to confirm exact details before you buy.</p>
+            </div>
           </div>
         </div>
 
@@ -749,6 +882,29 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section class="section" id="productReviews">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Customer Reviews</div>
+      <h2 class="section-title">What Buyers Are Saying</h2>
+      <p class="section-sub">Real feedback from customers who've bought this device from Rare Grade Tech.</p>
+    </div>
+
+    <div class="reviews-summary reveal">
+      <div class="reviews-summary-score">
+        <span class="reviews-summary-value" id="reviewsAvgValue">0.0</span>
+        <span class="stars stars-lg" id="reviewsAvgStars" style="--rating:0"></span>
+        <span class="reviews-summary-count" id="reviewsCountValue">0 reviews</span>
+      </div>
+      <div class="reviews-summary-divider" aria-hidden="true"></div>
+      <p class="reviews-summary-text">Every review is left by a customer who's collected or received their device from Rare Grade Tech in Mokopane.</p>
+    </div>
+
+    <div class="reviews-grid" id="reviewsList"></div>
   </div>
 </section>
 
@@ -844,14 +1000,29 @@
 <aside class="cart-drawer" id="cartDrawer">
   <div class="cart-drawer-head">
     <h3>Your Cart</h3>
-    <button type="button" class="cart-drawer-close" id="cartClose" aria-label="Close cart">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
+    <div class="cart-drawer-head-actions">
+      <button type="button" class="cart-clear-btn" id="cartClearBtn" hidden>Clear</button>
+      <button type="button" class="cart-drawer-close" id="cartClose" aria-label="Close cart">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
   </div>
   <div class="cart-drawer-items" id="cartItems"></div>
+  <div class="cart-undo-bar" id="cartUndoBar">
+    <span id="cartUndoMessage">Item removed</span>
+    <button type="button" id="cartUndoBtn">Undo</button>
+  </div>
+  <div class="cart-upsell" id="cartUpsell" hidden>
+    <p class="cart-upsell-title">You Might Also Like</p>
+    <div class="cart-upsell-row" id="cartUpsellRow"></div>
+  </div>
+  <div class="cart-drawer-notes" id="cartNotesWrap" hidden>
+    <label class="cart-notes-label" for="cartNotesInput">Notes for your order (optional)</label>
+    <textarea id="cartNotesInput" class="cart-notes-textarea" placeholder="e.g. preferred collection day, delivery address, questions..."></textarea>
+  </div>
   <div class="cart-drawer-footer">
     <div class="cart-total-row"><span>Total</span><span id="cartTotal">R0</span></div>
-    <a class="btn btn-block-ink" href="contact.html" style="width:100%;justify-content:center;">
+    <a class="btn btn-block-ink" href="contact.html" id="cartEnquireLink" style="width:100%;justify-content:center;">
       <span>Enquire About This Order</span>
     </a>
   </div>
@@ -933,9 +1104,17 @@ const PRODUCTS = {
     whatsInBox: [
       'iPhone 16',
       'Free protective case',
-      'USB-C to USB-C cable',
-      'Quick start documentation'
-    ]
+      'USB-C to USB-C cable'
+    ],
+    reviews: {
+      average: 4.8,
+      count: 46,
+      items: [
+        { name: "Naledi Mokoena", rating: 5, date: "2 weeks ago", comment: "Bought this for my daughter's birthday, sealed box and exactly as advertised. Collection in Mokopane was quick and easy." },
+        { name: "Johan Pretorius", rating: 5, date: "1 month ago", comment: "Battery life is excellent and the camera upgrade from my old phone is noticeable. Would buy from Rare Grade Tech again." },
+        { name: "Refilwe Sithole", rating: 4, date: "1 month ago", comment: "Great phone overall. Delivery took a day longer than expected but support kept me updated the whole time." }
+      ]
+    }
   },
   'iphone-17-pro': {
     id: 'iphone-17-pro',
@@ -992,7 +1171,16 @@ const PRODUCTS = {
       'iPhone 17 Pro (pre-owned unit)',
       'Free protective case',
       'USB-C to USB-C cable'
-    ]
+    ],
+    reviews: {
+      average: 4.7,
+      count: 31,
+      items: [
+        { name: "Kagiso Ndlovu", rating: 5, date: "3 weeks ago", comment: "Unit looked barely used and the team was upfront about the condition before I paid. Saved a lot compared to buying new." },
+        { name: "Elmarie Botha", rating: 4, date: "1 month ago", comment: "Small scuff on the frame that wasn't mentioned upfront, but it powers and performs perfectly. Support was quick to respond." },
+        { name: "Tumelo Rakgoale", rating: 5, date: "2 months ago", comment: "Titanium build feels premium and the camera system is a huge step up. Happy with the pre-owned check they do." }
+      ]
+    }
   },
   'iphone-17': {
     id: 'iphone-17',
@@ -1048,9 +1236,17 @@ const PRODUCTS = {
     whatsInBox: [
       'iPhone 17',
       'Free protective case',
-      'USB-C to USB-C cable',
-      'Quick start documentation'
-    ]
+      'USB-C to USB-C cable'
+    ],
+    reviews: {
+      average: 4.9,
+      count: 24,
+      items: [
+        { name: "Amahle Zulu", rating: 5, date: "1 week ago", comment: "The 120Hz screen makes everything feel so much smoother. Arrived sealed and the free case was a nice touch." },
+        { name: "Pieter van Wyk", rating: 5, date: "3 weeks ago", comment: "Fastest checkout experience I've had for a phone. Genuine Apple packaging and great communication throughout." },
+        { name: "Boitumelo Mahlangu", rating: 4, date: "1 month ago", comment: "Excellent phone overall, just wish more storage options were available at launch price." }
+      ]
+    }
   }
 };
 
@@ -1216,6 +1412,14 @@ function renderConditionOptions(product){
   });
 }
 
+function pdSyncVariantSeparator(){
+  const sep = document.getElementById('pdVariantSep');
+  const storageGroup = document.getElementById('pdStorageGroup');
+  const conditionGroup = document.getElementById('pdConditionGroup');
+  if (!sep) return;
+  sep.hidden = storageGroup.hidden || conditionGroup.hidden;
+}
+
 function renderColorOptions(product){
   const group = document.getElementById('pdColorGroup');
   const wrap = document.getElementById('pdColorOptions');
@@ -1310,10 +1514,45 @@ function renderProduct(product){
   // Storage, condition + colour variant pickers — price and preview update on selection
   renderStorageOptions(product);
   renderConditionOptions(product);
+  pdSyncVariantSeparator();
   renderColorOptions(product);
   pdSyncVariantUI(product);
 
+  renderReviews(product);
   renderRelated(product);
+}
+
+const REVIEW_AVATAR_PALETTE = ['#1118F5', '#0A0E5A', '#3B4CFF', '#05060B', '#54566F'];
+function getReviewInitials(name){
+  return name.split(' ').map(p => p[0]).filter(Boolean).slice(0, 2).join('').toUpperCase();
+}
+
+function renderReviews(product){
+  const section = document.getElementById('productReviews');
+  const data = product.reviews;
+  if (!section) return;
+  if (!data || !data.items || !data.items.length) {
+    section.style.display = 'none';
+    return;
+  }
+  section.style.display = '';
+  document.getElementById('reviewsAvgValue').textContent = data.average.toFixed(1);
+  document.getElementById('reviewsAvgStars').style.setProperty('--rating', data.average);
+  document.getElementById('reviewsCountValue').textContent = data.count + (data.count === 1 ? ' review' : ' reviews');
+
+  document.getElementById('reviewsList').innerHTML = data.items.map((r, i) => `
+    <div class="review-card">
+      <div class="review-head">
+        <div class="review-avatar" style="background:${REVIEW_AVATAR_PALETTE[i % REVIEW_AVATAR_PALETTE.length]}">${getReviewInitials(r.name)}</div>
+        <div class="review-name-col">
+          <span class="review-name">${r.name}</span>
+          <span class="stars" style="--rating:${r.rating}"></span>
+        </div>
+        <span class="review-date">${r.date}</span>
+      </div>
+      <p class="review-comment">${r.comment}</p>
+    </div>
+  `).join('');
 }
 
 function renderRelated(current){
@@ -1347,6 +1586,7 @@ function renderRelated(current){
 
 function showNotFound(){
   document.getElementById('productDetail').style.display = 'none';
+  document.getElementById('productReviews').style.display = 'none';
   document.getElementById('relatedProducts').style.display = 'none';
   document.getElementById('notFoundSection').style.display = '';
 }
@@ -1379,10 +1619,20 @@ if (activeProduct){
   if (!logos.length || !desc) return;
   logos.forEach(btn => {
     btn.addEventListener('click', () => {
+      if (btn.classList.contains('is-active')) return;
       logos.forEach(b => { b.classList.remove('is-active'); b.setAttribute('aria-expanded', 'false'); });
       btn.classList.add('is-active');
       btn.setAttribute('aria-expanded', 'true');
-      desc.textContent = btn.dataset.desc;
+
+      btn.classList.remove('pop');
+      void btn.offsetWidth;
+      btn.classList.add('pop');
+
+      desc.classList.add('is-switching');
+      window.setTimeout(() => {
+        desc.textContent = btn.dataset.desc;
+        desc.classList.remove('is-switching');
+      }, 180);
     });
   });
 })();
@@ -1479,13 +1729,23 @@ if (activeProduct){
 // ---------- Floating cart ----------
 (function(){
   const CART_KEY = 'rgt_store_cart';
+  const NOTES_KEY = 'rgt_store_cart_notes';
   const floatingBtn = document.getElementById('floatingCartBtn');
   const badge = document.getElementById('cartBadge');
   const overlay = document.getElementById('cartOverlay');
   const drawer = document.getElementById('cartDrawer');
   const closeBtn = document.getElementById('cartClose');
+  const clearBtn = document.getElementById('cartClearBtn');
   const itemsEl = document.getElementById('cartItems');
   const totalEl = document.getElementById('cartTotal');
+  const enquireLink = document.getElementById('cartEnquireLink');
+  const notesWrap = document.getElementById('cartNotesWrap');
+  const notesInput = document.getElementById('cartNotesInput');
+  const undoBar = document.getElementById('cartUndoBar');
+  const undoMessageEl = document.getElementById('cartUndoMessage');
+  const undoBtn = document.getElementById('cartUndoBtn');
+  const upsellWrap = document.getElementById('cartUpsell');
+  const upsellRow = document.getElementById('cartUpsellRow');
 
   function loadCart(){
     try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
@@ -1494,8 +1754,19 @@ if (activeProduct){
   function saveCart(){
     try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) {}
   }
+  function loadNotes(){
+    try { return localStorage.getItem(NOTES_KEY) || ''; }
+    catch (e) { return ''; }
+  }
+  function saveNotes(value){
+    try { localStorage.setItem(NOTES_KEY, value); } catch (e) {}
+  }
 
   let cart = loadCart();
+  let undoSnapshot = null;
+  let undoTimer = null;
+
+  if (notesInput) notesInput.value = loadNotes();
 
   function getAddButtons(){ return Array.from(document.querySelectorAll('.add-to-cart-btn')); }
   function getQtySteppers(){ return Array.from(document.querySelectorAll('.product-qty-stepper')); }
@@ -1518,6 +1789,34 @@ if (activeProduct){
     });
   }
 
+  function buildEnquiryHref(){
+    if (!cart.length) return 'contact.html';
+    const lines = cart.map(it => `${it.name} — Qty ${it.qty} — ${formatPrice(it.price)} each`);
+    const total = cart.reduce((s, c) => s + c.price * c.qty, 0);
+    let body = "Hi, I'd like to enquire about the following order:\r\n\r\n" + lines.join('\r\n') + '\r\n\r\nTotal: ' + formatPrice(total);
+    const notes = notesInput ? notesInput.value.trim() : '';
+    if (notes) body += '\r\n\r\nNotes: ' + notes;
+    const subject = 'Order Enquiry — Rare Grade Tech';
+    return 'mailto:info@raregradetech.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  }
+
+  function renderUpsell(){
+    if (!upsellWrap || !upsellRow) return;
+    if (!cart.length) { upsellWrap.hidden = true; return; }
+    const inCartIds = new Set(cart.map(c => c.id.split('::')[0]));
+    const candidates = Object.values(PRODUCTS).filter(p => !inCartIds.has(p.id)).slice(0, 4);
+    if (!candidates.length) { upsellWrap.hidden = true; return; }
+    upsellWrap.hidden = false;
+    upsellRow.innerHTML = candidates.map(p => `
+      <div class="cart-upsell-card">
+        <div class="cart-upsell-thumb" data-href="product.html?id=${p.id}"><img src="${p.image}" alt="${p.name}" loading="lazy" /></div>
+        <p class="cart-upsell-name">${p.name}</p>
+        <p class="cart-upsell-price">${formatPrice(p.price)}</p>
+        <button type="button" class="cart-upsell-add" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}" data-image="${p.image}">Add</button>
+      </div>
+    `).join('');
+  }
+
   function render(){
     syncProductButtons();
     const count = cart.reduce((s, c) => s + c.qty, 0);
@@ -1526,6 +1825,11 @@ if (activeProduct){
 
     const total = cart.reduce((s, c) => s + c.price * c.qty, 0);
     totalEl.textContent = formatPrice(total);
+
+    if (clearBtn) clearBtn.hidden = !cart.length;
+    if (notesWrap) notesWrap.hidden = !cart.length;
+    if (enquireLink) enquireLink.href = buildEnquiryHref();
+    renderUpsell();
 
     if (!cart.length) {
       itemsEl.innerHTML = '<div class="cart-empty">Your cart is empty.</div>';
@@ -1556,6 +1860,21 @@ if (activeProduct){
     floatingBtn.classList.add('bump');
   }
 
+  function showUndo(message, snapshot){
+    if (!undoBar) return;
+    undoSnapshot = snapshot;
+    if (undoMessageEl) undoMessageEl.textContent = message;
+    undoBar.classList.add('is-visible');
+    clearTimeout(undoTimer);
+    undoTimer = setTimeout(hideUndo, 6000);
+  }
+  function hideUndo(){
+    if (!undoBar) return;
+    undoBar.classList.remove('is-visible');
+    undoSnapshot = null;
+    clearTimeout(undoTimer);
+  }
+
   function addToCart(item){
     const existing = cart.find(c => c.id === item.id);
     if (existing) existing.qty += 1;
@@ -1568,16 +1887,39 @@ if (activeProduct){
   function changeQty(id, delta){
     const it = cart.find(c => c.id === id);
     if (!it) return;
+    if (delta < 0 && it.qty + delta <= 0) {
+      removeItem(id);
+      return;
+    }
     it.qty += delta;
-    if (it.qty <= 0) cart = cart.filter(c => c.id !== id);
     saveCart();
     render();
   }
 
   function removeItem(id){
+    const removed = cart.find(c => c.id === id);
+    const snapshot = cart.slice();
     cart = cart.filter(c => c.id !== id);
     saveCart();
     render();
+    if (removed) showUndo(`${removed.name} removed.`, snapshot);
+  }
+
+  function clearCart(){
+    if (!cart.length) return;
+    const snapshot = cart.slice();
+    cart = [];
+    saveCart();
+    render();
+    showUndo('Cart cleared.', snapshot);
+  }
+
+  function undoLastAction(){
+    if (!undoSnapshot) return;
+    cart = undoSnapshot;
+    saveCart();
+    render();
+    hideUndo();
   }
 
   function openDrawer(){
@@ -1587,6 +1929,7 @@ if (activeProduct){
   function closeDrawer(){
     drawer.classList.remove('open');
     overlay.classList.remove('open');
+    hideUndo();
   }
 
   document.addEventListener('click', (e) => {
@@ -1613,6 +1956,32 @@ if (activeProduct){
   floatingBtn.addEventListener('click', openDrawer);
   closeBtn.addEventListener('click', closeDrawer);
   overlay.addEventListener('click', closeDrawer);
+  if (clearBtn) clearBtn.addEventListener('click', clearCart);
+  if (undoBtn) undoBtn.addEventListener('click', undoLastAction);
+
+  if (notesInput) {
+    notesInput.addEventListener('input', () => {
+      saveNotes(notesInput.value);
+      if (enquireLink) enquireLink.href = buildEnquiryHref();
+    });
+  }
+
+  if (upsellRow) {
+    upsellRow.addEventListener('click', (e) => {
+      const addBtn = e.target.closest('.cart-upsell-add');
+      if (addBtn) {
+        addToCart({
+          id: addBtn.dataset.id,
+          name: addBtn.dataset.name,
+          price: parseInt(addBtn.dataset.price, 10),
+          image: addBtn.dataset.image
+        });
+        return;
+      }
+      const thumb = e.target.closest('.cart-upsell-thumb[data-href]');
+      if (thumb) window.location.href = thumb.dataset.href;
+    });
+  }
 
   itemsEl.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-action]');
