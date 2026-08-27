@@ -669,6 +669,11 @@
           <div class="pd-variant-options" id="pdStorageOptions"></div>
         </div>
 
+        <div class="pd-variant-group" id="pdConditionGroup" hidden>
+          <p class="pd-variant-label">Condition</p>
+          <div class="pd-variant-options" id="pdConditionOptions"></div>
+        </div>
+
         <div class="pd-variant-group" id="pdColorGroup" hidden>
           <p class="pd-variant-label">Colour — <span id="pdColorName"></span></p>
           <div class="pd-variant-options" id="pdColorOptions"></div>
@@ -912,6 +917,12 @@ const PRODUCTS = {
       { label: '512GB', priceDelta: 6500 }
     ],
     defaultStorageIndex: 0,
+    conditionOptions: [
+      { label: 'Good', priceDelta: -1200 },
+      { label: 'Very Good', priceDelta: -600 },
+      { label: 'Excellent', priceDelta: 0 }
+    ],
+    defaultConditionIndex: 2,
     colorOptions: [
       { name: 'Black', hex: '#1c1c1e', overlayOpacity: 0.18 },
       { name: 'White', hex: '#f5f5f0', overlayOpacity: 0.12 },
@@ -965,6 +976,12 @@ const PRODUCTS = {
       { label: '1TB', priceDelta: 4000 }
     ],
     defaultStorageIndex: 1,
+    conditionOptions: [
+      { label: 'Good', priceDelta: -2000 },
+      { label: 'Very Good', priceDelta: -1000 },
+      { label: 'Excellent', priceDelta: 0 }
+    ],
+    defaultConditionIndex: 2,
     colorOptions: [
       { name: 'Silver Titanium', hex: '#c9cad1', overlayOpacity: 0.16 },
       { name: 'Black Titanium', hex: '#2b2b2d', overlayOpacity: 0.18 },
@@ -1016,6 +1033,12 @@ const PRODUCTS = {
       { label: '512GB', priceDelta: 3500 }
     ],
     defaultStorageIndex: 0,
+    conditionOptions: [
+      { label: 'Good', priceDelta: -1400 },
+      { label: 'Very Good', priceDelta: -700 },
+      { label: 'Excellent', priceDelta: 0 }
+    ],
+    defaultConditionIndex: 2,
     colorOptions: [
       { name: 'Black', hex: '#1c1c1e', overlayOpacity: 0.18 },
       { name: 'White', hex: '#f2f2ee', overlayOpacity: 0.12 },
@@ -1081,12 +1104,20 @@ function getRequestedId(){
 }
 
 let pdSelectedStorageIndex = 0;
+let pdSelectedConditionIndex = 0;
 let pdSelectedColorIndex = 0;
 
 function pdComputePrice(product){
-  if (!product.storageOptions || !product.storageOptions.length) return product.price;
-  const opt = product.storageOptions[pdSelectedStorageIndex];
-  return product.price + (opt ? opt.priceDelta : 0);
+  let price = product.price;
+  if (product.storageOptions && product.storageOptions.length) {
+    const opt = product.storageOptions[pdSelectedStorageIndex];
+    price += opt ? opt.priceDelta : 0;
+  }
+  if (product.conditionOptions && product.conditionOptions.length) {
+    const opt = product.conditionOptions[pdSelectedConditionIndex];
+    price += opt ? opt.priceDelta : 0;
+  }
+  return price;
 }
 
 // Keeps price, cart/wishlist datasets and the Storage spec row in sync with
@@ -1096,8 +1127,9 @@ function pdSyncVariantUI(product){
   document.getElementById('pdPrice').textContent = formatPrice(price);
 
   const storageOpt = product.storageOptions ? product.storageOptions[pdSelectedStorageIndex] : null;
+  const conditionOpt = product.conditionOptions ? product.conditionOptions[pdSelectedConditionIndex] : null;
   const colorOpt = product.colorOptions ? product.colorOptions[pdSelectedColorIndex] : null;
-  const variantSuffix = [storageOpt && storageOpt.label, colorOpt && colorOpt.name].filter(Boolean).join(' · ');
+  const variantSuffix = [storageOpt && storageOpt.label, conditionOpt && conditionOpt.label, colorOpt && colorOpt.name].filter(Boolean).join(' · ');
   const fullName = variantSuffix ? `${product.name} (${variantSuffix})` : product.name;
 
   const addBtn = document.getElementById('pdAddToCartBtn');
@@ -1157,6 +1189,28 @@ function renderStorageOptions(product){
       wrap.querySelectorAll('.pd-storage-btn').forEach(b => b.classList.remove('is-active'));
       btn.classList.add('is-active');
       pdSelectedStorageIndex = parseInt(btn.dataset.index, 10);
+      pdSyncVariantUI(product);
+    });
+  });
+}
+
+function renderConditionOptions(product){
+  const group = document.getElementById('pdConditionGroup');
+  const wrap = document.getElementById('pdConditionOptions');
+  if (!product.conditionOptions || !product.conditionOptions.length) {
+    group.hidden = true;
+    return;
+  }
+  pdSelectedConditionIndex = product.defaultConditionIndex || 0;
+  group.hidden = false;
+  wrap.innerHTML = product.conditionOptions.map((opt, i) => `
+    <button type="button" class="pd-storage-btn${i === pdSelectedConditionIndex ? ' is-active' : ''}" data-index="${i}">${opt.label}</button>
+  `).join('');
+  wrap.querySelectorAll('.pd-storage-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      wrap.querySelectorAll('.pd-storage-btn').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      pdSelectedConditionIndex = parseInt(btn.dataset.index, 10);
       pdSyncVariantUI(product);
     });
   });
@@ -1253,8 +1307,9 @@ function renderProduct(product){
     btn.setAttribute('aria-label', 'Add ' + product.name + ' to wishlist');
   });
 
-  // Storage + colour variant pickers — price and preview update on selection
+  // Storage, condition + colour variant pickers — price and preview update on selection
   renderStorageOptions(product);
+  renderConditionOptions(product);
   renderColorOptions(product);
   pdSyncVariantUI(product);
 
