@@ -296,22 +296,17 @@
   }
   .pd-payments-panel{ padding-top:2px; }
   .pd-payments-note{ font-size:12.5px; color:var(--ink-400); margin:14px 0 0; }
-  .pd-payments-list{ display:flex; flex-direction:column; gap:10px; padding-top:2px; }
-  .pd-payment-item{
-    border:1px solid var(--card-line); border-radius:var(--radius-m); background:var(--surface); overflow:hidden;
-    transition:border-color .2s ease, box-shadow .2s ease;
+  .pd-payments-row{ display:flex; align-items:center; flex-wrap:wrap; gap:calc(var(--gap)*4.5); padding-top:2px; }
+  .pd-payment-logo{
+    background:none; border:none; padding:0 0 8px; cursor:pointer;
+    border-bottom:2px solid transparent; opacity:.5; line-height:0;
+    transition:opacity .2s ease, border-color .2s ease, transform .2s ease;
   }
-  .pd-payment-item:hover{ border-color:var(--blue-accent); box-shadow:0 8px 20px rgba(17,24,245,.06); }
-  .pd-payment-toggle{
-    width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px;
-    background:none; border:none; cursor:pointer; padding:14px 16px; text-align:left;
-  }
-  .pd-payment-toggle img{ height:22px; width:auto; max-width:130px; object-fit:contain; }
-  .pd-payment-chevron{ flex:none; width:16px; height:16px; color:var(--ink-400); transition:transform .25s ease; }
-  .pd-payment-toggle[aria-expanded="true"] .pd-payment-chevron{ transform:rotate(180deg); color:var(--blue-700); }
-  .pd-payment-body{ overflow:hidden; max-height:0; transition:max-height .3s cubic-bezier(.22,1,.36,1); }
-  .pd-payment-body.is-open{ max-height:200px; }
-  .pd-payment-body p{ margin:0; padding:0 16px 16px; font-size:13.2px; line-height:1.65; color:var(--ink-600); border-top:1px solid var(--card-line); padding-top:12px; }
+  .pd-payment-logo img{ height:24px; width:auto; max-width:130px; object-fit:contain; }
+  .pd-payment-logo:hover{ opacity:.85; transform:translateY(-1px); }
+  .pd-payment-logo.is-active{ opacity:1; border-color:var(--blue-700); }
+  .pd-payments-desc{ margin:16px 0 0; padding-top:14px; border-top:1px solid var(--card-line); font-size:13.2px; line-height:1.65; color:var(--ink-600); }
+  @media(max-width:600px){ .pd-payments-row{ gap:calc(var(--gap)*3.5); } }
 
   .pd-box-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:14px; margin-top:20px; }
   .pd-box-item{
@@ -689,42 +684,23 @@
 
         <div class="pd-payments-wrap">
           <h3 class="pd-payments-title">Payment Options</h3>
-          <div class="pd-payments-panel" id="pdPaymentsPanel">
-            <div class="pd-payments-list">
+          <div class="pd-payments-row" id="pdPaymentsRow">
 
-              <div class="pd-payment-item">
-                <button type="button" class="pd-payment-toggle" aria-expanded="false">
-                  <img src="https://i.postimg.cc/fRqN8syq/floattrans.png" alt="Float" loading="lazy" />
-                  <svg class="pd-payment-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                </button>
-                <div class="pd-payment-body">
-                  <p>Float lets you pay straight from your bank account by approving the transaction securely inside your own banking app, with no card details entered.</p>
-                </div>
-              </div>
+            <button type="button" class="pd-payment-logo is-active" data-desc="Float lets you pay straight from your bank account by approving the transaction securely inside your own banking app, with no card details entered." aria-expanded="true">
+              <img src="https://i.postimg.cc/fRqN8syq/floattrans.png" alt="Float" loading="lazy" />
+            </button>
 
-              <div class="pd-payment-item">
-                <button type="button" class="pd-payment-toggle" aria-expanded="false">
-                  <img src="https://i.postimg.cc/PxYnf8yT/payfast-trans.png" alt="PayFast" loading="lazy" />
-                  <svg class="pd-payment-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                </button>
-                <div class="pd-payment-body">
-                  <p>PayFast routes your card or EFT payment through an encrypted gateway that verifies and settles the transaction with your bank in real time.</p>
-                </div>
-              </div>
+            <button type="button" class="pd-payment-logo" data-desc="PayFast routes your card or EFT payment through an encrypted gateway that verifies and settles the transaction with your bank in real time." aria-expanded="false">
+              <img src="https://i.postimg.cc/PxYnf8yT/payfast-trans.png" alt="PayFast" loading="lazy" />
+            </button>
 
-              <div class="pd-payment-item">
-                <button type="button" class="pd-payment-toggle" aria-expanded="false">
-                  <img src="https://i.postimg.cc/XYzRwg1P/yoco-trans.png" alt="Yoco" loading="lazy" />
-                  <svg class="pd-payment-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                </button>
-                <div class="pd-payment-body">
-                  <p>Yoco encrypts your card details on entry and processes the payment directly with your card provider before instantly confirming the sale.</p>
-                </div>
-              </div>
+            <button type="button" class="pd-payment-logo" data-desc="Yoco encrypts your card details on entry and processes the payment directly with your card provider before instantly confirming the sale." aria-expanded="false">
+              <img src="https://i.postimg.cc/XYzRwg1P/yoco-trans.png" alt="Yoco" loading="lazy" />
+            </button>
 
-            </div>
-            <p class="pd-payments-note">All payments are processed securely by our payment partners — we never store your card details.</p>
           </div>
+          <p class="pd-payments-desc" id="pdPaymentsDesc">Float lets you pay straight from your bank account by approving the transaction securely inside your own banking app, with no card details entered.</p>
+          <p class="pd-payments-note">All payments are processed securely by our payment partners — we never store your card details.</p>
         </div>
       </div>
     </div>
@@ -1155,14 +1131,17 @@ if (activeProduct){
   });
 })();
 
-// ---------- Payment options accordion ----------
+// ---------- Payment options row ----------
 (function () {
-  document.querySelectorAll('.pd-payment-toggle').forEach(btn => {
+  const logos = Array.from(document.querySelectorAll('.pd-payment-logo'));
+  const desc = document.getElementById('pdPaymentsDesc');
+  if (!logos.length || !desc) return;
+  logos.forEach(btn => {
     btn.addEventListener('click', () => {
-      const body = btn.nextElementSibling;
-      if (!body) return;
-      const isOpen = body.classList.toggle('is-open');
-      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      logos.forEach(b => { b.classList.remove('is-active'); b.setAttribute('aria-expanded', 'false'); });
+      btn.classList.add('is-active');
+      btn.setAttribute('aria-expanded', 'true');
+      desc.textContent = btn.dataset.desc;
     });
   });
 })();
