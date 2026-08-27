@@ -566,6 +566,7 @@
 <script>
 (function(){
   const CART_KEY = 'rgt_store_cart';
+  const NOTES_KEY = 'rgt_store_cart_notes';
 
   function formatPrice(n){
     return 'R' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
@@ -588,6 +589,12 @@
     emptyState.style.display = 'block';
     return;
   }
+
+  try {
+    const savedNotes = localStorage.getItem(NOTES_KEY);
+    const notesField = document.getElementById('deliveryNotes');
+    if (savedNotes && notesField && !notesField.value) notesField.value = savedNotes;
+  } catch (e) {}
 
   const subtotal = cart.reduce((s, c) => s + c.price * c.qty, 0);
   osSubtotal.textContent = formatPrice(subtotal);
