@@ -1280,6 +1280,12 @@ svg.filter-cat-icon{
   .auth-error.is-visible{ display:block; }
   .auth-divider{ display:flex; align-items:center; gap:12px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-400); margin:18px 0 14px; }
   .auth-divider::before, .auth-divider::after{ content:''; flex:1; height:1px; background:var(--card-line); }
+  .google-auth-btn{ width:100%; display:flex; align-items:center; justify-content:center; gap:10px; margin:14px 0 0; padding:12px 16px; border:1px solid var(--card-line); border-radius:12px; background:#fff; color:var(--ink-900); font-size:13.5px; font-weight:700; cursor:pointer; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .google-auth-btn:hover{ transform:translateY(-1px); border-color:#b8bdcf; box-shadow:0 8px 18px rgba(9,11,37,.10); }
+  .google-auth-btn:disabled{ opacity:.65; cursor:wait; transform:none; }
+  .google-auth-btn svg{ width:18px; height:18px; flex:none; }
+  .google-auth-status{ display:none; margin:10px 0 0; color:var(--ink-600); font-size:12px; text-align:center; }
+  .google-auth-status.is-visible{ display:block; }
 
   /* Account header */
   .profile-account-header{ display:flex; align-items:center; gap:14px; padding:18px 22px; background:linear-gradient(135deg,#1118F5 0%,#0D12A0 100%); color:#fff; }
@@ -1353,16 +1359,20 @@ svg.filter-cat-icon{
   const cfg={apiKey:'AIzaSyCIQzfyMvrUKJtqqGn3jPqFt2C805CEHs',authDomain:'raregrade.firebaseapp.com',projectId:'raregrade',storageBucket:'raregrade.firebasestorage.app',messagingSenderId:'794018278876',appId:'1:794018278876:web:cc503804a7ef8f05287319'};
   const load=(src)=>new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=reject;document.head.appendChild(s)});
   const boot=async()=>{await load('https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js');await load('https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js');await load('https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js');const app=firebase.initializeApp(cfg);const auth=firebase.auth(app);const db=firebase.database(app);const provider=new firebase.auth.GoogleAuthProvider();
-    const state={user:null}; window.rgFirebase={auth,db,state,signIn:()=>auth.signInWithPopup(provider),requireAuth:async()=>{if(auth.currentUser)return auth.currentUser;const r=await auth.signInWithPopup(provider);return r.user},path:(p)=>db.ref(p)};
+    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(err=>console.warn('[RGT] Auth persistence unavailable',err));
+    const state={user:null};
+    const signInGoogle=async()=>{ if(auth.currentUser)return auth.currentUser; try{ const r=await auth.signInWithPopup(provider); return r.user; }catch(err){ const fallbackCodes=['auth/popup-blocked','auth/popup-closed-by-user','auth/cancelled-popup-request']; if(fallbackCodes.includes(err.code)){ await auth.signInWithRedirect(provider); return new Promise(()=>{}); } throw err; } };
+    window.rgFirebase={auth,db,state,signIn:signInGoogle,requireAuth:signInGoogle,path:(p)=>db.ref(p)};
     auth.onAuthStateChanged(async u=>{state.user=u;document.documentElement.dataset.rgUser=u?'signed-in':'signed-out';if(u){await db.ref('users/'+u.uid).update({displayName:u.displayName||'',email:u.email||'',photoURL:u.photoURL||'',lastSeen:Date.now()});await syncFromFirebase(u.uid)};window.dispatchEvent(new CustomEvent('rg-auth',{detail:u}))});
+    auth.getRedirectResult().catch(err=>{ if(err&&err.code!=='auth/no-auth-event') console.error('[RGT] Google redirect sign-in failed',err); });
     const originalSet=Storage.prototype.setItem,originalRemove=Storage.prototype.removeItem;
     Storage.prototype.setItem=function(k,v){originalSet.call(this,k,v);if(k==='rgt_store_cart'||k==='rgt_store_cart_notes')pushLocalToFirebase()};
     Storage.prototype.removeItem=function(k){originalRemove.call(this,k);if(k==='rgt_store_cart'||k==='rgt_store_cart_notes')pushLocalToFirebase()};
     async function pushLocalToFirebase(){const u=state.user;if(!u)return;let cart=[];try{cart=JSON.parse(localStorage.getItem('rgt_store_cart')||'[]')}catch(e){};await db.ref('users/'+u.uid+'/cart').set(cart.reduce((a,x,i)=>{a[x.key||x.id||String(i)]={...x};return a},{}));await db.ref('users/'+u.uid+'/cartNotes').set(localStorage.getItem('rgt_store_cart_notes')||'')}
     async function syncFromFirebase(uid){const s=await db.ref('users/'+uid+'/cart').once('value');if(s.exists()){const v=s.val()||{};originalSet.call(localStorage,'rgt_store_cart',JSON.stringify(Object.values(v)))}const n=await db.ref('users/'+uid+'/cartNotes').once('value');if(n.exists())originalSet.call(localStorage,'rgt_store_cart_notes',n.val()||'');}
     function toast(msg){const el=document.createElement('div');el.textContent=msg;Object.assign(el.style,{position:'fixed',left:'50%',bottom:'24px',transform:'translateX(-50%)',background:'#090b25',color:'#fff',padding:'12px 18px',borderRadius:'999px',zIndex:9999,font:'600 13px Inter, sans-serif',boxShadow:'0 12px 30px #0004'});document.body.appendChild(el);setTimeout(()=>el.remove(),3200)}
-    function gate(e){if(state.user)return true;e.preventDefault();e.stopImmediatePropagation();window.rgFirebase.requireAuth().then(()=>toast('Signed in with Google — you can continue.')).catch(()=>toast('Google sign-in was cancelled.'));return false}
-    document.addEventListener('click',e=>{const el=e.target.closest('a,button');if(!el)return;const label=(el.textContent||'').toLowerCase();const href=el.getAttribute('href')||'';if(label.includes('checkout')||label.includes('place order')||href.includes('checkout'))gate(e);if(label.includes('review')||label.includes('submit review'))gate(e)},true);
+    function gate(e,destination){if(state.user)return true;e.preventDefault();e.stopImmediatePropagation();window.rgFirebase.requireAuth().then(()=>{toast('Signed in with Google — you can continue.');if(destination) window.location.assign(destination);}).catch(err=>{console.error('[RGT] Google auth required',err);toast('Google sign-in could not be completed. Please try again.');});return false}
+    document.addEventListener('click',e=>{const el=e.target.closest('a,button');if(!el)return;const label=(el.textContent||'').toLowerCase();const href=el.getAttribute('href')||'';if(label.includes('checkout')||label.includes('place order')||href.includes('checkout')){gate(e,href.includes('checkout')?'checkout.html':'');return;}if(label.includes('review')||label.includes('submit review'))gate(e)},true);
     document.addEventListener('submit',async e=>{const form=e.target;if(!(form instanceof HTMLFormElement))return;const text=(form.innerText||'').toLowerCase();const isCheckout=text.includes('checkout')||form.id.toLowerCase().includes('checkout');const isReview=text.includes('review');if((isCheckout||isReview)&&!gate(e))return;if(!state.user)return;const values=Object.fromEntries(new FormData(form).entries());if(isCheckout){const cart=JSON.parse(localStorage.getItem('rgt_store_cart')||'[]');const total=cart.reduce((sum,item)=>sum+Number(item.price||0)*Number(item.qty||1),0);const orderRef=db.ref('users/'+state.user.uid+'/orders').push();await orderRef.set({id:orderRef.key,items:cart,total,fulfillment:values.fulfillment||'delivery',address:values.address||values.deliveryAddress||'',paymentMethod:values.paymentMethod||'selected',status:'Order received',createdAt:Date.now()});toast('Order saved to your Google account.')}if(isReview){const productId=form.dataset.productId||document.body.dataset.productId||location.search.replace('?product=','')||'unknown';const reviewRef=db.ref('reviews/'+productId).push();await reviewRef.set({id:reviewRef.key,productId,rating:Number(values.rating||values.stars||5),text:String(values.review||values.comment||values.body||''),authorUid:state.user.uid,authorName:state.user.displayName||'Google customer',createdAt:Date.now(),status:'published'});}} ,true);
     window.addEventListener('rg-auth',e=>{if(e.detail)toast('Google account connected — cart and profile data are syncing to Firebase.');});
   };
@@ -1857,6 +1867,11 @@ svg.filter-cat-icon{
             <label class="auth-label"><span>Password</span><input type="password" id="loginPassword" placeholder="••••••••" required /></label>
             <button type="submit" class="btn btn-block-ink" style="width:100%;justify-content:center;margin-top:4px;">Log In</button>
           </form>
+          <button type="button" class="google-auth-btn" data-google-auth="login">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.35 12.23c0-.79-.07-1.55-.22-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.42Z"/><path fill="#34A853" d="M12 21.7c2.63 0 4.84-.87 6.45-2.35l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.53A9.74 9.74 0 0 0 12 21.7Z"/><path fill="#FBBC05" d="M6.54 13.79A5.85 5.85 0 0 1 6.23 12c0-.62.11-1.22.31-1.79V7.68H3.3A9.74 9.74 0 0 0 2.27 12c0 1.57.38 3.05 1.03 4.32l3.24-2.53Z"/><path fill="#EA4335" d="M12 6.18c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.17 14.63 2.3 12 2.3a9.74 9.74 0 0 0-8.7 5.38l3.24 2.53C7.31 7.9 9.46 6.18 12 6.18Z"/></svg>
+            <span>Continue with Google</span>
+          </button>
+          <p class="google-auth-status" data-google-status="login" aria-live="polite"></p>
           <div class="auth-divider">or continue as guest</div>
           <form id="orderLookupForm">
             <p class="order-lookup-copy">Enter your order number and the email or phone used at checkout to view its status.</p>
@@ -1879,6 +1894,11 @@ svg.filter-cat-icon{
             <label class="auth-label"><span>Confirm Password</span><input type="password" id="signupConfirm" placeholder="Repeat password" required /></label>
             <button type="submit" class="btn btn-block-ink" style="width:100%;justify-content:center;">Create Account</button>
           </form>
+          <button type="button" class="google-auth-btn" data-google-auth="signup">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.35 12.23c0-.79-.07-1.55-.22-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.42Z"/><path fill="#34A853" d="M12 21.7c2.63 0 4.84-.87 6.45-2.35l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.53A9.74 9.74 0 0 0 12 21.7Z"/><path fill="#FBBC05" d="M6.54 13.79A5.85 5.85 0 0 1 6.23 12c0-.62.11-1.22.31-1.79V7.68H3.3A9.74 9.74 0 0 0 2.27 12c0 1.57.38 3.05 1.03 4.32l3.24-2.53Z"/><path fill="#EA4335" d="M12 6.18c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.17 14.63 2.3 12 2.3a9.74 9.74 0 0 0-8.7 5.38l3.24 2.53C7.31 7.9 9.46 6.18 12 6.18Z"/></svg>
+            <span>Continue with Google</span>
+          </button>
+          <p class="google-auth-status" data-google-status="signup" aria-live="polite"></p>
         </div>
       </div>
 
@@ -3141,7 +3161,29 @@ svg.filter-cat-icon{
     const uObj={ name:name, email:email, phone:phone, address:newAcc.address, createdAt:newAcc.createdAt }; saveCurrentUser(uObj); ensureMockDataForUser(uObj); showAccountView(uObj);
   });
 
-  function handleLogout(){ clearCurrentUser(); showAuthView(); showGuestLookup(); }
+  function googleUserToProfile(user){ return { name:user.displayName||user.email?.split('@')[0]||'Google User', email:user.email||'', phone:'', address:ADDRESSES[0], photoURL:user.photoURL||'', uid:user.uid, provider:'google', createdAt:new Date().toISOString() }; }
+  function setGoogleButtonBusy(button,busy){ if(!button) return; button.disabled=busy; const label=button.querySelector('span'); if(label) label.textContent=busy?'Connecting…':'Continue with Google'; const status=document.querySelector('[data-google-status="'+button.dataset.googleAuth+'"]'); if(status){ status.textContent=busy?'Opening Google sign-in…':''; status.classList.toggle('is-visible',busy); } }
+  async function continueWithGoogle(button){
+    setGoogleButtonBusy(button,true);
+    try{
+      let attempts=0; while(!window.rgFirebase && attempts++<80) await new Promise(function(resolve){setTimeout(resolve,100);});
+      if(!window.rgFirebase || !window.rgFirebase.signIn) throw new Error('Google authentication is still loading.');
+      const user=await window.rgFirebase.signIn();
+      if(user){ const profile=googleUserToProfile(user); saveCurrentUser(profile); showAccountView(profile); }
+    }catch(err){
+      console.error('[RGT] Google sign-in failed',err);
+      const msg=err&&err.code==='auth/unauthorized-domain'?'This website domain is not authorised for Google sign-in.':(err&&err.message?err.message:'Google sign-in failed. Please try again.');
+      const status=document.querySelector('[data-google-status="'+button.dataset.googleAuth+'"]'); if(status){ status.textContent=msg; status.classList.add('is-visible'); }
+    }finally{ setGoogleButtonBusy(button,false); }
+  }
+  document.querySelectorAll('[data-google-auth]').forEach(function(button){ button.addEventListener('click',function(){ continueWithGoogle(button); }); });
+  window.addEventListener('rg-auth',function(e){
+    if(!e.detail) return;
+    const profile=googleUserToProfile(e.detail); saveCurrentUser(profile);
+    if(drawer && drawer.classList.contains('open')) showAccountView(profile);
+  });
+
+  function handleLogout(){ if(window.rgFirebase&&window.rgFirebase.auth) window.rgFirebase.auth.signOut().catch(function(err){console.error('[RGT] Google sign-out failed',err);}); clearCurrentUser(); showAuthView(); showGuestLookup(); }
 
   if(lookupForm) lookupForm.addEventListener('submit',function(e){
     e.preventDefault(); const o=numberInput.value.trim(); const c=contactInput.value.trim(); if(!o||!c){ if(lookupError) lookupError.classList.add('is-visible'); return; } if(lookupError) lookupError.classList.remove('is-visible'); const order=generateOrder(o,c); saveTrackedOrder(o,c); renderOrderInto(detailView, order, 'orderTrackAnotherTop', showGuestLookup); if(lookupForm) lookupForm.style.display='none'; if(title) title.textContent='Your Order'; const t=document.getElementById('profileTrigger'); if(t) t.classList.add('has-order');
