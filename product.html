@@ -184,6 +184,11 @@
     overflow:hidden;
   }
   .pd-gallery-frame img{ max-width:100%; max-height:100%; object-fit:contain; filter:drop-shadow(0 24px 40px rgba(9,11,37,.16)); }
+  .pd-color-overlay{
+    position:absolute; inset:44px; pointer-events:none;
+    mix-blend-mode:color; opacity:0; border-radius:var(--radius-m);
+    transition:background-color .3s ease, opacity .3s ease;
+  }
 
   .pd-condition-badge{
     position:absolute; top:18px; left:18px; z-index:2;
@@ -227,26 +232,50 @@
   .pd-highlights-grid::-webkit-scrollbar{ display:none; }
   .pd-highlight-tile{
     position:relative;
-    flex:1 1 0; min-width:130px;
-    display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px;
+    flex:1 1 0; min-width:104px;
+    display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px;
     background:var(--surface); border:1px solid var(--card-line); border-radius:var(--radius-m);
-    padding:18px 10px 16px;
+    padding:14px 8px 13px;
     box-shadow:none;
     transition:transform .22s cubic-bezier(.22,1,.36,1), border-color .22s ease, box-shadow .22s ease;
   }
   .pd-highlight-tile:hover{ transform:translateY(-4px); border-color:var(--blue-accent); box-shadow:0 12px 24px rgba(17,24,245,.08); }
   .pd-highlight-tile-icon{
     position:relative;
-    width:52px; height:52px; flex:none;
+    width:42px; height:42px; flex:none;
     display:flex; align-items:center; justify-content:center;
     background:transparent; border:none; border-radius:0;
     box-shadow:none;
     color:#020084;
   }
   .pd-highlight-tile-icon::after{ display:none; }
-  .pd-highlight-tile-icon svg{ width:44px; height:44px; position:relative; z-index:1; color:#020084; stroke:#020084; }
-  .pd-highlight-tile-icon img{ width:44px; height:44px; object-fit:contain; position:relative; z-index:1; filter:brightness(0) saturate(100%) invert(10%) sepia(100%) saturate(7465%) hue-rotate(245deg) brightness(57%) contrast(128%); }
-  .pd-highlight-tile span:last-child{ font-size:12.5px; font-weight:600; color:var(--ink-900); line-height:1.4; }
+  .pd-highlight-tile-icon svg{ width:35px; height:35px; position:relative; z-index:1; color:#020084; stroke:#020084; }
+  .pd-highlight-tile-icon img{ width:35px; height:35px; object-fit:contain; position:relative; z-index:1; filter:brightness(0) saturate(100%) invert(10%) sepia(100%) saturate(7465%) hue-rotate(245deg) brightness(57%) contrast(128%); }
+  .pd-highlight-tile span:last-child{ font-size:10px; font-weight:600; color:var(--ink-900); line-height:1.4; }
+
+  /* ---------- Storage / colour variant pickers ---------- */
+  .pd-variant-group{ margin-bottom:20px; }
+  .pd-variant-label{ font-size:12px; font-weight:700; color:var(--ink-900); margin:0 0 10px; text-transform:uppercase; letter-spacing:.04em; }
+  .pd-variant-label span{ font-weight:600; color:var(--ink-600); text-transform:none; letter-spacing:normal; }
+  .pd-variant-options{ display:flex; flex-wrap:wrap; gap:10px; }
+  .pd-storage-btn{
+    padding:10px 18px; border-radius:999px; border:1px solid var(--card-line); background:var(--surface-alt);
+    font-size:13.5px; font-weight:700; color:var(--ink-600); cursor:pointer;
+    transition:border-color .2s ease, color .2s ease, background .2s ease, transform .2s ease;
+  }
+  .pd-storage-btn:hover{ border-color:var(--blue-accent); color:var(--blue-700); transform:translateY(-2px); }
+  .pd-storage-btn.is-active{ border-color:var(--blue-700); background:var(--blue-700); color:#fff; }
+  .pd-color-btn{
+    position:relative; width:34px; height:34px; border-radius:50%;
+    border:2px solid transparent; padding:2px; background:none; cursor:pointer;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .pd-color-btn::before{
+    content:""; position:absolute; inset:2px; border-radius:50%;
+    background:var(--swatch-color,#ccc); box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);
+  }
+  .pd-color-btn:hover{ transform:translateY(-2px); }
+  .pd-color-btn.is-active{ border-color:var(--blue-700); }
 
   .pd-actions{ display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-bottom:24px; }
 
@@ -619,6 +648,7 @@
             <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
           </button>
           <img id="pdImage" src="" alt="" />
+          <div class="pd-color-overlay" id="pdColorOverlay" aria-hidden="true"></div>
         </div>
       </div>
 
@@ -633,6 +663,16 @@
         <p class="pd-price-note" id="pdPriceNote">Price shown is per unit.</p>
 
         <div class="pd-highlights-grid" id="pdHighlights"></div>
+
+        <div class="pd-variant-group" id="pdStorageGroup" hidden>
+          <p class="pd-variant-label">Storage</p>
+          <div class="pd-variant-options" id="pdStorageOptions"></div>
+        </div>
+
+        <div class="pd-variant-group" id="pdColorGroup" hidden>
+          <p class="pd-variant-label">Colour — <span id="pdColorName"></span></p>
+          <div class="pd-variant-options" id="pdColorOptions"></div>
+        </div>
 
         <div class="pd-actions">
           <button type="button" class="btn btn-block-ink" id="pdAddToCartBtn">
@@ -866,6 +906,19 @@ const PRODUCTS = {
       ['Condition', 'Brand New — sealed in original packaging'],
       ['Support', 'Full support from Rare Grade Tech']
     ],
+    storageOptions: [
+      { label: '128GB', priceDelta: 0 },
+      { label: '256GB', priceDelta: 3000 },
+      { label: '512GB', priceDelta: 6500 }
+    ],
+    defaultStorageIndex: 0,
+    colorOptions: [
+      { name: 'Black', hex: '#1c1c1e', overlayOpacity: 0.18 },
+      { name: 'White', hex: '#f5f5f0', overlayOpacity: 0.12 },
+      { name: 'Pink', hex: '#f3c8d1', overlayOpacity: 0.5 },
+      { name: 'Teal', hex: '#8fb9ae', overlayOpacity: 0.5 },
+      { name: 'Ultramarine', hex: '#5f6fae', overlayOpacity: 0.5 }
+    ],
     whatsInBox: [
       'iPhone 16',
       'Free protective case',
@@ -906,6 +959,18 @@ const PRODUCTS = {
       ['Condition', 'Pre-Owned — functional check completed'],
       ['Support', 'Support from Rare Grade Tech included']
     ],
+    storageOptions: [
+      { label: '256GB', priceDelta: -2500 },
+      { label: '512GB', priceDelta: 0 },
+      { label: '1TB', priceDelta: 4000 }
+    ],
+    defaultStorageIndex: 1,
+    colorOptions: [
+      { name: 'Silver Titanium', hex: '#c9cad1', overlayOpacity: 0.16 },
+      { name: 'Black Titanium', hex: '#2b2b2d', overlayOpacity: 0.18 },
+      { name: 'Desert Titanium', hex: '#b8a084', overlayOpacity: 0.4 },
+      { name: 'Blue Titanium', hex: '#5c7091', overlayOpacity: 0.42 }
+    ],
     whatsInBox: [
       'iPhone 17 Pro (pre-owned unit)',
       'Free protective case',
@@ -945,6 +1010,17 @@ const PRODUCTS = {
       ['SIM', 'Nano-SIM and eSIM'],
       ['Condition', 'Brand New — sealed in original packaging'],
       ['Support', 'Full support from Rare Grade Tech']
+    ],
+    storageOptions: [
+      { label: '256GB', priceDelta: 0 },
+      { label: '512GB', priceDelta: 3500 }
+    ],
+    defaultStorageIndex: 0,
+    colorOptions: [
+      { name: 'Black', hex: '#1c1c1e', overlayOpacity: 0.18 },
+      { name: 'White', hex: '#f2f2ee', overlayOpacity: 0.12 },
+      { name: 'Blue', hex: '#5f7d9a', overlayOpacity: 0.48 },
+      { name: 'Green', hex: '#7c9473', overlayOpacity: 0.48 }
     ],
     whatsInBox: [
       'iPhone 17',
@@ -1004,6 +1080,112 @@ function getRequestedId(){
   return params.get('id');
 }
 
+let pdSelectedStorageIndex = 0;
+let pdSelectedColorIndex = 0;
+
+function pdComputePrice(product){
+  if (!product.storageOptions || !product.storageOptions.length) return product.price;
+  const opt = product.storageOptions[pdSelectedStorageIndex];
+  return product.price + (opt ? opt.priceDelta : 0);
+}
+
+// Keeps price, cart/wishlist datasets and the Storage spec row in sync with
+// whichever storage + colour combination is currently selected.
+function pdSyncVariantUI(product){
+  const price = pdComputePrice(product);
+  document.getElementById('pdPrice').textContent = formatPrice(price);
+
+  const storageOpt = product.storageOptions ? product.storageOptions[pdSelectedStorageIndex] : null;
+  const colorOpt = product.colorOptions ? product.colorOptions[pdSelectedColorIndex] : null;
+  const variantSuffix = [storageOpt && storageOpt.label, colorOpt && colorOpt.name].filter(Boolean).join(' · ');
+  const fullName = variantSuffix ? `${product.name} (${variantSuffix})` : product.name;
+
+  const addBtn = document.getElementById('pdAddToCartBtn');
+  addBtn.dataset.name = fullName;
+  addBtn.dataset.price = price;
+
+  const heart = document.getElementById('pdWishlistHeart');
+  if (heart) {
+    heart.dataset.name = fullName;
+    heart.dataset.price = price;
+  }
+
+  if (storageOpt) {
+    document.querySelectorAll('#pdSpecsTable .pd-specs-row').forEach(row => {
+      const label = row.querySelector('.pd-specs-label');
+      if (label && label.textContent.trim() === 'Storage') {
+        row.querySelector('.pd-specs-value').textContent = storageOpt.label;
+      }
+    });
+  }
+}
+
+// No per-colour photography exists yet, so the preview is retinted with a
+// mix-blend-mode overlay matched to the swatch. Add a real `image` URL to a
+// colour option later to swap in an actual photo instead of the tint.
+function pdApplyColor(product){
+  const overlay = document.getElementById('pdColorOverlay');
+  const nameEl = document.getElementById('pdColorName');
+  const color = product.colorOptions ? product.colorOptions[pdSelectedColorIndex] : null;
+  if (!overlay || !color) return;
+  const img = document.getElementById('pdImage');
+  if (color.image) {
+    img.src = color.image;
+    overlay.style.opacity = 0;
+  } else {
+    img.src = product.image;
+    overlay.style.backgroundColor = color.hex;
+    overlay.style.opacity = color.overlayOpacity != null ? color.overlayOpacity : 0.45;
+  }
+  if (nameEl) nameEl.textContent = color.name;
+}
+
+function renderStorageOptions(product){
+  const group = document.getElementById('pdStorageGroup');
+  const wrap = document.getElementById('pdStorageOptions');
+  if (!product.storageOptions || !product.storageOptions.length) {
+    group.hidden = true;
+    return;
+  }
+  pdSelectedStorageIndex = product.defaultStorageIndex || 0;
+  group.hidden = false;
+  wrap.innerHTML = product.storageOptions.map((opt, i) => `
+    <button type="button" class="pd-storage-btn${i === pdSelectedStorageIndex ? ' is-active' : ''}" data-index="${i}">${opt.label}</button>
+  `).join('');
+  wrap.querySelectorAll('.pd-storage-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      wrap.querySelectorAll('.pd-storage-btn').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      pdSelectedStorageIndex = parseInt(btn.dataset.index, 10);
+      pdSyncVariantUI(product);
+    });
+  });
+}
+
+function renderColorOptions(product){
+  const group = document.getElementById('pdColorGroup');
+  const wrap = document.getElementById('pdColorOptions');
+  if (!product.colorOptions || !product.colorOptions.length) {
+    group.hidden = true;
+    return;
+  }
+  pdSelectedColorIndex = 0;
+  group.hidden = false;
+  wrap.innerHTML = product.colorOptions.map((c, i) => `
+    <button type="button" class="pd-color-btn${i === 0 ? ' is-active' : ''}" data-index="${i}" style="--swatch-color:${c.hex}" aria-label="${c.name}" title="${c.name}"></button>
+  `).join('');
+  wrap.querySelectorAll('.pd-color-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      wrap.querySelectorAll('.pd-color-btn').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      pdSelectedColorIndex = parseInt(btn.dataset.index, 10);
+      pdApplyColor(product);
+      pdSyncVariantUI(product);
+    });
+  });
+  pdApplyColor(product);
+}
+
 function renderProduct(product){
   document.title = product.name + ' — Rare Grade Tech';
   const metaDesc = document.getElementById('pageMetaDescription');
@@ -1023,7 +1205,6 @@ function renderProduct(product){
   document.getElementById('pdEyebrow').textContent = product.brand + ' · ' + product.category;
   document.getElementById('pdTitle').textContent = product.name;
   document.getElementById('pdTagline').textContent = product.tagline;
-  document.getElementById('pdPrice').textContent = formatPrice(product.price);
 
   document.getElementById('pdHighlights').innerHTML = product.highlights
     .map(h => `<div class="pd-highlight-tile"><span class="pd-highlight-tile-icon">${getHighlightIcon(h)}</span><span>${h}</span></div>`).join('');
@@ -1071,6 +1252,11 @@ function renderProduct(product){
     btn.classList.add('wishlist-heart-btn');
     btn.setAttribute('aria-label', 'Add ' + product.name + ' to wishlist');
   });
+
+  // Storage + colour variant pickers — price and preview update on selection
+  renderStorageOptions(product);
+  renderColorOptions(product);
+  pdSyncVariantUI(product);
 
   renderRelated(product);
 }
