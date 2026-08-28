@@ -361,6 +361,27 @@
   .order-status-pill{font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;background:rgba(17,24,245,.10);color:var(--blue-700);border:1px solid rgba(17,24,245,.18)}
   .order-status-pill.is-delivered{background:rgba(52,168,83,.12);color:#1e7a3a;border-color:rgba(52,168,83,.2)}
 
+  /* Cart tab — mirrors the store's cart drawer design */
+  .cart-panel-card{background:#fff;border:1px solid var(--card-line);border-radius:var(--radius-m);overflow:hidden}
+  .cart-empty{padding:48px 22px;text-align:center;color:var(--ink-400);font-size:14px}
+  .cart-item{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--card-line)}
+  .cart-item:last-child{border-bottom:none}
+  .cart-item-thumb{width:48px;height:48px;border-radius:10px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden}
+  .cart-item-thumb img{max-width:80%;max-height:80%;object-fit:contain}
+  .cart-item-info{flex:1;min-width:0}
+  .cart-item-name{font-size:13.5px;font-weight:700;color:var(--ink-900);margin:0 0 3px}
+  .cart-item-price{font-size:12px;color:var(--ink-600);margin:0}
+  .cart-item-qty{display:flex;align-items:center;gap:8px;flex:none}
+  .qty-btn{width:26px;height:26px;border-radius:50%;border:1px solid var(--card-line);background:var(--surface);color:var(--ink-600);font-size:14px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s ease,color .2s ease}
+  .qty-btn:hover{border-color:var(--blue-accent);color:var(--blue-700)}
+  .cart-item-qty span{font-size:13px;font-weight:700;min-width:14px;text-align:center}
+  .cart-item-remove{flex:none;color:var(--ink-400);cursor:pointer;background:none;border:none;padding:4px;display:flex;transition:color .2s ease}
+  .cart-item-remove:hover{color:#e0433a}
+  .cart-panel-footer{padding:18px 20px;border-top:1px solid var(--card-line);background:var(--surface)}
+  .cart-total-row{display:flex;align-items:center;justify-content:space-between;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15.5px;color:var(--ink-900);margin-bottom:14px}
+  .cart-clear-btn{background:none;border:none;font-size:12.5px;font-weight:700;color:var(--ink-400);cursor:pointer;padding:6px 10px;border-radius:999px;transition:color .2s ease,background .2s ease}
+  .cart-clear-btn:hover{color:#e0433a;background:rgba(224,67,58,.08)}
+
   /* Order progress */
   .order-progress{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
   .order-progress-step{flex:1;min-width:72px;text-align:center;position:relative}
@@ -443,16 +464,55 @@
       }
     };
     window.rgFirebase={auth,db,state,signIn:signInGoogle,requireAuth:signInGoogle,path:(p)=>db.ref(p)};
+
+    // Keep a reference to the real localStorage methods so writes we make while
+    // applying a remote (Firebase) update never bounce straight back to Firebase.
+    const originalSet=Storage.prototype.setItem, originalRemove=Storage.prototype.removeItem;
+    const SYNCED_KEYS=['rgt_store_cart','rgt_store_cart_notes','rgt_store_wishlist'];
+    Storage.prototype.setItem=function(k,v){ originalSet.call(this,k,v); if(SYNCED_KEYS.includes(k)) pushLocalToFirebase(); };
+    Storage.prototype.removeItem=function(k){ originalRemove.call(this,k); if(SYNCED_KEYS.includes(k)) pushLocalToFirebase(); };
+
+    async function pushLocalToFirebase(){
+      const u=state.user; if(!u) return;
+      let cart=[]; try{ cart=JSON.parse(localStorage.getItem('rgt_store_cart')||'[]'); }catch(e){}
+      let wishlist=[]; try{ wishlist=JSON.parse(localStorage.getItem('rgt_store_wishlist')||'[]'); }catch(e){}
+      await db.ref('users/'+u.uid+'/cart').set(cart.reduce((a,x,i)=>{ a[x.key||x.id||String(i)]={...x}; return a; },{}));
+      await db.ref('users/'+u.uid+'/wishlist').set(wishlist.reduce((a,x,i)=>{ a[x.key||x.id||String(i)]={...x}; return a; },{}));
+      await db.ref('users/'+u.uid+'/cartNotes').set(localStorage.getItem('rgt_store_cart_notes')||'');
+    }
+
+    let cartRef=null, wishlistRef=null;
+    function attachRealtimeListeners(uid){
+      detachRealtimeListeners();
+      cartRef=db.ref('users/'+uid+'/cart');
+      cartRef.on('value', s=>{
+        const v=s.val()||{};
+        originalSet.call(localStorage,'rgt_store_cart', JSON.stringify(Object.values(v)));
+        window.dispatchEvent(new CustomEvent('rg-cart-updated'));
+      });
+      wishlistRef=db.ref('users/'+uid+'/wishlist');
+      wishlistRef.on('value', s=>{
+        const v=s.val()||{};
+        originalSet.call(localStorage,'rgt_store_wishlist', JSON.stringify(Object.values(v)));
+        window.dispatchEvent(new CustomEvent('rg-wishlist-updated'));
+      });
+      db.ref('users/'+uid+'/cartNotes').once('value').then(n=>{
+        if(n.exists()) originalSet.call(localStorage,'rgt_store_cart_notes', n.val()||'');
+      });
+    }
+    function detachRealtimeListeners(){
+      if(cartRef){ cartRef.off(); cartRef=null; }
+      if(wishlistRef){ wishlistRef.off(); wishlistRef=null; }
+    }
+
     auth.onAuthStateChanged(async u=>{
       state.user=u;
       document.documentElement.dataset.rgUser=u?'signed-in':'signed-out';
       if(u){
         try{ await db.ref('users/'+u.uid).update({displayName:u.displayName||'',email:u.email||'',photoURL:u.photoURL||'',lastSeen:Date.now()}); }catch(e){}
-        const s=await db.ref('users/'+u.uid+'/cart').once('value');
-        if(s.exists()){
-          const v=s.val()||{};
-          try{ localStorage.setItem('rgt_store_cart', JSON.stringify(Object.values(v))); }catch(e){}
-        }
+        attachRealtimeListeners(u.uid);
+      }else{
+        detachRealtimeListeners();
       }
       window.dispatchEvent(new CustomEvent('rg-auth',{detail:u}));
     });
@@ -579,6 +639,10 @@
 
       <div class="nav-group">
         <p class="nav-group-title">Shopping</p>
+        <button class="nav-item" data-tab="cart">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span>
+          Cart <span class="nav-badge is-muted" id="navCartBadge">0</span>
+        </button>
         <button class="nav-item" data-tab="wishlist">
           <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span>
           Wishlist <span class="nav-badge is-muted" id="navWishlistBadge">0</span>
@@ -713,6 +777,21 @@
     <div class="panel" data-panel="history">
       <div class="main-header"><div><h1 class="main-title">Order History</h1><p class="main-sub">All delivered orders — re-order in one click or view details.</p></div></div>
       <div id="orderHistoryBody"></div>
+    </div>
+
+    <!-- Cart -->
+    <div class="panel" data-panel="cart">
+      <div class="main-header"><div><h1 class="main-title">Your Cart</h1><p class="main-sub">Items you've added, synced live from your account.</p></div><div class="main-actions"><a class="btn btn-ghost" href="store_14.html">Browse Store</a></div></div>
+      <div class="cart-panel-card">
+        <div id="profileCartItems"></div>
+        <div class="cart-panel-footer">
+          <div class="cart-total-row"><span>Total</span><span id="profileCartTotal">R0</span></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button type="button" class="cart-clear-btn" id="profileCartClearBtn" hidden>Clear Cart</button>
+          </div>
+          <button type="button" class="btn btn-primary btn-block" id="profileCheckoutBtn" style="margin-top:10px;">Proceed to Checkout</button>
+        </div>
+      </div>
     </div>
 
     <!-- Wishlist -->
@@ -855,6 +934,7 @@
   const ACCOUNTS_KEY='rgt_accounts';
   const CURRENT_USER_KEY='rgt_current_user';
   const WISHLIST_KEY='rgt_store_wishlist';
+  const CART_KEY='rgt_store_cart';
 
   // Elements
   const authWrapper=document.getElementById('authWrapper');
@@ -989,6 +1069,85 @@
   }
 
   function getWishlist(){try{return JSON.parse(localStorage.getItem(WISHLIST_KEY))||[]}catch(e){return []}}
+  function saveWishlist(wl){try{localStorage.setItem(WISHLIST_KEY,JSON.stringify(wl))}catch(e){}}
+
+  function getCart(){try{return JSON.parse(localStorage.getItem(CART_KEY))||[]}catch(e){return []}}
+  function saveCart(cart){try{localStorage.setItem(CART_KEY,JSON.stringify(cart))}catch(e){}}
+
+  function addItemToCart(item){
+    const cart=getCart();
+    const existing=cart.find(function(c){return c.id===item.id});
+    if(existing) existing.qty=(existing.qty||1)+1;
+    else cart.push({id:item.id,name:item.name,price:item.price,image:item.image,qty:1});
+    saveCart(cart);
+    renderCart();
+  }
+
+  function renderCart(){
+    const body=document.getElementById('profileCartItems');
+    const navBadge=document.getElementById('navCartBadge');
+    const totalEl=document.getElementById('profileCartTotal');
+    const clearBtn=document.getElementById('profileCartClearBtn');
+    const cart=getCart();
+    const count=cart.reduce(function(s,c){return s+(c.qty||1)},0);
+    if(navBadge) navBadge.textContent=count;
+    const total=cart.reduce(function(s,c){return s+(c.price||0)*(c.qty||1)},0);
+    if(totalEl) totalEl.textContent=formatPrice(total);
+    if(clearBtn) clearBtn.hidden=!cart.length;
+    if(!body) return;
+    if(!cart.length){
+      body.innerHTML='<div class="cart-empty">Your cart is empty. Add something you love from the store.</div>';
+      return;
+    }
+    body.innerHTML=cart.map(function(it){
+      return '<div class="cart-item" data-id="'+it.id+'"><div class="cart-item-thumb"><img src="'+it.image+'" alt="'+it.name+'" loading="lazy" /></div><div class="cart-item-info"><p class="cart-item-name">'+it.name+'</p><p class="cart-item-price">'+formatPrice(it.price)+' × '+it.qty+'</p></div><div class="cart-item-qty"><button type="button" class="qty-btn" data-cart-action="dec" data-id="'+it.id+'" aria-label="Decrease quantity">−</button><span>'+it.qty+'</span><button type="button" class="qty-btn" data-cart-action="inc" data-id="'+it.id+'" aria-label="Increase quantity">+</button></div><button type="button" class="cart-item-remove" data-cart-action="remove" data-id="'+it.id+'" aria-label="Remove '+it.name+'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>';
+    }).join('');
+  }
+
+  function changeCartQty(id,delta){
+    const cart=getCart();
+    const it=cart.find(function(c){return c.id===id});
+    if(!it) return;
+    if(delta<0 && (it.qty||1)+delta<=0){
+      removeCartItem(id);
+      return;
+    }
+    it.qty=(it.qty||1)+delta;
+    saveCart(cart);
+    renderCart();
+  }
+
+  function removeCartItem(id){
+    let cart=getCart();
+    cart=cart.filter(function(c){return c.id!==id});
+    saveCart(cart);
+    renderCart();
+  }
+
+  function clearCart(){
+    saveCart([]);
+    renderCart();
+  }
+
+  (function bindCartPanel(){
+    const body=document.getElementById('profileCartItems');
+    const clearBtn=document.getElementById('profileCartClearBtn');
+    const checkoutBtn=document.getElementById('profileCheckoutBtn');
+    if(body){
+      body.addEventListener('click',function(e){
+        const btn=e.target.closest('button[data-cart-action]');
+        if(!btn) return;
+        const id=btn.dataset.id;
+        if(btn.dataset.cartAction==='inc') changeCartQty(id,1);
+        else if(btn.dataset.cartAction==='dec') changeCartQty(id,-1);
+        else if(btn.dataset.cartAction==='remove') removeCartItem(id);
+      });
+    }
+    if(clearBtn) clearBtn.addEventListener('click',clearCart);
+    if(checkoutBtn) checkoutBtn.addEventListener('click',function(){
+      window.location.href='checkout.html';
+    });
+  })();
 
   function renderWishlist(){
     const body=document.getElementById('profileWishlistBody');
@@ -1014,13 +1173,22 @@
     }
     body.querySelectorAll('[data-wish-move]').forEach(function(btn){
       btn.addEventListener('click',function(){
-        toast('Added to cart — open store to checkout');
+        const wl=getWishlist();
+        const item=wl.find(function(w){return w.id===btn.dataset.wishMove});
+        if(item){
+          addItemToCart(item);
+          const remaining=wl.filter(function(w){return w.id!==btn.dataset.wishMove});
+          saveWishlist(remaining);
+          renderWishlist();
+          renderStats(loadCurrentUser());
+          toast('Added to cart');
+        }
       });
     });
     body.querySelectorAll('[data-wish-remove]').forEach(function(btn){
       btn.addEventListener('click',function(){
         let wl=getWishlist(); wl=wl.filter(function(w){return w.id!==btn.dataset.wishRemove});
-        try{localStorage.setItem(WISHLIST_KEY,JSON.stringify(wl))}catch(e){}
+        saveWishlist(wl);
         renderWishlist();
         renderStats(loadCurrentUser());
       });
@@ -1245,6 +1413,7 @@
     renderPendingOrders(user);
     renderOrderHistory(user);
     renderWishlist();
+    renderCart();
     const ot=document.getElementById('overviewTitle');
     if(ot) ot.textContent='Welcome, '+(user.name||'back');
   }
@@ -1261,7 +1430,19 @@
     overlay.classList.remove('is-open');
     window.scrollTo({top:0,behavior:'smooth'});
     if(key==='wishlist') renderWishlist();
+    if(key==='cart') renderCart();
   }
+
+  // Real-time updates pushed from Firebase (fires whenever the cart or
+  // wishlist changes anywhere — the store page, another tab, another device).
+  window.addEventListener('rg-cart-updated', function(){
+    renderCart();
+    renderStats(loadCurrentUser());
+  });
+  window.addEventListener('rg-wishlist-updated', function(){
+    renderWishlist();
+    renderStats(loadCurrentUser());
+  });
 
   function bindNav(){
     document.querySelectorAll('[data-tab]').forEach(function(btn){
