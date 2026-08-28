@@ -253,6 +253,7 @@
   }
   .nav-badge.is-muted{background:var(--surface);color:var(--ink-600);border:1px solid var(--card-line)}
   .nav-item.is-active .nav-badge.is-muted{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.2)}
+  .nav-badge[hidden]{display:none!important}
 
   .sidebar-foot{
     padding:14px 12px;border-top:1px solid var(--card-line);
@@ -629,7 +630,7 @@
         </button>
         <button class="nav-item" data-tab="pending">
           <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
-          Pending Orders <span class="nav-badge" id="navPendingBadge">0</span>
+          Pending Orders <span class="nav-badge" id="navPendingBadge" hidden>0</span>
         </button>
         <button class="nav-item" data-tab="history">
           <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></span>
@@ -641,11 +642,11 @@
         <p class="nav-group-title">Shopping</p>
         <button class="nav-item" data-tab="cart">
           <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span>
-          Cart <span class="nav-badge is-muted" id="navCartBadge">0</span>
+          Cart <span class="nav-badge is-muted" id="navCartBadge" hidden>0</span>
         </button>
         <button class="nav-item" data-tab="wishlist">
           <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span>
-          Wishlist <span class="nav-badge is-muted" id="navWishlistBadge">0</span>
+          Wishlist <span class="nav-badge is-muted" id="navWishlistBadge" hidden>0</span>
         </button>
         <button class="nav-item" data-tab="reviews">
           <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 2 3 6 6 .9-4.5 4.3 1 6-5.5-3-5.5 3 1-6L3 8.9 9 8z"/></svg></span>
@@ -683,10 +684,6 @@
         <div>
           <h1 class="main-title" id="overviewTitle">Welcome back</h1>
           <p class="main-sub" id="overviewSub">Here's what's happening with your account today.</p>
-        </div>
-        <div class="main-actions">
-          <button class="btn btn-ghost" onclick="document.querySelector('[data-tab=track]').click()">Track Order</button>
-          <a class="btn btn-primary" href="store_14.html">Continue Shopping</a>
         </div>
       </div>
 
@@ -757,7 +754,7 @@
         </div>
         <div class="card">
           <h3 class="card-title">How tracking works</h3>
-          <p class="card-sub" style="margin-top:8px">We generate a deterministic timeline from your order number + contact. For real orders, this connects to your saved orders automatically. Use your email to pull any order you placed while logged in.</p>
+          <p class="card-sub" style="margin-top:8px">We look up your actual order using the order number and the email or phone you placed it with. Use your email to pull any order you placed while logged in.</p>
           <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">
             <div style="display:flex;gap:10px;align-items:center;font-size:13px"><span style="width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--card-line);display:flex;align-items:center;justify-content:center">1</span> Enter order number + email/phone</div>
             <div style="display:flex;gap:10px;align-items:center;font-size:13px"><span style="width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--card-line);display:flex;align-items:center;justify-content:center">2</span> View courier, tracking code, progress</div>
@@ -971,32 +968,49 @@
     {key:'out-for-delivery',label:'Out for Delivery'},
     {key:'delivered',label:'Delivered'}
   ];
-  const ITEM_SETS=[
-    [{name:'iPhone 16',price:17499,qty:1,image:'https://i.postimg.cc/K8nRkFtF/iphone16.png'}],
-    [{name:'iPhone 17 Pro',price:24999,qty:1,image:'https://i.postimg.cc/g29x2rXQ/iphone17pro.png'}],
-    [{name:'iPhone 17',price:19999,qty:1,image:'https://i.postimg.cc/P5GC5NpY/iphone17.png'}],
-    [{name:'iPhone 16',price:17499,qty:1,image:'https://i.postimg.cc/K8nRkFtF/iphone16.png'},{name:'iPhone 17',price:19999,qty:1,image:'https://i.postimg.cc/P5GC5NpY/iphone17.png'}]
+  const ADDRESSES=['12 Baobab Street, Mokopane, Limpopo, 0600'];
+  const PAYMENT_BRANDS=[
+    {key:'VISA',label:'Visa'},
+    {key:'MASTERCARD',label:'Mastercard'},
+    {key:'FLOAT',label:'Float'},
+    {key:'YOCO',label:'Yoco'},
+    {key:'PAYFAST',label:'PayFast'}
   ];
-  const ADDRESSES=['12 Baobab Street, Mokopane, Limpopo, 0600','45 Voortrekker Road, Polokwane, Limpopo, 0700','8 Church Street, Mokopane, Limpopo, 0600'];
-  const COURIERS=['Courier Guy','DSV Same-Day','Fastway Couriers'];
-  const PAYMENT_METHODS=['Float (EFT)','PayFast','Yoco Card'];
 
   function formatPrice(n){return 'R'+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')}
-  function formatDate(d){return d.toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'})}
-  function seedFrom(str){let s=0;for(let i=0;i<str.length;i++) s+=str.charCodeAt(i)*(i+1);return s}
-  function generateOrder(orderNumber, contact){
-    const seed=seedFrom(orderNumber.trim().toUpperCase()+contact.trim().toLowerCase());
-    const stepIndex=seed%STEPS.length;
-    const items=ITEM_SETS[seed%ITEM_SETS.length];
-    const address=ADDRESSES[seed%ADDRESSES.length];
-    const courier=COURIERS[seed%COURIERS.length];
-    const paymentMethod=PAYMENT_METHODS[seed%PAYMENT_METHODS.length];
-    const trackingNumber='RGT'+(100000+(seed%899999));
-    const placedDate=new Date(); placedDate.setDate(placedDate.getDate()-(2+(seed%6)));
-    const estimatedDelivery=new Date(placedDate); estimatedDelivery.setDate(estimatedDelivery.getDate()+7);
-    const subtotal=items.reduce((sum,it)=>sum+it.price*it.qty,0);
-    const shippingFee=subtotal>=15000?0:150;
-    return {orderNumber:orderNumber.trim().toUpperCase(),status:STEPS[stepIndex].key,stepIndex,placedDate,estimatedDelivery,address,courier,trackingNumber,paymentMethod,items,subtotal,shippingFee,total:subtotal+shippingFee};
+  function formatDate(d){return new Date(d).toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'})}
+
+  // Looks up a REAL order (one that was actually placed and stored against an
+  // account) by order number + the contact (email or phone) used to place it.
+  // No fabricated/mock data is generated here.
+  function findRealOrder(orderNumber, contact){
+    const num=(orderNumber||'').trim().toUpperCase();
+    const c=(contact||'').trim().toLowerCase();
+    if(!num||!c) return null;
+    const accounts=loadAccounts();
+    for(let i=0;i<accounts.length;i++){
+      const acc=accounts[i];
+      const emailMatch=(acc.email||'').toLowerCase()===c;
+      const phoneMatch=(acc.phone||'').toLowerCase()===c;
+      if(!emailMatch&&!phoneMatch) continue;
+      const orders=loadUserData(acc.email,'orders',[]);
+      const found=orders.find(function(o){return (o.orderNumber||'').toUpperCase()===num});
+      if(found) return found;
+    }
+    return null;
+  }
+
+  // Records a real, completed order against a user's account (e.g. called by
+  // the checkout flow once payment succeeds) and refreshes the UI live.
+  function recordOrder(email, order){
+    if(!email||!order||!order.orderNumber) return;
+    const orders=loadUserData(email,'orders',[]);
+    orders.unshift(order);
+    saveUserData(email,'orders',orders);
+    const cur=loadCurrentUser();
+    if(cur&&cur.email.toLowerCase()===email.toLowerCase()){
+      renderOverview(cur); renderStats(cur);
+    }
   }
 
   function loadAccounts(){try{return JSON.parse(localStorage.getItem(ACCOUNTS_KEY))||[]}catch(e){return []}}
@@ -1010,40 +1024,6 @@
   function userDataKey(email,s){return 'rgt_user_'+email.toLowerCase()+'_'+s}
   function loadUserData(email,s,fb){try{const v=localStorage.getItem(userDataKey(email,s));return v?JSON.parse(v):fb}catch(e){return fb}}
   function saveUserData(email,s,d){try{localStorage.setItem(userDataKey(email,s),JSON.stringify(d))}catch(e){}}
-
-  function ensureMockDataForUser(user){
-    const email=user.email;
-    if(!loadUserData(email,'orders',null)){
-      const base=seedFrom(email);
-      const mock=[];
-      for(let i=0;i<5;i++){
-        const num='RGT-'+(10000+(base+i*333)%90000);
-        const o=generateOrder(num,email);
-        if(i<2){o.stepIndex=i%3;o.status=STEPS[o.stepIndex].key}
-        else if(i<3){o.stepIndex=3;o.status='out-for-delivery'}
-        else{o.stepIndex=4;o.status='delivered'}
-        mock.push(o);
-      }
-      saveUserData(email,'orders',mock);
-    }
-    if(!loadUserData(email,'payments',null)){
-      saveUserData(email,'payments',[
-        {id:'pm1',type:'EFT',label:'Float (EFT) - Capitec ** 4582',isDefault:true,details:'Capitec Global One • 1052 458 236',billing:'69 Hooge Street, Mokopane'},
-        {id:'pm2',type:'CARD',label:'Visa ending 4242',isDefault:false,details:'Exp 12/27 • Thabo Molefe',billing:'69 Hooge Street, Mokopane'}
-      ]);
-    }
-    if(!loadUserData(email,'reviews',null)){
-      saveUserData(email,'reviews',[
-        {id:'rv1',product:'iPhone 16',rating:5,text:'Battery life is incredible and build quality is top tier. Delivered in 2 days!',date:new Date(Date.now()-86400000*5).toISOString()},
-        {id:'rv2',product:'iPhone 17 Pro',rating:4,text:'Love the camera system, worth it.',date:new Date(Date.now()-86400000*12).toISOString()}
-      ]);
-    }
-    if(!loadUserData(email,'returns',null)){
-      saveUserData(email,'returns',[
-        {id:'ret1',orderNumber:'RGT-10234',product:'iPhone 16 Case',reason:'Wrong color',status:'Approved - Awaiting Collection',date:new Date(Date.now()-86400000*2).toISOString()}
-      ]);
-    }
-  }
 
   function renderProgress(order){
     return STEPS.map((s,i)=>{
@@ -1090,7 +1070,7 @@
     const clearBtn=document.getElementById('profileCartClearBtn');
     const cart=getCart();
     const count=cart.reduce(function(s,c){return s+(c.qty||1)},0);
-    if(navBadge) navBadge.textContent=count;
+    if(navBadge){navBadge.textContent=count;navBadge.hidden=count===0}
     const total=cart.reduce(function(s,c){return s+(c.price||0)*(c.qty||1)},0);
     if(totalEl) totalEl.textContent=formatPrice(total);
     if(clearBtn) clearBtn.hidden=!cart.length;
@@ -1153,7 +1133,7 @@
     const body=document.getElementById('profileWishlistBody');
     const navBadge=document.getElementById('navWishlistBadge');
     const wish=getWishlist();
-    if(navBadge) navBadge.textContent=wish.length;
+    if(navBadge){navBadge.textContent=wish.length;navBadge.hidden=wish.length===0}
     const statW=document.getElementById('statWishlist'); if(statW) statW.textContent=wish.length;
     const overview=document.getElementById('overviewWishlist');
     if(!body) return;
@@ -1203,7 +1183,7 @@
     if(!body) return;
     const orders=loadUserData(user.email,'orders',[]);
     const pending=orders.filter(function(o){return o.status!=='delivered'});
-    if(badge) badge.textContent=pending.length;
+    if(badge){badge.textContent=pending.length;badge.hidden=pending.length===0}
     if(statPend) statPend.textContent=pending.length;
     if(!pending.length){
       body.innerHTML='<div class="profile-empty">No pending orders. You are all caught up!</div>';
@@ -1316,13 +1296,38 @@
     });
   }
 
+  function pmBrandLabel(key){
+    const b=PAYMENT_BRANDS.find(function(x){return x.key===key});
+    return b?b.label:key;
+  }
+  function pmIsCard(key){return key==='VISA'||key==='MASTERCARD'}
+
   function renderPayments(user){
     const body=document.getElementById('paymentsBody'); if(!body) return;
     const payments=loadUserData(user.email,'payments',[]);
     const listHtml=payments.length?payments.map(function(p){
-      return '<div class="profile-card pm-card"><div class="pm-icon '+(p.type==='CARD'?'is-card':'')+'">'+(p.type==='CARD'?'VISA':'EFT')+'</div><div style="flex:1;min-width:0;"><p class="profile-card-title" style="margin:0 0 2px;">'+p.label+' '+(p.isDefault?'<span style="font-size:10px;background:var(--blue-700);color:#fff;padding:2px 6px;border-radius:999px;margin-left:6px;">DEFAULT</span>':'')+'</p><p class="profile-card-sub">'+p.details+'</p></div><div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="profile-mini-btn" data-default-pm="'+p.id+'">Default</button><button class="profile-mini-btn danger" data-del-pm="'+p.id+'">Delete</button></div></div>';
+      const isCard=pmIsCard(p.type);
+      const icon=p.type==='VISA'?'VISA':p.type==='MASTERCARD'?'MC':pmBrandLabel(p.type).toUpperCase();
+      return '<div class="profile-card pm-card"><div class="pm-icon '+(isCard?'is-card':'')+'">'+icon+'</div><div style="flex:1;min-width:0;"><p class="profile-card-title" style="margin:0 0 2px;">'+p.label+' '+(p.isDefault?'<span style="font-size:10px;background:var(--blue-700);color:#fff;padding:2px 6px;border-radius:999px;margin-left:6px;">DEFAULT</span>':'')+'</p><p class="profile-card-sub">'+p.details+'</p></div><div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="profile-mini-btn" data-default-pm="'+p.id+'">Default</button><button class="profile-mini-btn danger" data-del-pm="'+p.id+'">Delete</button></div></div>';
     }).join(''):'<div class="profile-empty">No payment methods saved.</div>';
-    body.innerHTML=listHtml+'<div class="card" style="margin-top:14px"><p style="font-weight:700;font-size:13px;margin:0 0 10px;">Add payment method</p><label class="auth-label"><span>Type</span><select id="pmType"><option value="CARD">Card</option><option value="EFT">EFT / Bank</option></select></label><label class="auth-label"><span>Label</span><input type="text" id="pmLabel" placeholder="e.g. Visa ending 4242" /></label><label class="auth-label"><span>Details</span><input type="text" id="pmDetails" placeholder="Exp date or bank name" /></label><button type="button" class="btn btn-primary btn-block" id="addPmBtn">Save Payment Method</button></div>';
+    body.innerHTML=listHtml+'<div class="card" style="margin-top:14px"><p style="font-weight:700;font-size:13px;margin:0 0 10px;">Add payment method</p>'
+      +'<label class="auth-label"><span>Method</span><select id="pmType">'
+      +PAYMENT_BRANDS.map(function(b){return '<option value="'+b.key+'">'+b.label+'</option>'}).join('')
+      +'</select></label>'
+      +'<div id="pmCardFields"><label class="auth-label"><span>Name on Card</span><input type="text" id="pmCardName" placeholder="e.g. Thabo Molefe" /></label><label class="auth-label"><span>Card ending in (last 4 digits)</span><input type="text" id="pmCardLast4" maxlength="4" inputmode="numeric" placeholder="4242" /></label><label class="auth-label"><span>Expiry (MM/YY)</span><input type="text" id="pmCardExpiry" maxlength="5" placeholder="12/27" /></label></div>'
+      +'<div id="pmGatewayFields" style="display:none"><label class="auth-label"><span>Linked account / reference</span><input type="text" id="pmGatewayRef" placeholder="e.g. your email or merchant reference" /></label></div>'
+      +'<button type="button" class="btn btn-primary btn-block" id="addPmBtn">Save Payment Method</button></div>';
+
+    const pmTypeSel=document.getElementById('pmType');
+    const cardFields=document.getElementById('pmCardFields');
+    const gatewayFields=document.getElementById('pmGatewayFields');
+    function syncPmFields(){
+      const isCard=pmIsCard(pmTypeSel.value);
+      cardFields.style.display=isCard?'':'none';
+      gatewayFields.style.display=isCard?'none':'';
+    }
+    if(pmTypeSel){pmTypeSel.addEventListener('change',syncPmFields); syncPmFields()}
+
     body.querySelectorAll('[data-del-pm]').forEach(function(b){
       b.addEventListener('click',function(){
         let pm=loadUserData(user.email,'payments',[]);
@@ -1339,12 +1344,25 @@
       });
     });
     const addBtn=document.getElementById('addPmBtn'); if(addBtn) addBtn.addEventListener('click',function(){
-      const t=document.getElementById('pmType').value;
-      const l=document.getElementById('pmLabel').value.trim();
-      const d=document.getElementById('pmDetails').value.trim();
-      if(!l){toast('Enter label');return}
+      const t=pmTypeSel.value;
+      const brand=pmBrandLabel(t);
+      const isCard=pmIsCard(t);
+      let label,details;
+      if(isCard){
+        const name=document.getElementById('pmCardName').value.trim();
+        const last4=document.getElementById('pmCardLast4').value.trim();
+        const expiry=document.getElementById('pmCardExpiry').value.trim();
+        if(!/^\d{4}$/.test(last4)){toast('Enter the last 4 digits');return}
+        label=brand+' ending '+last4;
+        details=[expiry?'Expires '+expiry:'',name].filter(Boolean).join(' • ')||'Card on file';
+      }else{
+        const ref=document.getElementById('pmGatewayRef').value.trim();
+        if(!ref){toast('Enter a linked account or reference');return}
+        label=brand;
+        details=ref;
+      }
       const pm=loadUserData(user.email,'payments',[]);
-      pm.push({id:'pm'+Date.now(),type:t,label:l,details:d||(t==='CARD'?'Card':'Bank'),isDefault:pm.length===0});
+      pm.push({id:'pm'+Date.now(),type:t,label:label,details:details,isDefault:pm.length===0});
       saveUserData(user.email,'payments',pm); renderPayments(user); toast('Payment method saved');
     });
   }
@@ -1443,6 +1461,11 @@
     renderWishlist();
     renderStats(loadCurrentUser());
   });
+  // Fired by the checkout flow once a real order is placed, so it appears
+  // here live without a page reload.
+  window.addEventListener('rg-order-placed', function(e){
+    if(e.detail&&e.detail.email&&e.detail.order) recordOrder(e.detail.email, e.detail.order);
+  });
 
   function bindNav(){
     document.querySelectorAll('[data-tab]').forEach(function(btn){
@@ -1498,7 +1521,6 @@
   function showDashboard(user){
     authWrapper.style.display='none';
     layout.style.display='grid';
-    ensureMockDataForUser(user);
     renderSidebar(user);
     renderOverview(user);
     renderReviews(user);
@@ -1597,8 +1619,9 @@
       e.preventDefault();
       const o=numInput.value.trim(); const c=contInput.value.trim();
       if(!o||!c){if(errEl) errEl.classList.add('is-visible');return}
+      const order=findRealOrder(o,c);
+      if(!order){if(errEl) errEl.classList.add('is-visible');return}
       if(errEl) errEl.classList.remove('is-visible');
-      const order=generateOrder(o,c);
       saveTrackedOrder(o,c);
       renderOrderInto(detailEl, order, 'guestBack', function(){
         detailEl.style.display='none'; form.style.display='';
@@ -1643,7 +1666,7 @@
   else init();
 
   // expose for external
-  window.RGT_PROFILE={switchTab, renderWishlist, toast};
+  window.RGT_PROFILE={switchTab, renderWishlist, toast, recordOrder};
 })();
 </script>
 
