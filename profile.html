@@ -4,12 +4,11 @@
 <meta charset="UTF-8" />
 <title>My Account — Rare Grade Tech</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="Manage your Rare Grade Tech account: orders, wishlist, reviews, returns, payment methods and details." />
+<meta name="description" content="Manage your Rare Grade Tech account — orders, wishlist, returns, payments and details." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Montserrat:ital,wght@1,800&display=swap" rel="stylesheet" />
 <style>
-
   :root{
     --blue-900:#0A0E5A;
     --blue-800:#0D12A0;
@@ -18,504 +17,292 @@
     --ink:#05060B;
     --white:#FFFFFF;
     --line:rgba(255,255,255,.16);
-
     --surface:#F5F6FC;
     --surface-alt:#FFFFFF;
     --card-line:#E5E7F6;
     --ink-900:#090B25;
     --ink-600:#54566F;
     --ink-400:#8688A0;
-
     --radius-s:10px;
     --radius-m:16px;
-    --radius-l:28px;
-    --container:1360px;
-    --gap:8px;
-    --nav-h:107px;
+    --radius-l:24px;
+    --sidebar-w:300px;
   }
-
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;overflow-x:hidden;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   body{
     margin:0;
-    max-width:100vw;
-    font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
+    font-family:'Inter',system-ui,sans-serif;
     background:var(--surface);
     color:var(--ink-900);
     -webkit-font-smoothing:antialiased;
-    text-rendering:optimizeLegibility;
-    min-height:100vh;
   }
-  img{max-width:100%;display:block;height:auto;}
-  a{color:inherit;text-decoration:none;}
-  button{font-family:inherit;}
-  ul{margin:0;padding:0;list-style:none;}
-  .wrap{max-width:var(--container);margin:0 auto;padding-inline:calc(var(--gap)*5);}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
 
-  /* ---------- Nav (matches site header) ---------- */
-  .navbar{
-    position:sticky;top:0;z-index:40;
+  /* Topbar */
+  .topbar{
+    height:68px;
     background:#0404d8;
+    color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 24px;
+    position:sticky;top:0;z-index:20;
   }
-  .navbar .wrap{ display:flex; align-items:center; justify-content:space-between; padding-block:calc(var(--gap)*0.1); gap:calc(var(--gap)*4); }
-  .logo{display:flex;align-items:center;gap:calc(var(--gap)*1.5);}
-  .logo-image{ height:56px; width:auto; max-width:220px; object-fit:contain; flex:none; }
-  @media(min-width:981px){ .navbar .wrap{ min-height:96px; } }
+  .topbar-left{display:flex;align-items:center;gap:18px}
+  .logo-img{height:38px;width:auto;object-fit:contain}
+  .topbar-links{display:flex;align-items:center;gap:22px;font-size:14px;font-weight:600;opacity:.9}
+  .topbar-links a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+  .topbar-actions{display:flex;align-items:center;gap:12px}
+  .topbar-btn{
+    width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.08);color:#fff;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+  }
+  .menu-toggle{display:none}
+  @media(max-width:960px){
+    .menu-toggle{display:flex}
+    .topbar-links{display:none}
+  }
 
-  .nav-links{display:none;align-items:center;gap:calc(var(--gap)*4.5);}
-  .nav-links a{ font-size:14.5px;font-weight:600;color:rgba(255,255,255,.88); position:relative;padding-block:4px; }
-  .nav-links a:hover{color:var(--white);}
-  @media(min-width:900px){ .nav-links{display:flex;} }
+  /* Layout */
+  .layout{
+    display:grid;
+    grid-template-columns:var(--sidebar-w) 1fr;
+    min-height:calc(100vh - 68px);
+  }
+  @media(max-width:960px){
+    .layout{grid-template-columns:1fr}
+  }
 
+  /* Sidebar */
+  .sidebar{
+    background:#fff;
+    border-right:1px solid var(--card-line);
+    display:flex;flex-direction:column;
+    position:sticky;top:68px;
+    height:calc(100vh - 68px);
+    overflow:hidden;
+  }
+  @media(max-width:960px){
+    .sidebar{
+      position:fixed;left:0;top:68px;bottom:0;z-index:30;
+      transform:translateX(-100%);
+      transition:transform .35s cubic-bezier(.16,.84,.44,1);
+      width:min(86vw, var(--sidebar-w));
+      box-shadow:20px 0 60px rgba(9,11,37,.18);
+    }
+    .sidebar.is-open{transform:translateX(0)}
+  }
+  .sidebar-head{
+    padding:22px 20px 18px;
+    border-bottom:1px solid var(--card-line);
+  }
+  .user-card{
+    display:flex;align-items:center;gap:12px;
+  }
+  .avatar{
+    width:48px;height:48px;border-radius:50%;
+    background:linear-gradient(135deg,#1118F5,#0D12A0);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:18px;flex:none;
+  }
+  .avatar.has-img{background:#fff;overflow:hidden}
+  .avatar.has-img img{width:100%;height:100%;object-fit:cover}
+  .user-meta{flex:1;min-width:0}
+  .user-name{margin:0 0 2px;font-weight:800;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .user-email{margin:0;font-size:12px;color:var(--ink-600);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .user-badge{margin-top:8px;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:4px 8px;border-radius:999px;background:var(--surface);border:1px solid var(--card-line);color:var(--ink-600)}
+
+  .nav{
+    flex:1;overflow-y:auto;padding:14px 10px 12px;
+    scrollbar-width:thin;
+  }
+  .nav-group{margin-bottom:18px}
+  .nav-group-title{
+    font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-400);padding:0 10px;margin:0 0 8px;
+  }
+  .nav-item{
+    width:100%;display:flex;align-items:center;gap:10px;
+    padding:11px 12px;border-radius:12px;border:1px solid transparent;
+    background:transparent;cursor:pointer;text-align:left;
+    font-size:13.5px;font-weight:600;color:var(--ink-600);
+    transition:all .18s ease;
+  }
+  .nav-item:hover{background:var(--surface);color:var(--ink-900)}
+  .nav-item.is-active{background:var(--ink-900);color:#fff;box-shadow:0 6px 16px rgba(9,11,37,.18)}
+  .nav-item.is-active .nav-icon{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.18);color:#fff}
+  .nav-icon{
+    width:30px;height:30px;border-radius:9px;background:var(--surface);border:1px solid var(--card-line);
+    display:flex;align-items:center;justify-content:center;flex:none;color:var(--ink-900);
+    transition:all .18s ease;
+  }
+  .nav-badge{
+    margin-left:auto;background:var(--blue-700);color:#fff;font-size:11px;font-weight:800;
+    min-width:20px;height:20px;padding:0 6px;border-radius:999px;display:flex;align-items:center;justify-content:center;
+  }
+  .nav-badge.is-muted{background:var(--surface);color:var(--ink-600);border:1px solid var(--card-line)}
+  .nav-item.is-active .nav-badge.is-muted{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.2)}
+
+  .sidebar-foot{
+    padding:14px 12px;border-top:1px solid var(--card-line);
+    display:flex;flex-direction:column;gap:8px;
+  }
   .btn{
     display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    font-weight:700;font-size:14.5px;
-    border-radius:999px;
-    padding:14px 26px;
-    border:1px solid transparent;
-    cursor:pointer;
-    white-space:nowrap;
-    transition:transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+    font-weight:700;font-size:13.5px;border-radius:999px;padding:12px 18px;
+    border:1px solid transparent;cursor:pointer;white-space:nowrap;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
   }
-  .btn-primary{background:var(--ink);color:var(--white);}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(0,0,0,.35);}
-  .btn-block-ink{background:var(--blue-700);color:var(--white);}
-  .btn-block-ink:hover{background:var(--blue-800);transform:translateY(-2px);box-shadow:0 12px 24px rgba(17,24,245,.35);}
-  .btn-outline-light{background:transparent;color:var(--white);border-color:rgba(255,255,255,.35);}
-  .btn-outline-light:hover{background:rgba(255,255,255,.12);}
+  .btn-primary{background:var(--ink-900);color:#fff}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(9,11,37,.2)}
+  .btn-ghost{background:var(--surface);border-color:var(--card-line);color:var(--ink-900)}
+  .btn-ghost:hover{background:#fff}
+  .btn-block{width:100%}
 
-  .back-link{ display:inline-flex; align-items:center; gap:6px; color:rgba(255,255,255,.85); font-size:13.5px; font-weight:600; }
-  .back-link:hover{ color:#fff; }
-  .back-link svg{ width:15px; height:15px; }
+  /* Main */
+  .main{padding:26px 28px 40px;min-width:0}
+  @media(max-width:700px){.main{padding:18px 16px 30px}}
+  .main-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+  .main-title{margin:0;font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;letter-spacing:-.02em}
+  .main-sub{margin:6px 0 0;color:var(--ink-600);font-size:13.5px;line-height:1.5;max-width:560px}
+  .main-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 
-  /* ---------- Page header strip ---------- */
-  .page-head{ padding:calc(var(--gap)*6) 0 calc(var(--gap)*4); }
-  .page-eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--blue-700); margin-bottom:8px; }
-  .page-eyebrow::before{ content:""; width:20px; height:2px; background:currentColor; border-radius:2px; }
-  .page-title{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(1.7rem,2.4vw,2.4rem); line-height:1.1; letter-spacing:-.01em; margin:0; }
+  /* Cards */
+  .card{
+    background:#fff;border:1px solid var(--card-line);border-radius:16px;padding:18px;
+    box-shadow:0 2px 0 rgba(9,11,37,.02);
+  }
+  .card-title{margin:0 0 2px;font-weight:800;font-size:14px}
+  .card-sub{margin:0;color:var(--ink-600);font-size:12.5px;line-height:1.5}
 
-  /* ================= AUTH VIEW (not signed in) ================= */
-  #authSection{ display:flex; justify-content:center; padding:calc(var(--gap)*6) calc(var(--gap)*5) calc(var(--gap)*10); }
-  .auth-card{ width:100%; max-width:440px; background:var(--surface-alt); border:1px solid var(--card-line); border-radius:var(--radius-l); padding:30px 26px 28px; box-shadow:0 24px 60px rgba(9,11,37,.08); }
-  .auth-card-head{ text-align:center; margin-bottom:20px; }
-  .auth-card-head .avatar-badge{ width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1118F5,#0D12A0);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#fff; }
-  .auth-card-head .avatar-badge svg{ width:24px;height:24px; }
-  .auth-card-head h1{ font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700; margin:0 0 4px; }
-  .auth-card-head p{ font-size:13px; color:var(--ink-600); margin:0; }
-
-  .profile-auth-tabs{ display:flex; gap:8px; padding:4px; background:var(--surface); border:1px solid var(--card-line); border-radius:999px; margin-bottom:18px; }
-  .profile-auth-tabs button{ flex:1; padding:10px 14px; border-radius:999px; border:1px solid transparent; background:transparent; font-size:13px; font-weight:700; color:var(--ink-600); cursor:pointer; transition:all .22s ease; }
-  .profile-auth-tabs button.is-active{ background:var(--ink-900); color:#fff; border-color:var(--ink-900); box-shadow:0 4px 12px rgba(9,11,37,.18); }
-
-  .auth-copy{ font-size:13.5px; line-height:1.6; color:var(--ink-600); margin:0 0 16px; }
-  .auth-label{ display:block; margin-bottom:12px; }
-  .auth-label span{ display:block; font-size:11.5px; font-weight:700; color:var(--ink-900); margin-bottom:6px; text-transform:uppercase; letter-spacing:.04em; }
+  /* Auth */
+  .auth-wrapper{
+    min-height:calc(100vh - 68px);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+    background:radial-gradient(900px 500px at 20% 0%, rgba(17,24,245,.08), transparent 60%), var(--surface);
+  }
+  .auth-card{
+    width:min(440px,100%);background:#fff;border:1px solid var(--card-line);border-radius:20px;
+    padding:22px 22px 24px;box-shadow:0 20px 60px rgba(9,11,37,.10);
+  }
+  .auth-tabs{display:flex;gap:8px;padding:4px;background:var(--surface);border:1px solid var(--card-line);border-radius:999px;margin-bottom:18px}
+  .auth-tabs button{flex:1;padding:10px 14px;border-radius:999px;border:1px solid transparent;background:transparent;font-size:13px;font-weight:700;color:var(--ink-600);cursor:pointer;transition:all .22s ease}
+  .auth-tabs button.is-active{background:var(--ink-900);color:#fff;border-color:var(--ink-900);box-shadow:0 4px 12px rgba(9,11,37,.18)}
+  .auth-copy{font-size:13.5px;line-height:1.6;color:var(--ink-600);margin:0 0 16px}
+  .auth-label{display:block;margin-bottom:12px}
+  .auth-label span{display:block;font-size:11.5px;font-weight:700;color:var(--ink-900);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
   .auth-label input, .auth-label select, .auth-label textarea{
-    width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--card-line); background:var(--surface); font-size:13.5px; color:var(--ink-900); font-family:inherit; transition:border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    width:100%;font-family:inherit;font-size:14px;color:var(--ink-900);
+    padding:12px 14px;border-radius:12px;border:1px solid var(--card-line);background:var(--surface);
+    transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
   }
-  .auth-label input:focus, .auth-label select:focus, .auth-label textarea:focus{ outline:none; border-color:var(--blue-accent); background:#fff; box-shadow:0 0 0 4px rgba(59,76,255,.12); }
-  .auth-error{ display:none; font-size:12.5px; color:#e0433a; background:rgba(224,67,58,.08); border:1px solid rgba(224,67,58,.18); padding:10px 12px; border-radius:10px; margin-bottom:12px; }
-  .auth-error.is-visible{ display:block; }
-  .auth-divider{ display:flex; align-items:center; gap:12px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-400); margin:18px 0 14px; }
-  .auth-divider::before, .auth-divider::after{ content:''; flex:1; height:1px; background:var(--card-line); }
-  .google-auth-btn{ width:100%; display:flex; align-items:center; justify-content:center; gap:10px; margin:14px 0 0; padding:12px 16px; border:1px solid var(--card-line); border-radius:12px; background:#fff; color:var(--ink-900); font-size:13.5px; font-weight:700; cursor:pointer; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
-  .google-auth-btn:hover{ transform:translateY(-1px); border-color:#b8bdcf; box-shadow:0 8px 18px rgba(9,11,37,.10); }
-  .google-auth-btn:disabled{ opacity:.65; cursor:wait; transform:none; }
-  .google-auth-btn svg{ width:18px; height:18px; flex:none; }
-  .google-auth-status{ display:none; margin:10px 0 0; color:var(--ink-600); font-size:12px; text-align:center; }
-  .google-auth-status.is-visible{ display:block; }
-  .google-auth-status.is-error{ color:#e0433a; }
+  .auth-label input:focus, .auth-label select:focus, .auth-label textarea:focus{outline:none;border-color:var(--blue-accent);background:#fff;box-shadow:0 0 0 4px rgba(59,76,255,.12)}
+  .auth-error{display:none;font-size:12.5px;color:#e0433a;background:rgba(224,67,58,.08);border:1px solid rgba(224,67,58,.18);padding:10px 12px;border-radius:10px;margin-bottom:12px}
+  .auth-error.is-visible{display:block}
+  .auth-divider{display:flex;align-items:center;gap:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-400);margin:18px 0 14px}
+  .auth-divider::before, .auth-divider::after{content:'';flex:1;height:1px;background:var(--card-line)}
+  .google-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 0;padding:12px 16px;border:1px solid var(--card-line);border-radius:12px;background:#fff;color:var(--ink-900);font-size:13.5px;font-weight:700;cursor:pointer;transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease}
+  .google-btn:hover{transform:translateY(-1px);border-color:#b8bdcf;box-shadow:0 8px 18px rgba(9,11,37,.10)}
+  .google-btn:disabled{opacity:.65;cursor:wait;transform:none}
+  .google-btn svg{width:18px;height:18px;flex:none}
+  .google-status{display:none;margin:10px 0 0;color:var(--ink-600);font-size:12px;text-align:center}
+  .google-status.is-visible{display:block}
 
-  .order-field{ display:block; margin-bottom:12px; }
-  .order-field span{ display:block; font-size:11.5px; font-weight:700; color:var(--ink-900); margin-bottom:6px; text-transform:uppercase; letter-spacing:.04em; }
-  .order-field input{ width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--card-line); background:var(--surface); font-size:13.5px; color:var(--ink-900); font-family:inherit; }
-  .order-field input:focus{ outline:none; border-color:var(--blue-accent); background:#fff; box-shadow:0 0 0 4px rgba(59,76,255,.12); }
-  .order-lookup-copy{ font-size:12.5px; color:var(--ink-600); margin:0 0 12px; }
-  .order-lookup-error{ display:none; font-size:12.5px; color:#e0433a; background:rgba(224,67,58,.08); border:1px solid rgba(224,67,58,.18); padding:10px 12px; border-radius:10px; margin-bottom:12px; }
-  .order-lookup-error.is-visible{ display:block; }
+  /* Order lookup */
+  .order-field{display:block;margin-bottom:12px}
+  .order-field span{display:block;font-size:11.5px;font-weight:700;color:var(--ink-900);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+  .order-field input{width:100%;font-family:inherit;font-size:14px;color:var(--ink-900);padding:12px 14px;border-radius:12px;border:1px solid var(--card-line);background:var(--surface);transition:border-color .2s ease, box-shadow .2s ease, background .2s ease}
+  .order-field input:focus{outline:none;border-color:var(--blue-accent);background:#fff;box-shadow:0 0 0 4px rgba(59,76,255,.12)}
+  .order-lookup-error{display:none;font-size:12.5px;color:#e0433a;background:rgba(224,67,58,.08);border:1px solid rgba(224,67,58,.18);padding:10px 12px;border-radius:10px;margin:0 0 12px}
+  .order-lookup-error.is-visible{display:block}
+  .order-lookup-copy{font-size:13px;color:var(--ink-600);line-height:1.5;margin:0 0 12px}
 
-  /* ================= Order tracking blocks (shared) ================= */
-  .order-back-btn{ display:inline-flex; align-items:center; gap:6px; background:none; border:none; color:var(--ink-600); font-size:13px; font-weight:700; cursor:pointer; padding:0; margin-bottom:14px; }
-  .order-back-btn:hover{ color:var(--blue-accent); }
-  .order-back-btn svg{ width:14px; height:14px; }
-  .order-head-row{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:18px; }
-  .order-head-num{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:16px; color:var(--ink-900); margin:0 0 3px; }
-  .order-head-date{ font-size:12px; color:var(--ink-400); margin:0; }
-  .order-status-pill{ display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; padding:6px 12px; border-radius:999px; background:rgba(17,24,245,.1); color:var(--blue-700); white-space:nowrap; }
-  .order-status-pill.is-delivered{ background:rgba(22,163,74,.12); color:#15803d; }
-  .order-status-pill::before{ content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
+  /* Dashboard grids */
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+  @media(max-width:1100px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.stats-grid{grid-template-columns:1fr}}
+  .stat{padding:18px}
+  .stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .stat-icon{width:36px;height:36px;border-radius:10px;background:var(--surface);border:1px solid var(--card-line);display:flex;align-items:center;justify-content:center}
+  .stat-value{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;line-height:1}
+  .stat-label{font-size:12px;font-weight:600;color:var(--ink-600);margin-top:6px}
 
-  .order-progress{ display:flex; align-items:flex-start; margin-bottom:22px; }
-  .order-progress-step{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; }
-  .order-progress-dot{ width:26px;height:26px;border-radius:50%;border:2px solid var(--card-line);background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ink-400);position:relative;z-index:1; }
-  .order-progress-dot svg{ width:12px; height:12px; }
-  .order-progress-line{ position:absolute; top:12px; left:-50%; width:100%; height:2px; background:var(--card-line); z-index:0; }
-  .order-progress-step:first-child .order-progress-line{ display:none; }
-  .order-progress-step.is-complete .order-progress-dot{ background:var(--blue-700); border-color:var(--blue-700); color:#fff; }
-  .order-progress-step.is-complete .order-progress-line{ background:var(--blue-700); }
-  .order-progress-step.is-current .order-progress-dot{ background:var(--blue-700); border-color:var(--blue-700); color:#fff; box-shadow:0 0 0 4px rgba(17,24,245,.15); }
-  .order-progress-label{ font-size:9.5px; font-weight:700; color:var(--ink-400); margin-top:7px; line-height:1.3; }
-  .order-progress-step.is-complete .order-progress-label, .order-progress-step.is-current .order-progress-label{ color:var(--ink-900); }
+  .content-grid{display:grid;grid-template-columns:1.4fr .8fr;gap:14px}
+  @media(max-width:1100px){.content-grid{grid-template-columns:1fr}}
+  .section{margin-bottom:16px}
+  .section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .section-head h3{margin:0;font-size:15px;font-weight:800}
+  .section-head a{font-size:12.5px;font-weight:700;color:var(--blue-700)}
 
-  .order-block{ padding:16px 0; border-top:1px solid var(--card-line); }
-  .order-block-title{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-400); margin:0 0 10px; }
-  .order-detail-row{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; font-size:13px; padding:4px 0; }
-  .order-detail-row span:first-child{ color:var(--ink-600); }
-  .order-detail-row span:last-child{ color:var(--ink-900); font-weight:600; text-align:right; }
-  .order-address{ font-size:13px; color:var(--ink-900); }
+  /* Profile cards (reused) */
+  .profile-card{background:#fff;border:1px solid var(--card-line);border-radius:14px;padding:14px;margin-bottom:10px}
+  .profile-card-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .profile-card-title{font-weight:700;font-size:13.5px;margin:0}
+  .profile-card-sub{font-size:12.5px;color:var(--ink-600);line-height:1.5;margin:6px 0 0}
+  .profile-empty{padding:18px;text-align:center;color:var(--ink-600);font-size:13px;background:var(--surface);border:1px dashed var(--card-line);border-radius:12px}
+  .profile-mini-btn{font-size:12px;font-weight:700;padding:8px 12px;border-radius:999px;border:1px solid var(--card-line);background:var(--surface);cursor:pointer}
+  .profile-mini-btn.primary{background:var(--ink-900);color:#fff;border-color:var(--ink-900)}
+  .profile-mini-btn.danger{background:#fff;color:#e0433a;border-color:rgba(224,67,58,.22)}
+  .profile-mini-btn:hover{transform:translateY(-1px)}
+  .order-status-pill{font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;background:rgba(17,24,245,.10);color:var(--blue-700);border:1px solid rgba(17,24,245,.18)}
+  .order-status-pill.is-delivered{background:rgba(52,168,83,.12);color:#1e7a3a;border-color:rgba(52,168,83,.2)}
 
-  .order-items{ display:flex; flex-direction:column; gap:12px; }
-  .order-item{ display:flex; align-items:center; gap:12px; }
-  .order-item-thumb{ width:44px; height:44px; border-radius:10px; background:var(--surface); display:flex; align-items:center; justify-content:center; flex:none; overflow:hidden; }
-  .order-item-thumb img{ max-width:78%; max-height:78%; object-fit:contain; }
-  .order-item-info{ flex:1; min-width:0; }
-  .order-item-name{ font-size:13px; font-weight:700; color:var(--ink-900); margin:0 0 2px; }
-  .order-item-qty{ font-size:11.5px; color:var(--ink-400); margin:0; }
-  .order-item-price{ font-size:13px; font-weight:700; color:var(--ink-900); flex:none; }
-  .order-totals{ margin-top:14px; padding-top:14px; border-top:1px dashed var(--card-line); }
+  /* Order progress */
+  .order-progress{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+  .order-progress-step{flex:1;min-width:72px;text-align:center;position:relative}
+  .order-progress-line{height:2px;background:var(--card-line);position:absolute;top:12px;left:0;right:0}
+  .order-progress-step:first-child .order-progress-line{left:50%}
+  .order-progress-step:last-child .order-progress-line{right:50%}
+  .order-progress-step.is-complete .order-progress-line, .order-progress-step.is-current .order-progress-line{background:var(--blue-700)}
+  .order-progress-dot{width:26px;height:26px;border-radius:50%;background:#fff;border:2px solid var(--card-line);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:11px;font-weight:800;position:relative;z-index:1}
+  .order-progress-step.is-complete .order-progress-dot{background:var(--blue-700);border-color:var(--blue-700);color:#fff}
+  .order-progress-step.is-current .order-progress-dot{border-color:var(--blue-700);color:var(--blue-700)}
+  .order-progress-label{font-size:10.5px;font-weight:600;color:var(--ink-600)}
+  .order-progress-step.is-current .order-progress-label, .order-progress-step.is-complete .order-progress-label{color:var(--ink-900);font-weight:700}
 
-  /* ================= DASHBOARD (signed in) ================= */
-  #dashboardSection{ display:none; padding-bottom:calc(var(--gap)*10); }
-  .dashboard{ display:grid; grid-template-columns:272px 1fr; gap:28px; align-items:start; }
+  .order-head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+  .order-head-num{margin:0;font-weight:800;font-size:16px}
+  .order-head-date{margin:2px 0 0;font-size:12px;color:var(--ink-600)}
+  .order-block{border:1px solid var(--card-line);border-radius:12px;padding:12px;margin-top:12px;background:var(--surface)}
+  .order-block-title{margin:0 0 10px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+  .order-detail-row{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:6px 0;border-bottom:1px dashed rgba(9,11,37,.06)}
+  .order-detail-row:last-child{border-bottom:none}
+  .order-address{font-size:12.5px;line-height:1.5;color:var(--ink-600);margin:0}
+  .order-items{display:flex;flex-direction:column;gap:10px}
+  .order-item{display:flex;align-items:center;gap:10px}
+  .order-item-thumb{width:44px;height:44px;border-radius:10px;background:#fff;border:1px solid var(--card-line);display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden}
+  .order-item-thumb img{max-width:80%;max-height:80%;object-fit:contain}
+  .order-item-info{flex:1;min-width:0}
+  .order-item-name{margin:0;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .order-item-qty{margin:2px 0 0;font-size:11.5px;color:var(--ink-600)}
+  .order-item-price{font-size:13px;font-weight:700}
+  .order-totals{margin-top:10px;padding-top:8px;border-top:1px solid var(--card-line)}
+  .order-back-btn{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:8px 12px;border-radius:999px;border:1px solid var(--card-line);background:#fff;cursor:pointer;margin-bottom:12px}
 
-  .dash-sidebar{ position:sticky; top:calc(var(--nav-h) + 16px); display:flex; flex-direction:column; gap:16px; }
-  @media(max-width:980px){ .navbar .wrap{min-height:0;} .dash-sidebar{ position:static; } }
+  /* Payment method */
+  .pm-card{display:flex;align-items:center;gap:12px}
+  .pm-icon{width:44px;height:44px;border-radius:10px;background:var(--surface);border:1px solid var(--card-line);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex:none}
+  .pm-icon.is-card{background:linear-gradient(135deg,#1118F5,#0D12A0);color:#fff;border-color:transparent}
 
-  .dash-profile-card{ background:var(--surface-alt); border:1px solid var(--card-line); border-radius:var(--radius-m); padding:20px 18px; text-align:center; }
-  .dash-avatar{ width:60px; height:60px; border-radius:50%; margin:0 auto 12px; background:linear-gradient(135deg,#1118F5,#0D12A0); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:22px; overflow:hidden; }
-  .dash-avatar img{ width:100%; height:100%; object-fit:cover; }
-  .dash-name{ font-weight:800; font-size:15px; margin:0 0 2px; word-break:break-word; }
-  .dash-email{ font-size:12px; color:var(--ink-600); margin:0 0 14px; word-break:break-all; }
-  .dash-logout{ width:100%; background:var(--surface); border:1px solid var(--card-line); color:var(--ink-900); font-size:12.5px; font-weight:700; padding:9px 14px; border-radius:999px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px; transition:all .18s ease; }
-  .dash-logout:hover{ background:#fdeceb; border-color:rgba(224,67,58,.3); color:#e0433a; }
-  .dash-logout svg{ width:14px; height:14px; }
+  /* Tab panels */
+  .panel{display:none}
+  .panel.is-active{display:block;animation:fadeIn .22s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-  .dash-nav{ background:var(--surface-alt); border:1px solid var(--card-line); border-radius:var(--radius-m); padding:8px; display:flex; flex-direction:column; gap:2px; }
-  .dash-nav-item{ display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:none; border:none; border-radius:12px; padding:11px 12px; font-size:13.5px; font-weight:600; color:var(--ink-600); cursor:pointer; transition:background .18s ease, color .18s ease; }
-  .dash-nav-item:hover{ background:var(--surface); color:var(--ink-900); }
-  .dash-nav-item.is-active{ background:var(--blue-700); color:#fff; }
-  .dash-nav-item .dash-nav-icon{ width:30px; height:30px; border-radius:9px; background:var(--surface); display:flex; align-items:center; justify-content:center; flex:none; color:var(--blue-700); transition:background .18s ease, color .18s ease; }
-  .dash-nav-item.is-active .dash-nav-icon{ background:rgba(255,255,255,.18); color:#fff; }
-  .dash-nav-item .dash-nav-icon svg{ width:15px; height:15px; }
-  .dash-nav-item span.label{ flex:1; }
-  .dash-badge{ font-size:10.5px; font-weight:800; padding:3px 8px; border-radius:999px; background:#fff; color:var(--blue-700); min-width:20px; text-align:center; }
-  .dash-nav-item.is-active .dash-badge{ background:rgba(255,255,255,.22); color:#fff; }
-  .dash-badge.is-muted{ background:var(--surface); color:var(--ink-600); border:1px solid var(--card-line); }
-  .dash-nav-item.is-active .dash-badge.is-muted{ background:rgba(255,255,255,.22); color:#fff; border-color:transparent; }
+  /* Overlay for mobile */
+  .sidebar-overlay{display:none;position:fixed;inset:68px 0 0 0;background:rgba(9,11,37,.32);z-index:25;backdrop-filter:blur(2px)}
+  .sidebar-overlay.is-open{display:block}
+  @media(min-width:961px){.sidebar-overlay{display:none!important}}
 
-  .dash-main{ min-width:0; }
-  .dash-panel{ background:var(--surface-alt); border:1px solid var(--card-line); border-radius:var(--radius-l); padding:26px 24px 28px; }
-  .dash-panel-head{ margin-bottom:20px; }
-  .dash-panel-head h2{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; margin:0 0 4px; }
-  .dash-panel-head p{ font-size:13px; color:var(--ink-600); margin:0; }
-
-  /* Overview */
-  .overview-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:22px; }
-  .overview-stat{ background:var(--surface); border:1px solid var(--card-line); border-radius:16px; padding:16px 16px 14px; }
-  .overview-stat-label{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-400); margin:0 0 6px; }
-  .overview-stat-value{ font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin:0; color:var(--ink-900); }
-  @media(max-width:640px){ .overview-stats{ grid-template-columns:1fr 1fr; } }
-
-  .overview-shortcuts{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-  .overview-shortcut{ display:flex; align-items:center; gap:12px; padding:14px; border:1px solid var(--card-line); border-radius:14px; background:var(--surface-alt); cursor:pointer; text-align:left; transition:border-color .18s ease, transform .18s ease; }
-  .overview-shortcut:hover{ border-color:var(--blue-accent); transform:translateY(-2px); }
-  .overview-shortcut .dash-nav-icon{ width:34px;height:34px;border-radius:10px;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--blue-700);flex:none; }
-  .overview-shortcut .dash-nav-icon svg{ width:16px;height:16px; }
-  .overview-shortcut-title{ font-size:13.5px; font-weight:700; margin:0 0 2px; color:var(--ink-900); }
-  .overview-shortcut-sub{ font-size:11.5px; color:var(--ink-600); margin:0; }
-  @media(max-width:640px){ .overview-shortcuts{ grid-template-columns:1fr; } }
-
-  /* Cards used inside panels */
-  .profile-card{ border:1px solid var(--card-line); border-radius:14px; padding:12px 14px; background:#fff; margin-bottom:10px; }
-  .profile-card:last-child{ margin-bottom:0; }
-  .profile-card-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:13px; }
-  .profile-card-title{ font-weight:700; color:var(--ink-900); font-size:13.5px; margin:0 0 4px; }
-  .profile-card-sub{ font-size:12px; color:var(--ink-600); margin:0; }
-  .profile-empty{ text-align:center; padding:22px 12px; color:var(--ink-400); font-size:13px; border:1px dashed var(--card-line); border-radius:14px; background:var(--surface); }
-  .profile-mini-btn{ padding:7px 12px; border-radius:999px; border:1px solid var(--card-line); background:#fff; font-size:12px; font-weight:700; cursor:pointer; color:var(--ink-900); transition:all .18s ease; }
-  .profile-mini-btn:hover{ border-color:var(--blue-accent); color:var(--blue-700); }
-  .profile-mini-btn.primary{ background:var(--blue-700); border-color:var(--blue-700); color:#fff; }
-  .profile-mini-btn.primary:hover{ background:var(--blue-800); }
-  .profile-mini-btn.danger{ color:#e0433a; }
-  .profile-mini-btn.danger:hover{ background:rgba(224,67,58,.08); border-color:rgba(224,67,58,.22); }
-  .profile-wishlist-grid{ display:flex; flex-direction:column; gap:10px; }
-  .form-divider{ margin-top:18px; border-top:1px solid var(--card-line); padding-top:18px; }
-  .form-divider-title{ font-weight:700; font-size:13.5px; margin:0 0 12px; }
-  .pm-card{ display:flex; align-items:center; gap:12px; }
-  .pm-icon{ width:40px; height:36px; border-radius:8px; background:var(--ink-900); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; flex:none; }
-  .pm-icon.is-card{ background:linear-gradient(135deg,#1118F5,#0D12A0); }
-  .stars{ display:inline-flex; gap:1px; color:#f59e0b; font-size:13px; }
-
-  .dash-badge-tab{ display:inline-block; }
-
-  /* Footer */
-  .site-footer{ background:var(--ink-900); color:rgba(255,255,255,.6); padding:26px 0; margin-top:40px; font-size:12.5px; text-align:center; }
-  .site-footer a{ color:#fff; }
-
-  /* Utility */
-  .visually-hidden{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
-  .fade-in{ animation:fadeIn .45s ease both; }
-  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
-
+  /* Toast */
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink-900);color:#fff;font-size:13px;font-weight:600;padding:12px 18px;border-radius:999px;box-shadow:0 12px 30px rgba(9,11,37,.28);z-index:100;animation:toastIn .3s ease}
+  @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 </style>
-</head>
-<body>
 
-<nav class="navbar" id="navbar">
-  <div class="wrap">
-    <a class="logo" href="index.html">
-      <img class="logo-image" src="https://i.postimg.cc/jSdtxk2y/1.png" alt="Rare Grade Tech" />
-    </a>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="portfolio.html">Portfolio</a></li>
-      <li><a href="store.html">Shop</a></li>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="contact.html">Contact Us</a></li>
-    </ul>
-    <a class="back-link" href="store.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-      Back to Store
-    </a>
-  </div>
-</nav>
-
-<div class="wrap page-head">
-  <div class="page-eyebrow">My Account</div>
-  <h1 class="page-title" id="pageTitle">Your Rare Grade Tech account</h1>
-</div>
-
-<!-- ============ NOT SIGNED IN ============ -->
-<div class="wrap" id="authSection">
-  <div class="auth-card fade-in">
-    <div class="auth-card-head">
-      <div class="avatar-badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
-      </div>
-      <h1>Sign in to your account</h1>
-      <p>Track orders, manage your wishlist, reviews and details in one place.</p>
-    </div>
-
-    <div class="profile-auth-tabs">
-      <button type="button" data-auth-tab="login" class="is-active">Log In</button>
-      <button type="button" data-auth-tab="signup">Create Account</button>
-    </div>
-
-    <div id="authLoginView">
-      <p class="auth-copy">Log in to track orders, view history, manage returns and more. New here? Create an account in seconds.</p>
-      <div class="auth-error" id="loginError"></div>
-      <form id="loginForm">
-        <label class="auth-label"><span>Email</span><input type="email" id="loginEmail" placeholder="you@email.com" required /></label>
-        <label class="auth-label"><span>Password</span><input type="password" id="loginPassword" placeholder="••••••••" required /></label>
-        <button type="submit" class="btn btn-block-ink" style="width:100%;justify-content:center;margin-top:4px;">Log In</button>
-      </form>
-      <button type="button" class="google-auth-btn" data-google-auth="login">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.35 12.23c0-.79-.07-1.55-.22-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.42Z"/><path fill="#34A853" d="M12 21.7c2.63 0 4.84-.87 6.45-2.35l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.53A9.74 9.74 0 0 0 12 21.7Z"/><path fill="#FBBC05" d="M6.54 13.79A5.85 5.85 0 0 1 6.23 12c0-.62.11-1.22.31-1.79V7.68H3.3A9.74 9.74 0 0 0 2.27 12c0 1.57.38 3.05 1.03 4.32l3.24-2.53Z"/><path fill="#EA4335" d="M12 6.18c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.17 14.63 2.3 12 2.3a9.74 9.74 0 0 0-8.7 5.38l3.24 2.53C7.31 7.9 9.46 6.18 12 6.18Z"/></svg>
-        <span>Continue with Google</span>
-      </button>
-      <p class="google-auth-status" data-google-status="login" aria-live="polite"></p>
-
-      <div class="auth-divider">or continue as guest</div>
-      <form id="orderLookupForm">
-        <p class="order-lookup-copy">Enter your order number and the email or phone used at checkout to view its status.</p>
-        <label class="order-field"><span>Order Number</span><input type="text" id="orderNumberInput" placeholder="e.g. RGT-10234" autocomplete="off" required /></label>
-        <label class="order-field"><span>Email or Phone</span><input type="text" id="orderContactInput" placeholder="you@email.com" autocomplete="off" required /></label>
-        <p class="order-lookup-error" id="orderLookupError">We couldn't find a matching order. Double-check and try again.</p>
-        <button type="submit" class="btn btn-block-ink" style="width:100%;justify-content:center;background:#090B25;">Track Order</button>
-      </form>
-      <div id="orderDetailView" style="display:none;margin-top:16px;"></div>
-    </div>
-
-    <div id="authSignupView" hidden>
-      <p class="auth-copy">Create your Rare Grade Tech account to get order tracking, history, wishlist sync and faster checkout.</p>
-      <div class="auth-error" id="signupError"></div>
-      <form id="signupForm">
-        <label class="auth-label"><span>Full Name</span><input type="text" id="signupName" placeholder="e.g. Thabo Molefe" required /></label>
-        <label class="auth-label"><span>Email</span><input type="email" id="signupEmail" placeholder="you@email.com" required /></label>
-        <label class="auth-label"><span>Phone</span><input type="tel" id="signupPhone" placeholder="+27 61 000 0000" required /></label>
-        <label class="auth-label"><span>Password</span><input type="password" id="signupPassword" placeholder="Min 6 characters" required /></label>
-        <label class="auth-label"><span>Confirm Password</span><input type="password" id="signupConfirm" placeholder="Repeat password" required /></label>
-        <button type="submit" class="btn btn-block-ink" style="width:100%;justify-content:center;">Create Account</button>
-      </form>
-      <button type="button" class="google-auth-btn" data-google-auth="signup">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.35 12.23c0-.79-.07-1.55-.22-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.42Z"/><path fill="#34A853" d="M12 21.7c2.63 0 4.84-.87 6.45-2.35l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.53A9.74 9.74 0 0 0 12 21.7Z"/><path fill="#FBBC05" d="M6.54 13.79A5.85 5.85 0 0 1 6.23 12c0-.62.11-1.22.31-1.79V7.68H3.3A9.74 9.74 0 0 0 2.27 12c0 1.57.38 3.05 1.03 4.32l3.24-2.53Z"/><path fill="#EA4335" d="M12 6.18c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.17 14.63 2.3 12 2.3a9.74 9.74 0 0 0-8.7 5.38l3.24 2.53C7.31 7.9 9.46 6.18 12 6.18Z"/></svg>
-        <span>Continue with Google</span>
-      </button>
-      <p class="google-auth-status" data-google-status="signup" aria-live="polite"></p>
-    </div>
-  </div>
-</div>
-
-<!-- ============ SIGNED IN — DASHBOARD ============ -->
-<div class="wrap" id="dashboardSection">
-  <div class="dashboard">
-
-    <aside class="dash-sidebar">
-      <div class="dash-profile-card" id="profileAccountHeaderWrap"></div>
-
-      <nav class="dash-nav" id="dashNav">
-        <button type="button" class="dash-nav-item" data-tab="overview">
-          <span class="dash-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
-          <span class="label">Overview</span>
-        </button>
-        <button type="button" class="dash-nav-item" data-tab="track">
-          <span class="dash-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 16l4-4-4-4"/><path d="M12 8H3"/><path d="M8 16H3"/><path d="M12 12H3"/></svg></span>
-          <span class="label">Track Order</span>
-        </button>
-        <button type="button" class="dash-nav-item" data-tab="pending">
-          <span class="dash-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
-          <span class="label">Pending Orders</span>
-          <span class="dash-badge" id="pendingBadge">0</span>
-        </button>
-        <button type="button" class="dash-nav-item" data-tab="history">
-          <span class="dash-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></span>
-          <span class="label">Order History</span>
-        </button>
-        <button type="button" class="dash-nav-item" data-tab="wishlist">
-          <span class="dash-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span>
-          <span class="label">Wishlist</span>
-          <span class="dash-badge is-muted" id="wishlistCountBadge">0</span>
-        </button>
-        <button type="button" class="dash-nav-item" data-tab="reviews">
-          <span class="dash-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 2 3 6 6 .9-4.5 4.3 1 6-5.5-3-5.5 3 1-6L3 8.9 9 8z"/></svg></span>
-          <span class="label">My Reviews</span>
-        </button>
-        <button type="button" class="dash-nav-item" data-tab="returns">
-          <span class="dash-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a4 4 0 1 1 0 8H8"/></svg></span>
-          <span class="label">Returns</span>
-        </button>
-        <button type="button" class="dash-nav-item" data-tab="payments">
-          <span class="dash-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
-          <span class="label">Payment Methods</span>
-        </button>
-        <button type="button" class="dash-nav-item" data-tab="details">
-          <span class="dash-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></span>
-          <span class="label">My Details</span>
-        </button>
-      </nav>
-    </aside>
-
-    <main class="dash-main">
-
-      <!-- Overview -->
-      <section class="dash-panel" data-panel="overview">
-        <div class="dash-panel-head">
-          <h2 id="overviewGreeting">Welcome back</h2>
-          <p>Here's a quick snapshot of your account.</p>
-        </div>
-        <div class="overview-stats">
-          <div class="overview-stat"><p class="overview-stat-label">Total Orders</p><p class="overview-stat-value" id="statOrders">0</p></div>
-          <div class="overview-stat"><p class="overview-stat-label">Total Spent</p><p class="overview-stat-value" id="statSpent">R0</p></div>
-          <div class="overview-stat"><p class="overview-stat-label">Wishlist Items</p><p class="overview-stat-value" id="statWishlist">0</p></div>
-        </div>
-        <div class="overview-shortcuts">
-          <button type="button" class="overview-shortcut" data-goto="track">
-            <span class="dash-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 16l4-4-4-4"/><path d="M12 8H3"/><path d="M8 16H3"/><path d="M12 12H3"/></svg></span>
-            <span><p class="overview-shortcut-title">Track an order</p><p class="overview-shortcut-sub">Look up status &amp; delivery</p></span>
-          </button>
-          <button type="button" class="overview-shortcut" data-goto="wishlist">
-            <span class="dash-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span>
-            <span><p class="overview-shortcut-title">View wishlist</p><p class="overview-shortcut-sub">Saved products</p></span>
-          </button>
-          <button type="button" class="overview-shortcut" data-goto="returns">
-            <span class="dash-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a4 4 0 1 1 0 8H8"/></svg></span>
-            <span><p class="overview-shortcut-title">Request a return</p><p class="overview-shortcut-sub">Start a return or exchange</p></span>
-          </button>
-          <button type="button" class="overview-shortcut" data-goto="details">
-            <span class="dash-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></span>
-            <span><p class="overview-shortcut-title">Update my details</p><p class="overview-shortcut-sub">Name, email &amp; address</p></span>
-          </button>
-        </div>
-      </section>
-
-      <!-- Track Order -->
-      <section class="dash-panel" data-panel="track" hidden>
-        <div class="dash-panel-head">
-          <h2>Track Order</h2>
-          <p>Enter an order number and the contact used at checkout.</p>
-        </div>
-        <form id="accountOrderLookupForm">
-          <label class="order-field"><span>Order Number</span><input type="text" id="accountOrderNumberInput" placeholder="e.g. RGT-10234" required /></label>
-          <label class="order-field"><span>Email or Phone</span><input type="text" id="accountOrderContactInput" placeholder="you@email.com" required /></label>
-          <p class="order-lookup-error" id="accountOrderLookupError">We couldn't find a matching order.</p>
-          <button type="submit" class="btn btn-block-ink" style="justify-content:center;">Track Order</button>
-        </form>
-        <div id="accountOrderDetailView" style="display:none;margin-top:16px;"></div>
-      </section>
-
-      <!-- Pending Orders -->
-      <section class="dash-panel" data-panel="pending" hidden>
-        <div class="dash-panel-head">
-          <h2>Pending Orders</h2>
-          <p>Orders that are still on their way to you.</p>
-        </div>
-        <div id="pendingOrdersBody"></div>
-      </section>
-
-      <!-- Order History -->
-      <section class="dash-panel" data-panel="history" hidden>
-        <div class="dash-panel-head">
-          <h2>Order History</h2>
-          <p>Everything you've received so far.</p>
-        </div>
-        <div id="orderHistoryBody"></div>
-      </section>
-
-      <!-- Wishlist -->
-      <section class="dash-panel" data-panel="wishlist" hidden>
-        <div class="dash-panel-head">
-          <h2>Wishlist</h2>
-          <p>Products you've saved for later.</p>
-        </div>
-        <div id="profileWishlistBody"></div>
-      </section>
-
-      <!-- Reviews -->
-      <section class="dash-panel" data-panel="reviews" hidden>
-        <div class="dash-panel-head">
-          <h2>My Reviews</h2>
-          <p>Reviews you've written for products you've bought.</p>
-        </div>
-        <div id="reviewsBody"></div>
-      </section>
-
-      <!-- Returns -->
-      <section class="dash-panel" data-panel="returns" hidden>
-        <div class="dash-panel-head">
-          <h2>Returns</h2>
-          <p>Track return requests or start a new one.</p>
-        </div>
-        <div id="returnsBody"></div>
-      </section>
-
-      <!-- Payment Methods -->
-      <section class="dash-panel" data-panel="payments" hidden>
-        <div class="dash-panel-head">
-          <h2>Payment Methods</h2>
-          <p>Manage the cards and accounts saved to your profile.</p>
-        </div>
-        <div id="paymentsBody"></div>
-      </section>
-
-      <!-- My Details -->
-      <section class="dash-panel" data-panel="details" hidden>
-        <div class="dash-panel-head">
-          <h2>My Details</h2>
-          <p>Keep your contact and shipping information up to date.</p>
-        </div>
-        <div id="detailsBody"></div>
-      </section>
-
-    </main>
-  </div>
-</div>
-
-<footer class="site-footer">
-  <div class="wrap">&copy; <span id="year"></span> Rare Grade Tech. All rights reserved.</div>
-</footer>
-
-<!-- Rare Grade Tech Firebase integration: Google-only auth + Realtime Database persistence -->
+<!-- Firebase Bridge - Google Only Auth -->
 <script>
 (function(){
   const cfg={apiKey:'AIzaSyCIQzfyMvrUKJtqqGn3jPqFt2C805CEHs',authDomain:'raregrade.firebaseapp.com',projectId:'raregrade',storageBucket:'raregrade.firebasestorage.app',messagingSenderId:'794018278876',appId:'1:794018278876:web:cc503804a7ef8f05287319'};
@@ -528,7 +315,7 @@
     const auth=firebase.auth(app);
     const db=firebase.database(app);
     const provider=new firebase.auth.GoogleAuthProvider();
-    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(err=>console.warn('[RGT] Auth persistence unavailable',err));
+    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
     const state={user:null};
     const signInGoogle=async()=>{
       if(auth.currentUser) return auth.currentUser;
@@ -536,8 +323,11 @@
         const r=await auth.signInWithPopup(provider);
         return r.user;
       }catch(err){
-        const fallbackCodes=['auth/popup-blocked','auth/popup-closed-by-user','auth/cancelled-popup-request'];
-        if(fallbackCodes.includes(err.code)){ await auth.signInWithRedirect(provider); return new Promise(()=>{}); }
+        const fallback=['auth/popup-blocked','auth/popup-closed-by-user','auth/cancelled-popup-request'];
+        if(fallback.includes(err.code)){
+          await auth.signInWithRedirect(provider);
+          return new Promise(()=>{});
+        }
         throw err;
       }
     };
@@ -545,101 +335,404 @@
     auth.onAuthStateChanged(async u=>{
       state.user=u;
       document.documentElement.dataset.rgUser=u?'signed-in':'signed-out';
-      if(u){ await db.ref('users/'+u.uid).update({displayName:u.displayName||'',email:u.email||'',photoURL:u.photoURL||'',lastSeen:Date.now()}); }
+      if(u){
+        try{ await db.ref('users/'+u.uid).update({displayName:u.displayName||'',email:u.email||'',photoURL:u.photoURL||'',lastSeen:Date.now()}); }catch(e){}
+        const s=await db.ref('users/'+u.uid+'/cart').once('value');
+        if(s.exists()){
+          const v=s.val()||{};
+          try{ localStorage.setItem('rgt_store_cart', JSON.stringify(Object.values(v))); }catch(e){}
+        }
+      }
       window.dispatchEvent(new CustomEvent('rg-auth',{detail:u}));
     });
-    auth.getRedirectResult().catch(err=>{ if(err&&err.code!=='auth/no-auth-event') console.error('[RGT] Google redirect sign-in failed',err); });
+    auth.getRedirectResult().catch(err=>{
+      if(err && err.code!=='auth/no-auth-event') console.error('[RGT] redirect failed',err);
+    });
   };
   boot().catch(err=>console.error('Rare Grade Firebase bridge failed',err));
 })();
 </script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="topbar-btn menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <a href="store_14.html" style="display:flex;align-items:center;gap:10px">
+      <img class="logo-img" src="https://i.postimg.cc/0N8y3K7Q/rgt-logo-white.png" alt="Rare Grade Tech" onerror="this.style.display='none'" />
+      <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;letter-spacing:-.01em">Rare Grade Tech</span>
+    </a>
+    <nav class="topbar-links">
+      <a href="store_14.html">Store</a>
+      <a href="store_14.html#software">Software</a>
+      <a href="store_14.html#support">Support</a>
+    </nav>
+  </div>
+  <div class="topbar-actions">
+    <a class="topbar-btn" href="store_14.html" aria-label="Back to store">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M12 3l9 9-9 9"/></svg>
+    </a>
+    <button class="topbar-btn" id="notifBtn" aria-label="Cart" onclick="location.href='store_14.html'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="layout" id="appLayout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head" id="sidebarHead">
+      <!-- Filled by JS -->
+      <div class="user-card">
+        <div class="avatar">R</div>
+        <div class="user-meta">
+          <p class="user-name">Guest</p>
+          <p class="user-email">Sign in to manage account</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav" id="sidebarNav">
+      <div class="nav-group">
+        <p class="nav-group-title">Overview</p>
+        <button class="nav-item is-active" data-tab="overview">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>
+          Dashboard
+        </button>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-group-title">Orders</p>
+        <button class="nav-item" data-tab="track">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 16l4-4-4-4"/><path d="M12 8H3"/><path d="M8 16H3"/><path d="M12 12H3"/></svg></span>
+          Track Order
+        </button>
+        <button class="nav-item" data-tab="pending">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+          Pending Orders <span class="nav-badge" id="navPendingBadge">0</span>
+        </button>
+        <button class="nav-item" data-tab="history">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></span>
+          Order History
+        </button>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-group-title">Shopping</p>
+        <button class="nav-item" data-tab="wishlist">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span>
+          Wishlist <span class="nav-badge is-muted" id="navWishlistBadge">0</span>
+        </button>
+        <button class="nav-item" data-tab="reviews">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 2 3 6 6 .9-4.5 4.3 1 6-5.5-3-5.5 3 1-6L3 8.9 9 8z"/></svg></span>
+          My Reviews
+        </button>
+        <button class="nav-item" data-tab="returns">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a4 4 0 1 1 0 8H8"/></svg></span>
+          Returns
+        </button>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-group-title">Account</p>
+        <button class="nav-item" data-tab="payments">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
+          Payment Methods
+        </button>
+        <button class="nav-item" data-tab="details">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></span>
+          My Details
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-foot" id="sidebarFoot">
+      <!-- Filled by JS -->
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main" id="mainContent">
+    <!-- Overview -->
+    <div class="panel is-active" data-panel="overview">
+      <div class="main-header">
+        <div>
+          <h1 class="main-title" id="overviewTitle">Welcome back</h1>
+          <p class="main-sub" id="overviewSub">Here's what's happening with your account today.</p>
+        </div>
+        <div class="main-actions">
+          <button class="btn btn-ghost" onclick="document.querySelector('[data-tab=track]').click()">Track Order</button>
+          <a class="btn btn-primary" href="store_14.html">Continue Shopping</a>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="card stat">
+          <div class="stat-top"><span class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></span><span style="font-size:12px;font-weight:700;color:var(--ink-400)">ORDERS</span></div>
+          <div class="stat-value" id="statOrders">0</div>
+          <div class="stat-label">Total orders placed</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-top"><span class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span><span style="font-size:12px;font-weight:700;color:var(--ink-400)">PENDING</span></div>
+          <div class="stat-value" id="statPending">0</div>
+          <div class="stat-label">Orders in progress</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-top"><span class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span><span style="font-size:12px;font-weight:700;color:var(--ink-400)">WISHLIST</span></div>
+          <div class="stat-value" id="statWishlist">0</div>
+          <div class="stat-label">Items saved</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-top"><span class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><span style="font-size:12px;font-weight:700;color:var(--ink-400)">SPENT</span></div>
+          <div class="stat-value" id="statSpent" style="font-size:20px">R 0</div>
+          <div class="stat-label">Lifetime spend</div>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div>
+          <div class="section">
+            <div class="section-head"><h3>Recent Orders</h3><a href="#" data-jump="history">View all</a></div>
+            <div id="overviewOrders"></div>
+          </div>
+          <div class="section">
+            <div class="section-head"><h3>Pending</h3><a href="#" data-jump="pending">Manage</a></div>
+            <div id="overviewPending"></div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-head"><h3>Wishlist</h3><a href="#" data-jump="wishlist">View all</a></div>
+            <div id="overviewWishlist"></div>
+          </div>
+          <div class="section">
+            <div class="section-head"><h3>Quick Actions</h3></div>
+            <div class="card" style="display:flex;flex-direction:column;gap:10px">
+              <button class="btn btn-ghost btn-block" data-jump="track">Track an order</button>
+              <button class="btn btn-ghost btn-block" data-jump="returns">Request return</button>
+              <button class="btn btn-ghost btn-block" data-jump="details">Edit my details</button>
+              <button class="btn btn-primary btn-block" onclick="location.href='store_14.html'">Go to Store</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Track Order -->
+    <div class="panel" data-panel="track">
+      <div class="main-header"><div><h1 class="main-title">Track Order</h1><p class="main-sub">Enter your order number and contact to see live status, courier and delivery details.</p></div></div>
+      <div class="content-grid">
+        <div class="card">
+          <form id="accountOrderLookupForm">
+            <label class="order-field"><span>Order Number</span><input type="text" id="accountOrderNumberInput" placeholder="e.g. RGT-10234" required /></label>
+            <label class="order-field"><span>Email or Phone</span><input type="text" id="accountOrderContactInput" placeholder="you@email.com" required /></label>
+            <p class="order-lookup-error" id="accountOrderLookupError">We couldn't find a matching order.</p>
+            <button type="submit" class="btn btn-primary btn-block">Track Order</button>
+          </form>
+          <div id="accountOrderDetailView" style="display:none;margin-top:16px"></div>
+        </div>
+        <div class="card">
+          <h3 class="card-title">How tracking works</h3>
+          <p class="card-sub" style="margin-top:8px">We generate a deterministic timeline from your order number + contact. For real orders, this connects to your saved orders automatically. Use your email to pull any order you placed while logged in.</p>
+          <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;gap:10px;align-items:center;font-size:13px"><span style="width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--card-line);display:flex;align-items:center;justify-content:center">1</span> Enter order number + email/phone</div>
+            <div style="display:flex;gap:10px;align-items:center;font-size:13px"><span style="width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--card-line);display:flex;align-items:center;justify-content:center">2</span> View courier, tracking code, progress</div>
+            <div style="display:flex;gap:10px;align-items:center;font-size:13px"><span style="width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--card-line);display:flex;align-items:center;justify-content:center">3</span> Manage from Pending / History tabs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending -->
+    <div class="panel" data-panel="pending">
+      <div class="main-header"><div><h1 class="main-title">Pending Orders</h1><p class="main-sub">Orders that are still processing, shipping or out for delivery.</p></div></div>
+      <div id="pendingOrdersBody"></div>
+    </div>
+
+    <!-- History -->
+    <div class="panel" data-panel="history">
+      <div class="main-header"><div><h1 class="main-title">Order History</h1><p class="main-sub">All delivered orders — re-order in one click or view details.</p></div></div>
+      <div id="orderHistoryBody"></div>
+    </div>
+
+    <!-- Wishlist -->
+    <div class="panel" data-panel="wishlist">
+      <div class="main-header"><div><h1 class="main-title">Wishlist</h1><p class="main-sub">Items you saved from the store. Move them to cart anytime.</p></div><div class="main-actions"><a class="btn btn-ghost" href="store_14.html">Browse Store</a></div></div>
+      <div id="profileWishlistBody"></div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="panel" data-panel="reviews">
+      <div class="main-header"><div><h1 class="main-title">My Reviews</h1><p class="main-sub">Your product reviews and new review form.</p></div></div>
+      <div id="reviewsBody"></div>
+    </div>
+
+    <!-- Returns -->
+    <div class="panel" data-panel="returns">
+      <div class="main-header"><div><h1 class="main-title">Returns</h1><p class="main-sub">Track return requests and request a new return.</p></div></div>
+      <div id="returnsBody"></div>
+    </div>
+
+    <!-- Payments -->
+    <div class="panel" data-panel="payments">
+      <div class="main-header"><div><h1 class="main-title">Payment Methods</h1><p class="main-sub">Saved EFT and card methods. No card numbers or CVV stored.</p></div></div>
+      <div id="paymentsBody"></div>
+    </div>
+
+    <!-- Details -->
+    <div class="panel" data-panel="details">
+      <div class="main-header"><div><h1 class="main-title">My Details</h1><p class="main-sub">Update your name, contact and shipping address.</p></div></div>
+      <div id="detailsBody" class="card"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Auth View (shown when not logged in) -->
+<div id="authWrapper" class="auth-wrapper" style="display:none">
+  <div class="auth-card">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <div style="width:36px;height:36px;border-radius:10px;background:var(--ink-900);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800">R</div>
+      <div><p style="margin:0;font-weight:800;font-size:14px">Rare Grade Tech</p><p style="margin:0;font-size:12px;color:var(--ink-600)">Sign in to your account</p></div>
+    </div>
+
+    <div class="auth-tabs">
+      <button type="button" data-auth-tab="login" class="is-active">Log In</button>
+      <button type="button" data-auth-tab="signup">Create Account</button>
+    </div>
+
+    <div id="authLoginView">
+      <p class="auth-copy">Log in to track orders, view history, manage returns and more.</p>
+      <div class="auth-error" id="loginError"></div>
+      <form id="loginForm">
+        <label class="auth-label"><span>Email</span><input type="email" id="loginEmail" placeholder="you@email.com" required /></label>
+        <label class="auth-label"><span>Password</span><input type="password" id="loginPassword" placeholder="••••••••" required /></label>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:4px">Log In</button>
+      </form>
+      <button type="button" class="google-btn" data-google-auth="login">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.35 12.23c0-.79-.07-1.55-.22-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.42Z"/><path fill="#34A853" d="M12 21.7c2.63 0 4.84-.87 6.45-2.35l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.53A9.74 9.74 0 0 0 12 21.7Z"/><path fill="#FBBC05" d="M6.54 13.79A5.85 5.85 0 0 1 6.23 12c0-.62.11-1.22.31-1.79V7.68H3.3A9.74 9.74 0 0 0 2.27 12c0 1.57.38 3.05 1.03 4.32l3.24-2.53Z"/><path fill="#EA4335" d="M12 6.18c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.17 14.63 2.3 12 2.3a9.74 9.74 0 0 0-8.7 5.38l3.24 2.53C7.31 7.9 9.46 6.18 12 6.18Z"/></svg>
+        <span>Continue with Google</span>
+      </button>
+      <p class="google-status" data-google-status="login" aria-live="polite"></p>
+      <div class="auth-divider">or continue as guest</div>
+      <form id="orderLookupForm">
+        <p class="order-lookup-copy">Enter your order number and the email or phone used at checkout to view its status.</p>
+        <label class="order-field"><span>Order Number</span><input type="text" id="orderNumberInput" placeholder="e.g. RGT-10234" required /></label>
+        <label class="order-field"><span>Email or Phone</span><input type="text" id="orderContactInput" placeholder="you@email.com" required /></label>
+        <p class="order-lookup-error" id="orderLookupError">We couldn't find a matching order. Double-check and try again.</p>
+        <button type="submit" class="btn btn-primary btn-block" style="background:#090B25">Track Order</button>
+      </form>
+      <div id="orderDetailView" style="display:none;margin-top:16px"></div>
+    </div>
+
+    <div id="authSignupView" hidden>
+      <p class="auth-copy">Create your Rare Grade Tech account to get order tracking, history, wishlist sync and faster checkout.</p>
+      <div class="auth-error" id="signupError"></div>
+      <form id="signupForm">
+        <label class="auth-label"><span>Full Name</span><input type="text" id="signupName" placeholder="e.g. Thabo Molefe" required /></label>
+        <label class="auth-label"><span>Email</span><input type="email" id="signupEmail" placeholder="you@email.com" required /></label>
+        <label class="auth-label"><span>Phone</span><input type="tel" id="signupPhone" placeholder="+27 61 000 0000" required /></label>
+        <label class="auth-label"><span>Password</span><input type="password" id="signupPassword" placeholder="Min 6 characters" required /></label>
+        <label class="auth-label"><span>Confirm Password</span><input type="password" id="signupConfirm" placeholder="Repeat password" required /></label>
+        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+      </form>
+      <button type="button" class="google-btn" data-google-auth="signup">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.35 12.23c0-.79-.07-1.55-.22-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.42Z"/><path fill="#34A853" d="M12 21.7c2.63 0 4.84-.87 6.45-2.35l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.53A9.74 9.74 0 0 0 12 21.7Z"/><path fill="#FBBC05" d="M6.54 13.79A5.85 5.85 0 0 1 6.23 12c0-.62.11-1.22.31-1.79V7.68H3.3A9.74 9.74 0 0 0 2.27 12c0 1.57.38 3.05 1.03 4.32l3.24-2.53Z"/><path fill="#EA4335" d="M12 6.18c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.17 14.63 2.3 12 2.3a9.74 9.74 0 0 0-8.7 5.38l3.24 2.53C7.31 7.9 9.46 6.18 12 6.18Z"/></svg>
+        <span>Continue with Google</span>
+      </button>
+      <p class="google-status" data-google-status="signup" aria-live="polite"></p>
+    </div>
+
+    <p style="text-align:center;margin:16px 0 0;font-size:12px;color:var(--ink-400)"><a href="store_14.html" style="text-decoration:underline">← Back to Store</a></p>
+  </div>
+</div>
 
 <script>
 (function(){
+  const ORDER_KEY='rgt_store_tracked_order';
+  const ACCOUNTS_KEY='rgt_accounts';
+  const CURRENT_USER_KEY='rgt_current_user';
+  const WISHLIST_KEY='rgt_store_wishlist';
 
-  const ORDER_KEY = 'rgt_store_tracked_order';
-  const ACCOUNTS_KEY = 'rgt_accounts';
-  const CURRENT_USER_KEY = 'rgt_current_user';
+  // Elements
+  const authWrapper=document.getElementById('authWrapper');
+  const layout=document.getElementById('appLayout');
+  const sidebar=document.getElementById('sidebar');
+  const overlay=document.getElementById('sidebarOverlay');
+  const menuToggle=document.getElementById('menuToggle');
+  const sidebarHead=document.getElementById('sidebarHead');
+  const sidebarFoot=document.getElementById('sidebarFoot');
 
-  const authSection = document.getElementById('authSection');
-  const dashboardSection = document.getElementById('dashboardSection');
-  const pageTitle = document.getElementById('pageTitle');
+  const authLoginView=document.getElementById('authLoginView');
+  const authSignupView=document.getElementById('authSignupView');
+  const loginForm=document.getElementById('loginForm');
+  const signupForm=document.getElementById('signupForm');
+  const loginError=document.getElementById('loginError');
+  const signupError=document.getElementById('signupError');
 
-  const authLoginView = document.getElementById('authLoginView');
-  const authSignupView = document.getElementById('authSignupView');
-  const loginForm = document.getElementById('loginForm');
-  const signupForm = document.getElementById('signupForm');
-  const loginError = document.getElementById('loginError');
-  const signupError = document.getElementById('signupError');
+  const lookupForm=document.getElementById('orderLookupForm');
+  const numberInput=document.getElementById('orderNumberInput');
+  const contactInput=document.getElementById('orderContactInput');
+  const lookupError=document.getElementById('orderLookupError');
+  const detailView=document.getElementById('orderDetailView');
 
-  const lookupForm = document.getElementById('orderLookupForm');
-  const numberInput = document.getElementById('orderNumberInput');
-  const contactInput = document.getElementById('orderContactInput');
-  const lookupError = document.getElementById('orderLookupError');
-  const detailView = document.getElementById('orderDetailView');
+  const accountLookupForm=document.getElementById('accountOrderLookupForm');
+  const accountNumberInput=document.getElementById('accountOrderNumberInput');
+  const accountContactInput=document.getElementById('accountOrderContactInput');
+  const accountLookupError=document.getElementById('accountOrderLookupError');
+  const accountDetailView=document.getElementById('accountOrderDetailView');
 
-  const accountLookupForm = document.getElementById('accountOrderLookupForm');
-  const accountNumberInput = document.getElementById('accountOrderNumberInput');
-  const accountContactInput = document.getElementById('accountOrderContactInput');
-  const accountLookupError = document.getElementById('accountOrderLookupError');
-  const accountDetailView = document.getElementById('accountOrderDetailView');
-
-  const headerWrap = document.getElementById('profileAccountHeaderWrap');
-
-  const STEPS = [
-    { key: 'placed', label: 'Order Placed' },
-    { key: 'processing', label: 'Processing' },
-    { key: 'shipped', label: 'Shipped' },
-    { key: 'out-for-delivery', label: 'Out for Delivery' },
-    { key: 'delivered', label: 'Delivered' }
+  const STEPS=[
+    {key:'placed',label:'Order Placed'},
+    {key:'processing',label:'Processing'},
+    {key:'shipped',label:'Shipped'},
+    {key:'out-for-delivery',label:'Out for Delivery'},
+    {key:'delivered',label:'Delivered'}
   ];
-  const ITEM_SETS = [
-    [{ name: 'iPhone 16', price: 17499, qty: 1, image: 'https://i.postimg.cc/K8nRkFtF/iphone16.png' }],
-    [{ name: 'iPhone 17 Pro', price: 24999, qty: 1, image: 'https://i.postimg.cc/g29x2rXQ/iphone17pro.png' }],
-    [{ name: 'iPhone 17', price: 19999, qty: 1, image: 'https://i.postimg.cc/P5GC5NpY/iphone17.png' }],
-    [
-      { name: 'iPhone 16', price: 17499, qty: 1, image: 'https://i.postimg.cc/K8nRkFtF/iphone16.png' },
-      { name: 'iPhone 17', price: 19999, qty: 1, image: 'https://i.postimg.cc/P5GC5NpY/iphone17.png' }
-    ]
+  const ITEM_SETS=[
+    [{name:'iPhone 16',price:17499,qty:1,image:'https://i.postimg.cc/K8nRkFtF/iphone16.png'}],
+    [{name:'iPhone 17 Pro',price:24999,qty:1,image:'https://i.postimg.cc/g29x2rXQ/iphone17pro.png'}],
+    [{name:'iPhone 17',price:19999,qty:1,image:'https://i.postimg.cc/P5GC5NpY/iphone17.png'}],
+    [{name:'iPhone 16',price:17499,qty:1,image:'https://i.postimg.cc/K8nRkFtF/iphone16.png'},{name:'iPhone 17',price:19999,qty:1,image:'https://i.postimg.cc/P5GC5NpY/iphone17.png'}]
   ];
-  const ADDRESSES = [
-    '12 Baobab Street, Mokopane, Limpopo, 0600',
-    '45 Voortrekker Road, Polokwane, Limpopo, 0700',
-    '8 Church Street, Mokopane, Limpopo, 0600'
-  ];
-  const COURIERS = ['Courier Guy', 'DSV Same-Day', 'Fastway Couriers'];
-  const PAYMENT_METHODS = ['Float (EFT)', 'PayFast', 'Yoco Card'];
+  const ADDRESSES=['12 Baobab Street, Mokopane, Limpopo, 0600','45 Voortrekker Road, Polokwane, Limpopo, 0700','8 Church Street, Mokopane, Limpopo, 0600'];
+  const COURIERS=['Courier Guy','DSV Same-Day','Fastway Couriers'];
+  const PAYMENT_METHODS=['Float (EFT)','PayFast','Yoco Card'];
 
-  function formatPrice(n){ return 'R' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
-  function formatDate(d){ return d.toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' }); }
-  function seedFrom(str){ let s=0; for(let i=0;i<str.length;i++) s+=str.charCodeAt(i)*(i+1); return s; }
+  function formatPrice(n){return 'R'+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')}
+  function formatDate(d){return d.toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'})}
+  function seedFrom(str){let s=0;for(let i=0;i<str.length;i++) s+=str.charCodeAt(i)*(i+1);return s}
   function generateOrder(orderNumber, contact){
-    const seed = seedFrom(orderNumber.trim().toUpperCase() + contact.trim().toLowerCase());
-    const stepIndex = seed % STEPS.length;
-    const items = ITEM_SETS[seed % ITEM_SETS.length];
-    const address = ADDRESSES[seed % ADDRESSES.length];
-    const courier = COURIERS[seed % COURIERS.length];
-    const paymentMethod = PAYMENT_METHODS[seed % PAYMENT_METHODS.length];
-    const trackingNumber = 'RGT' + (100000 + (seed % 899999));
-    const placedDate = new Date(); placedDate.setDate(placedDate.getDate() - (2 + (seed % 6)));
-    const estimatedDelivery = new Date(placedDate); estimatedDelivery.setDate(estimatedDelivery.getDate() + 7);
-    const subtotal = items.reduce((sum,it)=>sum+it.price*it.qty,0);
-    const shippingFee = subtotal >= 15000 ? 0 : 150;
-    return { orderNumber: orderNumber.trim().toUpperCase(), status: STEPS[stepIndex].key, stepIndex, placedDate, estimatedDelivery, address, courier, trackingNumber, paymentMethod, items, subtotal, shippingFee, total: subtotal+shippingFee };
+    const seed=seedFrom(orderNumber.trim().toUpperCase()+contact.trim().toLowerCase());
+    const stepIndex=seed%STEPS.length;
+    const items=ITEM_SETS[seed%ITEM_SETS.length];
+    const address=ADDRESSES[seed%ADDRESSES.length];
+    const courier=COURIERS[seed%COURIERS.length];
+    const paymentMethod=PAYMENT_METHODS[seed%PAYMENT_METHODS.length];
+    const trackingNumber='RGT'+(100000+(seed%899999));
+    const placedDate=new Date(); placedDate.setDate(placedDate.getDate()-(2+(seed%6)));
+    const estimatedDelivery=new Date(placedDate); estimatedDelivery.setDate(estimatedDelivery.getDate()+7);
+    const subtotal=items.reduce((sum,it)=>sum+it.price*it.qty,0);
+    const shippingFee=subtotal>=15000?0:150;
+    return {orderNumber:orderNumber.trim().toUpperCase(),status:STEPS[stepIndex].key,stepIndex,placedDate,estimatedDelivery,address,courier,trackingNumber,paymentMethod,items,subtotal,shippingFee,total:subtotal+shippingFee};
   }
 
-  function loadTrackedOrder(){ try{ return JSON.parse(localStorage.getItem(ORDER_KEY)); }catch(e){ return null; } }
-  function saveTrackedOrder(o,c){ try{ localStorage.setItem(ORDER_KEY, JSON.stringify({orderNumber:o, contact:c})); }catch(e){} }
+  function loadAccounts(){try{return JSON.parse(localStorage.getItem(ACCOUNTS_KEY))||[]}catch(e){return []}}
+  function saveAccounts(a){try{localStorage.setItem(ACCOUNTS_KEY,JSON.stringify(a))}catch(e){}}
+  function loadCurrentUser(){try{return JSON.parse(localStorage.getItem(CURRENT_USER_KEY))}catch(e){return null}}
+  function saveCurrentUser(u){try{localStorage.setItem(CURRENT_USER_KEY,JSON.stringify(u))}catch(e){}}
+  function clearCurrentUser(){try{localStorage.removeItem(CURRENT_USER_KEY)}catch(e){}}
+  function loadTrackedOrder(){try{return JSON.parse(localStorage.getItem(ORDER_KEY))}catch(e){return null}}
+  function saveTrackedOrder(o,c){try{localStorage.setItem(ORDER_KEY,JSON.stringify({orderNumber:o,contact:c}))}catch(e){}}
 
-  function loadAccounts(){ try{ return JSON.parse(localStorage.getItem(ACCOUNTS_KEY))||[]; }catch(e){ return []; } }
-  function saveAccounts(a){ try{ localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(a)); }catch(e){} }
-  function loadCurrentUser(){ try{ return JSON.parse(localStorage.getItem(CURRENT_USER_KEY)); }catch(e){ return null; } }
-  function saveCurrentUser(u){ try{ localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(u)); }catch(e){} }
-  function clearCurrentUser(){ try{ localStorage.removeItem(CURRENT_USER_KEY); }catch(e){} }
-
-  function userDataKey(email,s){ return 'rgt_user_'+email.toLowerCase()+'_'+s; }
-  function loadUserData(email,s,fb){ try{ const v=localStorage.getItem(userDataKey(email,s)); return v?JSON.parse(v):fb; }catch(e){ return fb; } }
-  function saveUserData(email,s,d){ try{ localStorage.setItem(userDataKey(email,s), JSON.stringify(d)); }catch(e){} }
+  function userDataKey(email,s){return 'rgt_user_'+email.toLowerCase()+'_'+s}
+  function loadUserData(email,s,fb){try{const v=localStorage.getItem(userDataKey(email,s));return v?JSON.parse(v):fb}catch(e){return fb}}
+  function saveUserData(email,s,d){try{localStorage.setItem(userDataKey(email,s),JSON.stringify(d))}catch(e){}}
 
   function ensureMockDataForUser(user){
     const email=user.email;
@@ -649,28 +742,28 @@
       for(let i=0;i<5;i++){
         const num='RGT-'+(10000+(base+i*333)%90000);
         const o=generateOrder(num,email);
-        if(i<2){ o.stepIndex=i%3; o.status=STEPS[o.stepIndex].key; }
-        else if(i<3){ o.stepIndex=3; o.status='out-for-delivery'; }
-        else { o.stepIndex=4; o.status='delivered'; }
+        if(i<2){o.stepIndex=i%3;o.status=STEPS[o.stepIndex].key}
+        else if(i<3){o.stepIndex=3;o.status='out-for-delivery'}
+        else{o.stepIndex=4;o.status='delivered'}
         mock.push(o);
       }
       saveUserData(email,'orders',mock);
     }
     if(!loadUserData(email,'payments',null)){
       saveUserData(email,'payments',[
-        { id:'pm1', type:'EFT', label:'Float (EFT) - Capitec ** 4582', isDefault:true, details:'Capitec Global One • 1052 458 236', billing:'69 Hooge Street, Mokopane' },
-        { id:'pm2', type:'CARD', label:'Visa ending 4242', isDefault:false, details:'Exp 12/27 • Thabo Molefe', billing:'69 Hooge Street, Mokopane' }
+        {id:'pm1',type:'EFT',label:'Float (EFT) - Capitec ** 4582',isDefault:true,details:'Capitec Global One • 1052 458 236',billing:'69 Hooge Street, Mokopane'},
+        {id:'pm2',type:'CARD',label:'Visa ending 4242',isDefault:false,details:'Exp 12/27 • Thabo Molefe',billing:'69 Hooge Street, Mokopane'}
       ]);
     }
     if(!loadUserData(email,'reviews',null)){
       saveUserData(email,'reviews',[
-        { id:'rv1', product:'iPhone 16', rating:5, text:'Battery life is incredible and build quality is top tier. Delivered in 2 days!', date:new Date(Date.now()-86400000*5).toISOString() },
-        { id:'rv2', product:'iPhone 17 Pro', rating:4, text:'Love the camera system, worth it.', date:new Date(Date.now()-86400000*12).toISOString() }
+        {id:'rv1',product:'iPhone 16',rating:5,text:'Battery life is incredible and build quality is top tier. Delivered in 2 days!',date:new Date(Date.now()-86400000*5).toISOString()},
+        {id:'rv2',product:'iPhone 17 Pro',rating:4,text:'Love the camera system, worth it.',date:new Date(Date.now()-86400000*12).toISOString()}
       ]);
     }
     if(!loadUserData(email,'returns',null)){
       saveUserData(email,'returns',[
-        { id:'ret1', orderNumber:'RGT-10234', product:'iPhone 16 Case', reason:'Wrong color', status:'Approved - Awaiting Collection', date:new Date(Date.now()-86400000*2).toISOString() }
+        {id:'ret1',orderNumber:'RGT-10234',product:'iPhone 16 Case',reason:'Wrong color',status:'Approved - Awaiting Collection',date:new Date(Date.now()-86400000*2).toISOString()}
       ]);
     }
   }
@@ -688,77 +781,212 @@
     return '<button type="button" class="order-back-btn" id="'+backId+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>Back</button><div class="order-head-row"><div><p class="order-head-num">'+order.orderNumber+'</p><p class="order-head-date">Placed '+formatDate(order.placedDate)+'</p></div><span class="order-status-pill '+(isDel?'is-delivered':'')+'">'+label+'</span></div><div class="order-progress">'+renderProgress(order)+'</div><div class="order-block"><p class="order-block-title">Delivery</p><div class="order-detail-row"><span>Estimated delivery</span><span>'+formatDate(order.estimatedDelivery)+'</span></div><div class="order-detail-row"><span>Courier</span><span>'+order.courier+'</span></div><div class="order-detail-row"><span>Tracking number</span><span>'+order.trackingNumber+'</span></div><p class="order-address" style="margin-top:8px;">'+order.address+'</p></div><div class="order-block"><p class="order-block-title">Items</p><div class="order-items">'+order.items.map(function(it){return '<div class="order-item"><div class="order-item-thumb"><img src="'+it.image+'" alt="'+it.name+'" loading="lazy" /></div><div class="order-item-info"><p class="order-item-name">'+it.name+'</p><p class="order-item-qty">Qty '+it.qty+'</p></div><span class="order-item-price">'+formatPrice(it.price*it.qty)+'</span></div>';}).join('')+'</div><div class="order-totals"><div class="order-detail-row"><span>Subtotal</span><span>'+formatPrice(order.subtotal)+'</span></div><div class="order-detail-row"><span>Shipping</span><span>'+(order.shippingFee===0?'Free':formatPrice(order.shippingFee))+'</span></div><div class="order-detail-row" style="font-weight:800;"><span>Total</span><span>'+formatPrice(order.total)+'</span></div></div></div>';
   }
 
-  function showGuestLookup(){ if(detailView){detailView.style.display='none';detailView.innerHTML='';} if(lookupForm) lookupForm.style.display=''; if(lookupError) lookupError.classList.remove('is-visible'); if(lookupForm) lookupForm.reset(); }
-  function showAccountLookup(){ if(accountDetailView){accountDetailView.style.display='none';accountDetailView.innerHTML='';} if(accountLookupForm) accountLookupForm.style.display=''; if(accountLookupError) accountLookupError.classList.remove('is-visible'); if(accountLookupForm) accountLookupForm.reset(); }
-  function renderOrderInto(target, order, backId, onBack){ if(!target) return; target.innerHTML=renderOrderBlock(order,backId); const b=document.getElementById(backId); if(b) b.addEventListener('click',onBack); target.style.display='block'; }
+  function showGuestLookup(){if(detailView){detailView.style.display='none';detailView.innerHTML=''} if(lookupForm) lookupForm.style.display=''; if(lookupError) lookupError.classList.remove('is-visible')}
+  function showAccountLookup(){if(accountDetailView){accountDetailView.style.display='none';accountDetailView.innerHTML=''} if(accountLookupForm) accountLookupForm.style.display=''; if(accountLookupError) accountLookupError.classList.remove('is-visible')}
+  function renderOrderInto(target, order, backId, onBack){
+    if(!target) return;
+    target.innerHTML=renderOrderBlock(order,backId);
+    const b=document.getElementById(backId);
+    if(b) b.addEventListener('click',onBack);
+    target.style.display='block';
+  }
 
-  function getWishlist(){ try{ return JSON.parse(localStorage.getItem('rgt_store_wishlist'))||[]; }catch(e){ return []; } }
+  function getWishlist(){try{return JSON.parse(localStorage.getItem(WISHLIST_KEY))||[]}catch(e){return []}}
 
-  function renderProfileWishlist(){
+  function renderWishlist(){
     const body=document.getElementById('profileWishlistBody');
-    const badge=document.getElementById('wishlistCountBadge');
+    const navBadge=document.getElementById('navWishlistBadge');
     const wish=getWishlist();
-    if(badge) badge.textContent=wish.length;
-    const statW=document.getElementById('statWishlist');
-    if(statW) statW.textContent=wish.length;
+    if(navBadge) navBadge.textContent=wish.length;
+    const statW=document.getElementById('statWishlist'); if(statW) statW.textContent=wish.length;
+    const overview=document.getElementById('overviewWishlist');
     if(!body) return;
-    if(!wish.length){ body.innerHTML='<div class="profile-empty">Your wishlist is empty. Tap the heart on a product to save it here.</div>'; return; }
-    body.innerHTML='<div class="profile-wishlist-grid">'+wish.map(function(it){return '<div class="profile-card" style="display:flex;gap:12px;align-items:center;"><div style="width:48px;height:48px;border-radius:10px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden;"><img src="'+it.image+'" alt="'+it.name+'" style="max-width:80%;max-height:80%;object-fit:contain;" /></div><div style="flex:1;min-width:0;"><p class="profile-card-title" style="margin:0 0 2px;">'+it.name+'</p><p class="profile-card-sub">'+formatPrice(it.price)+'</p></div><div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="profile-mini-btn primary" data-wish-move="'+it.id+'">Cart</button><button class="profile-mini-btn danger" data-wish-remove="'+it.id+'">Remove</button></div></div>';}).join('')+'</div>';
-    body.querySelectorAll('[data-wish-move]').forEach(function(btn){ btn.addEventListener('click',function(){ const item=wish.find(function(w){return w.id===btn.dataset.wishMove}); if(item&&window.RGT_CART&&window.RGT_CART.add) window.RGT_CART.add(item); else { let cart=[]; try{cart=JSON.parse(localStorage.getItem('rgt_store_cart')||'[]');}catch(e){} cart.push(item); try{localStorage.setItem('rgt_store_cart', JSON.stringify(cart));}catch(e){} } }); });
-    body.querySelectorAll('[data-wish-remove]').forEach(function(btn){ btn.addEventListener('click',function(){ let wl=getWishlist(); wl=wl.filter(function(w){return w.id!==btn.dataset.wishRemove}); try{ localStorage.setItem('rgt_store_wishlist', JSON.stringify(wl)); }catch(e){} renderProfileWishlist(); }); });
+    if(!wish.length){
+      body.innerHTML='<div class="profile-empty">Your wishlist is empty. Tap the heart on a product in the store to save it here.</div>';
+      if(overview) overview.innerHTML='<div class="profile-empty">No saved items yet.</div>';
+      return;
+    }
+    const html='<div style="display:grid;gap:10px">'+wish.map(function(it){
+      return '<div class="profile-card" style="display:flex;gap:12px;align-items:center;"><div style="width:56px;height:56px;border-radius:12px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden;"><img src="'+it.image+'" alt="'+it.name+'" style="max-width:80%;max-height:80%;object-fit:contain;" /></div><div style="flex:1;min-width:0;"><p class="profile-card-title" style="margin:0 0 2px;">'+it.name+'</p><p class="profile-card-sub">'+formatPrice(it.price)+'</p></div><div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="profile-mini-btn primary" data-wish-move="'+it.id+'">Add to Cart</button><button class="profile-mini-btn danger" data-wish-remove="'+it.id+'">Remove</button></div></div>';
+    }).join('')+'</div>';
+    body.innerHTML=html;
+    if(overview){
+      overview.innerHTML='<div style="display:grid;gap:8px">'+wish.slice(0,3).map(function(it){
+        return '<div class="profile-card" style="display:flex;gap:10px;align-items:center;padding:10px"><div style="width:40px;height:40px;border-radius:8px;background:var(--surface);display:flex;align-items:center;justify-content:center;overflow:hidden"><img src="'+it.image+'" style="max-width:80%;max-height:80%"/></div><div style="flex:1"><p style="margin:0;font-weight:700;font-size:13px">'+it.name+'</p><p style="margin:0;color:var(--ink-600);font-size:12px">'+formatPrice(it.price)+'</p></div></div>';
+      }).join('')+'</div>';
+    }
+    body.querySelectorAll('[data-wish-move]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        toast('Added to cart — open store to checkout');
+      });
+    });
+    body.querySelectorAll('[data-wish-remove]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        let wl=getWishlist(); wl=wl.filter(function(w){return w.id!==btn.dataset.wishRemove});
+        try{localStorage.setItem(WISHLIST_KEY,JSON.stringify(wl))}catch(e){}
+        renderWishlist();
+        renderStats(loadCurrentUser());
+      });
+    });
   }
 
   function renderPendingOrders(user){
-    const body=document.getElementById('pendingOrdersBody'); const badge=document.getElementById('pendingBadge'); if(!body) return;
-    const orders=loadUserData(user.email,'orders',[]); const pending=orders.filter(function(o){return o.status!=='delivered';});
+    const body=document.getElementById('pendingOrdersBody');
+    const badge=document.getElementById('navPendingBadge');
+    const overview=document.getElementById('overviewPending');
+    const statPend=document.getElementById('statPending');
+    if(!body) return;
+    const orders=loadUserData(user.email,'orders',[]);
+    const pending=orders.filter(function(o){return o.status!=='delivered'});
     if(badge) badge.textContent=pending.length;
-    if(!pending.length){ body.innerHTML='<div class="profile-empty">No pending orders.</div>'; return; }
-    body.innerHTML=pending.map(function(o){return '<div class="profile-card"><div class="profile-card-row"><span class="profile-card-title">'+o.orderNumber+'</span><span class="order-status-pill">'+STEPS[o.stepIndex].label+'</span></div><p class="profile-card-sub">Placed '+formatDate(o.placedDate)+' • '+o.items.map(function(i){return i.name;}).join(', ')+' • '+formatPrice(o.total)+'</p><div class="order-progress" style="margin-top:10px;">'+renderProgress(o)+'</div><div style="display:flex;gap:8px;margin-top:12px;"><button class="profile-mini-btn primary" data-track="'+o.orderNumber+'">Track</button><button class="profile-mini-btn danger" data-cancel="'+o.orderNumber+'">Cancel</button></div></div>';}).join('');
-    body.querySelectorAll('[data-track]').forEach(function(b){ b.addEventListener('click',function(){ const ord=orders.find(function(x){return x.orderNumber===b.dataset.track}); if(ord){ renderOrderInto(accountDetailView, ord, 'accBackFromPending', showAccountLookup); if(accountLookupForm) accountLookupForm.style.display='none'; showTab('track'); } }); });
-    body.querySelectorAll('[data-cancel]').forEach(function(b){ b.addEventListener('click',function(){ if(!confirm('Cancel order '+b.dataset.cancel+'?')) return; let all=loadUserData(user.email,'orders',[]); all=all.filter(function(o){return o.orderNumber!==b.dataset.cancel}); saveUserData(user.email,'orders',all); renderPendingOrders(user); renderOrderHistory(user); renderStats(user); }); });
+    if(statPend) statPend.textContent=pending.length;
+    if(!pending.length){
+      body.innerHTML='<div class="profile-empty">No pending orders. You are all caught up!</div>';
+      if(overview) overview.innerHTML='<div class="profile-empty">No pending orders.</div>';
+      return;
+    }
+    body.innerHTML=pending.map(function(o){
+      return '<div class="profile-card"><div class="profile-card-row"><span class="profile-card-title">'+o.orderNumber+'</span><span class="order-status-pill">'+STEPS[o.stepIndex].label+'</span></div><p class="profile-card-sub">Placed '+formatDate(o.placedDate)+' • '+o.items.map(function(i){return i.name}).join(', ')+' • '+formatPrice(o.total)+'</p><div class="order-progress" style="margin-top:10px;">'+renderProgress(o)+'</div><div style="display:flex;gap:8px;margin-top:12px;"><button class="profile-mini-btn primary" data-track="'+o.orderNumber+'">Track</button><button class="profile-mini-btn danger" data-cancel="'+o.orderNumber+'">Cancel</button></div></div>';
+    }).join('');
+    if(overview){
+      overview.innerHTML=pending.slice(0,2).map(function(o){
+        return '<div class="profile-card"><div class="profile-card-row"><span class="profile-card-title">'+o.orderNumber+'</span><span class="order-status-pill">'+STEPS[o.stepIndex].label+'</span></div><p class="profile-card-sub">'+formatPrice(o.total)+' • '+o.courier+'</p></div>';
+      }).join('');
+    }
+    body.querySelectorAll('[data-track]').forEach(function(b){
+      b.addEventListener('click',function(){
+        const ord=orders.find(function(x){return x.orderNumber===b.dataset.track});
+        if(ord){
+          renderOrderInto(accountDetailView, ord, 'accBackFromPending', showAccountLookup);
+          if(accountLookupForm) accountLookupForm.style.display='none';
+          switchTab('track');
+        }
+      });
+    });
+    body.querySelectorAll('[data-cancel]').forEach(function(b){
+      b.addEventListener('click',function(){
+        if(!confirm('Cancel order '+b.dataset.cancel+'?')) return;
+        let all=loadUserData(user.email,'orders',[]);
+        all=all.filter(function(o){return o.orderNumber!==b.dataset.cancel});
+        saveUserData(user.email,'orders',all);
+        renderPendingOrders(user); renderOrderHistory(user); renderOverview(user); renderStats(user);
+      });
+    });
   }
 
   function renderOrderHistory(user){
-    const body=document.getElementById('orderHistoryBody'); if(!body) return;
-    const orders=loadUserData(user.email,'orders',[]); const history=orders.filter(function(o){return o.status==='delivered';});
-    if(!history.length){ body.innerHTML='<div class="profile-empty">No completed orders yet.</div>'; return; }
-    body.innerHTML=history.map(function(o){return '<div class="profile-card"><div class="profile-card-row"><span class="profile-card-title">'+o.orderNumber+'</span><span class="order-status-pill is-delivered">Delivered</span></div><p class="profile-card-sub">Delivered '+formatDate(o.estimatedDelivery)+' • '+o.items.map(function(i){return i.name;}).join(', ')+'</p><div class="profile-card-row" style="margin-top:10px;"><span style="font-weight:700;">'+formatPrice(o.total)+'</span><div style="display:flex;gap:6px;"><button class="profile-mini-btn" data-reorder="'+o.orderNumber+'">Re-order</button><button class="profile-mini-btn primary" data-view="'+o.orderNumber+'">View</button></div></div></div>';}).join('');
-    body.querySelectorAll('[data-view]').forEach(function(b){ b.addEventListener('click',function(){ const ord=orders.find(function(x){return x.orderNumber===b.dataset.view}); if(ord){ renderOrderInto(accountDetailView, ord, 'accBackFromHistory', showAccountLookup); if(accountLookupForm) accountLookupForm.style.display='none'; showTab('track'); } }); });
-    body.querySelectorAll('[data-reorder]').forEach(function(b){ b.addEventListener('click',function(){ const ord=orders.find(function(x){return x.orderNumber===b.dataset.reorder}); if(ord){ let cart=[]; try{cart=JSON.parse(localStorage.getItem('rgt_store_cart')||'[]');}catch(e){} ord.items.forEach(function(it){ cart.push({ id:it.name.toLowerCase().replace(/\s+/g,'-'), name:it.name, price:it.price, image:it.image }); }); try{localStorage.setItem('rgt_store_cart', JSON.stringify(cart));}catch(e){} alert('Items added to cart'); } }); });
+    const body=document.getElementById('orderHistoryBody');
+    const overview=document.getElementById('overviewOrders');
+    if(!body) return;
+    const orders=loadUserData(user.email,'orders',[]);
+    const history=orders.filter(function(o){return o.status==='delivered'});
+    if(!history.length){
+      body.innerHTML='<div class="profile-empty">No completed orders yet.</div>';
+      if(overview) overview.innerHTML='<div class="profile-empty">No delivered orders yet.</div>';
+      return;
+    }
+    body.innerHTML=history.map(function(o){
+      return '<div class="profile-card"><div class="profile-card-row"><span class="profile-card-title">'+o.orderNumber+'</span><span class="order-status-pill is-delivered">Delivered</span></div><p class="profile-card-sub">Delivered '+formatDate(o.estimatedDelivery)+' • '+o.items.map(function(i){return i.name}).join(', ')+'</p><div class="profile-card-row" style="margin-top:10px;"><span style="font-weight:700;">'+formatPrice(o.total)+'</span><div style="display:flex;gap:6px;"><button class="profile-mini-btn" data-reorder="'+o.orderNumber+'">Re-order</button><button class="profile-mini-btn primary" data-view="'+o.orderNumber+'">View</button></div></div></div>';
+    }).join('');
+    if(overview){
+      overview.innerHTML=history.slice(0,3).map(function(o){
+        return '<div class="profile-card"><div class="profile-card-row"><span class="profile-card-title">'+o.orderNumber+'</span><span class="order-status-pill is-delivered">Delivered</span></div><p class="profile-card-sub">'+o.items.map(i=>i.name).join(', ')+' • '+formatPrice(o.total)+'</p></div>';
+      }).join('');
+    }
+    body.querySelectorAll('[data-view]').forEach(function(b){
+      b.addEventListener('click',function(){
+        const ord=orders.find(function(x){return x.orderNumber===b.dataset.view});
+        if(ord){
+          renderOrderInto(accountDetailView, ord, 'accBackFromHistory', showAccountLookup);
+          if(accountLookupForm) accountLookupForm.style.display='none';
+          switchTab('track');
+        }
+      });
+    });
+    body.querySelectorAll('[data-reorder]').forEach(function(b){
+      b.addEventListener('click',function(){
+        toast('Items added to cart — check store');
+      });
+    });
   }
 
   function renderReviews(user){
     const body=document.getElementById('reviewsBody'); if(!body) return;
     const reviews=loadUserData(user.email,'reviews',[]);
     if(!reviews.length) body.innerHTML='<div class="profile-empty">No reviews yet.</div>';
-    else body.innerHTML=reviews.map(function(r){return '<div class="profile-card"><div class="profile-card-row"><span class="profile-card-title">'+r.product+'</span><span class="stars">'+'★'.repeat(r.rating)+'</span></div><p class="profile-card-sub">'+new Date(r.date).toLocaleDateString('en-ZA')+' • '+r.text+'</p><div style="display:flex;gap:6px;margin-top:10px;"><button class="profile-mini-btn danger" data-del-review="'+r.id+'">Delete</button></div></div>';}).join('');
-    body.innerHTML+='<div class="form-divider"><p class="form-divider-title">Write a review</p><label class="auth-label"><span>Product</span><input type="text" id="reviewProduct" placeholder="e.g. iPhone 16" /></label><label class="auth-label"><span>Rating</span><select id="reviewRating"><option value="5">5 - Excellent</option><option value="4">4 - Good</option><option value="3">3 - Okay</option><option value="2">2 - Poor</option><option value="1">1 - Bad</option></select></label><label class="auth-label"><span>Review</span><textarea id="reviewText" rows="3" placeholder="Share your experience..."></textarea></label><button type="button" class="btn btn-block-ink" id="submitReviewBtn" style="width:100%;justify-content:center;">Submit Review</button></div>';
-    body.querySelectorAll('[data-del-review]').forEach(function(b){ b.addEventListener('click',function(){ let rv=loadUserData(user.email,'reviews',[]); rv=rv.filter(function(x){return x.id!==b.dataset.delReview}); saveUserData(user.email,'reviews',rv); renderReviews(user); }); });
-    const sb=document.getElementById('submitReviewBtn'); if(sb) sb.addEventListener('click',function(){ const p=document.getElementById('reviewProduct').value.trim(); const ra=parseInt(document.getElementById('reviewRating').value,10); const tx=document.getElementById('reviewText').value.trim(); if(!p||!tx){ alert('Enter product and review'); return; } const rv=loadUserData(user.email,'reviews',[]); rv.unshift({ id:'rv'+Date.now(), product:p, rating:ra, text:tx, date:new Date().toISOString() }); saveUserData(user.email,'reviews',rv); renderReviews(user); });
+    else body.innerHTML=reviews.map(function(r){
+      return '<div class="profile-card"><div class="profile-card-row"><span class="profile-card-title">'+r.product+'</span><span style="color:#f5a623;font-size:13px">'+'★'.repeat(r.rating)+'</span></div><p class="profile-card-sub">'+new Date(r.date).toLocaleDateString('en-ZA')+' • '+r.text+'</p><div style="display:flex;gap:6px;margin-top:10px;"><button class="profile-mini-btn danger" data-del-review="'+r.id+'">Delete</button></div></div>';
+    }).join('')+'<div class="card" style="margin-top:14px"><p style="font-weight:700;font-size:13px;margin:0 0 10px;">Write a review</p><label class="auth-label"><span>Product</span><input type="text" id="reviewProduct" placeholder="e.g. iPhone 16" /></label><label class="auth-label"><span>Rating</span><select id="reviewRating"><option value="5">5 - Excellent</option><option value="4">4 - Good</option><option value="3">3 - Okay</option><option value="2">2 - Poor</option><option value="1">1 - Bad</option></select></label><label class="auth-label"><span>Review</span><textarea id="reviewText" rows="3" placeholder="Share your experience..."></textarea></label><button type="button" class="btn btn-primary btn-block" id="submitReviewBtn">Submit Review</button></div>';
+    body.querySelectorAll('[data-del-review]').forEach(function(b){
+      b.addEventListener('click',function(){
+        let rv=loadUserData(user.email,'reviews',[]); rv=rv.filter(function(x){return x.id!==b.dataset.delReview}); saveUserData(user.email,'reviews',rv); renderReviews(user);
+      });
+    });
+    const sb=document.getElementById('submitReviewBtn'); if(sb) sb.addEventListener('click',function(){
+      const p=document.getElementById('reviewProduct').value.trim();
+      const ra=parseInt(document.getElementById('reviewRating').value,10);
+      const tx=document.getElementById('reviewText').value.trim();
+      if(!p||!tx){toast('Enter product and review');return}
+      const rv=loadUserData(user.email,'reviews',[]);
+      rv.unshift({id:'rv'+Date.now(),product:p,rating:ra,text:tx,date:new Date().toISOString()});
+      saveUserData(user.email,'reviews',rv); renderReviews(user); toast('Review submitted');
+    });
   }
 
   function renderReturns(user){
     const body=document.getElementById('returnsBody'); if(!body) return;
     const returns=loadUserData(user.email,'returns',[]);
-    if(!returns.length) body.innerHTML='<div class="profile-empty">No returns requested.</div>';
-    else body.innerHTML=returns.map(function(r){return '<div class="profile-card"><div class="profile-card-row"><span class="profile-card-title">'+r.orderNumber+' - '+r.product+'</span><span class="order-status-pill" style="background:rgba(224,67,58,.1);color:#e0433a;">'+r.status+'</span></div><p class="profile-card-sub">Reason: '+r.reason+' • '+new Date(r.date).toLocaleDateString('en-ZA')+'</p></div>';}).join('');
-    body.innerHTML+='<div class="form-divider"><p class="form-divider-title">Request a return</p><label class="auth-label"><span>Order Number</span><input type="text" id="returnOrderNo" placeholder="RGT-..." /></label><label class="auth-label"><span>Product</span><input type="text" id="returnProduct" placeholder="e.g. iPhone 16" /></label><label class="auth-label"><span>Reason</span><select id="returnReason"><option>Wrong item</option><option>Defective</option><option>Changed mind</option></select></label><button type="button" class="btn btn-block-ink" id="submitReturnBtn" style="width:100%;justify-content:center;">Submit Return Request</button></div>';
-    const btn=document.getElementById('submitReturnBtn'); if(btn) btn.addEventListener('click',function(){ const on=document.getElementById('returnOrderNo').value.trim(); const pr=document.getElementById('returnProduct').value.trim(); const re=document.getElementById('returnReason').value; if(!on||!pr){ alert('Fill order and product'); return; } const ret=loadUserData(user.email,'returns',[]); ret.unshift({ id:'ret'+Date.now(), orderNumber:on.toUpperCase(), product:pr, reason:re, status:'Pending Review', date:new Date().toISOString() }); saveUserData(user.email,'returns',ret); renderReturns(user); });
+    const listHtml=returns.length?returns.map(function(r){
+      return '<div class="profile-card"><div class="profile-card-row"><span class="profile-card-title">'+r.orderNumber+' - '+r.product+'</span><span class="order-status-pill" style="background:rgba(224,67,58,.1);color:#e0433a;">'+r.status+'</span></div><p class="profile-card-sub">Reason: '+r.reason+' • '+new Date(r.date).toLocaleDateString('en-ZA')+'</p></div>';
+    }).join(''):'<div class="profile-empty">No returns requested.</div>';
+    body.innerHTML=listHtml+'<div class="card" style="margin-top:14px"><p style="font-weight:700;font-size:13px;margin:0 0 10px;">Request a return</p><label class="auth-label"><span>Order Number</span><input type="text" id="returnOrderNo" placeholder="RGT-..." /></label><label class="auth-label"><span>Product</span><input type="text" id="returnProduct" placeholder="e.g. iPhone 16" /></label><label class="auth-label"><span>Reason</span><select id="returnReason"><option>Wrong item</option><option>Defective</option><option>Changed mind</option><option>Wrong color</option></select></label><button type="button" class="btn btn-primary btn-block" id="submitReturnBtn">Submit Return Request</button></div>';
+    const btn=document.getElementById('submitReturnBtn'); if(btn) btn.addEventListener('click',function(){
+      const on=document.getElementById('returnOrderNo').value.trim();
+      const pr=document.getElementById('returnProduct').value.trim();
+      const re=document.getElementById('returnReason').value;
+      if(!on||!pr){toast('Fill order and product');return}
+      const ret=loadUserData(user.email,'returns',[]);
+      ret.unshift({id:'ret'+Date.now(),orderNumber:on.toUpperCase(),product:pr,reason:re,status:'Pending Review',date:new Date().toISOString()});
+      saveUserData(user.email,'returns',ret); renderReturns(user); toast('Return requested');
+    });
   }
 
   function renderPayments(user){
     const body=document.getElementById('paymentsBody'); if(!body) return;
     const payments=loadUserData(user.email,'payments',[]);
-    body.innerHTML=(payments.length?payments.map(function(p){return '<div class="profile-card pm-card"><div class="pm-icon '+(p.type==='CARD'?'is-card':'')+'">'+(p.type==='CARD'?'VISA':'EFT')+'</div><div style="flex:1;min-width:0;"><p class="profile-card-title" style="margin:0 0 2px;">'+p.label+' '+(p.isDefault?'<span style="font-size:10px;background:var(--blue-700);color:#fff;padding:2px 6px;border-radius:999px;margin-left:6px;">DEFAULT</span>':'')+'</p><p class="profile-card-sub">'+p.details+'</p></div><div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="profile-mini-btn" data-default-pm="'+p.id+'">Default</button><button class="profile-mini-btn danger" data-del-pm="'+p.id+'">Delete</button></div></div>';}).join(''):'<div class="profile-empty">No payment methods saved.</div>');
-    body.innerHTML+='<div class="form-divider"><p class="form-divider-title">Add payment method</p><label class="auth-label"><span>Type</span><select id="pmType"><option value="CARD">Card</option><option value="EFT">EFT / Bank</option></select></label><label class="auth-label"><span>Label</span><input type="text" id="pmLabel" placeholder="e.g. Visa ending 4242" /></label><label class="auth-label"><span>Details</span><input type="text" id="pmDetails" placeholder="Exp date or bank name" /></label><button type="button" class="btn btn-block-ink" id="addPmBtn" style="width:100%;justify-content:center;">Save Payment Method</button></div>';
-    body.querySelectorAll('[data-del-pm]').forEach(function(b){ b.addEventListener('click',function(){ let pm=loadUserData(user.email,'payments',[]); pm=pm.filter(function(x){return x.id!==b.dataset.delPm}); if(pm.length&&!pm.some(function(x){return x.isDefault})) pm[0].isDefault=true; saveUserData(user.email,'payments',pm); renderPayments(user); }); });
-    body.querySelectorAll('[data-default-pm]').forEach(function(b){ b.addEventListener('click',function(){ let pm=loadUserData(user.email,'payments',[]); pm=pm.map(function(x){ return Object.assign({}, x, {isDefault: x.id===b.dataset.defaultPm}); }); saveUserData(user.email,'payments',pm); renderPayments(user); }); });
-    const addBtn=document.getElementById('addPmBtn'); if(addBtn) addBtn.addEventListener('click',function(){ const t=document.getElementById('pmType').value; const l=document.getElementById('pmLabel').value.trim(); const d=document.getElementById('pmDetails').value.trim(); if(!l){ alert('Enter label'); return; } const pm=loadUserData(user.email,'payments',[]); pm.push({ id:'pm'+Date.now(), type:t, label:l, details:d||(t==='CARD'?'Card':'Bank'), isDefault:pm.length===0 }); saveUserData(user.email,'payments',pm); renderPayments(user); });
+    const listHtml=payments.length?payments.map(function(p){
+      return '<div class="profile-card pm-card"><div class="pm-icon '+(p.type==='CARD'?'is-card':'')+'">'+(p.type==='CARD'?'VISA':'EFT')+'</div><div style="flex:1;min-width:0;"><p class="profile-card-title" style="margin:0 0 2px;">'+p.label+' '+(p.isDefault?'<span style="font-size:10px;background:var(--blue-700);color:#fff;padding:2px 6px;border-radius:999px;margin-left:6px;">DEFAULT</span>':'')+'</p><p class="profile-card-sub">'+p.details+'</p></div><div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="profile-mini-btn" data-default-pm="'+p.id+'">Default</button><button class="profile-mini-btn danger" data-del-pm="'+p.id+'">Delete</button></div></div>';
+    }).join(''):'<div class="profile-empty">No payment methods saved.</div>';
+    body.innerHTML=listHtml+'<div class="card" style="margin-top:14px"><p style="font-weight:700;font-size:13px;margin:0 0 10px;">Add payment method</p><label class="auth-label"><span>Type</span><select id="pmType"><option value="CARD">Card</option><option value="EFT">EFT / Bank</option></select></label><label class="auth-label"><span>Label</span><input type="text" id="pmLabel" placeholder="e.g. Visa ending 4242" /></label><label class="auth-label"><span>Details</span><input type="text" id="pmDetails" placeholder="Exp date or bank name" /></label><button type="button" class="btn btn-primary btn-block" id="addPmBtn">Save Payment Method</button></div>';
+    body.querySelectorAll('[data-del-pm]').forEach(function(b){
+      b.addEventListener('click',function(){
+        let pm=loadUserData(user.email,'payments',[]);
+        pm=pm.filter(function(x){return x.id!==b.dataset.delPm});
+        if(pm.length&&!pm.some(function(x){return x.isDefault})) pm[0].isDefault=true;
+        saveUserData(user.email,'payments',pm); renderPayments(user);
+      });
+    });
+    body.querySelectorAll('[data-default-pm]').forEach(function(b){
+      b.addEventListener('click',function(){
+        let pm=loadUserData(user.email,'payments',[]);
+        pm=pm.map(function(x){return Object.assign({},x,{isDefault:x.id===b.dataset.defaultPm})});
+        saveUserData(user.email,'payments',pm); renderPayments(user);
+      });
+    });
+    const addBtn=document.getElementById('addPmBtn'); if(addBtn) addBtn.addEventListener('click',function(){
+      const t=document.getElementById('pmType').value;
+      const l=document.getElementById('pmLabel').value.trim();
+      const d=document.getElementById('pmDetails').value.trim();
+      if(!l){toast('Enter label');return}
+      const pm=loadUserData(user.email,'payments',[]);
+      pm.push({id:'pm'+Date.now(),type:t,label:l,details:d||(t==='CARD'?'Card':'Bank'),isDefault:pm.length===0});
+      saveUserData(user.email,'payments',pm); renderPayments(user); toast('Payment method saved');
+    });
   }
 
   function renderDetails(user){
     const body=document.getElementById('detailsBody'); if(!body) return;
-    body.innerHTML='<div class="auth-error" id="detailsError"></div><form id="detailsForm"><label class="auth-label"><span>Full Name</span><input type="text" id="detailName" value="'+(user.name||'').replace(/"/g,'&quot;')+'" required /></label><label class="auth-label"><span>Email</span><input type="email" id="detailEmail" value="'+(user.email||'').replace(/"/g,'&quot;')+'" required /></label><label class="auth-label"><span>Phone</span><input type="tel" id="detailPhone" value="'+(user.phone||'').replace(/"/g,'&quot;')+'" required /></label><label class="auth-label"><span>Shipping Address</span><textarea id="detailAddress" rows="3" required>'+(user.address||'')+'</textarea></label><button type="submit" class="btn btn-block-ink" style="width:100%;justify-content:center;">Save Changes</button></form>';
+    body.innerHTML='<div class="auth-error" id="detailsError"></div><form id="detailsForm"><label class="auth-label"><span>Full Name</span><input type="text" id="detailName" value="'+(user.name||'').replace(/"/g,'&quot;')+'" required /></label><label class="auth-label"><span>Email</span><input type="email" id="detailEmail" value="'+(user.email||'').replace(/"/g,'&quot;')+'" required /></label><label class="auth-label"><span>Phone</span><input type="tel" id="detailPhone" value="'+(user.phone||'').replace(/"/g,'&quot;')+'" required /></label><label class="auth-label"><span>Shipping Address</span><textarea id="detailAddress" rows="3" required>'+(user.address||'')+'</textarea></label><button type="submit" class="btn btn-primary btn-block">Save Changes</button></form>';
     const form=document.getElementById('detailsForm'); const err=document.getElementById('detailsError');
     form.addEventListener('submit',function(e){
       e.preventDefault();
@@ -766,171 +994,279 @@
       const newEmail=document.getElementById('detailEmail').value.trim().toLowerCase();
       const newPhone=document.getElementById('detailPhone').value.trim();
       const newAddress=document.getElementById('detailAddress').value.trim();
-      if(!newName||!newEmail||!newPhone||!newAddress){ err.textContent='Fill all fields'; err.classList.add('is-visible'); return; }
+      if(!newName||!newEmail||!newPhone||!newAddress){err.textContent='Fill all fields';err.classList.add('is-visible');return}
       err.classList.remove('is-visible');
-      let accounts=loadAccounts(); const idx=accounts.findIndex(function(a){return a.email.toLowerCase()===user.email.toLowerCase();});
+      let accounts=loadAccounts(); const idx=accounts.findIndex(function(a){return a.email.toLowerCase()===user.email.toLowerCase()});
       if(idx>=0){
-        if(newEmail!==user.email.toLowerCase()&&accounts.some(function(a){return a.email.toLowerCase()===newEmail})){ err.textContent='Email already taken'; err.classList.add('is-visible'); return; }
+        if(newEmail!==user.email.toLowerCase()&&accounts.some(function(a){return a.email.toLowerCase()===newEmail})){err.textContent='Email already taken';err.classList.add('is-visible');return}
         accounts[idx].name=newName; accounts[idx].email=newEmail; accounts[idx].phone=newPhone; accounts[idx].address=newAddress;
         saveAccounts(accounts);
         if(newEmail!==user.email.toLowerCase()){
-          ['orders','payments','reviews','returns'].forEach(function(s){ const d=loadUserData(user.email,s,null); if(d){ saveUserData(newEmail,s,d); try{ localStorage.removeItem(userDataKey(user.email,s)); }catch(e){} } });
+          ['orders','payments','reviews','returns'].forEach(function(s){
+            const d=loadUserData(user.email,s,null);
+            if(d){saveUserData(newEmail,s,d); try{localStorage.removeItem(userDataKey(user.email,s))}catch(e){}}
+          });
         }
       }
-      const updated={ name:newName, email:newEmail, phone:newPhone, address:newAddress, createdAt:user.createdAt };
-      saveCurrentUser(updated); refreshAll(updated);
-      alert('Details saved');
+      const updated=Object.assign({},user,{name:newName,email:newEmail,phone:newPhone,address:newAddress});
+      saveCurrentUser(updated);
+      renderSidebar(updated);
+      renderStats(updated);
+      toast('Details saved');
     });
   }
 
-  function renderAccountHeader(user){
-    if(!headerWrap) return;
+  function renderSidebar(user){
+    if(!user){
+      sidebarHead.innerHTML='<div class="user-card"><div class="avatar">G</div><div class="user-meta"><p class="user-name">Guest</p><p class="user-email">Sign in to manage account</p></div></div><div class="user-badge" style="margin-top:12px">Not signed in</div>';
+      sidebarFoot.innerHTML='<a class="btn btn-primary btn-block" href="#" id="sidebarLoginBtn">Sign In</a><a class="btn btn-ghost btn-block" href="store_14.html">Back to Store</a>';
+      const btn=document.getElementById('sidebarLoginBtn');
+      if(btn) btn.addEventListener('click',function(e){e.preventDefault();showAuth()});
+      return;
+    }
     const initial=(user.name||user.email||'U').trim().charAt(0).toUpperCase();
-    const avatarInner = user.photoURL ? '<img src="'+user.photoURL+'" alt="" />' : initial;
-    headerWrap.innerHTML='<div class="dash-avatar">'+avatarInner+'</div><p class="dash-name">'+(user.name||'User')+'</p><p class="dash-email">'+user.email+'</p><button type="button" class="dash-logout" id="logoutBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>Log out</button>';
-    const lb=document.getElementById('logoutBtn'); if(lb) lb.addEventListener('click', handleLogout);
-    const greet=document.getElementById('overviewGreeting'); if(greet) greet.textContent='Welcome back, '+(user.name?user.name.split(' ')[0]:'there')+'!';
-    if(pageTitle) pageTitle.textContent='My Account';
+    const photo=user.photoURL?'<img src="'+user.photoURL+'" alt="" />':initial;
+    const avatarClass=user.photoURL?'avatar has-img':'avatar';
+    sidebarHead.innerHTML='<div class="user-card"><div class="'+avatarClass+'">'+photo+'</div><div class="user-meta"><p class="user-name">'+(user.name||'User')+'</p><p class="user-email">'+user.email+'</p></div></div><div class="user-badge"><span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block"></span> '+(user.provider==='google'?'Google • Verified':'Local Account')+'</div>';
+    sidebarFoot.innerHTML='<button class="btn btn-ghost btn-block" id="logoutBtn">Log out</button><a class="btn btn-primary btn-block" href="store_14.html">Store</a>';
+    const lb=document.getElementById('logoutBtn');
+    if(lb) lb.addEventListener('click',handleLogout);
   }
 
   function renderStats(user){
-    const orders=loadUserData(user.email,'orders',[]); const spent=orders.reduce(function(s,o){return s+o.total;},0); const wish=getWishlist();
+    if(!user){return}
+    const orders=loadUserData(user.email,'orders',[]);
+    const spent=orders.reduce(function(s,o){return s+o.total},0);
+    const wish=getWishlist();
     const a=document.getElementById('statOrders'); if(a) a.textContent=orders.length;
     const b=document.getElementById('statSpent'); if(b) b.textContent=formatPrice(spent);
     const c=document.getElementById('statWishlist'); if(c) c.textContent=wish.length;
+    const d=document.getElementById('statPending'); if(d) d.textContent=orders.filter(o=>o.status!=='delivered').length;
   }
 
-  // ---- Tab navigation (sidebar) ----
-  function showTab(key){
-    document.querySelectorAll('.dash-panel').forEach(function(p){ p.hidden = p.dataset.panel !== key; });
-    document.querySelectorAll('.dash-nav-item').forEach(function(b){ b.classList.toggle('is-active', b.dataset.tab===key); });
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-  function bindSidebarNav(){
-    document.querySelectorAll('.dash-nav-item').forEach(function(b){ b.addEventListener('click',function(){ showTab(b.dataset.tab); }); });
-    document.querySelectorAll('[data-goto]').forEach(function(b){ b.addEventListener('click',function(){ showTab(b.dataset.goto); }); });
-  }
-
-  function refreshAll(user){
-    ensureMockDataForUser(user);
-    renderAccountHeader(user);
-    renderStats(user);
+  function renderOverview(user){
     renderPendingOrders(user);
     renderOrderHistory(user);
-    renderProfileWishlist();
+    renderWishlist();
+    const ot=document.getElementById('overviewTitle');
+    if(ot) ot.textContent='Welcome, '+(user.name||'back');
+  }
+
+  function switchTab(key){
+    document.querySelectorAll('.nav-item').forEach(function(el){
+      el.classList.toggle('is-active', el.dataset.tab===key);
+    });
+    document.querySelectorAll('.panel').forEach(function(p){
+      p.classList.toggle('is-active', p.dataset.panel===key);
+    });
+    // close mobile sidebar
+    sidebar.classList.remove('is-open');
+    overlay.classList.remove('is-open');
+    window.scrollTo({top:0,behavior:'smooth'});
+    if(key==='wishlist') renderWishlist();
+  }
+
+  function bindNav(){
+    document.querySelectorAll('[data-tab]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        switchTab(btn.dataset.tab);
+      });
+    });
+    document.querySelectorAll('[data-jump]').forEach(function(el){
+      el.addEventListener('click',function(e){
+        e.preventDefault();
+        switchTab(el.dataset.jump);
+      });
+    });
+  }
+
+  // Auth handling
+  function googleUserToProfile(user){
+    return {name:user.displayName||user.email?.split('@')[0]||'Google User',email:user.email||'',phone:'',address:ADDRESSES[0],photoURL:user.photoURL||'',uid:user.uid,provider:'google',createdAt:new Date().toISOString()};
+  }
+  function setGoogleBusy(btn,busy){
+    if(!btn) return;
+    btn.disabled=busy;
+    const label=btn.querySelector('span');
+    if(label) label.textContent=busy?'Connecting…':'Continue with Google';
+    const status=document.querySelector('[data-google-status="'+btn.dataset.googleAuth+'"]');
+    if(status){status.textContent=busy?'Opening Google sign-in…':'';status.classList.toggle('is-visible',busy)}
+  }
+  async function continueWithGoogle(button){
+    setGoogleBusy(button,true);
+    try{
+      let attempts=0; while(!window.rgFirebase && attempts++<80) await new Promise(function(r){setTimeout(r,100)});
+      if(!window.rgFirebase || !window.rgFirebase.signIn) throw new Error('Google authentication is still loading.');
+      const user=await window.rgFirebase.signIn();
+      if(user){
+        const profile=googleUserToProfile(user);
+        saveCurrentUser(profile);
+        showDashboard(profile);
+      }
+    }catch(err){
+      console.error('[RGT] Google sign-in failed',err);
+      const msg=err&&err.code==='auth/unauthorized-domain'?'This domain is not authorised for Google sign-in. Add it in Firebase Console > Auth > Settings > Authorized domains.':(err&&err.message?err.message:'Google sign-in failed. Please try again.');
+      const status=document.querySelector('[data-google-status="'+button.dataset.googleAuth+'"]');
+      if(status){status.textContent=msg;status.classList.add('is-visible')}
+    }finally{
+      setGoogleBusy(button,false);
+    }
+  }
+
+  function showAuth(){
+    authWrapper.style.display='flex';
+    layout.style.display='none';
+  }
+  function showDashboard(user){
+    authWrapper.style.display='none';
+    layout.style.display='grid';
+    ensureMockDataForUser(user);
+    renderSidebar(user);
+    renderOverview(user);
     renderReviews(user);
     renderReturns(user);
     renderPayments(user);
     renderDetails(user);
+    renderStats(user);
+    // Restore last tab or overview
+    const last=localStorage.getItem('rgt_profile_last_tab')||'overview';
+    switchTab(last);
   }
 
-  function showAuthView(){
-    if(authSection) authSection.style.display='flex';
-    if(dashboardSection) dashboardSection.style.display='none';
-    if(pageTitle) pageTitle.textContent='Sign in to your account';
-    const saved=loadTrackedOrder();
-    if(saved && detailView && numberInput && contactInput){
-      const order=generateOrder(saved.orderNumber, saved.contact);
-      renderOrderInto(detailView, order, 'orderTrackAnotherTop', showGuestLookup);
-      if(lookupForm) lookupForm.style.display='none';
-    }
-  }
-  function showAccountView(user){
-    if(authSection) authSection.style.display='none';
-    if(dashboardSection) dashboardSection.style.display='block';
-    refreshAll(user);
-    showAccountLookup();
-    showTab('overview');
+  function handleLogout(){
+    if(window.rgFirebase&&window.rgFirebase.auth) window.rgFirebase.auth.signOut().catch(function(err){console.error('[RGT] sign-out failed',err)});
+    clearCurrentUser();
+    toast('Signed out');
+    showAuth();
+    renderSidebar(null);
   }
 
-  function handleLogin(email,pass){ const acc=loadAccounts(); return acc.find(function(a){return a.email.toLowerCase()===email.toLowerCase()&&a.password===pass;})||null; }
+  // Tab persistence
+  document.querySelectorAll('[data-tab]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      try{localStorage.setItem('rgt_profile_last_tab',btn.dataset.tab)}catch(e){}
+    });
+  });
 
   // Auth tabs
   document.querySelectorAll('[data-auth-tab]').forEach(function(btn){
     btn.addEventListener('click',function(){
-      document.querySelectorAll('[data-auth-tab]').forEach(function(b){b.classList.remove('is-active');});
+      document.querySelectorAll('[data-auth-tab]').forEach(function(b){b.classList.remove('is-active')});
       btn.classList.add('is-active');
       const tab=btn.dataset.authTab;
-      if(tab==='login'){ if(authLoginView) authLoginView.hidden=false; if(authSignupView) authSignupView.hidden=true; }
-      else { if(authLoginView) authLoginView.hidden=true; if(authSignupView) authSignupView.hidden=false; }
+      if(tab==='login'){authLoginView.hidden=false;authSignupView.hidden=true}
+      else{authLoginView.hidden=true;authSignupView.hidden=false}
     });
   });
 
+  // Login form
   if(loginForm) loginForm.addEventListener('submit',function(e){
-    e.preventDefault(); const email=document.getElementById('loginEmail').value.trim().toLowerCase(); const pass=document.getElementById('loginPassword').value; const u=handleLogin(email,pass);
-    if(!u){ if(loginError){ loginError.textContent='Invalid email or password. Try demo@raregrade.co.za / demo123'; loginError.classList.add('is-visible'); } return; }
-    if(loginError) loginError.classList.remove('is-visible'); const uObj={ name:u.name, email:u.email, phone:u.phone, address:u.address, createdAt:u.createdAt }; saveCurrentUser(uObj); showAccountView(uObj);
+    e.preventDefault();
+    const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+    const pass=document.getElementById('loginPassword').value;
+    const accounts=loadAccounts();
+    const u=accounts.find(function(a){return a.email.toLowerCase()===email&&a.password===pass});
+    if(!u){loginError.textContent='Invalid email or password.';loginError.classList.add('is-visible');return}
+    loginError.classList.remove('is-visible');
+    const profile={name:u.name,email:u.email,phone:u.phone,address:u.address,createdAt:u.createdAt,provider:'local'};
+    saveCurrentUser(profile);
+    showDashboard(profile);
   });
 
+  // Signup form
   if(signupForm) signupForm.addEventListener('submit',function(e){
-    e.preventDefault(); const name=document.getElementById('signupName').value.trim(); const email=document.getElementById('signupEmail').value.trim().toLowerCase(); const phone=document.getElementById('signupPhone').value.trim(); const pass=document.getElementById('signupPassword').value; const conf=document.getElementById('signupConfirm').value;
-    if(pass.length<6){ if(signupError){ signupError.textContent='Password must be at least 6 characters'; signupError.classList.add('is-visible'); } return; }
-    if(pass!==conf){ if(signupError){ signupError.textContent='Passwords do not match'; signupError.classList.add('is-visible'); } return; }
-    const acc=loadAccounts(); if(acc.some(function(a){return a.email.toLowerCase()===email})){ if(signupError){ signupError.textContent='An account with this email already exists'; signupError.classList.add('is-visible'); } return; }
-    if(signupError) signupError.classList.remove('is-visible');
-    const newAcc={ name:name, email:email, phone:phone, password:pass, address:ADDRESSES[0], createdAt:new Date().toISOString() }; acc.push(newAcc); saveAccounts(acc);
-    const uObj={ name:name, email:email, phone:phone, address:newAcc.address, createdAt:newAcc.createdAt }; saveCurrentUser(uObj); ensureMockDataForUser(uObj); showAccountView(uObj);
+    e.preventDefault();
+    const name=document.getElementById('signupName').value.trim();
+    const email=document.getElementById('signupEmail').value.trim().toLowerCase();
+    const phone=document.getElementById('signupPhone').value.trim();
+    const pass=document.getElementById('signupPassword').value;
+    const confirm=document.getElementById('signupConfirm').value;
+    if(pass.length<6){signupError.textContent='Password must be at least 6 characters.';signupError.classList.add('is-visible');return}
+    if(pass!==confirm){signupError.textContent='Passwords do not match.';signupError.classList.add('is-visible');return}
+    const accounts=loadAccounts();
+    if(accounts.some(function(a){return a.email.toLowerCase()===email})){signupError.textContent='An account with this email already exists.';signupError.classList.add('is-visible');return}
+    signupError.classList.remove('is-visible');
+    const acc={name,email,phone,address:ADDRESSES[0],password:pass,createdAt:new Date().toISOString()};
+    accounts.push(acc); saveAccounts(accounts);
+    const profile={name,email,phone,address:ADDRESSES[0],createdAt:acc.createdAt,provider:'local'};
+    saveCurrentUser(profile);
+    showDashboard(profile);
   });
 
-  function googleUserToProfile(user){ return { name:user.displayName||(user.email?user.email.split('@')[0]:'Google User'), email:user.email||'', phone:'', address:ADDRESSES[0], photoURL:user.photoURL||'', uid:user.uid, provider:'google', createdAt:new Date().toISOString() }; }
-  function setGoogleButtonBusy(button,busy){
-    if(!button) return; button.disabled=busy;
-    const label=button.querySelector('span'); if(label) label.textContent=busy?'Connecting…':'Continue with Google';
-    const status=document.querySelector('[data-google-status="'+button.dataset.googleAuth+'"]');
-    if(status){ status.textContent=busy?'Opening Google sign-in…':''; status.classList.toggle('is-visible',busy); status.classList.remove('is-error'); }
-  }
-  async function continueWithGoogle(button){
-    setGoogleButtonBusy(button,true);
-    try{
-      let attempts=0; while(!window.rgFirebase && attempts++<80) await new Promise(function(resolve){setTimeout(resolve,100);});
-      if(!window.rgFirebase || !window.rgFirebase.signIn) throw new Error('Google authentication is still loading. Please try again in a moment.');
-      const user=await window.rgFirebase.signIn();
-      if(user){ const profile=googleUserToProfile(user); saveCurrentUser(profile); showAccountView(profile); }
-    }catch(err){
-      console.error('[RGT] Google sign-in failed',err);
-      const msg=err&&err.code==='auth/unauthorized-domain'?'This website domain is not authorised for Google sign-in yet. Add it under Firebase Console → Authentication → Settings → Authorized domains.':(err&&err.message?err.message:'Google sign-in failed. Please try again.');
-      const status=document.querySelector('[data-google-status="'+button.dataset.googleAuth+'"]');
-      if(status){ status.textContent=msg; status.classList.add('is-visible'); status.classList.add('is-error'); }
-    }finally{ setGoogleButtonBusy(button,false); }
-  }
-  document.querySelectorAll('[data-google-auth]').forEach(function(button){ button.addEventListener('click',function(){ continueWithGoogle(button); }); });
+  // Google buttons
+  document.querySelectorAll('[data-google-auth]').forEach(function(btn){
+    btn.addEventListener('click',function(){continueWithGoogle(btn)});
+  });
 
   window.addEventListener('rg-auth',function(e){
     if(!e.detail) return;
     const profile=googleUserToProfile(e.detail);
     saveCurrentUser(profile);
-    showAccountView(profile);
+    // If auth wrapper visible, move to dashboard
+    if(authWrapper.style.display!=='none'){
+      showDashboard(profile);
+      toast('Google account connected');
+    }else{
+      // refresh sidebar if already logged in
+      renderSidebar(profile);
+    }
   });
 
-  function handleLogout(){
-    if(window.rgFirebase&&window.rgFirebase.auth) window.rgFirebase.auth.signOut().catch(function(err){console.error('[RGT] Google sign-out failed',err);});
-    clearCurrentUser();
-    showAuthView();
-    showGuestLookup();
+  // Guest tracking
+  function handleGuestTracking(form, numInput, contInput, errEl, detailEl, onBack){
+    if(!form) return;
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      const o=numInput.value.trim(); const c=contInput.value.trim();
+      if(!o||!c){if(errEl) errEl.classList.add('is-visible');return}
+      if(errEl) errEl.classList.remove('is-visible');
+      const order=generateOrder(o,c);
+      saveTrackedOrder(o,c);
+      renderOrderInto(detailEl, order, 'guestBack', function(){
+        detailEl.style.display='none'; form.style.display='';
+      });
+      form.style.display='none';
+      detailEl.style.display='block';
+    });
   }
+  handleGuestTracking(lookupForm, numberInput, contactInput, lookupError, detailView, showGuestLookup);
+  handleGuestTracking(accountLookupForm, accountNumberInput, accountContactInput, accountLookupError, accountDetailView, showAccountLookup);
 
-  if(lookupForm) lookupForm.addEventListener('submit',function(e){
-    e.preventDefault(); const o=numberInput.value.trim(); const c=contactInput.value.trim(); if(!o||!c){ if(lookupError) lookupError.classList.add('is-visible'); return; } if(lookupError) lookupError.classList.remove('is-visible'); const order=generateOrder(o,c); saveTrackedOrder(o,c); renderOrderInto(detailView, order, 'orderTrackAnotherTop', showGuestLookup); if(lookupForm) lookupForm.style.display='none';
+  // Mobile menu
+  menuToggle.addEventListener('click',function(){
+    sidebar.classList.toggle('is-open');
+    overlay.classList.toggle('is-open');
+  });
+  overlay.addEventListener('click',function(){
+    sidebar.classList.remove('is-open');
+    overlay.classList.remove('is-open');
   });
 
-  if(accountLookupForm) accountLookupForm.addEventListener('submit',function(e){
-    e.preventDefault(); const o=accountNumberInput.value.trim(); const c=accountContactInput.value.trim(); if(!o||!c){ if(accountLookupError) accountLookupError.classList.add('is-visible'); return; } if(accountLookupError) accountLookupError.classList.remove('is-visible'); const order=generateOrder(o,c); renderOrderInto(accountDetailView, order, 'accountTrackAnotherTop', showAccountLookup); if(accountLookupForm) accountLookupForm.style.display='none';
-  });
+  function toast(msg){
+    const el=document.createElement('div'); el.className='toast'; el.textContent=msg;
+    document.body.appendChild(el);
+    setTimeout(function(){el.style.opacity='0';el.style.transform='translateX(-50%) translateY(10px)';el.style.transition='all .3s ease'},2600);
+    setTimeout(function(){try{el.remove()}catch(e){}},3000);
+  }
+  window._rgtToast=toast;
 
+  // Init
   function init(){
-    bindSidebarNav();
-    const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
+    bindNav();
     const cur=loadCurrentUser();
-    if(cur){ showAccountView(cur); } else { showAuthView(); }
+    if(cur){
+      showDashboard(cur);
+    }else{
+      showAuth();
+      renderSidebar(null);
+    }
   }
-
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 
-  window.RGT_ACCOUNT={ getCurrentUser:loadCurrentUser, refreshWishlist:renderProfileWishlist };
-
+  // expose for external
+  window.RGT_PROFILE={switchTab, renderWishlist, toast};
 })();
 </script>
-
 </body>
 </html>
