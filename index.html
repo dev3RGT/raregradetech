@@ -3099,12 +3099,1015 @@ img{ max-width:100%; height:auto; }
 })();
 </script>
 
-<!-- ===== Admin-driven content layer (Firebase Realtime Database, live sync) ===== -->
+<!-- ===== Admin-driven content layer (Firebase Realtime Database, live sync) — inlined, no external file dependency ===== -->
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-<script src="content.js"></script>
-<script src="render.js"></script>
-<script src="site-runtime.js"></script>
+
+<!-- content.js (inlined) -->
+<script>
+/* =====================================================================
+   Rare Grade Tech — Shared Content Layer
+   ---------------------------------------------------------------------
+   - DEFAULT_CONTENT: the exact content currently baked into the site
+   - getContent(): returns the current content (in-memory, synchronous)
+   - saveContent(): writes to Firebase Realtime Database — every open
+     dashboard AND every open public page picks it up live, on any
+     device, the moment it is published. localStorage is kept only as
+     a fast local cache for the very first paint / offline fallback.
+   - subscribe(cb): cb fires whenever content changes, from ANY source
+     (this tab's own publish, another admin/device, Firebase itself).
+   ===================================================================== */
+
+(function (global) {
+  'use strict';
+
+  var STORAGE_KEY = 'rgt_content_v1';
+
+  /* ---------------------------------------------------------------------
+     FIREBASE SETUP — required for real-time cross-device sync
+     1. https://console.firebase.google.com -> create/open a project
+     2. Build -> Realtime Database -> Create Database (start in test
+        mode, then lock it down — see rules below)
+     3. Project settings (gear icon) -> General -> "Your apps" -> Web
+        app -> copy the config object and paste it in below
+     4. Realtime Database -> Rules, set:
+          {
+            "rules": {
+              "rgt_content_v1": {
+                ".read": true,
+                ".write": true
+              }
+            }
+          }
+        That is open for now so publishing works immediately. The
+        dashboard password below is only a client-side check, so
+        tighten these rules to Firebase Auth-gated writes before
+        relying on this in production.
+     --------------------------------------------------------------------- */
+  var firebaseConfig = {
+    apiKey: "AIzaSyCIQzqfyvMrUKJtqqGn3jPqFt2C805CEHs",
+    authDomain: "raregrade.firebaseapp.com",
+    databaseURL: "https://raregrade-default-rtdb.firebaseio.com",
+    projectId: "raregrade",
+    storageBucket: "raregrade.firebasestorage.app",
+    messagingSenderId: "794018278876",
+    appId: "1:794018278876:web:cc503804a7ef8f05287319",
+    measurementId: "G-7S976780CJ"
+  };
+  var DB_PATH = 'rgt_content_v1';
+
+  var DEFAULT_CONTENT = {
+    _version: 1,
+    settings: {
+      brandName: 'Rare Grade Tech',
+      logo: 'https://i.postimg.cc/jSdtxk2y/1.png',
+      tagline: 'Imagination To Reality',
+      adminPassword: 'admin123',
+      phone: '+27 61 527 0749',
+      phoneHref: 'tel:+27615270749',
+      email: 'info@raregradetech.com',
+      emailHref: 'mailto:info@raregradetech.com',
+      hours: 'Mon – Fri: 8:00 – 17:00',
+      address: '69 Hooge Street, Mokopane',
+      addressFull: '69 Hooge Str, Mokopane, Limpopo, South Africa',
+      facebook: 'https://www.facebook.com/profile.php?id=61551174479756',
+      instagram: '#',
+      youtube: '#',
+      tumblr: '#',
+      footerEmail: 'admin@raregradetech.com'
+    },
+
+    hero: {
+      badge: 'Rare Grade Tech',
+      headline1: 'DIGITALY',
+      headline2: 'TRANSFORMING BRANDS',
+      subcopy: "We design, develop and deliver modern software, web and mobile applications, AI solutions and IT services that help businesses grow and communities thrive.",
+      ctaPrimaryLabel: 'Book An Appointment',
+      ctaPrimaryLink: 'https://raregradetech.com/book-appointment/',
+      ctaSecondaryLabel: 'View Our Work',
+      ctaSecondaryLink: '#services',
+      ratingIcons: 'https://i.postimg.cc/pr69vh6W/rating-icons.png',
+      ratingNumber: '5',
+      ratingLabel: '40+ Reviews',
+      teamPhoto: 'https://i.postimg.cc/W1YrqCHw/craiyon-134252-image.png',
+      heroTexture: 'https://i.postimg.cc/QdQW2r95/hero.png',
+      trustRow: [
+        { title: 'Reliable Support', sub: 'On-site & Remote' },
+        { title: 'Experienced Team', sub: 'Professional. Skilled. Dedicated.' },
+        { title: 'Based in Mokopane', sub: 'Serving Businesses Across South Africa' }
+      ],
+      heroServices: [
+        { icon: 'https://i.postimg.cc/rsGGkQ96/re-resized-canvas-873x628.png', label: 'Software<br>Solutions' },
+        { icon: 'https://i.postimg.cc/ydZXfVgW/mobile-resized-canvas-873x628.png', label: 'Web & <br>Mobile' },
+        { icon: 'https://i.postimg.cc/pXZQccT8/ai-resized-canvas-873x628.png', label: 'AI Automation<br>&amp; Integrations' },
+        { icon: 'https://i.postimg.cc/MZ1mVp8z/call-resized-canvas-873x628.png', label: 'IT Support &amp;<br>Maintenance' },
+        { icon: 'https://i.postimg.cc/XYtrs9fS/software-resized-canvas-873x628.png', label: 'PC Repair<br>' }
+      ]
+    },
+
+    trusted: {
+      eyebrow: 'Trusted By',
+      title: 'Trusted By 50+ Businesses Nation Wide',
+      logos: [
+        { src: 'https://i.postimg.cc/ncxrP4Pr/funza.png', alt: 'Funza' },
+        { src: 'https://i.postimg.cc/3NF8TqcQ/innat.png', alt: 'Innat' },
+        { src: 'https://i.postimg.cc/m2VLp09n/mokopane-fm.png', alt: 'Mokopane FM' }
+      ]
+    },
+
+    services: {
+      eyebrow: 'What We Do',
+      title: 'Elevate Your Brand With Our Services',
+      sub: "Give your brand the makeover it deserves — we'll help you stand out with a look and service that catches eyes and wins hearts.",
+      items: [
+        {
+          icon: 'https://i.postimg.cc/rsGGkQ96/re-resized-canvas-873x628.png',
+          title: 'Software Solutions',
+          features: ['System automation', 'Tailored solutions', 'Cloud-based solutions', 'Integration capabilities', 'User-friendly interfaces']
+        },
+        {
+          icon: 'https://i.postimg.cc/ydZXfVgW/mobile-resized-canvas-873x628.png',
+          title: 'Web & Mobile Apps',
+          features: ['Mobile app creation', 'Mobile-responsive websites', 'Seamless integration', 'User-centric design', 'Agile development']
+        },
+        {
+          icon: 'https://i.postimg.cc/pXZQccT8/ai-resized-canvas-873x628.png',
+          title: 'AI Automation & Integrations',
+          features: ['Workflow automation', 'AI-powered chatbots', 'Third-party API integrations', 'Data syncing & pipelines', 'Custom AI-powered tools']
+        },
+        {
+          icon: 'https://i.postimg.cc/XYtrs9fS/software-resized-canvas-873x628.png',
+          title: 'PC Repair',
+          features: ['Hardware repair', 'Software diagnostics', 'System upgrades', 'Screen replacement', 'Refurbished device sales']
+        },
+        {
+          icon: 'https://i.postimg.cc/MZ1mVp8z/call-resized-canvas-873x628.png',
+          title: 'IT Support & Maintenance',
+          features: ['Network setup & monitoring', 'Data backup & recovery', 'Cybersecurity essentials', 'Remote & on-site support', 'Preventative maintenance plans']
+        },
+        {
+          icon: 'https://i.postimg.cc/Jzpq0YC5/design-resized-canvas-873x628.png',
+          title: 'Graphic Design',
+          features: ['Brand identity', 'Digital marketing assets', 'Creative direction', 'Signage & typography', 'Print materials']
+        }
+      ]
+    },
+
+    solutions: {
+      eyebrow: 'Featured Projects',
+      title: 'A Few Of Our Recent Builds',
+      sub: "From radio stations to e-commerce apps, here's a look at real platforms we've designed, built and continue to support.",
+      items: [
+        { tag: 'Live Radio Platform', title: 'Mokopane FM', image: 'https://i.postimg.cc/G2gmDzf7/mokopane.png', link: '#' },
+        { tag: 'Company Platform', title: 'Rare Grade Tech', image: 'https://i.postimg.cc/PJBf3JT8/rgt.png', link: '#' },
+        { tag: 'Web Platform', title: 'Afribaraka', image: 'https://i.postimg.cc/9F7Q4dYR/afr.png', link: '#' }
+      ]
+    },
+
+    showcase: {
+      eyebrow: 'Design & UI',
+      title: 'Interfaces Built To Perform',
+      sub: "Every project starts with a design that's clean, intuitive and true to your brand — before a single line of code ships.",
+      image: 'https://i.postimg.cc/Zn7Pb9zs/hh.png'
+    },
+
+    whyChooseUs: {
+      eyebrow: 'Why Choose Us',
+      title: 'Why Businesses Choose Rare Grade Tech',
+      sub: "We're a local team that builds like a bigger one — hands-on, reliable and invested in your results.",
+      image: 'https://i.postimg.cc/KvDg8dPC/why-choose-us.png',
+      items: [
+        { num: '01', title: 'Local & Reachable', desc: 'Based right here in Mokopane, with fast on-site and remote support whenever you need it.' },
+        { num: '02', title: 'Full-Stack Team', desc: 'From design to deployment, we handle every layer of your project under one roof.' },
+        { num: '03', title: 'Modern Technology', desc: 'We build with reliable, current tools — Firebase, cloud infrastructure and mobile-first frameworks.' },
+        { num: '04', title: 'Transparent Process', desc: 'Track progress, invoices and proposals in real time through your own client portal.' },
+        { num: '05', title: 'Fast Turnaround', desc: 'Agile development means you see working versions early, not just at the very end.' },
+        { num: '06', title: 'Ongoing Support', desc: "We don't disappear after launch — every project comes with continued maintenance and support." }
+      ]
+    },
+
+    process: {
+      eyebrow: 'How We Work',
+      title: 'Our Process',
+      sub: 'A clear, collaborative process from first conversation to launch — and beyond.',
+      steps: [
+        { num: '01', title: 'Discovery', desc: 'We learn about your business, goals, and project requirements to set a clear direction.', icon: 'https://i.postimg.cc/x1n2LcrV/discover.png', color: '#1118F5' },
+        { num: '02', title: 'Planning', desc: 'We define the strategy, timeline, and project roadmap for smooth execution.', icon: 'https://i.postimg.cc/TYrxyn40/p.png', color: '#0D12A0' },
+        { num: '03', title: 'Design', desc: 'We create intuitive, user-friendly, and modern interfaces that match your brand.', icon: 'https://i.postimg.cc/bNX8Nm3v/desi.png', color: '#3B4CFF' },
+        { num: '04', title: 'Development', desc: 'We build secure, scalable, and high-performance solutions with modern tech.', icon: 'https://i.postimg.cc/5NmGdgrT/dev.png', color: '#0404d8' },
+        { num: '05', title: 'Deployment', desc: 'We test, launch, and configure your solution for real-world success.', icon: 'https://i.postimg.cc/Zqq2bNN2/deployment.png', color: '#020084' },
+        { num: '06', title: 'Support', desc: 'We provide ongoing maintenance, updates, and technical support after launch.', icon: 'https://i.postimg.cc/ZKkc7NKg/support.png', color: '#0A0E5A' }
+      ]
+    },
+
+    testimonials: {
+      eyebrow: 'Testimonials',
+      title: 'What Our Clients Say',
+      sub: "A few words from the businesses we've worked with.",
+      items: [
+        { avatar: 'https://i.postimg.cc/pT18W69y/sara.png', name: 'Sarah', role: 'CEO Of Company', text: 'Rare Grade Tech took our vision and built exactly what we needed — professional, reliable and always ready to support us.', blue: false },
+        { avatar: 'https://i.postimg.cc/V5PJ5Qm7/cupcake.png', name: 'Cupcake', role: 'CEO Of Company', text: 'The team is fast, communicates clearly, and the client portal makes it easy to stay updated on progress.', blue: true },
+        { avatar: 'https://i.postimg.cc/1390sTMm/OUT-NOW(1).png', name: 'Home-Mad Djz', role: 'CEO Of Company', text: 'From concept to launch, everything was handled with care. Highly recommend them for any business looking to go digital.', blue: false }
+      ]
+    },
+
+    portal: {
+      eyebrow: 'Client Portal',
+      title: 'Manage Everything In One Place',
+      paragraph: 'Registering on our business portal gives you access to a personalized client dashboard, where you can easily manage invoices, track project progress, view proposals, access contracts, and get instant quotations.',
+      image: 'https://i.postimg.cc/2y6qgF2z/portal-image.png',
+      features: ['Manage invoices', 'Track project progress', 'View proposals & contracts', 'Get instant quotations'],
+      buttonLabel: 'Sign Up / Login',
+      buttonLink: 'https://dashboard.raregradetech.com/'
+    },
+
+    contact: {
+      eyebrow: 'Get In Touch',
+      title: "Let's Build Something Great",
+      sub: 'Contact us for a free consultation and quotation.',
+      items: [
+        { icon: 'phone', label: 'Call Us', value: '+27 61 527 0749' },
+        { icon: 'email', label: 'Email Us', value: 'info@raregradetech.com' },
+        { icon: 'pin', label: 'Visit Us', value: '69 Hooge Street, Mokopane, Limpopo, South Africa' },
+        { icon: 'clock', label: 'Business Hours', value: 'Mon – Fri: 8:00 – 17:00' }
+      ],
+      formHeading: 'Send Us A Message',
+      formIntro: "Fill in the form and we'll get back to you with a free consultation and quotation.",
+      formAction: 'mailto:info@raregradetech.com'
+    },
+
+    footer: {
+      brandDesc: 'Software, web & mobile apps, design and IT services for start-ups, businesses and individuals across South Africa.',
+      copyright1: 'Rare Grade Tech. All Rights Reserved.',
+      copyright2: '© Copyright 2025. All Rights Reserved. Rare Grade Tech.',
+      companyCol: { title: 'Company', links: [{ label: 'Home', href: '#home' }, { label: 'Services', href: '#services' }, { label: 'Featured Projects', href: '#solutions' }, { label: 'Contact Us', href: '#contact' }] },
+      exploreCol: { title: 'Explore', links: [{ label: 'Why Choose Us', href: '#why-choose-us' }, { label: 'How We Work', href: '#process' }, { label: 'Testimonials', href: '#testimonials' }, { label: 'Client Portal', href: '#portal' }] },
+      contactCol: {
+        title: 'Contact Info',
+        lines: [
+          { icon: 'pin', text: '69 Hooge Str, Mokopane, Limpopo, South Africa' },
+          { icon: 'clock', text: '08:00 – 17:00' },
+          { icon: 'phone', text: '+27 61 527 0749' },
+          { icon: 'email', text: 'admin@raregradetech.com' }
+        ]
+      }
+    },
+
+    portfolio: {
+      heroHeadline: 'OUR PORTFOLIO',
+      heroSubcopy: "Real client websites, web apps and mobile experiences — designed, built and shipped end-to-end. Filter by service below to see work in that category.",
+      heroCtaLabel: 'Explore Our Work',
+      sectionEyebrow: 'Selected Work',
+      sectionTitle: 'Featured Projects',
+      sectionSub: 'Every project below is a live, shipped build — not a template. Filter by category to see the kind of work we do in each area.',
+      emptyHeading: 'More work coming soon in this category',
+      emptyText: "We're always shipping — this category's case studies are on the way. In the meantime, tell us about your project and we'll show you exactly how we'd approach it.",
+      emptyCtaLabel: 'Start a Conversation',
+      tabs: [
+        { key: 'all', label: 'All Projects' },
+        { key: 'software', label: 'Software Solutions' },
+        { key: 'web-mobile', label: 'Web & Mobile Apps' },
+        { key: 'ai', label: 'AI Automation & Integrations' },
+        { key: 'pc-repair', label: 'PC Repair' },
+        { key: 'it-support', label: 'IT Support & Maintenance' },
+        { key: 'design', label: 'Graphic Design' }
+      ],
+      projects: [
+        {
+          indexLabel: '01 — Web & Mobile Apps',
+          title: 'Rare Grade Tech — Our Own Website',
+          desc: "The site you're on right now. A cinematic, single-page HTML build with an animated hero, sliding service tabs, live pricing filters and a client portal — the same fast, self-contained approach we build for every client.",
+          tags: ['web-mobile', 'design'],
+          categories: 'web-mobile design',
+          features: [
+            'Animated hero and sliding-pill service & pricing tabs',
+            'Single self-contained HTML file — no build step, loads fast',
+            'Fully responsive, from mobile through to widescreen desktop'
+          ],
+          ctaLabel: 'Start a Project Like This',
+          image: 'https://i.postimg.cc/nzKYRHG9/rgtwebsite.png'
+        },
+        {
+          indexLabel: '02 — Web & Mobile Apps',
+          title: 'Mokopane FM — 100.0 MHz Radio Station',
+          desc: '"The Voice of Mogalakwena" — a Firebase-powered station site with a live admin dashboard controlling the show lineup, photo carousel, news and sponsored ads, all editable in real time without touching code.',
+          tags: ['web-mobile', 'software'],
+          categories: 'web-mobile software',
+          features: [
+            'Admin-controlled show lineup, photo gallery and news feed',
+            'Rotating sponsor popup carousel with click & impression tracking',
+            'Live-listen player, shipped as one self-contained HTML file'
+          ],
+          ctaLabel: 'Start a Project Like This',
+          image: 'https://i.postimg.cc/rsQGTQHH/mkfmwebsite.png'
+        },
+        {
+          indexLabel: '03 — Web & Mobile Apps',
+          title: '1BUSKET — Premium Delivery, Web & Mobile',
+          desc: 'A Firebase-backed delivery and pickup platform with live vendor menus, real-time order tracking and distance-based fees — built as one fast, installable app-like experience across web and mobile.',
+          tags: ['web-mobile', 'software'],
+          categories: 'web-mobile software',
+          features: [
+            'Real-time vendor menus and live order tracking via Firebase',
+            'Delivery/pickup toggle with dynamic, distance-based fee calculation',
+            'Cart, checkout and order history, installable without an app store'
+          ],
+          ctaLabel: 'Start a Project Like This',
+          image: 'https://i.postimg.cc/2y8v0n5F/1busket.png'
+        }
+      ],
+      ctaBanner: {
+        title: 'Have a Project in Mind?',
+        text: "Tell us what you're building — website, app or platform — and we'll show you how we'd approach it, with clear pricing and a realistic timeline.",
+        primaryLabel: 'Start Your Project',
+        primaryLink: 'contact.html',
+        secondaryLabel: 'View Our Services',
+        secondaryLink: 'services.html'
+      }
+    }
+  };
+
+  function deepMerge(base, override) {
+    if (Array.isArray(base)) {
+      return Array.isArray(override) ? override : base;
+    }
+    if (base && typeof base === 'object' && override && typeof override === 'object') {
+      var out = {};
+      var keys = Object.keys(base);
+      for (var i = 0; i < keys.length; i++) {
+        var k = keys[i];
+        if (k in override) out[k] = deepMerge(base[k], override[k]);
+        else out[k] = base[k];
+      }
+      // include any extra keys from override
+      var okeys = Object.keys(override);
+      for (var j = 0; j < okeys.length; j++) {
+        if (!(okeys[j] in out)) out[okeys[j]] = override[okeys[j]];
+      }
+      return out;
+    }
+    return (override === undefined) ? base : override;
+  }
+
+  /* ---------- local cache: instant first paint + offline fallback ---------- */
+  function readCache() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+  }
+  function writeCache(content) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(content)); } catch (e) {}
+  }
+
+  var current = deepMerge(DEFAULT_CONTENT, readCache() || {});
+  var listeners = [];
+
+  function notify(content) {
+    for (var i = 0; i < listeners.length; i++) {
+      try { listeners[i](content); } catch (e) {}
+    }
+  }
+
+  /* ---------- Firebase: live source of truth ---------- */
+  var db = null;
+  var firebaseReady = firebaseConfig.apiKey !== 'YOUR_API_KEY';
+  try {
+    if (global.firebase && firebaseReady) {
+      global.firebase.initializeApp(firebaseConfig);
+      db = global.firebase.database();
+      db.ref(DB_PATH).on('value', function (snap) {
+        var v = snap.val();
+        if (v) {
+          current = deepMerge(DEFAULT_CONTENT, v);
+          writeCache(current);
+          notify(current);
+        }
+      }, function (err) {
+        console.warn('RGTContent: Firebase read blocked — check your database rules.', err);
+      });
+    } else if (!firebaseReady) {
+      console.warn('RGTContent: firebaseConfig is still a placeholder — running in local-only mode (changes will NOT sync to other devices). See content.js.');
+    }
+  } catch (e) {
+    console.warn('RGTContent: Firebase unavailable, running in local-only mode.', e);
+  }
+
+  function getContent() {
+    return JSON.parse(JSON.stringify(current));
+  }
+
+  function saveContent(content) {
+    current = deepMerge(DEFAULT_CONTENT, content);
+    writeCache(current);
+    if (db) {
+      db.ref(DB_PATH).set(content).catch(function (err) {
+        console.error('RGTContent: publish failed — check your Firebase config/rules.', err);
+      });
+      // Firebase's own listener above fires immediately on this tab too
+      // (local echo) and will call notify() with the published content.
+    } else {
+      notify(current); // no Firebase configured yet — still update this tab
+    }
+  }
+
+  function resetContent() {
+    var c = JSON.parse(JSON.stringify(DEFAULT_CONTENT));
+    current = c;
+    writeCache(c);
+    if (db) {
+      db.ref(DB_PATH).set(c).catch(function (err) {
+        console.error('RGTContent: reset failed to publish — check your Firebase config/rules.', err);
+      });
+    } else {
+      notify(c);
+    }
+    return c;
+  }
+
+  // Subscribe to live updates. callback(content) called on any change —
+  // from this tab's own publish, or from Firebase (another admin/device).
+  function subscribe(callback) {
+    listeners.push(callback);
+  }
+
+  global.RGTContent = {
+    DEFAULT_CONTENT: DEFAULT_CONTENT,
+    getContent: getContent,
+    saveContent: saveContent,
+    resetContent: resetContent,
+    subscribe: subscribe,
+    STORAGE_KEY: STORAGE_KEY
+  };
+
+})(window);
+
+</script>
+
+<!-- render.js (inlined) -->
+<script>
+/* =====================================================================
+   Rare Grade Tech — Public Page Renderer
+   Renders data-driven content into home.html / portfolio.html DOM,
+   and re-renders live when content updates (real-time sync).
+   ===================================================================== */
+(function (global) {
+  'use strict';
+
+  function esc(s) {
+    if (s == null) return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  // allow controlled HTML (br, strong, em, span)
+  function safeHTML(s) {
+    if (s == null) return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+  }
+
+  var ICONS = {
+    phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+    email: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6c0-1.1-.9-2-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6z"/><path d="m22 6-10 7L2 6"/></svg>',
+    clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
+    pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>',
+    arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+    quote: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 10c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-4c0-1.1-.9-2-2-2H7v-1c0-1.7 1.3-3 3-3V6c-2.8 0-5 2.2-5 5v1h1zm10 0c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-4c0-1.1-.9-2-2-2h-1v-1c0-1.7 1.3-3 3-3V6c-2.8 0-5 2.2-5 5v1h1z"/></svg>',
+    fb: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8.5H16l.5-3.5h-3V7.7c0-1 .3-1.7 1.7-1.7H16.5V2.8C16 2.75 15 2.7 13.9 2.7c-2.4 0-4 1.45-4 4.1V10H7.4v3.5H10V22h3.5z"/></svg>',
+    ig: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>',
+    yt: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M10.5 9.5v5l4.5-2.5z" fill="currentColor" stroke="none"/></svg>',
+    tu: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14.7 21.3c-3 0-4.9-1.7-4.9-4.6V11h-2.3V8.4c2.4-.6 3.4-2.7 3.5-4.7h2.6v4.4h3v3h-3v5c0 1.2.6 1.9 1.8 1.9.5 0 1-.1 1.3-.3l.7 2.9c-.6.3-1.7.6-2.7.6z"/></svg>'
+  };
+
+  function svg(name) { return ICONS[name] || ''; }
+
+  function setText(el, text) { if (el) el.textContent = text; }
+  function setHTML(el, html) { if (el) el.innerHTML = html; }
+  function setAttr(el, attr, val) { if (el) el.setAttribute(attr, val); }
+  function setSrc(el, src) { if (el) el.src = src; }
+  function setHref(el, href) { if (el) el.href = href; }
+
+  /* ---------- HOME PAGE RENDER ---------- */
+  function renderHome(c) {
+    var s = c.settings, h = c.hero;
+
+    // Utility bar
+    var ub = document.querySelector('.utility-bar');
+    if (ub) {
+      var ul = ub.querySelector('.utility-left');
+      if (ul) {
+        ul.innerHTML =
+          '<a class="utility-item" href="' + esc(s.phoneHref) + '" aria-label="Call ' + esc(s.phone) + '">' + svg('phone') + '<span>' + esc(s.phone) + '</span></a>' +
+          '<a class="utility-item" href="' + esc(s.emailHref) + '" aria-label="Email">' + svg('email') + '<span>' + esc(s.email) + '</span></a>' +
+          '<span class="utility-item">' + svg('clock') + '<span>' + esc(s.hours) + '</span></span>' +
+          '<span class="utility-item">' + svg('pin') + '<span>' + esc(s.address) + '</span></span>';
+      }
+      var us = ub.querySelector('.utility-social');
+      if (us) {
+        us.innerHTML =
+          '<a href="' + esc(s.facebook) + '" aria-label="Facebook">' + ICONS.fb + '</a>' +
+          '<a href="' + esc(s.instagram) + '" aria-label="Instagram">' + ICONS.ig + '</a>' +
+          '<a href="' + esc(s.youtube) + '" aria-label="YouTube">' + ICONS.yt + '</a>' +
+          '<a href="' + esc(s.tumblr) + '" aria-label="Tumblr">' + ICONS.tu + '</a>';
+      }
+    }
+
+    // Nav logo
+    document.querySelectorAll('.logo-image').forEach(function (img) { img.src = s.logo; img.alt = s.brandName; });
+
+    // Hero
+    setText(document.querySelector('.hero-left .badge'), h.badge);
+    var hl = document.querySelector('.hero-left .headline');
+    if (hl) hl.innerHTML = esc(h.headline1) + '<br><span class="headline-l2">' + esc(h.headline2) + '</span>';
+    setText(document.querySelector('.hero-left .subcopy'), h.subcopy);
+
+    var ctaRow = document.querySelector('.hero-left .cta-row');
+    if (ctaRow) {
+      var pri = ctaRow.querySelector('.btn-primary');
+      var sec = ctaRow.querySelector('.btn-secondary');
+      if (pri) { pri.textContent = h.ctaPrimaryLabel; pri.setAttribute('href', h.ctaPrimaryLink); }
+      if (sec) { sec.textContent = h.ctaSecondaryLabel; sec.setAttribute('href', h.ctaSecondaryLink); }
+    }
+
+    var ratingImg = document.querySelector('.rating-icons-img');
+    if (ratingImg) ratingImg.src = h.ratingIcons;
+    setText(document.querySelector('.rating-number'), h.ratingNumber);
+    setText(document.querySelector('.rating-label'), h.ratingLabel);
+
+    var tp = document.querySelector('.team-photo');
+    if (tp) { tp.src = h.teamPhoto; tp.alt = s.brandName; }
+    var ht = document.querySelector('.hero-texture');
+    if (ht) ht.style.backgroundImage = "url('" + h.heroTexture + "')";
+
+    // Hero services card
+    var sc = document.querySelector('.services-card');
+    if (sc) {
+      sc.innerHTML = h.heroServices.map(function (it) {
+        return '<div class="service-item"><span class="service-icon"><img src="' + esc(it.icon) + '" loading="lazy" /></span><span>' + safeHTML(it.label) + '</span></div>';
+      }).join('');
+    }
+
+    // Trust row
+    var tr = document.querySelector('.trust-row');
+    if (tr) {
+      tr.innerHTML = h.trustRow.map(function (t) {
+        return '<div class="trust-item"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span><span><div class="t-title">' + esc(t.title) + '</div><div class="t-sub">' + esc(t.sub) + '</div></span></div>';
+      }).join('');
+    }
+
+    // Trusted logos
+    var tlh = document.querySelector('.trusted-logos-head');
+    if (tlh) {
+      tlh.innerHTML = '<span class="eyebrow">' + esc(c.trusted.eyebrow) + '</span><h3 class="trusted-logos-title">' + esc(c.trusted.title) + '</h3>';
+    }
+    var lm = document.querySelector('.logo-marquee');
+    if (lm) {
+      var logosHtml = c.trusted.logos.map(function (l) {
+        return '<div class="logo-item"><img src="' + esc(l.src) + '" alt="' + esc(l.alt) + '" loading="lazy" /></div>';
+      }).join('');
+      lm.innerHTML = '<div class="logo-track" aria-hidden="false">' + logosHtml + '</div><div class="logo-track" aria-hidden="true">' + logosHtml + '</div>';
+      // re-init marquee
+      if (global.RGTInitTrusted) global.RGTInitTrusted();
+    }
+
+    // Services section
+    renderSectionHead('#services .section-head', c.services.eyebrow, c.services.title, c.services.sub);
+    var sg = document.querySelector('#services .grid-4');
+    if (sg) {
+      sg.innerHTML = c.services.items.map(function (it) {
+        var feats = it.features.map(function (f) {
+          return '<li>' + ICONS.check + esc(f) + '</li>';
+        }).join('');
+        return '<div class="service-card"><div class="icon-badge"><img src="' + esc(it.icon) + '" alt="' + esc(it.title) + ' icon" loading="lazy" /></div><h3>' + esc(it.title) + '</h3><ul>' + feats + '</ul><div class="service-more-btn"><a href="#" class="btn btn-outline btn-sm"><span class="label">See More</span>' + ICONS.arrow + '</a></div></div>';
+      }).join('');
+      // re-attach see-more swallow
+      document.querySelectorAll('#services .service-more-btn a').forEach(function (a) {
+        a.addEventListener('click', function (e) { e.preventDefault(); });
+      });
+      // re-observe reveals
+      observeReveals('#services .service-card');
+    }
+
+    // Solutions / Featured projects
+    renderSectionHead('#solutions .section-head', c.solutions.eyebrow, c.solutions.title, c.solutions.sub);
+    var sol = document.querySelector('#solutions .grid-4');
+    if (sol) {
+      sol.innerHTML = c.solutions.items.map(function (it, i) {
+        return '<div class="solution-card reveal" style="--d:' + (i * 0.1) + 's"><div class="sc-image"><div class="sc-glow" aria-hidden="true"></div><img src="' + esc(it.image) + '" alt="' + esc(it.title) + '" loading="lazy" /></div><div class="sc-panel"><div class="sc-info"><span class="sc-tag">' + esc(it.tag) + '</span><h3>' + esc(it.title) + '</h3></div><a href="' + esc(it.link) + '" class="sc-action" aria-label="View ' + esc(it.title) + ' project">' + ICONS.arrow + '</a></div></div>';
+      }).join('');
+      document.querySelectorAll('#solutions .sc-action').forEach(function (a) {
+        a.addEventListener('click', function (e) { e.preventDefault(); });
+      });
+      observeReveals('#solutions .solution-card');
+    }
+
+    // Showcase
+    renderSectionHead('#showcase .section-head', c.showcase.eyebrow, c.showcase.title, c.showcase.sub);
+    var showImg = document.querySelector('.mockup-frame img');
+    if (showImg) showImg.src = c.showcase.image;
+
+    // Why choose us
+    renderSectionHead('#why-choose-us .section-head', c.whyChooseUs.eyebrow, c.whyChooseUs.title, c.whyChooseUs.sub);
+    var whyImg = document.querySelector('.why-left img');
+    if (whyImg) whyImg.src = c.whyChooseUs.image;
+    var lisg = document.querySelector('.lis-grid');
+    if (lisg) {
+      lisg.innerHTML = c.whyChooseUs.items.map(function (it) {
+        return '<div class="lis-card"><div class="lis-tab"><span class="lis-tab-num">' + esc(it.num) + '</span></div><div class="lis-content"><h4>' + esc(it.title) + '</h4><p>' + esc(it.desc) + '</p></div></div>';
+      }).join('');
+    }
+
+    // Process
+    renderSectionHead('#process .section-head', c.process.eyebrow, c.process.title, c.process.sub);
+    var pf = document.querySelector('#process .process-flow');
+    if (pf) {
+      pf.innerHTML = c.process.steps.map(function (st) {
+        return '<div class="process-node" style="--num-color:' + esc(st.color) + '"><div class="process-num">' + esc(st.num) + '</div><div class="process-card"><h3 class="process-title">' + esc(st.title) + '</h3><p class="process-desc">' + esc(st.desc) + '</p><div class="process-icon"><img src="' + esc(st.icon) + '" alt="' + esc(st.title) + ' icon" loading="lazy" /></div></div></div>';
+      }).join('');
+    }
+
+    // Testimonials
+    renderSectionHead('#testimonials .section-head', c.testimonials.eyebrow, c.testimonials.title, c.testimonials.sub);
+    var tt = document.getElementById('testimonialTrack');
+    if (tt) {
+      tt.innerHTML = c.testimonials.items.map(function (t) {
+        var stars = '<span>★</span>'.repeat(5);
+        var cls = t.blue ? 't-card t-card--blue' : 't-card';
+        return '<div class="' + cls + '"><div class="t-avatar-wrap"><img class="t-avatar-img" src="' + esc(t.avatar) + '" alt="' + esc(t.name) + '" loading="lazy" /></div><div class="t-stars">' + stars + '</div><h4 class="t-name">' + esc(t.name) + '</h4><div class="t-role">' + esc(t.role) + '</div><div class="t-quote">' + ICONS.quote + '</div><p class="t-text">' + esc(t.text) + '</p></div>';
+      }).join('');
+      if (global.RGTInitTestimonials) global.RGTInitTestimonials();
+    }
+
+    // Portal
+    var pc = document.querySelector('.portal-copy');
+    if (pc) {
+      pc.querySelector('.eyebrow').textContent = c.portal.eyebrow;
+      pc.querySelector('h2').textContent = c.portal.title;
+      pc.querySelector('p').textContent = c.portal.paragraph;
+      var pf2 = pc.querySelector('.portal-features');
+      if (pf2) {
+        pf2.innerHTML = c.portal.features.map(function (f) {
+          return '<div class="pf-item">' + ICONS.check + esc(f) + '</div>';
+        }).join('');
+      }
+      var pbtn = pc.querySelector('.cta-row .btn');
+      if (pbtn) { pbtn.textContent = c.portal.buttonLabel; pbtn.setAttribute('href', c.portal.buttonLink); }
+    }
+    var pimg = document.querySelector('.portal-image img');
+    if (pimg) pimg.src = c.portal.image;
+
+    // Contact
+    renderSectionHead('#contact .section-head', c.contact.eyebrow, c.contact.title, c.contact.sub);
+    var ci = document.querySelector('.contact-info');
+    if (ci) {
+      ci.innerHTML = c.contact.items.map(function (it) {
+        return '<div class="contact-info-item"><span class="icon-wrap">' + svg(it.icon) + '</span><div><h4>' + esc(it.label) + '</h4><p>' + esc(it.value) + '</p></div></div>';
+      }).join('') + '<div class="contact-social"><a href="' + esc(s.facebook) + '" aria-label="Facebook">' + ICONS.fb + '</a><a href="' + esc(s.instagram) + '" aria-label="Instagram">' + ICONS.ig + '</a><a href="' + esc(s.youtube) + '" aria-label="YouTube">' + ICONS.yt + '</a><a href="' + esc(s.tumblr) + '" aria-label="Tumblr">' + ICONS.tu + '</a></div>';
+    }
+    var cf = document.querySelector('.contact-form');
+    if (cf) {
+      cf.setAttribute('action', c.contact.formAction);
+      var cfh = cf.querySelector('h3'); if (cfh) cfh.textContent = c.contact.formHeading;
+      var cfp = cf.querySelector('p'); if (cfp) cfp.textContent = c.contact.formIntro;
+    }
+
+    // Footer
+    renderFooter(c);
+  }
+
+  function renderSectionHead(sel, eyebrow, title, sub) {
+    var sh = document.querySelector(sel);
+    if (!sh) return;
+    sh.innerHTML = '<span class="eyebrow">' + esc(eyebrow) + '</span><h2 class="section-title">' + esc(title) + '</h2><p class="section-sub">' + esc(sub) + '</p>';
+  }
+
+  function renderFooter(c) {
+    var s = c.settings;
+    var fb = document.querySelector('.footer-brand');
+    if (fb) {
+      var p = fb.querySelector('p'); if (p) p.textContent = c.footer.brandDesc;
+      var fs = fb.querySelector('.footer-social');
+      if (fs) {
+        fs.innerHTML = '<a href="' + esc(s.facebook) + '" aria-label="Facebook">' + ICONS.fb + '</a><a href="' + esc(s.instagram) + '" aria-label="Instagram">' + ICONS.ig + '</a><a href="' + esc(s.youtube) + '" aria-label="YouTube">' + ICONS.yt + '</a><a href="' + esc(s.tumblr) + '" aria-label="Tumblr">' + ICONS.tu + '</a>';
+      }
+    }
+    var cols = document.querySelectorAll('.footer-col');
+    if (cols[0]) {
+      cols[0].innerHTML = '<h5>' + esc(c.footer.companyCol.title) + '</h5><ul>' + c.footer.companyCol.links.map(function (l) {
+        return '<li><a href="' + esc(l.href) + '">' + esc(l.label) + '</a></li>';
+      }).join('') + '</ul>';
+    }
+    if (cols[1]) {
+      cols[1].innerHTML = '<h5>' + esc(c.footer.exploreCol.title) + '</h5><ul>' + c.footer.exploreCol.links.map(function (l) {
+        return '<li><a href="' + esc(l.href) + '">' + esc(l.label) + '</a></li>';
+      }).join('') + '</ul>';
+    }
+    if (cols[2]) {
+      cols[2].innerHTML = '<h5>' + esc(c.footer.contactCol.title) + '</h5><ul class="footer-contact">' + c.footer.contactCol.lines.map(function (l) {
+        return '<li>' + svg(l.icon) + esc(l.text) + '</li>';
+      }).join('') + '</ul>';
+    }
+    var fbBottom = document.querySelector('.footer-bottom');
+    if (fbBottom) {
+      fbBottom.innerHTML = '<span>© <span id="year"></span> ' + esc(c.footer.copyright1) + '</span><span>' + esc(c.footer.copyright2) + '</span>';
+      var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear();
+    }
+  }
+
+  /* ---------- PORTFOLIO PAGE RENDER ---------- */
+  function renderPortfolio(c) {
+    var s = c.settings, p = c.portfolio;
+
+    // Utility bar + nav (same as home)
+    var ub = document.querySelector('.utility-bar');
+    if (ub) {
+      var ul = ub.querySelector('.utility-left');
+      if (ul) {
+        ul.innerHTML =
+          '<a class="utility-item" href="' + esc(s.phoneHref) + '">' + svg('phone') + '<span>' + esc(s.phone) + '</span></a>' +
+          '<a class="utility-item" href="' + esc(s.emailHref) + '">' + svg('email') + '<span>' + esc(s.email) + '</span></a>' +
+          '<span class="utility-item">' + svg('clock') + '<span>' + esc(s.hours) + '</span></span>' +
+          '<span class="utility-item">' + svg('pin') + '<span>' + esc(s.address) + '</span></span>';
+      }
+      var us = ub.querySelector('.utility-social');
+      if (us) {
+        us.innerHTML = '<a href="' + esc(s.facebook) + '" aria-label="Facebook">' + ICONS.fb + '</a><a href="' + esc(s.instagram) + '" aria-label="Instagram">' + ICONS.ig + '</a><a href="' + esc(s.youtube) + '" aria-label="YouTube">' + ICONS.yt + '</a><a href="' + esc(s.tumblr) + '" aria-label="Tumblr">' + ICONS.tu + '</a>';
+      }
+    }
+    document.querySelectorAll('.logo-image').forEach(function (img) { img.src = s.logo; img.alt = s.brandName; });
+
+    // Hero
+    setText(document.querySelector('.hero--portfolio .headline'), p.heroHeadline);
+    setText(document.querySelector('.hero--portfolio .subcopy'), p.heroSubcopy);
+    var hcta = document.querySelector('.hero--portfolio .hero-cta .btn');
+    if (hcta) {
+      var span = hcta.querySelector('span'); if (span) span.textContent = p.heroCtaLabel;
+    }
+
+    // Section head
+    renderSectionHead('#portfolio .section-head', p.sectionEyebrow, p.sectionTitle, p.sectionSub);
+
+    // Tabs
+    var tabs = document.getElementById('portTabs');
+    if (tabs) {
+      tabs.innerHTML = '<span class="svc-tab-indicator" id="portTabIndicator" aria-hidden="true"></span>' +
+        p.tabs.map(function (t, i) {
+          return '<button type="button" class="svc-tab' + (i === 0 ? ' is-active' : '') + '" data-svc="' + esc(t.key) + '">' + esc(t.label) + '</button>';
+        }).join('');
+    }
+
+    // Empty state
+    var pe = document.getElementById('portEmpty');
+    if (pe) {
+      pe.innerHTML = '<h3>' + esc(p.emptyHeading) + '</h3><p>' + esc(p.emptyText) + '</p><a class="btn btn-block-ink" href="contact.html"><span>' + esc(p.emptyCtaLabel) + '</span>' + ICONS.arrow + '</a>';
+    }
+
+    // Projects
+    var pl = document.getElementById('portList');
+    if (pl) {
+      pl.innerHTML = p.projects.map(function (pr, i) {
+        var altClass = (i % 2 === 1) ? ' alt' : '';
+        var feats = pr.features.map(function (f) {
+          return '<li>' + ICONS.check + esc(f) + '</li>';
+        }).join('');
+        return '<div class="port-section' + altClass + ' reveal" data-categories="' + esc(pr.categories) + '"><div class="wrap port-grid"><div class="port-text"><span class="port-index">' + esc(pr.indexLabel) + '</span><h3 class="port-title">' + esc(pr.title) + '</h3><p class="port-desc">' + esc(pr.desc) + '</p><ul class="port-examples">' + feats + '</ul><a class="btn btn-block-ink port-cta" href="contact.html"><span>' + esc(pr.ctaLabel) + '</span>' + ICONS.arrow + '</a></div><div class="port-media"><img src="' + esc(pr.image) + '" alt="' + esc(pr.title) + '" loading="lazy" /></div></div></div>';
+      }).join('');
+    }
+
+    // CTA banner
+    var cb = document.querySelector('.port-cta-banner');
+    if (cb) {
+      cb.innerHTML = '<h2>' + esc(p.ctaBanner.title) + '</h2><p>' + esc(p.ctaBanner.text) + '</p><div class="port-cta-actions"><a class="btn btn-secondary" href="' + esc(p.ctaBanner.primaryLink) + '">' + esc(p.ctaBanner.primaryLabel) + '</a><a class="btn btn-outline" href="' + esc(p.ctaBanner.secondaryLink) + '">' + esc(p.ctaBanner.secondaryLabel) + '</a></div>';
+    }
+
+    // Footer
+    renderFooter(c);
+
+    // Re-init portfolio filter logic
+    if (global.RGTInitPortfolioFilter) global.RGTInitPortfolioFilter();
+    observeReveals('#portList .port-section');
+  }
+
+  /* ---------- Reveal observer helper ---------- */
+  function observeReveals(selector) {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll(selector).forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll(selector).forEach(function (el) { obs.observe(el); });
+  }
+
+  global.RGTRender = {
+    renderHome: renderHome,
+    renderPortfolio: renderPortfolio,
+    observeReveals: observeReveals,
+    ICONS: ICONS
+  };
+
+})(window);
+
+</script>
+
+<!-- site-runtime.js (inlined) -->
+<script>
+/* =====================================================================
+   Rare Grade Tech — Site Runtime glue
+   Exposes re-init functions for marquees / portfolio filter so that
+   render.js can re-initialise them after a live content update.
+   Also performs the initial render + subscribes to live updates.
+   ===================================================================== */
+(function (global) {
+  'use strict';
+
+  function isHome() { return !!document.querySelector('.hero#home, #home.hero, section.hero#home') || document.body.getAttribute('data-page') === 'home'; }
+  function isPortfolio() { return document.body.getAttribute('data-page') === 'portfolio' || !!document.querySelector('.hero--portfolio'); }
+
+  // ---- Trusted logos marquee (extracted from inline script, re-initable) ----
+  global.RGTInitTrusted = function () {
+    var marquee = document.querySelector('#trusted-logos .logo-marquee, .trusted-logos .logo-marquee');
+    if (!marquee) return;
+    var tracks = marquee.querySelectorAll('.logo-track');
+    if (!tracks.length) return;
+    var firstTrack = tracks[0];
+    if (tracks.length > 1) { for (var i = 1; i < tracks.length; i++) tracks[i].remove(); }
+    var track = marquee.querySelector('.logo-track');
+    if (!track) return;
+    track.id = 'trustedTrack';
+    marquee.id = 'trustedMarquee';
+    var originalItems = Array.from(track.children);
+    if (!originalItems.length) return;
+    for (var k = 0; k < 2; k++) {
+      originalItems.forEach(function (item) {
+        var clone = item.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        track.appendChild(clone);
+      });
+    }
+    var x = 0, baseSpeed = 0.8, currentSpeed = baseSpeed, targetSpeed = baseSpeed;
+    var isHovering = false, rafId = null, halfWidth = 0, isDragging = false, startX = 0, startTranslate = 0;
+    function calcHalf() {
+      var w = 0;
+      for (var i = 0; i < originalItems.length; i++) {
+        var el = track.children[i]; if (!el) continue;
+        w += el.getBoundingClientRect().width + 72;
+      }
+      halfWidth = w;
+    }
+    var easeOut = 0.02, easeIn = 0.05;
+    function animate() {
+      var lerp = (targetSpeed < currentSpeed) ? easeOut : easeIn;
+      currentSpeed += (targetSpeed - currentSpeed) * lerp;
+      if (Math.abs(targetSpeed - currentSpeed) < 0.01) { if (targetSpeed === 0) currentSpeed = Math.max(0, currentSpeed - 0.01); }
+      if (!isDragging) { x -= currentSpeed; if (Math.abs(x) >= halfWidth) x = 0; track.style.transform = 'translate3d(' + x + 'px,0,0)'; }
+      rafId = requestAnimationFrame(animate);
+    }
+    marquee.addEventListener('mouseenter', function () { isHovering = true; targetSpeed = 0; });
+    marquee.addEventListener('mouseleave', function () { isHovering = false; if (!isDragging) targetSpeed = baseSpeed; });
+    marquee.addEventListener('mousedown', function (e) { isDragging = true; startX = e.clientX; startTranslate = x; marquee.style.cursor = 'grabbing'; targetSpeed = 0; });
+    window.addEventListener('mousemove', function (e) { if (!isDragging) return; x = startTranslate + (e.clientX - startX); track.style.transform = 'translate3d(' + x + 'px,0,0)'; });
+    window.addEventListener('mouseup', function () { if (!isDragging) return; isDragging = false; marquee.style.cursor = 'grab'; if (x > 0) x = 0; if (Math.abs(x) >= halfWidth) x = x % halfWidth; if (!isHovering) targetSpeed = baseSpeed; });
+    marquee.addEventListener('touchstart', function (e) { isDragging = true; startX = e.touches[0].clientX; startTranslate = x; targetSpeed = 0; }, { passive: true });
+    window.addEventListener('touchmove', function (e) { if (!isDragging) return; x = startTranslate + (e.touches[0].clientX - startX); track.style.transform = 'translate3d(' + x + 'px,0,0)'; }, { passive: true });
+    window.addEventListener('touchend', function () { if (!isDragging) return; isDragging = false; if (!isHovering) targetSpeed = baseSpeed; if (x > 0) x = 0; if (Math.abs(x) >= halfWidth) x = x % halfWidth; });
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) { if (entry.isIntersecting) { if (!rafId) animate(); } else { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } } });
+    }, { threshold: 0.1 });
+    observer.observe(marquee);
+    window.addEventListener('resize', calcHalf);
+    window.addEventListener('load', calcHalf);
+    calcHalf(); animate();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { baseSpeed = 0.3; targetSpeed = baseSpeed; currentSpeed = baseSpeed; }
+  };
+
+  // ---- Testimonials marquee (re-initable) ----
+  global.RGTInitTestimonials = function () {
+    var marquee = document.getElementById('testimonialMarquee');
+    var track = document.getElementById('testimonialTrack');
+    if (!marquee || !track) return;
+    var originalCards = Array.from(track.children);
+    if (!originalCards.length) return;
+    for (var i = 0; i < 2; i++) {
+      originalCards.forEach(function (card) {
+        var clone = card.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        track.appendChild(clone);
+      });
+    }
+    var x = 0, baseSpeed = 0.6, currentSpeed = baseSpeed, targetSpeed = baseSpeed;
+    var isHovering = false, rafId = null, halfWidth = 0, isDragging = false, startX = 0, startTranslate = 0;
+    function calcHalf() {
+      var w = 0;
+      for (var i = 0; i < originalCards.length; i++) {
+        var el = track.children[i]; if (el) w += el.getBoundingClientRect().width + 28;
+      }
+      halfWidth = w;
+    }
+    var easeOut = 0.02, easeIn = 0.05;
+    function animate() {
+      var lerp = (targetSpeed < currentSpeed) ? easeOut : easeIn;
+      currentSpeed += (targetSpeed - currentSpeed) * lerp;
+      if (Math.abs(targetSpeed - currentSpeed) < 0.01) { if (targetSpeed === 0) currentSpeed = Math.max(0, currentSpeed - 0.01); }
+      if (!isDragging) { x -= currentSpeed; if (Math.abs(x) >= halfWidth) x = 0; track.style.transform = 'translate3d(' + x + 'px,0,0)'; }
+      rafId = requestAnimationFrame(animate);
+    }
+    marquee.addEventListener('mouseenter', function () { isHovering = true; targetSpeed = 0; });
+    marquee.addEventListener('mouseleave', function () { isHovering = false; if (!isDragging) targetSpeed = baseSpeed; });
+    marquee.addEventListener('mousedown', function (e) { isDragging = true; startX = e.clientX; startTranslate = x; marquee.style.cursor = 'grabbing'; targetSpeed = 0; });
+    window.addEventListener('mousemove', function (e) { if (!isDragging) return; x = startTranslate + (e.clientX - startX); track.style.transform = 'translate3d(' + x + 'px,0,0)'; });
+    window.addEventListener('mouseup', function () { if (!isDragging) return; isDragging = false; marquee.style.cursor = 'grab'; if (x > 0) x = 0; if (Math.abs(x) >= halfWidth) x = x % halfWidth; if (!isHovering) targetSpeed = baseSpeed; });
+    marquee.addEventListener('touchstart', function (e) { isDragging = true; startX = e.touches[0].clientX; startTranslate = x; targetSpeed = 0; }, { passive: true });
+    window.addEventListener('touchmove', function (e) { if (!isDragging) return; x = startTranslate + (e.touches[0].clientX - startX); track.style.transform = 'translate3d(' + x + 'px,0,0)'; }, { passive: true });
+    window.addEventListener('touchend', function () { if (!isDragging) return; isDragging = false; if (!isHovering) targetSpeed = baseSpeed; if (x > 0) x = 0; if (Math.abs(x) >= halfWidth) x = x % halfWidth; });
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) { if (entry.isIntersecting) { if (!rafId) animate(); } else { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } } });
+    }, { threshold: 0.1 });
+    observer.observe(marquee);
+    window.addEventListener('resize', calcHalf);
+    window.addEventListener('load', calcHalf);
+    calcHalf(); animate();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { baseSpeed = 0.25; targetSpeed = baseSpeed; currentSpeed = baseSpeed; }
+  };
+
+  // ---- Portfolio filter (re-initable) ----
+  global.RGTInitPortfolioFilter = function () {
+    var wrap = document.getElementById('portTabs');
+    var indicator = document.getElementById('portTabIndicator');
+    var tabs = Array.from(document.querySelectorAll('#portTabs .svc-tab'));
+    var sections = Array.from(document.querySelectorAll('.port-section'));
+    var emptyState = document.getElementById('portEmpty');
+    if (!tabs.length) return;
+
+    function moveIndicator(btn) {
+      if (!indicator || !wrap || !btn) return;
+      var wrapRect = wrap.getBoundingClientRect();
+      var btnRect = btn.getBoundingClientRect();
+      indicator.style.width = btnRect.width + 'px';
+      indicator.style.height = btnRect.height + 'px';
+      indicator.style.transform = 'translate(' + (btnRect.left - wrapRect.left) + 'px,' + (btnRect.top - wrapRect.top) + 'px)';
+    }
+    function applyFilter(key) {
+      tabs.forEach(function (t) { t.classList.toggle('is-active', t.dataset.svc === key); });
+      var visibleCount = 0;
+      sections.forEach(function (sec) {
+        var cats = (sec.dataset.categories || '').split(' ');
+        var show = key === 'all' || cats.includes(key);
+        sec.classList.toggle('is-hidden', !show);
+        if (show) visibleCount++;
+      });
+      if (emptyState) emptyState.classList.toggle('is-visible', visibleCount === 0);
+      var activeTab = document.querySelector('#portTabs .svc-tab[data-svc="' + key + '"]');
+      moveIndicator(activeTab);
+    }
+    tabs.forEach(function (t) { t.addEventListener('click', function () { applyFilter(t.dataset.svc); }); });
+    var initialActive = document.querySelector('#portTabs .svc-tab.is-active') || tabs[0];
+    moveIndicator(initialActive);
+    requestAnimationFrame(function () { wrap.classList.add('is-ready'); });
+    window.addEventListener('resize', function () {
+      var current = document.querySelector('#portTabs .svc-tab.is-active') || tabs[0];
+      moveIndicator(current);
+    });
+  };
+
+  // ---- Initial render + live subscription ----
+  function doRender() {
+    var c = global.RGTContent.getContent();
+    if (isHome()) global.RGTRender.renderHome(c);
+    if (isPortfolio()) global.RGTRender.renderPortfolio(c);
+  }
+
+  function init() {
+    doRender();
+    // subscribe to live updates from the dashboard
+    global.RGTContent.subscribe(function (content) {
+      if (isHome()) global.RGTRender.renderHome(content);
+      if (isPortfolio()) global.RGTRender.renderPortfolio(content);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})(window);
+
+</script>
 
 </body>
 
