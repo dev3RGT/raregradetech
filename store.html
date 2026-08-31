@@ -469,6 +469,29 @@
   }
   .condition-badge.brand-new{ background:#1118F5; }
   .condition-badge.pre-owned{ background:#05060B; }
+  /* Out-of-stock visual state (driven by admin stock field, synced live) */
+  .product-card.is-out-of-stock{ opacity:.82; }
+  .product-card.is-out-of-stock .product-media img{ filter:grayscale(.6); }
+  .stock-badge{
+    position:absolute; top:10px; right:10px; z-index:3;
+    font-size:9.5px; font-weight:800; letter-spacing:.04em; text-transform:uppercase;
+    padding:5px 9px; border-radius:999px;
+    background:#b91c1c; color:#fff; box-shadow:0 4px 12px rgba(0,0,0,.18);
+  }
+  .stock-badge.out-of-stock{ background:#b91c1c; }
+  .oos-overlay{
+    position:absolute; inset:0; z-index:2; display:flex; align-items:center; justify-content:center;
+    background:rgba(255,255,255,.55); backdrop-filter:blur(1px);
+  }
+  .oos-overlay span{
+    font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:13px; letter-spacing:.06em;
+    text-transform:uppercase; color:#b91c1c; background:#fff; border:1.5px solid #b91c1c;
+    padding:6px 14px; border-radius:999px; box-shadow:0 6px 18px rgba(185,28,28,.25);
+  }
+  .product-cta.is-disabled{
+    background:var(--ink-200); color:var(--ink-400); cursor:not-allowed; opacity:.7;
+  }
+  .product-cta.is-disabled svg{ opacity:.5; }
   .spec-badges{
     position:absolute; top:50%; right:10px; transform:translateY(-50%); z-index:2;
     display:flex; flex-direction:column; align-items:flex-end; justify-content:center; gap:8px;
@@ -1096,6 +1119,7 @@
     .product-card{ border-radius:12px; }
     .product-media{ padding:14px; }
     .condition-badge{ top:7px; left:7px; padding:4px 6px; font-size:7px; }
+    .stock-badge{ top:7px; right:7px; padding:4px 6px; font-size:7px; }
     .spec-badges{ right:6px; gap:4px; }
     .spec-badge{ width:31px; height:31px; padding:2px; border-radius:6px; font-size:6px; }
     .product-body{ padding:11px 11px 12px; gap:5px; }
@@ -1388,6 +1412,490 @@ svg.filter-cat-icon{
   boot().catch(err=>console.error('Rare Grade Firebase bridge failed',err));
 })();
 </script>
+<!-- content.js : Shared content layer (data model + Firebase Realtime Database sync, localStorage cache)
+     Adapted for store.html: reuses the already-bootstrapped Firebase app from the
+     standalone Firebase bridge above (window.rgFirebase) when available, and polls
+     for readiness so the realtime listener attaches even though that bridge boots
+     asynchronously. Falls back to local-only mode if Firebase never becomes ready. -->
+<script>
+/* =====================================================================
+   Rare Grade Tech — Shared Content Layer (store variant)
+   ---------------------------------------------------------------------
+   - DEFAULT_CONTENT: the exact content currently baked into the site
+   - getContent(): returns the current content (in-memory, synchronous)
+   - subscribe(cb): cb fires whenever content changes, from ANY source
+     (another admin/device publishing, or Firebase itself).
+   ===================================================================== */
+(function (global) {
+  'use strict';
+
+  var STORAGE_KEY = 'rgt_content_v1';
+
+  var firebaseConfig = {
+    apiKey: "AIzaSyCIQzqfyMvrUKJtqqGn3jPqFt2C805CEHs",
+    authDomain: "raregrade.firebaseapp.com",
+    databaseURL: "https://raregrade-default-rtdb.firebaseio.com",
+    projectId: "raregrade",
+    storageBucket: "raregrade.firebasestorage.app",
+    messagingSenderId: "794018278876",
+    appId: "1:794018278876:web:cc503804a7ef8f05287319"
+  };
+  var DB_PATH = 'rgt_content_v1';
+
+  var DEFAULT_CONTENT = {
+    _version: 1,
+    store: {
+      eyebrow: 'Our Store',
+      title: 'Gadgets & Software, Sourced For You',
+      sub: "Genuine devices and licensed software, sourced and supported end-to-end.",
+      products: [
+        {
+          id: 'iphone-16',
+          name: 'iPhone 16 l With Free Case',
+          price: 17499,
+          brand: 'apple',
+          category: 'iphone',
+          condition: 'brand-new',
+          stock: 5,
+          image: 'https://i.postimg.cc/K8nRkFtF/iphone16.png',
+          specs: ['128GB', 'A18 Chip', '6.1" OLED'],
+          href: 'product.html?id=iphone-16',
+          order: 1,
+          added: 1
+        },
+        {
+          id: 'iphone-17-pro',
+          name: 'iPhone 17 Pro l With Free Case',
+          price: 24999,
+          brand: 'apple',
+          category: 'iphone',
+          condition: 'pre-owned',
+          stock: 3,
+          image: 'https://i.postimg.cc/g29x2rXQ/iphone17pro.png',
+          specs: ['512GB', 'A19 Pro', 'Titanium'],
+          href: 'product.html?id=iphone-17-pro',
+          order: 2,
+          added: 2
+        },
+        {
+          id: 'iphone-17',
+          name: 'iPhone 17 l With Free Case',
+          price: 19999,
+          brand: 'apple',
+          category: 'iphone',
+          condition: 'brand-new',
+          stock: 0,
+          image: 'https://i.postimg.cc/P5GC5NpY/iphone17.png',
+          specs: ['256GB', 'A19 Chip', '120Hz'],
+          href: 'product.html?id=iphone-17',
+          order: 3,
+          added: 3
+        }
+      ],
+      brands: [
+        { key: 'apple', label: 'Apple', iconType: 'svg', icon: '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50" aria-label="Apple"><path d="M 44.527344 34.75 C 43.449219 37.144531 42.929688 38.214844 41.542969 40.328125 C 39.601563 43.28125 36.863281 46.96875 33.480469 46.992188 C 30.46875 47.019531 29.691406 45.027344 25.601563 45.0625 C 21.515625 45.082031 20.664063 47.03125 17.648438 47 C 14.261719 46.96875 11.671875 43.648438 9.730469 40.699219 C 4.300781 32.429688 3.726563 22.734375 7.082031 17.578125 C 9.457031 13.921875 13.210938 11.773438 16.738281 11.773438 C 20.332031 11.773438 22.589844 13.746094 25.558594 13.746094 C 28.441406 13.746094 30.195313 11.769531 34.351563 11.769531 C 37.492188 11.769531 40.8125 13.480469 43.1875 16.433594 C 35.421875 20.691406 36.683594 31.78125 44.527344 34.75 Z M 31.195313 8.46875 C 32.707031 6.527344 33.855469 3.789063 33.4375 1 C 30.972656 1.167969 28.089844 2.742188 26.40625 4.78125 C 24.878906 6.640625 23.613281 9.398438 24.105469 12.066406 C 26.796875 12.152344 29.582031 10.546875 31.195313 8.46875 Z"></path></svg>' },
+        { key: 'hp', label: 'HP', iconType: 'svg', icon: '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50" aria-label="HP"><path d="M 25.205078 2.0078125 L 20.150391 16 L 23.394531 16 C 25.514531 16 26.657641 17.631953 25.931641 19.626953 L 20.492188 34.001953 L 16.574219 34 L 22.150391 19 L 18.964844 19 L 13.388672 34 L 9.1503906 34 L 20.798828 2.3945312 C 20.327828 2.4815313 19.860391 2.5793125 19.400391 2.6953125 C 9.4163906 5.2023125 2.0019531 14.250953 2.0019531 25.001953 C 2.0019531 35.382953 8.9149062 44.174391 18.378906 47.025391 C 18.699906 47.122391 19.024562 47.215828 19.351562 47.298828 L 20.042969 45.386719 L 24.068359 34.257812 L 24.070312 34.257812 L 30.589844 16 L 38.392578 16 C 40.514578 16 41.656641 17.631953 40.931641 19.626953 L 36.183594 32.314453 C 35.845594 33.241453 34.762391 34 33.775391 34 L 28.150391 34 L 23.826172 45.941406 L 23.111328 47.917969 C 23.403328 47.941969 23.695234 47.964562 23.990234 47.976562 C 24.326234 47.991563 24.662953 48.001953 25.001953 48.001953 C 37.683953 48.001953 48.001953 37.684953 48.001953 25.001953 C 48.000953 12.609953 38.148187 2.4814375 25.867188 2.0234375 C 25.647188 2.0154375 25.426078 2.0098125 25.205078 2.0078125 z M 33.964844 19 L 29.455078 31 L 32.640625 31 L 37.150391 19 L 33.964844 19 z"></path></svg>' },
+        { key: 'samsung', label: 'Samsung', iconType: 'img', icon: 'https://i.postimg.cc/HsmVmsSy/samsung-trans.png' },
+        { key: 'windows', label: 'Windows', iconType: 'svg', icon: '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50" aria-label="Windows"><path d="M19.852 7.761l-15 2.25C4.362 10.085 4 10.505 4 11v12c0 .553.448 1 1 1h15c.552 0 1-.447 1-1V8.75c0-.291-.127-.567-.348-.758C20.432 7.803 20.139 7.721 19.852 7.761zM45.652 4.242c-.22-.189-.512-.271-.801-.231l-21 3.15C23.362 7.235 23 7.655 23 8.15V23c0 .553.448 1 1 1h21c.552 0 1-.447 1-1V5C46 4.709 45.873 4.433 45.652 4.242zM20 26H5c-.552 0-1 .447-1 1v12c0 .495.362.915.852.989l15 2.25c.05.007.099.011.148.011.238 0 .47-.085.652-.242C20.873 41.817 21 41.541 21 41.25V27C21 26.447 20.552 26 20 26zM45 26H24c-.552 0-1 .447-1 1v14.85c0 .495.362.915.852.989l21 3.15C44.901 45.996 44.951 46 45 46c.238 0 .47-.085.652-.242C45.873 45.567 46 45.291 46 45V27C46 26.447 45.552 26 45 26z"></path></svg>' }
+      ],
+      categories: [
+        { key: 'laptops', label: 'Laptops', iconType: 'img', icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAzElEQVR4nO3YQQrCMBSE4elUvI5u9QR6qoIJVa/iMfQmFb1GJYKrUhUa2lHmg2xKaN5P6KaAmZlZNtW8QDwS4U7EVnTdCsR9mrU3o0A4CAzafrMKhLo3JNWmTUC9Gnq3RLx0Bwjnoe8Fwvp1M+8Ofx4Icfw0p0NGRoeIoUPE0CFi6BAxdIgYOkQMHSKGDhFDh4ihQ8TQIWL41yHM/k82noDdAqhm3RHSs7hMe3Kfi9wvnGqBiNeph8iwGpSI2x+PaUqEzXhfqJmZGXQ9AJycU2jDSBgdAAAAAElFTkSuQmCC' },
+        { key: 'macbook', label: 'MacBook', iconType: 'img', icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABmklEQVR4nO3YoU8cQRTH8e+8TWnaVNRgEJjSXIJCtaYGi0EQFAmqqoqkIZUL9942Fa2oKwpBAoKEhH+BC4L0JKIJ4BEVILg2Kck2x24qroTlyB43084v+Zkzs599b8UNxMTExMTE1BDB9gXLA2vrOkgeYokQ/CoRgl8lQvCrRAj/NURPE2zOYdsBQ/QSbArWHgh6EjLkALJRh26Ftlrngr2B5nPQVw5dceh6gs2DPkvIpgX96jvkF6y+pDLZpGA/vIU4bLcacfWtHPk+kXfVEHtR4xrng4IsVUOaDe8hDvtSDYHuCnoNEewb5K6akj6uC8OAIHmCzd4CMiLYsdcQwQ7h06ObGA796Ptq5d06dKPAfH6Y0JwR7DW8n4BUhOxtnWcxSEhR/Slop+f3i7rPYfCQ+ykRgl8lQvCr/HMQCfMWPu9pK9hJSO9k/hrRHdN9K/0/gO7VcG5eQvSsgKRjBJf0aflCOn/+Gzh0Bz6ME0zSJ4ItlxNplxcBxVTCrS6UumbDYZuCfh/+Q1k/105twRaHvBoxMTHcY34DMeUHa2GumSsAAAAASUVORK5CYII=' },
+        { key: 'iphone', label: 'iPhone', iconType: 'img', icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABK0lEQVR4nO2ZTWrDMBCFn+Rb+EpJrlNnZ+hMcqMs25wpP5uuHCaOCRgHUtkjlfI+mJVh5I83ssACCPl7VNBNgB4j5BqhXVrJNUC+K3yui0gEyD795acrQDR7Eo/FfyLkA2jr9G5tHaFN30u7rMn043QXaZbq+ZDpAvRrqZ7vLHqxRYck+jGzWdfdzGS6CDkjF8NMj8VSXiJAD6/6ujNe0JIwmWGzpiYUS4tMPE9KKJYWGScwTii1rzv/cI+09ZwEpr9aml9k2XNEtiVF7DRuljzZYyERlwJFfglFQBEfKAKK+EARUMQHioAiPlAEFPGBIqCIDxQBRXygCCjiw/Pvu0udkAu7F/cSCTkvQ+0K2Uukgq6QE7sLcUhDUAJLxkZh5p65WI/sSRCCt7gBIksSJ2xI0F0AAAAASUVORK5CYII=' },
+        { key: 'ipad', label: 'iPad', iconType: 'img', icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA50lEQVR4nO3YzQnCQBCG4W/GLtQCtAXRm30JzuQQbEf0YGzJnwqUaAIiOSRx0U38HthDLpt5IYIMQERERH9hNRb4RuB7gR9+fPb5LICPGkaspwo/K/z2egaw5TePvr0/nwlIJrUzBLaruOSGL9OKGQS2bXLBNdYQhV0+vCCWEK8/B0MCU4YUGBKYMqTAkMC0byHy+ONoWesQwGaAzX8ZIrCsfBb4sW3IHEgWnQ/ReD6tYxnR6RDty49dGQKGBKUMKTAkMGVI39ZB0pcFHaJdmdqp0cr0yUcCTyNaYqfAatgwgoiIiNBFdz6NdiAFWchiAAAAAElFTkSuQmCC' },
+        { key: 'desktop', label: 'Desktop', iconType: 'svg', icon: '<svg class="filter-cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>' },
+        { key: 'imac', label: 'iMac', iconType: 'svg', icon: '<svg class="filter-cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="13" rx="2"/><path d="M9 21h6"/><path d="M12 16v5"/></svg>' },
+        { key: 'apple-watch', label: 'Apple Watch', iconType: 'img', icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACfklEQVR4nO2aPWsVURCG3zNJdY2oYIyNxvyDkE4Lxd9gZ6P4gVdFOyuFI8ysifgHYiViYxFBC0mhjQmKiYWp/CpiQIUUokH7rIw711UQYdfdPfce9oVplnvOzrM75+xlzgtUohtbCHzagW8TZJHAHwn8hSDfCZJmwd/s2icCLzjwLQKfBHwH/SGeIMhannDR4PcAj4emgAPftKRWCHx+CMlhhQOmdwAz2/Jf+pHsGu8B+CBBugR+qWMdZBahRZBVTQaQyeKjZcreyluEld9tiWwAnkqMH7a1swkkYwilIcgRK42HZedwkHl7GMeqza5QEnzfkrhQdg5dV/YwHqF5pY4g3iA+/7moi+r6VgKv24bhdW40Iz+ipVR+u/13OPBcA98Wv4vAL+qCoDyWgWS0LohhvUEDEKmV7JLes3IMAp9tDkJ60a0D5FkAkKd1gGwEAPlaA0jjEKlGNCAEeQfwgRhAUgK/HmgQB7lrIJsDDULgK5WvlUBldTkKEAe+E0lpSS9exQDyBri2f+BBULVaELQgqcViLCBpC/I3tSBoQdIWpD9BeAFVKoq3ERkIx9IO4lgadNJtHoTPVA5ix2RLDYI8r6WJnSkZbagjvwz4nahXvuMg9+rsZaE5E0HqHPiq1fG6Hp+Vn8tv1+M7A7mEEHLgx5bAubJzEOSivYkH1WZXLInjlsR82Tny88jkKMIpGdPmmR76l9thPPU+tGo+QEip/SJLRKaKj5ZJK81VhJaDzNqiV4NMF0gOATN7MwPN75uAnsX/NNVMqPHGjAIrfWOqAXhcrUr/seWuAdP70B/yHYKcyMxk8iQ3nqlh5tffjZ7x7IO2eMykdqqqb8YPXGfSqH7CE4QAAAAASUVORK5CYII=' },
+        { key: 'accessories', label: 'Accessories', iconType: 'svg', icon: '<svg class="filter-cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>' }
+      ],
+      conditions: [
+        { key: 'brand-new', label: 'Brand New' },
+        { key: 'pre-owned', label: 'Pre-Owned' }
+      ],
+      priceMax: 30000,
+      softwareEnabled: false,
+      softwareTitle: 'Software coming soon',
+      softwareText: "We're finalising our licensed software lineup. Tell us what you need and we'll source it for you.",
+      softwareCtaLabel: 'Ask About Software',
+      softwareCtaLink: 'contact.html'
+    }
+  };
+
+  function deepMerge(base, override) {
+    if (Array.isArray(base)) {
+      return Array.isArray(override) ? override : base;
+    }
+    if (base && typeof base === 'object' && override && typeof override === 'object') {
+      var out = {};
+      var keys = Object.keys(base);
+      for (var i = 0; i < keys.length; i++) {
+        var k = keys[i];
+        if (k in override) out[k] = deepMerge(base[k], override[k]);
+        else out[k] = base[k];
+      }
+      var okeys = Object.keys(override);
+      for (var j = 0; j < okeys.length; j++) {
+        if (!(okeys[j] in out)) out[okeys[j]] = override[okeys[j]];
+      }
+      return out;
+    }
+    return (override === undefined) ? base : override;
+  }
+
+  function readCache() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+  }
+  function writeCache(content) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(content)); } catch (e) {}
+  }
+
+  var current = deepMerge(DEFAULT_CONTENT, readCache() || {});
+  var listeners = [];
+
+  function notify(content) {
+    for (var i = 0; i < listeners.length; i++) {
+      try { listeners[i](content); } catch (e) {}
+    }
+  }
+
+  /* ---------- Firebase: live source of truth ---------- */
+  /* The standalone bridge above boots Firebase asynchronously, so we poll
+     until firebase.database() is usable, then attach the value listener. */
+  var db = null;
+  var listenerAttached = false;
+
+  function getDb() {
+    try {
+      if (global.firebase && global.firebase.database) {
+        // Use the default app if already initialized; otherwise initialize.
+        try {
+          var app = global.firebase.app();
+        } catch (e) {
+          global.firebase.initializeApp(firebaseConfig);
+        }
+        return global.firebase.database();
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  function attachFirebaseListener() {
+    if (listenerAttached) return;
+    db = getDb();
+    if (!db) return;
+    listenerAttached = true;
+    db.ref(DB_PATH).on('value', function (snap) {
+      var v = snap.val();
+      if (v) {
+        current = deepMerge(DEFAULT_CONTENT, v);
+        writeCache(current);
+        notify(current);
+      }
+    }, function (err) {
+      console.warn('RGTContent: Firebase read blocked — check your database rules.', err);
+    });
+  }
+
+  // Poll for Firebase readiness (the bridge loads it async).
+  var fbTries = 0;
+  function waitForFirebase() {
+    if (getDb()) { attachFirebaseListener(); return; }
+    fbTries++;
+    if (fbTries < 120) setTimeout(waitForFirebase, 250); // up to ~30s
+  }
+  waitForFirebase();
+
+  function getContent() {
+    return JSON.parse(JSON.stringify(current));
+  }
+
+  // Subscribe to live updates. callback(content) called on any change —
+  // from Firebase (another admin/device publishing).
+  function subscribe(callback) {
+    listeners.push(callback);
+    // Fire once immediately with current content so late subscribers paint.
+    try { callback(getContent()); } catch (e) {}
+  }
+
+  global.RGTContent = {
+    DEFAULT_CONTENT: DEFAULT_CONTENT,
+    getContent: getContent,
+    subscribe: subscribe,
+    STORAGE_KEY: STORAGE_KEY
+  };
+
+})(window);
+</script>
+<!-- render-store.js : Dynamic store renderer — builds product grid, brand tiles,
+     category pills and the software panel from C.store and re-renders live when
+     the admin publishes new content (real-time sync via RGTContent.subscribe). -->
+<script>
+/* =====================================================================
+   Rare Grade Tech — Store Page Renderer
+   ---------------------------------------------------------------------
+   Reads C.store from RGTContent and renders:
+     - #productGrid  : product cards (with out-of-stock state)
+     - #brandRow     : brand tiles
+     - #extraFilterRow : category blue-pills
+     - #softwarePanel + store header text
+   On every RGTContent update it re-renders and then calls
+   window.RGT_STORE_REFRESH() so the filter / sort / cart / wishlist IIFEs
+   below re-query their DOM references and stay correct against the new DOM.
+   ===================================================================== */
+(function (global) {
+  'use strict';
+
+  function esc(s) {
+    if (s == null) return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  // Allow controlled SVG/HTML markup for brand & category icons.
+  function iconMarkup(icon) {
+    if (icon == null) return '';
+    var s = String(icon).trim();
+    // img URL or data URI
+    if (/^(https?:|data:|\/)/i.test(s) && !/^<svg/i.test(s)) {
+      return '<img src="' + esc(s) + '" alt="" loading="lazy" />';
+    }
+    // already SVG/HTML — strip only <script> for safety
+    return s.replace(/<script[\s\S]*?<\/script>/gi, '');
+  }
+
+  function formatPrice(n) {
+    n = parseInt(n, 10) || 0;
+    return 'R' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+
+  function condLabel(c, conditions) {
+    if (!c) return '';
+    for (var i = 0; i < conditions.length; i++) {
+      if (conditions[i].key === c) return conditions[i].label;
+    }
+    return c;
+  }
+
+  function buildProductCard(p, conditions) {
+    var inStock = (parseInt(p.stock, 10) || 0) > 0;
+    var condKey = p.condition || 'brand-new';
+    var condLbl = condLabel(p.condition, conditions) || (p.condition === 'pre-owned' ? 'Pre-Owned' : 'Brand New');
+    var condClass = condKey === 'pre-owned' ? 'pre-owned' : 'brand-new';
+    var search = (p.name + ' ' + (p.brand || '') + ' ' + (p.category || '')).toLowerCase().trim();
+    var specs = (p.specs && p.specs.length) ? p.specs : [];
+    var specBadges = specs.map(function (s) { return '<span class="spec-badge">' + esc(s) + '</span>'; }).join('');
+    var href = p.href || ('product.html?id=' + (p.id || ''));
+    var order = parseInt(p.order, 10) || 0;
+    var added = parseInt(p.added, 10) || 0;
+    var price = parseInt(p.price, 10) || 0;
+
+    var card = document.createElement('div');
+    card.className = 'product-card reveal' + (inStock ? '' : ' is-out-of-stock');
+    card.setAttribute('data-brand', p.brand || '');
+    card.setAttribute('data-category', p.category || '');
+    card.setAttribute('data-condition', p.condition || '');
+    card.setAttribute('data-price', String(price));
+    card.setAttribute('data-search', search);
+    card.setAttribute('data-order', String(order));
+    card.setAttribute('data-added', String(added));
+    card.setAttribute('data-href', href);
+    card.setAttribute('data-stock', String(parseInt(p.stock, 10) || 0));
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'link');
+    card.setAttribute('aria-label', 'View ' + (p.name || '') + ' details');
+
+    card.innerHTML =
+      '<div class="product-media">' +
+        '<span class="condition-badge ' + condClass + '">' + esc(condLbl) + '</span>' +
+        (inStock ? '' : '<span class="stock-badge out-of-stock">Out of Stock</span>') +
+        '<div class="spec-badges">' + specBadges + '</div>' +
+        '<button type="button" class="wishlist-heart-btn" data-id="' + esc(p.id) + '" data-name="' + esc(p.name) + '" data-price="' + price + '" data-image="' + esc(p.image) + '" aria-label="Add ' + esc(p.name) + ' to wishlist" aria-pressed="false">' +
+          '<svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>' +
+        '</button>' +
+        '<img src="' + esc(p.image) + '" alt="' + esc(p.name) + '" loading="lazy" />' +
+        (inStock ? '' : '<div class="oos-overlay"><span>Sold Out</span></div>') +
+      '</div>' +
+      '<div class="product-body">' +
+        '<h3 class="product-name">' + esc(p.name) + '</h3>' +
+        '<p class="product-price">' + formatPrice(price) + '</p>' +
+        '<button type="button" class="product-cta add-to-cart-btn' + (inStock ? '' : ' is-disabled') + '" data-id="' + esc(p.id) + '" data-name="' + esc(p.name) + '" data-price="' + price + '" data-image="' + esc(p.image) + '"' + (inStock ? '' : ' disabled') + '>' +
+          '<span class="cta-label">' + (inStock ? 'Add to Cart' : 'Out of Stock') + '</span>' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>' +
+        '</button>' +
+        '<div class="product-qty-stepper" data-id="' + esc(p.id) + '" hidden>' +
+          '<button type="button" class="qty-btn" data-action="dec" aria-label="Decrease ' + esc(p.name) + ' quantity">\u2212</button>' +
+          '<span class="qty-value">0</span>' +
+          '<button type="button" class="qty-btn" data-action="inc" aria-label="Increase ' + esc(p.name) + ' quantity">+</button>' +
+        '</div>' +
+      '</div>';
+    return card;
+  }
+
+  function buildBrandTile(b) {
+    var tile = document.createElement('button');
+    tile.type = 'button';
+    tile.className = 'brand-tile';
+    tile.setAttribute('data-brand', b.key);
+    tile.setAttribute('aria-label', 'Filter by ' + (b.label || b.key));
+    tile.innerHTML = iconMarkup(b.icon);
+    return tile;
+  }
+
+  function buildCategoryPill(c) {
+    var pill = document.createElement('button');
+    pill.type = 'button';
+    pill.className = 'filter-pill blue-pill';
+    pill.setAttribute('data-group', 'category');
+    pill.setAttribute('data-value', c.key);
+    pill.innerHTML = esc(c.label) + ' ' + iconMarkup(c.icon);
+    // ensure svg/img inside gets the filter-cat-icon class for styling
+    var ic = pill.querySelector('svg, img');
+    if (ic && !ic.classList.contains('filter-cat-icon')) ic.classList.add('filter-cat-icon');
+    return pill;
+  }
+
+  function render(c) {
+    var s = (c && c.store) ? c.store : null;
+    if (!s) return;
+
+    /* ---- Product grid ---- */
+    var grid = document.getElementById('productGrid');
+    if (grid) {
+      // remember scroll position of the grid container's parent
+      grid.innerHTML = '';
+      var frag = document.createDocumentFragment();
+      var products = (s.products && s.products.length) ? s.products : [];
+      products.forEach(function (p) { frag.appendChild(buildProductCard(p, s.conditions || [])); });
+      grid.appendChild(frag);
+    }
+
+    /* ---- Brand tiles ---- */
+    var brandRow = document.getElementById('brandRow');
+    if (brandRow) {
+      // preserve rail arrow buttons (prev/next) which are siblings, not children
+      brandRow.innerHTML = '';
+      var bfrag = document.createDocumentFragment();
+      (s.brands || []).forEach(function (b) { bfrag.appendChild(buildBrandTile(b)); });
+      brandRow.appendChild(bfrag);
+    }
+
+    /* ---- Category pills ---- */
+    var catRow = document.getElementById('extraFilterRow');
+    if (catRow) {
+      catRow.innerHTML = '';
+      var cfrag = document.createDocumentFragment();
+      (s.categories || []).forEach(function (c) { cfrag.appendChild(buildCategoryPill(c)); });
+      catRow.appendChild(cfrag);
+    }
+
+    /* ---- Conditions pills (if a condition row exists) ---- */
+    var condRow = document.getElementById('conditionFilterRow');
+    if (condRow) {
+      condRow.innerHTML = '';
+      (s.conditions || []).forEach(function (c) {
+        var pill = document.createElement('button');
+        pill.type = 'button';
+        pill.className = 'filter-pill';
+        pill.setAttribute('data-group', 'condition');
+        pill.setAttribute('data-value', c.key);
+        pill.textContent = c.label;
+        cfrag = cfrag || document.createDocumentFragment();
+        condRow.appendChild(pill);
+      });
+    }
+
+    /* ---- Store header text ---- */
+    setText('storeEyebrow', s.eyebrow);
+    setText('storeTitle', s.title);
+    setText('storeSub', s.sub);
+
+    /* ---- Price slider bounds ---- */
+    var pm = document.getElementById('priceMax');
+    var pn = document.getElementById('priceMin');
+    if (pm && typeof s.priceMax === 'number') {
+      pm.max = String(s.priceMax);
+      pm.value = String(s.priceMax);
+      if (pn) { pn.max = String(s.priceMax); }
+      var maxLbl = document.getElementById('priceMaxLabel');
+      if (maxLbl) maxLbl.textContent = formatPrice(s.priceMax) + '+';
+    }
+
+    /* ---- Software panel ---- */
+    var swPanel = document.getElementById('softwarePanel');
+    if (swPanel) {
+      swPanel.innerHTML =
+        '<h3>' + esc(s.softwareTitle || 'Software coming soon') + '</h3>' +
+        '<p>' + esc(s.softwareText || '') + '</p>' +
+        '<a class="btn btn-block-ink" href="' + esc(s.softwareCtaLink || 'contact.html') + '">' +
+          '<span>' + esc(s.softwareCtaLabel || 'Ask About Software') + '</span>' +
+          '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
+        '</a>';
+    }
+
+    /* ---- Software tab visibility ---- */
+    var swTab = document.querySelector('#storeTabs .store-tab[data-tab="software"]');
+    if (swTab) { swTab.hidden = !s.softwareEnabled; }
+
+    /* ---- Reveal animation for freshly rendered cards ---- */
+    revealNew();
+
+    /* ---- Notify the rest of the page to re-bind against the new DOM ---- */
+    if (typeof global.RGT_STORE_REFRESH === 'function') {
+      try { global.RGT_STORE_REFRESH(); } catch (e) { console.warn('RGT_STORE_REFRESH failed', e); }
+    }
+  }
+
+  function setText(id, text) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = text || '';
+  }
+
+  function revealNew() {
+    var els = document.querySelectorAll('.product-card.reveal:not(.is-visible), .brand-tile.reveal:not(.is-visible)');
+    if (!els.length) return;
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function (el) { obs.observe(el); });
+  }
+
+  // Wait for DOM ready, then render immediately from cached content and
+  // subscribe for live updates.
+  function boot() {
+    if (!global.RGTContent) {
+      // content.js layer not loaded yet — retry shortly
+      return setTimeout(boot, 50);
+    }
+    render(global.RGTContent.getContent());
+    global.RGTContent.subscribe(function (c) {
+      render(c);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+
+  global.RGT_STORE_RENDER = render;
+})(window);
+</script>
+
 </head>
 <body>
 <div class="page-anim">
@@ -2085,12 +2593,12 @@ svg.filter-cat-icon{
   const indicator = document.getElementById('storeTabIndicator');
   const tabs = Array.from(document.querySelectorAll('#storeTabs .store-tab'));
   const brandRowWrap = document.getElementById('brandRowWrap');
-  const brandTiles = Array.from(document.querySelectorAll('.brand-tile'));
-  const filterPills = Array.from(document.querySelectorAll('.filter-pill'));
+  let brandTiles = Array.from(document.querySelectorAll('.brand-tile'));
+  let filterPills = Array.from(document.querySelectorAll('.filter-pill'));
   const gadgetsPanel = document.getElementById('gadgetsPanel');
   const softwarePanel = document.getElementById('softwarePanel');
   const productGrid = document.getElementById('productGrid');
-  const productCards = Array.from(document.querySelectorAll('.product-card'));
+  let productCards = Array.from(document.querySelectorAll('.product-card'));
   const noResults = document.getElementById('noResults');
   const searchInput = document.getElementById('storeSearchInput');
   const priceMinInput = document.getElementById('priceMin');
@@ -2312,10 +2820,39 @@ svg.filter-cat-icon{
       : Math.max(currentIndex - 1, 0);
     if (nextIndex !== currentIndex) applyTab(tabs[nextIndex].dataset.tab);
   });
-  brandTiles.forEach(t => t.addEventListener('click', () => applyBrand(t.dataset.brand)));
-  filterPills.forEach(p => p.addEventListener('click', (evt) => applyPill(p, evt)));
   searchInput.addEventListener('input', runFilter);
   if (sortSelect) sortSelect.addEventListener('change', applySort);
+
+  // Re-query the dynamic elements (brand tiles, category pills, product cards)
+  // that the renderer rebuilds on every live content update, and re-bind their
+  // click handlers. Called once now and again after each RGT_STORE re-render.
+  function rebindDynamic(){
+    brandTiles = Array.from(document.querySelectorAll('.brand-tile'));
+    filterPills = Array.from(document.querySelectorAll('.filter-pill'));
+    productCards = Array.from(document.querySelectorAll('.product-card'));
+    brandTiles.forEach(t => t.addEventListener('click', () => applyBrand(t.dataset.brand)));
+    filterPills.forEach(p => p.addEventListener('click', (evt) => applyPill(p, evt)));
+    // preserve active brand / category highlight after re-render
+    brandTiles.forEach(t => t.classList.toggle('is-active', t.dataset.brand === activeBrand));
+    filterPills.forEach(p => {
+      if (p.dataset.group === 'category') p.classList.toggle('is-active', p.dataset.value === activeCategory);
+      else if (p.dataset.group === 'condition') p.classList.toggle('is-active', p.dataset.value === activeCondition);
+    });
+    // re-sync qty steppers / add buttons with cart state via the cart API
+    if (window.RGT_CART && window.RGT_CART.rebind) window.RGT_CART.rebind();
+    if (window.RGT_CART && window.RGT_CART.render) window.RGT_CART.render();
+    if (window.RGT_WISHLIST && window.RGT_WISHLIST.rebind) window.RGT_WISHLIST.rebind();
+    if (window.RGT_WISHLIST && window.RGT_WISHLIST.render) window.RGT_WISHLIST.render();
+    // re-bind product-card click-to-navigate via the nav IIFE hook
+    if (window.RGT_STORE_NAV && window.RGT_STORE_NAV.bind) window.RGT_STORE_NAV.bind();
+    // re-init rails for the freshly populated brand / category rows
+    setupRail(document.getElementById('brandRow'), document.getElementById('brandRailPrev'), document.getElementById('brandRailNext'));
+    setupRail(document.getElementById('extraFilterRow'), document.getElementById('extraRailPrev'), document.getElementById('extraRailNext'));
+    enableWheelScroll(document.getElementById('brandRow'));
+    enableWheelScroll(document.getElementById('extraFilterRow'));
+    runFilter();
+  }
+  rebindDynamic();
 
   function enableWheelScroll(railEl){
     if (!railEl) return;
@@ -2370,6 +2907,19 @@ svg.filter-cat-icon{
     const current = tabs.find(t => t.classList.contains('is-active')) || tabs[0];
     moveIndicator(current);
   });
+
+  // Expose a refresh hook so the live renderer (render-store.js) can ask this
+  // IIFE to re-query the rebuilt DOM and re-bind filter handlers after every
+  // realtime content update from the admin.
+  window.RGT_STORE_REFRESH = function(){
+    try {
+      rebindDynamic();
+      // re-apply current sort so newly added products land in the right order
+      applySort();
+      // refresh price slider bounds in case priceMax changed
+      initPriceSlider();
+    } catch (e) { console.warn('RGT_STORE_REFRESH error', e); }
+  };
 })();
 
 // Ad carousels: two independent cards (70% / 30%), each auto-advances every 30s
@@ -2453,8 +3003,7 @@ svg.filter-cat-icon{
 
 // Product cards navigate to product.html, unless the click started on a button/stepper
 (function(){
-  const cards = Array.from(document.querySelectorAll('.product-card[data-href]'));
-  cards.forEach(card => {
+  function bindCard(card){
     card.addEventListener('click', (e) => {
       if (e.target.closest('button')) return;
       window.location.href = card.dataset.href;
@@ -2466,7 +3015,14 @@ svg.filter-cat-icon{
         window.location.href = card.dataset.href;
       }
     });
-  });
+  }
+  function bind(){
+    const cards = Array.from(document.querySelectorAll('.product-card[data-href]'));
+    cards.forEach(bindCard);
+  }
+  bind();
+  // Expose so the live renderer can re-bind navigation on freshly rendered cards.
+  window.RGT_STORE_NAV = { bind: bind };
 })();
 
 // Floating cart
@@ -2488,8 +3044,8 @@ svg.filter-cat-icon{
   const undoBtn = document.getElementById('cartUndoBtn');
   const upsellWrap = document.getElementById('cartUpsell');
   const upsellRow = document.getElementById('cartUpsellRow');
-  const addButtons = Array.from(document.querySelectorAll('.add-to-cart-btn'));
-  const qtySteppers = Array.from(document.querySelectorAll('.product-qty-stepper'));
+  let addButtons = Array.from(document.querySelectorAll('.add-to-cart-btn'));
+  let qtySteppers = Array.from(document.querySelectorAll('.product-qty-stepper'));
 
   function loadCart(){
     try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
@@ -2669,26 +3225,32 @@ svg.filter-cat-icon{
     hideUndo();
   }
 
-  addButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      addToCart({
-        id: btn.dataset.id,
-        name: btn.dataset.name,
-        price: parseInt(btn.dataset.price, 10),
-        image: btn.dataset.image
+  // Re-query and re-bind the add-to-cart / qty-stepper buttons. Called once on
+  // init and again after every live re-render (via RGT_STORE_REFRESH).
+  function bindButtons(){
+    addButtons = Array.from(document.querySelectorAll('.add-to-cart-btn'));
+    qtySteppers = Array.from(document.querySelectorAll('.product-qty-stepper'));
+    addButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        addToCart({
+          id: btn.dataset.id,
+          name: btn.dataset.name,
+          price: parseInt(btn.dataset.price, 10),
+          image: btn.dataset.image
+        });
       });
     });
-  });
-
-  qtySteppers.forEach(stepper => {
-    stepper.addEventListener('click', (e) => {
-      const btn = e.target.closest('button[data-action]');
-      if (!btn) return;
-      const id = stepper.dataset.id;
-      if (btn.dataset.action === 'inc') changeQty(id, 1);
-      else if (btn.dataset.action === 'dec') changeQty(id, -1);
+    qtySteppers.forEach(stepper => {
+      stepper.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+        const id = stepper.dataset.id;
+        if (btn.dataset.action === 'inc') changeQty(id, 1);
+        else if (btn.dataset.action === 'dec') changeQty(id, -1);
+      });
     });
-  });
+  }
+  bindButtons();
 
   floatingBtn.addEventListener('click', openDrawer);
   closeBtn.addEventListener('click', closeDrawer);
@@ -2738,6 +3300,7 @@ svg.filter-cat-icon{
     getCart: () => cart,
     refresh: refresh,
     render: render,
+    rebind: bindButtons,
     open: openDrawer
   };
 
@@ -2753,7 +3316,7 @@ svg.filter-cat-icon{
   const drawer = document.getElementById('wishlistDrawer');
   const closeBtn = document.getElementById('wishlistClose');
   const itemsEl = document.getElementById('wishlistItems');
-  const heartButtons = Array.from(document.querySelectorAll('.wishlist-heart-btn'));
+  let heartButtons = Array.from(document.querySelectorAll('.wishlist-heart-btn'));
 
   function loadWishlist(){
     try { return JSON.parse(localStorage.getItem(WISHLIST_KEY)) || []; }
@@ -2854,9 +3417,15 @@ svg.filter-cat-icon{
     overlay.classList.remove('open');
   }
 
-  heartButtons.forEach(btn => {
-    btn.addEventListener('click', () => toggleWishlist(btn));
-  });
+  // Re-query and re-bind heart buttons. Called once on init and again after
+  // every live re-render (via RGT_STORE_REFRESH).
+  function bindHearts(){
+    heartButtons = Array.from(document.querySelectorAll('.wishlist-heart-btn'));
+    heartButtons.forEach(btn => {
+      btn.addEventListener('click', () => toggleWishlist(btn));
+    });
+  }
+  bindHearts();
 
   floatingBtn.addEventListener('click', openDrawer);
   closeBtn.addEventListener('click', closeDrawer);
@@ -2879,6 +3448,7 @@ svg.filter-cat-icon{
     getWishlist: () => wishlist,
     refresh: refresh,
     render: render,
+    rebind: bindHearts,
     open: openDrawer
   };
 
